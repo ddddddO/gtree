@@ -4,3 +4,6 @@ SD３月号　P62~87 (P70半まで)
 
 ## exec command
 node 'JSfile'
+
+## google map
+https://developers.google.com/maps/documentation/javascript/tutorial
