@@ -37,3 +37,24 @@ console.log(list);
 console.log(list[4].foo);
 console.log(list[4]["foo"]);
 console.log()
+
+// オブジェクト参照型挙動
+var ref1 = {foo: 123};
+var ref2 = ref1;
+ref2.foo = 456;
+console.log(ref1.foo);
+console.log();
+
+// プロトタイプ
+var arr = [];
+console.log(arr instanceof Array);
+var s = "";
+console.log(s instanceof String);
+console.log();
+
+// for-in
+var obj1 = {foo: 123, bar: "gggg", buzz: 999};
+for (var key in obj1) {
+    console.log(key)
+}
+console.log()
