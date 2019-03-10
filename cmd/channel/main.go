@@ -28,7 +28,8 @@ func main() {
 	//try4()
 	//try5()
 	//try6()
-	try7()
+	//try7()
+	try8()
 }
 
 func try1() {
@@ -93,4 +94,8 @@ func try6() {
 
 func try7() {
 	runTic()
+}
+
+func try8() {
+	runMu()
 }
