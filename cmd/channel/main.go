@@ -25,7 +25,8 @@ func main() {
 	//try1()
 	//try2()
 	//try3()
-	try4()
+	//try4()
+	try5()
 
 }
 
@@ -77,4 +78,9 @@ func try3() {
 // Producer/Consumer
 func try4() {
 	run()
+}
+
+// fan-out fan-in
+func try5() {
+	runFan()
 }
