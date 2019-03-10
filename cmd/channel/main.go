@@ -27,8 +27,8 @@ func main() {
 	//try3()
 	//try4()
 	//try5()
-	try6()
-
+	//try6()
+	try7()
 }
 
 func try1() {
@@ -86,6 +86,11 @@ func try5() {
 	runFan()
 }
 
+// select
 func try6() {
 	runSel()
+}
+
+func try7() {
+	runTic()
 }
