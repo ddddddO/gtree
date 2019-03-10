@@ -26,7 +26,8 @@ func main() {
 	//try2()
 	//try3()
 	//try4()
-	try5()
+	//try5()
+	try6()
 
 }
 
@@ -83,4 +84,8 @@ func try4() {
 // fan-out fan-in
 func try5() {
 	runFan()
+}
+
+func try6() {
+	runSel()
 }
