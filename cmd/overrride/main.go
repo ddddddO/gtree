@@ -7,10 +7,12 @@ import (
 func main() {
 	taro := animal.NewDog("TARO")
 	jiro := animal.NewDog("JIRO")
+	mya := animal.NewCat("Mya-mya-")
 
 	creatures := []animal.Creature{
 		taro,
 		jiro,
+		mya,
 	}
 
 	for _, c := range creatures {
