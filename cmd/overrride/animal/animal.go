@@ -18,6 +18,6 @@ func (a *Animal) Run() {
 	fmt.Println(a.Name + "is Run")
 }
 
-func (a *Animal) Voice() {
+func (a *Animal) Cry() {
 	fmt.Printf("%s, %s!\n", a.Voice, a.Voice)
 }
