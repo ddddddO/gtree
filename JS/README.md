@@ -1,6 +1,6 @@
 ## 参考
 https://note.mu/erukiti/n/n02217beab2ef
-SD３月号　P62~87 (P72半まで)
+SD３月号　P62~87 (P76まで)
 
 ## exec command
 node 'JSfile'
