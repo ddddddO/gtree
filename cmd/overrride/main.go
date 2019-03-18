@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"sync"
+
 	"github.com/ddddddO/work/cmd/overrride/animal"
 )
 
@@ -15,13 +18,19 @@ func main() {
 		mya,
 	}
 
+	wg := &sync.WaitGroup{}
 	for _, c := range creatures {
-		active(c)
+		wg.Add(1)
+		go active(c, wg)
 	}
+	wg.Wait()
 
+	fmt.Println("end")
 }
 
-func active(creature animal.Creature) {
+func active(creature animal.Creature, wg *sync.WaitGroup) {
+	defer wg.Done()
+
 	creature.Run()
 	creature.Cry()
 }
