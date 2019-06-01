@@ -24,3 +24,6 @@ http://blog.8arrow.org/entry/2015/06/11/101511
 ### エディタ  
 lem 未(ros install cxxxr/lem)  
 http://blog.8arrow.org/entry/2018/08/14/213428  
+
+## 逆引きCommon Lisp  
+https://lisphub.jp/common-lisp/cookbook/  
