@@ -20,3 +20,7 @@ https://qiita.com/t-sin/items/054c2ff315ec3b9d3bdc
 ### Lispファイル実行  
 ros -l hellolisp.lisp  
 http://blog.8arrow.org/entry/2015/06/11/101511  
+
+### エディタ  
+lem 未(ros install cxxxr/lem)  
+http://blog.8arrow.org/entry/2018/08/14/213428  
