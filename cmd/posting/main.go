@@ -86,61 +86,91 @@ func getSpreadSeetID(url string) (string, error) {
 }
 
 func main() {
-	//TODO NewFlagSetを使ってエラーハンドルとエラー時のhelp表示を行う
 	var (
 		spreadsheetURL      string
 		spreadsheetPageName string
 	)
 
-	flag.StringVar(&spreadsheetURL, "url", "", "please input spreadsheet url")
-	flag.StringVar(&spreadsheetPageName, "page", "", "please input spreadsheet page name")
-	flag.Parse()
+	// errorHandling ErrorHandling ..?
+	readFlgSet := flag.NewFlagSet("read", flag.ExitOnError)
+
+	readFlgSet.StringVar(&spreadsheetURL, "url", "", "please input spreadsheet url")
+	readFlgSet.StringVar(&spreadsheetPageName, "page", "", "please input spreadsheet page name")
+	readFlgSet.Usage = func() {
+		fmt.Println("read :for reading to google spread sheet")
+		fmt.Printf("  --%s: %s\n", readFlgSet.Lookup("url").Name, readFlgSet.Lookup("url").Usage)
+		fmt.Printf("  --%s: %s\n", readFlgSet.Lookup("page").Name, readFlgSet.Lookup("page").Usage)
+	}
+
+	if len(os.Args) == 1 {
+		readFlgSet.Usage()
+		os.Exit(1)
+	}
+
+	switch os.Args[1] {
+	case "read":
+		readFlgSet.Parse(os.Args[2:])
+		if err := RunRead(spreadsheetURL, spreadsheetPageName); err != nil {
+			fmt.Println(err)
+			fmt.Println()
+			readFlgSet.Usage()
+			os.Exit(1)
+		}
+
+	default:
+		readFlgSet.Usage()
+		os.Exit(1)
+	}
+
+}
+
+func RunRead(spreadsheetURL, spreadsheetPageName string) error {
+	log.Print("start read")
 
 	spreadsheetId, err := getSpreadSeetID(spreadsheetURL)
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return err
 	}
 
 	if len(spreadsheetPageName) == 0 {
-		fmt.Println("page name XXX")
-		os.Exit(1)
+		return errors.New("page XXX")
 	}
-
-	fmt.Println("strat!")
 
 	b, err := ioutil.ReadFile("credentials.json")
 	if err != nil {
-		log.Fatalf("Unable to read client secret file: %v", err)
+		return errors.Errorf("Unable to read client secret file: %v", err)
 	}
 
 	// If modifying these scopes, delete your previously saved token.json.
 	config, err := google.ConfigFromJSON(b, "https://www.googleapis.com/auth/spreadsheets.readonly")
 	if err != nil {
-		log.Fatalf("Unable to parse client secret file to config: %v", err)
+		return errors.Errorf("Unable to parse client secret file to config: %v", err)
 	}
 	client := getClient(config)
 
 	srv, err := sheets.New(client)
 	if err != nil {
-		log.Fatalf("Unable to retrieve Sheets client: %v", err)
+		return errors.Errorf("Unable to retrieve Sheets client: %v", err)
 	}
 
 	// TODO: 以下の読み込む幅指定＆読込処理は後で実装
 	readRange := spreadsheetPageName + "!A1:A"
 	resp, err := srv.Spreadsheets.Values.Get(spreadsheetId, readRange).Do()
 	if err != nil {
-		log.Fatalf("Unable to retrieve data from sheet: %v", err)
+		return errors.Errorf("Unable to retrieve data from sheet: %v", err)
 	}
 
 	if len(resp.Values) == 0 {
 		fmt.Println("No data found.")
 	} else {
-		fmt.Println("Name, Major:")
 		for _, row := range resp.Values {
 			// Print columns A and E, which correspond to indices 0 and 4.
 			//fmt.Printf("%s, %s\n", row[0], row[4])
 			fmt.Printf("%s, %s\n", row[0])
 		}
 	}
+
+	log.Print("end read")
+
+	return nil
 }
