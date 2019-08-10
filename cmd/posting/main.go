@@ -16,7 +16,7 @@ func main() {
 		spreadsheetPageName string
 	)
 
-	// errorHandling ErrorHandling ..?
+	// for read command
 	readFlgSet := flag.NewFlagSet("read", flag.ExitOnError)
 
 	readFlgSet.StringVar(&spreadsheetURL, "url", "", "please input spreadsheet url")
@@ -25,6 +25,16 @@ func main() {
 		fmt.Println("read :for reading to google spread sheet")
 		fmt.Printf("  --%s: %s\n", readFlgSet.Lookup("url").Name, readFlgSet.Lookup("url").Usage)
 		fmt.Printf("  --%s: %s\n", readFlgSet.Lookup("page").Name, readFlgSet.Lookup("page").Usage)
+	}
+
+	// for write command
+	writeFlgSet := flag.NewFlagSet("write", flag.ExitOnError)
+	writeFlgSet.StringVar(&spreadsheetURL, "url", "", "please input spreadsheet url")
+	writeFlgSet.StringVar(&spreadsheetPageName, "page", "", "please input spreadsheet page name")
+	writeFlgSet.Usage = func() {
+		fmt.Println("write :for writting to google spread sheet")
+		fmt.Printf("  --%s: %s\n", writeFlgSet.Lookup("url").Name, writeFlgSet.Lookup("url").Usage)
+		fmt.Printf("  --%s: %s\n", writeFlgSet.Lookup("page").Name, writeFlgSet.Lookup("page").Usage)
 	}
 
 	if len(os.Args) == 1 {
@@ -41,6 +51,11 @@ func main() {
 			readFlgSet.Usage()
 			os.Exit(1)
 		}
+
+	case "write":
+		writeFlgSet.Parse(os.Args[2:])
+		fmt.Println("write command")
+		writeFlgSet.Usage()
 
 	default:
 		readFlgSet.Usage()
