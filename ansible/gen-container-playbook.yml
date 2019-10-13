@@ -1,0 +1,23 @@
+---
+- name: Create container
+  hosts: localhost
+  tasks:
+    # https://tech-lab.sios.jp/archives/14355
+    - name: Create container
+      docker_container:
+        name: "{{ item.name }}" 
+        hostname: "{{ item.host }}"
+       #image: "イメージ名":"タグ"
+        image: ansios:v1
+        detach: yes
+        privileged: yes
+        ports:
+          - "{{ item.port }}"
+        command: /sbin/init
+      with_items:
+       #- { name: "コンテナ名", host: "ホスト名", port: "ローカルポート:22" }
+        - { name: "ansios-v1", host: "ansios-vi-0", port: "2222:22" }
+      register: create_docker_container_result
+    - name: print create_docker_container_result
+      debug:
+        msg: "{{ create_docker_container_result }}"
