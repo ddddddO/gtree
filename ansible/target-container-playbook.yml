@@ -18,4 +18,3 @@
        #groups: "グループ名",wheel
         groups: newgrp,wheel
         shell: /bin/bash
-        become: yes
