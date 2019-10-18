@@ -9,7 +9,7 @@
     - Python
     - Ansible(と以下設定ファイル(必須ではない))
         - Inventory(どのサーバーを管理するかの記載)
-        - ansible.cfg(ANsible全体の設定)
+        - ansible.cfg(Ansible全体の設定)
         - Playbook(メイン。管理されるサーバーに対してどういった構成にしたいかを記載)
 
 ## ドキュメント
