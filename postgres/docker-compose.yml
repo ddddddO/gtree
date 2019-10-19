@@ -6,6 +6,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/db/Dockerfile
+    ports:
+      - "15432:5432"
 
   app:
     build:
