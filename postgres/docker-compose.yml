@@ -15,6 +15,8 @@ services:
       dockerfile: Dockerfiles/app/sub/Dockerfile
     environment:
       - APP_NUMBER=1
+    env_file:
+      - pubsub.env
     depends_on:
       - "pgdb"
 
@@ -24,6 +26,8 @@ services:
       dockerfile: Dockerfiles/app/sub/Dockerfile
     environment:
       - APP_NUMBER=2
+    env_file:
+      - pubsub.env
     depends_on:
       - "pgdb"
 
@@ -31,6 +35,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/app/pub/Dockerfile
+    env_file:
+      - pubsub.env
     depends_on:
       - "pgdb"
       - "sub1"
