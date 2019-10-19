@@ -2,16 +2,14 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"log"
+	"time"
 
 	// https://godoc.org/github.com/jackc/pgx
 	"github.com/jackc/pgx/v4"
 )
 
 func main() {
-	fmt.Println("vim-go")
-
-	//DBDSN := "host=172.18.0.2 user=postgres port=5432"
 	DBDSN := "host=pgdb user=postgres port=5432"
 
 	// https://github.com/jackc/pgx#example-usage
@@ -25,6 +23,16 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	log.Println(rslt)
 
-	fmt.Println(rslt)
+	// app/subがLISTENするのを待つため...
+	time.Sleep(10 * time.Second)
+
+	notify := "NOTIFY testpubsub, 'nnnnnotify'"
+	log.Println(notify)
+
+	_, err = conn.Exec(context.Background(), notify)
+	if err != nil {
+		panic(err)
+	}
 }

@@ -2,16 +2,13 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"log"
 
 	// https://godoc.org/github.com/jackc/pgx
 	"github.com/jackc/pgx/v4"
 )
 
 func main() {
-	fmt.Println("vim-go")
-
-	//DBDSN := "host=172.18.0.2 user=postgres port=5432"
 	DBDSN := "host=pgdb user=postgres port=5432"
 
 	// https://github.com/jackc/pgx#example-usage
@@ -25,6 +22,30 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	log.Println(rslt)
 
-	fmt.Println(rslt)
+	listen := "LISTEN testpubsub"
+	log.Println(listen + " start")
+
+	// https://godoc.org/github.com/jackc/pgx#hdr-Listen_and_Notify
+	_, err = conn.Exec(context.Background(), listen)
+	if err != nil {
+		panic(err)
+	}
+
+	// err != nil の時に？ -> ではなかった
+	notification, err := conn.WaitForNotification(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println("catched notify!!")
+	log.Printf("-notification-\n%+v\n", notification)
+	// => &{PID:54 Channel:testpubsub Payload:nnnnnotify}
+
+	log.Println("--Channel--")
+	log.Println(notification.Channel)
+
+	log.Println("--Payload--")
+	log.Println(notification.Payload)
 }
