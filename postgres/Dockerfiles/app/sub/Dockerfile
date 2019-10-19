@@ -1,8 +1,8 @@
 FROM golang:1.13.2-alpine
 
-WORKDIR /pubsub
-COPY /app/pubsub /pubsub
-COPY /Dockerfiles/app/wait-for-it.sh /pubsub
+WORKDIR /sub
+COPY /app/sub /sub
+COPY /Dockerfiles/app/wait-for-it.sh /sub
 
 ENV GO111MODULE on
 

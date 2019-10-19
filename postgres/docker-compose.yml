@@ -9,9 +9,17 @@ services:
     ports:
       - "15432:5432"
 
-  app:
+  sub:
     build:
       context: .
-      dockerfile: Dockerfiles/app/Dockerfile
+      dockerfile: Dockerfiles/app/sub/Dockerfile
     depends_on:
       - "pgdb"
+
+  pub:
+    build:
+      context: .
+      dockerfile: Dockerfiles/app/pub/Dockerfile
+    depends_on:
+      - "pgdb"
+      - "sub"
