@@ -1,0 +1,15 @@
+# https://qiita.com/kai_kou/items/eaafa3cb15e1496f50ec
+version: '2'
+
+services:
+  pgdb:
+    build:
+      context: .
+      dockerfile: Dockerfiles/db/Dockerfile
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfiles/app/Dockerfile
+    depends_on:
+      - "pgdb"
