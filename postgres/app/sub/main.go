@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"log"
+	"os"
 
 	// https://godoc.org/github.com/jackc/pgx
 	"github.com/jackc/pgx/v4"
@@ -39,7 +40,7 @@ func main() {
 		panic(err)
 	}
 
-	log.Println("catched notify!!")
+	log.Println("catched notify!!" + " by " + os.Getenv("APP_NUMBER"))
 	log.Printf("-notification-\n%+v\n", notification)
 	// => &{PID:54 Channel:testpubsub Payload:nnnnnotify}
 
