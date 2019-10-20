@@ -4,14 +4,14 @@ version: '2'
 services:
   pgdb:
     build:
-      context: .
+      context: ../../../
       dockerfile: Dockerfiles/db/Dockerfile
     ports:
       - "15432:5432"
 
   sub1:
     build:
-      context: .
+      context: ../../../
       dockerfile: Dockerfiles/app/sub/Dockerfile
     environment:
       - APP_NUMBER=1
@@ -22,7 +22,7 @@ services:
 
   sub2:
     build:
-      context: .
+      context: ../../../
       dockerfile: Dockerfiles/app/sub/Dockerfile
     environment:
       - APP_NUMBER=2
@@ -33,7 +33,7 @@ services:
 
   pub:
     build:
-      context: .
+      context: ../../../
       dockerfile: Dockerfiles/app/pub/Dockerfile
     env_file:
       - pubsub.env

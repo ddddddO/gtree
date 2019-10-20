@@ -3,7 +3,7 @@
 set -ex
 
 function down() {
-	docker-compose down
+	docker-compose -f deployments/01_composes/pubsub/docker-compose.yml down
 }
 
 function cleanup() {
@@ -12,10 +12,5 @@ function cleanup() {
 	docker rmi postgres_sub2 -f
 }
 
-function up() {
-	docker-compose up
-}
-
 down
 cleanup
-up
