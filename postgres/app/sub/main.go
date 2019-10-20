@@ -10,10 +10,10 @@ import (
 )
 
 func main() {
-	DBDSN := "host=pgdb user=postgres port=5432"
+	//DBDSN := "host=pgdb user=postgres port=5432"
 
 	// https://github.com/jackc/pgx#example-usage
-	conn, err := pgx.Connect(context.Background(), DBDSN)
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DB_DSN"))
 	if err != nil {
 		panic(err)
 	}
