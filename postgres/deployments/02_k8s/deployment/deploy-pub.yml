@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ps-pub
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      sys: pub
+  template:
+    metadata:
+      labels:
+        sys: pub
+    spec:
+      containers:
+        - name: pub
+          image: pub
+          env:
+            - name: DB_DSN
+              value: host=ps-db-svc port=5432 user=postgres
+          imagePullPolicy: Never
+

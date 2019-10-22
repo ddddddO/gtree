@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ps-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      sys: db
+  template:
+    metadata:
+      labels:
+        sys: db
+    spec:
+      containers:
+        - name: db
+          image: db
+          imagePullPolicy: Never
+          # ports でdbコンテナのportをexposeしなくともいけた
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ps-db-svc
+spec:
+  selector:
+    sys: db
+  type: ClusterIP
+  ports:
+    - name: db-port
+      port: 5432
