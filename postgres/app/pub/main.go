@@ -44,9 +44,12 @@ func notify(conn *pgx.Conn) error {
 	notify := "NOTIFY testpubsub, 'nnnnnotify'"
 	log.Println(notify)
 
-	_, err := conn.Exec(context.Background(), notify)
-	if err != nil {
-		return err
+	for {
+		_, err := conn.Exec(context.Background(), notify)
+		if err != nil {
+			return err
+		}
+		time.Sleep(5 * time.Second)
 	}
 
 	return nil

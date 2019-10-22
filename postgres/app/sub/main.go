@@ -34,19 +34,22 @@ func main() {
 		panic(err)
 	}
 
-	// err != nil の時に？ -> ではなかった
-	notification, err := conn.WaitForNotification(context.Background())
-	if err != nil {
-		panic(err)
+	log.Println("endless...")
+	for {
+		// err != nil の時に？ -> ではなかった
+		notification, err := conn.WaitForNotification(context.Background())
+		if err != nil {
+			panic(err)
+		}
+
+		log.Println("catched notify!!" + " by " + os.Getenv("APP_NUMBER"))
+		log.Printf("-notification-\n%+v\n", notification)
+		// => &{PID:54 Channel:testpubsub Payload:nnnnnotify}
+
+		log.Println("--Channel--")
+		log.Println(notification.Channel)
+
+		log.Println("--Payload--")
+		log.Println(notification.Payload)
 	}
-
-	log.Println("catched notify!!" + " by " + os.Getenv("APP_NUMBER"))
-	log.Printf("-notification-\n%+v\n", notification)
-	// => &{PID:54 Channel:testpubsub Payload:nnnnnotify}
-
-	log.Println("--Channel--")
-	log.Println(notification.Channel)
-
-	log.Println("--Payload--")
-	log.Println(notification.Payload)
 }
