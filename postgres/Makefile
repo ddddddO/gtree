@@ -15,3 +15,4 @@ pubsubbuild:
 	docker build -t pub -f Dockerfiles/app/pub/Dockerfile .
 	docker build -t sub -f Dockerfiles/app/sub/Dockerfile .
 	docker build -t db -f Dockerfiles/db/Dockerfile .
+	docker image prune -f
