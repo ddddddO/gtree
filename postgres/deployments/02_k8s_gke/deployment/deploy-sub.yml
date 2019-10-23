@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ps-sub
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      sys: sub
+  template:
+    metadata:
+      labels:
+        sys: sub
+    spec:
+      containers:
+        - name: sub
+          image: asia.gcr.io/work1111/sub
+          env:
+            - name: DB_DSN
+              value: host=ps-db-svc port=5432 user=postgres

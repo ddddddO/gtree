@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pubsubsys
+spec:
+  # Podのcontainers起動前に実行
+  # https://cstoku.dev/posts/2018/k8sdojo-06/
+  #initContainers:
+
+  containers:
+    - name: db
+      image: asia.gcr.io/work1111/db
+
+    - name: sub
+      image: asia.gcr.io/work1111/sub
+      env:
+        # 同一Pod内の各コンテナは同一のネットワーク(localhostで通信可)
+        # https://kubernetes.io/ja/docs/concepts/workloads/pods/pod-overview/#%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AD%E3%83%B3%E3%82%B0
+        - name: DB_DSN
+          value: host=localhost port=5432 user=postgres
+
+    - name: pub
+      image: asia.gcr.io/work1111/pub
+      env:
+        - name: DB_DSN
+          value: host=localhost port=5432 user=postgres
