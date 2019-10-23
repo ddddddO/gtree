@@ -16,3 +16,13 @@ pubsubbuild:
 	docker build -t sub -f Dockerfiles/app/sub/Dockerfile .
 	docker build -t db -f Dockerfiles/db/Dockerfile .
 	docker image prune -f
+
+pubsubbuildgke: pubsubbuild
+	docker tag pub asia.gcr.io/work1111/pub
+	docker tag sub asia.gcr.io/work1111/sub
+	docker tag db asia.gcr.io/work1111/db
+
+pubsubpush:
+	docker push asia.gcr.io/work1111/pub
+	docker push asia.gcr.io/work1111/sub
+	docker push asia.gcr.io/work1111/db
