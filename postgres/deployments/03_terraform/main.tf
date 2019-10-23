@@ -8,7 +8,7 @@ provider "google" {
 }
 
 resource "google_container_cluster" "primary" {
-  name     = "gle-pubsub-cluster"
+  name     = "gke-pubsub-cluster"
   location = "us-central1"
 
   # We can't create a cluster with no node pool defined, but we want to only use
