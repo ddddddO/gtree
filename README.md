@@ -93,11 +93,11 @@ CURRENT   NAME                                          CLUSTER                 
 ##### 確認手順
 - [x] 永続化前
     1. 永続化前のdeploy-svc-db.ymlをデプロイして、`INSERT INTO tags (name, users_id) VALUES ('kube-pd-test', 2);` を実行
-    2. `kubectl delete deploy ps-db` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**消えていること**
+    2. `kubectl delete pod <DBのPod>` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**消えていること**
 
 - [ ] 永続化後
     1. 永続化後のdeploy-svc-db.ymlをデプロイして、`INSERT INTO tags (name, users_id) VALUES ('kube-pd-test', 2);` を実行
-    2. `kubectl delete deploy ps-db` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**残っていること**
+    2. `kubectl delete pod <DBのPod>` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**残っていること**
 
 
 ###### ちょっとメモ
