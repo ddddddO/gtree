@@ -50,7 +50,7 @@ Error: googleapi: Error 403: Kubernetes Engine API has not been used in project 
         - `gcloud config set compute/zone us-central1` (ここの指定、regionでないと、後続のコマンドでエラーになったけど。。)
 - kubectl config get-contexts →　この時点でも、まだなにもない
 - `gcloud container clusters get-credentials [CLUSTER_NAME]`
-    - `gcloud container clusters get-credentials  gle-pubsub-cluster`
+    - `gcloud container clusters get-credentials  gke-pubsub-cluster`
 - kubectl config get-contexts →　gkeのコンテキストが設定されたことを確認
 ```
 CURRENT   NAME                                          CLUSTER                                       AUTHINFO                                      NAMESPACE
@@ -71,15 +71,54 @@ CURRENT   NAME                                          CLUSTER                 
 - イメージをgcrにpushして、マニフェストも書き換えてデプロイしたけど、エラー(ImagePullBackOff)
     - `kubectl describe po pubsubsys` で確認したところ、権限ないよと言われているよう。
         - https://cloud.google.com/container-registry/docs/advanced-authentication　見なさい、と
+            - 上記リンクの最後のリンク先に、ぽいことが記載されている(要はノードからプライベートなgcrへのアクセス権が無いよ、と)
+                - https://cloud.google.com/container-registry/docs/using-with-google-cloud-platform　の「Google Kubernetes Engine クラスタにスコープを設定する」
+                    - terraform設定ファイルに、以下設定を記載し、terraform apply
+                        - https://www.terraform.io/docs/providers/google/r/container_cluster.html#oauth_scopes
+                            - kubectl apply で、プライベートgcrからpull成功
 
+#### Pod/ReplicaSet/Deploymentの動作チェック
+- [x] 02_k8s_gke/pod-pubsub.yml
+- [x] 02_k8s_gke/rs-pubsub.yml
+- [x] 02_k8s_gke/deployment
+    - `kubectl logs <sub Pod> - f` で確認すると、pub２台分のNotifyを確認
+
+#### TODO: DBの永続化をする
+- 永続ディスクをterraformで作成
+- 作成した永続ディスクとk8sのpvオブジェクトと紐づけ兼pvとpvcの作成
+- DBデプロイメントとpvcの紐づけ
+- デプロイ
+をやる。
+
+##### 確認手順
+- [x] 永続化前
+    1. 永続化前のdeploy-svc-db.ymlをデプロイして、`INSERT INTO tags (name, users_id) VALUES ('kube-pd-test', 2);` を実行
+    2. `kubectl delete deploy ps-db` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**消えていること**
+
+- [ ] 永続化後
+    1. 永続化後のdeploy-svc-db.ymlをデプロイして、`INSERT INTO tags (name, users_id) VALUES ('kube-pd-test', 2);` を実行
+    2. `kubectl delete deploy ps-db` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**残っていること**
+
+
+###### ちょっとメモ
+1. kubectl apply -f <DBのdeployment>
+2. kubectl delete <DBの`Pod`>
+3. kubectl get po で以下
+```
+NAME                      READY   STATUS        RESTARTS   AGE
+ps-db-7bbfd8f56-4b9ln     1/1     Running       0          22s
+ps-db-7bbfd8f56-v76qh     1/1     Terminating   0          38m ←しばらくすると消える
+```
+
+---
 - TODO: **ここから続き**
-    - [ ] ノードからpullを成功させる
-    - [ ] 一通りのマニフェストの動作チェック
-    - [ ] DB永続化
     - [ ] skaffold
     - [ ] kustamize
 
-- 後処理
-    - terraform destroy
-        - node-poolの削除に3m30s
-        - cluster の削除に4m
+
+---
+
+### 後処理
+- `terraform destroy`
+    - node-poolの削除に3m30s
+    - cluster の削除に4m
