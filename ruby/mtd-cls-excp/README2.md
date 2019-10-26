@@ -225,7 +225,7 @@ Music.decode
 ```ruby
 #! /usr/bin/env ruby
 module Debug
-  def info
+  def info  # selfつけてはダメ
     puts "#{self.class} debug info"
   end
 end
