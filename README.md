@@ -112,8 +112,16 @@ ps-db-7bbfd8f56-v76qh     1/1     Terminating   0          38m ←しばらく�
 
 ---
 - TODO: **ここから続き**
+    - [ ] 各種k8sオブジェクトの作成
+        - [ ] StatefullSet
+        - [ ] Job
+        - [ ] CronJob
+    - [ ] Namespace
+    - [ ] Label/Selector
+    - [ ] Annotation
     - [ ] skaffold
     - [ ] kustamize
+    - [ ] GKEのネットワーク設計的な
 
 
 ---
