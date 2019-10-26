@@ -378,7 +378,7 @@ end
 
 
 ### メソッド・クラス・モジュール・mixin・例外
-- mtd-cls-excp/README.md 参照
+- mtd-cls-excp/README*.md 参照
 
 ## Tips
 
