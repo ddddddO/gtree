@@ -182,7 +182,12 @@ end
 
 matuda = Musician.new("MATUDA")
 matuda.greetPrivate
+puts
+matuda.greet  # 出力から、スーパークラスのメソッド内で呼ばれるgreetPrivateは、オーバーライドされたものとわかる。
 
+# Iam Musician.Hello!(private)
+#
+# Hello!
 # Iam Musician.Hello!(private)
 ```
 
