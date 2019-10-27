@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: database
+  labels:
+    volume: ps-db # pvcで指定するために設定
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain # pvcが削除された場合でも、永続ボリュームを削除させない
+  storageClassName: db
+  gcePersistentDisk:
+    pdName: db-disk
+    fsType: ext4
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: db
+  resources:
+    requests:
+      storage: 10Gi
+  selector:
+    matchLabels:
+      volume: ps-db # DBのpvを指定

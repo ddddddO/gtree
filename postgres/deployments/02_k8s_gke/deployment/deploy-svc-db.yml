@@ -16,7 +16,16 @@ spec:
         - name: db
           image: asia.gcr.io/work1111/db
           # ports でdbコンテナのportをexposeしなくともいけた
-
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: db-volume
+      volumes:
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: database
 ---
 apiVersion: v1
 kind: Service

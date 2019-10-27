@@ -51,6 +51,7 @@ Error: googleapi: Error 403: Kubernetes Engine API has not been used in project 
 - kubectl config get-contexts →　この時点でも、まだなにもない
 - `gcloud container clusters get-credentials [CLUSTER_NAME]`
     - `gcloud container clusters get-credentials  gke-pubsub-cluster`
+        - (また、例えば、PC再起動した後で、コンテキストが設定されていても、上記コマンド実行しないとダメ(kubectl効かない)っぽい?)
 - kubectl config get-contexts →　gkeのコンテキストが設定されたことを確認
 ```
 CURRENT   NAME                                          CLUSTER                                       AUTHINFO                                      NAMESPACE
@@ -84,8 +85,12 @@ CURRENT   NAME                                          CLUSTER                 
     - `kubectl logs <sub Pod> - f` で確認すると、pub２台分のNotifyを確認
 
 #### TODO: DBの永続化をする
+https://tkzo.jp/blog/use-persistent-volumes-in-gke/ の内容を踏襲する。
+
 - 永続ディスクをterraformで作成
+  - 一旦、GCPコンソールから作成する。
 - 作成した永続ディスクとk8sのpvオブジェクトと紐づけ兼pvとpvcの作成
+    - まず、PersistentVolumeClaim を作成する。
 - DBデプロイメントとpvcの紐づけ
 - デプロイ
 をやる。
@@ -99,6 +104,24 @@ CURRENT   NAME                                          CLUSTER                 
     1. 永続化後のdeploy-svc-db.ymlをデプロイして、`INSERT INTO tags (name, users_id) VALUES ('kube-pd-test', 2);` を実行
     2. `kubectl delete pod <DBのPod>` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**残っていること**
 
+- 以下、DB永続化作業ログ
+    - https://tkzo.jp/blog/use-persistent-volumes-in-gke/ と同様の手順でk8sオブジェクトを作成(マウントパスは、postgresqlデータがデフォルトで格納される`/var/lib/postgresql/data`)し、デプロイしたがDBコンテナで以下エラー
+```
+initdb: error: directory "/var/lib/postgresql/data" exists but is not empty
+It contains a lost+found directory, perhaps due to it being a mount point.
+Using a mount point directly as the data directory is not recommended.
+Create a subdirectory under the mount point.
+```
+
+- 以下を参考に、マニフェストファイルを書き換え、デプロイ
+    - https://stackoverflow.com/questions/51168558/how-to-mount-a-postgresql-volume-using-aws-ebs-in-kubernete/51174380
+    - https://hub.docker.com/_/postgres　「PGDATA」
+        - dbマニフェストで、PGDATA: `/var/lib/postgresql/data/pgdata` を設定
+        - (DBのPodはRunningし始めた。が、変更したpostgresのデータ格納先とマウント先が異なるので、Pod削除したら、データ保存されないのでは？)
+- とりあえず、起動したDBコンテナに入り、永続化検証
+  - 上記の「永続化後」の内容を実行する
+  - 永続化が成功していた！
+    - マウントパスとpostgresqlのデータ格納先の階層が異なること(データ格納先の方が一つ下の階層)が要因か？
 
 ###### ちょっとメモ
 1. kubectl apply -f <DBのdeployment>
