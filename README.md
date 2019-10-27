@@ -100,7 +100,7 @@ https://tkzo.jp/blog/use-persistent-volumes-in-gke/ の内容を踏襲する。
     1. 永続化前のdeploy-svc-db.ymlをデプロイして、`INSERT INTO tags (name, users_id) VALUES ('kube-pd-test', 2);` を実行
     2. `kubectl delete pod <DBのPod>` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**消えていること**
 
-- [ ] 永続化後
+- [x] 永続化後
     1. 永続化後のdeploy-svc-db.ymlをデプロイして、`INSERT INTO tags (name, users_id) VALUES ('kube-pd-test', 2);` を実行
     2. `kubectl delete pod <DBのPod>` で殺したあと、復活するPod内で`SELECT * FROM tags WHERE users_id = 2;` で、1.でInsertしたタグが**残っていること**
 
@@ -121,7 +121,19 @@ Create a subdirectory under the mount point.
 - とりあえず、起動したDBコンテナに入り、永続化検証
   - 上記の「永続化後」の内容を実行する
   - 永続化が成功していた！
-    - マウントパスとpostgresqlのデータ格納先の階層が異なること(データ格納先の方が一つ下の階層)が要因か？
+    - `マウントパスとpostgresqlのデータ格納先の階層が異なること(データ格納先の方が一つ下の階層)が要因か？`
+- ReplicaSetを削除した場合は？
+    - データは残っていた
+- Deployment削除後、再度applyで残っていれば、永続化自体はOK、と思われる
+    - データの確認はできた。永続化成功。
+- `PersistentVolume`オブジェクトで、pvcが削除された場合に永続ボリュームが削除されない設定(`persistentVolumeReclaimPolicy: Retain`)が効いているか確認する
+    - DBのdeployment及び、pv/pvcを削除し、それらを再デプロイする。
+        - データ(`kube-pd-test`) を確認、これにてDone
+---
+- 関連メモ
+    - `persistentVolumeReclaimPolicy: Delete`(PVCが削除された際に永続ディスクを削除)を設定した場合に、DBのdeployment及び、pv/pvcを削除し、それらを再デプロイした時どうなるか？
+        - DBのdeployment及び、pv/pvcを削除し -> `GCPコンソールの「ディスク」から消えた`
+        - 一旦ここまでで終了する
 
 ###### ちょっとメモ
 1. kubectl apply -f <DBのdeployment>

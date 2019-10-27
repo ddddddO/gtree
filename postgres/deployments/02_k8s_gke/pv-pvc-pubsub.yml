@@ -10,6 +10,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain # pvcが削除された場合でも、永続ボリュームを削除させない
+  #persistentVolumeReclaimPolicy: Delete # pvcが削除された場合、永続ボリューム(ディスク事)削除する
   storageClassName: db
   gcePersistentDisk:
     pdName: db-disk
