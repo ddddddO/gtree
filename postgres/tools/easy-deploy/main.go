@@ -97,7 +97,7 @@ func createDeployment(client *kubernetes.Clientset) error {
 }
 
 func convertYAMLtoStruct() (*appsv1.Deployment, error) {
-	deploymentFile, err := os.Open("../../deployments/02_k8s_gke/deployment/deploy-sub.yml")
+	deploymentFile, err := os.Open("../../deployments/02_k8s_gke/deployment/03-deploy-sub.yml")
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}

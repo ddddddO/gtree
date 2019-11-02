@@ -3,6 +3,7 @@ module github.com/ddddddO/work/postgres/tools/easy-deploy
 go 1.13
 
 require (
+	github.com/ghodss/yaml v0.0.0-20150909031657-73d445a93680
 	github.com/imdario/mergo v0.3.8 // indirect
 	github.com/pkg/errors v0.8.1
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45 // indirect
