@@ -147,10 +147,17 @@ ps-db-7bbfd8f56-v76qh     1/1     Terminating   0          38m ←しばらく�
 
 ---
 - TODO: **ここから続き**
+    - [ ] READEMREを綺麗にしたい(環境構築・検証でごっちゃになってるから分割したい気もする。)
+        - 分割単位は、terraform/k8s検証/ツール記事とか
+    - [ ] 作図系
+        - ツール紹介 https://gist.github.com/hashrock/208b84c61558663e40bb
+        - GCPイメージ図 https://cloud.google.com/icons/?hl=ja
     - [ ] 各種k8sオブジェクトの作成
         - [ ] StatefullSet
         - [ ] Job
         - [ ] CronJob
+    - [ ] クラスタ・リソース監視
+    - [ ] ログ
     - [ ] Namespace
     - [ ] Label/Selector
     - [ ] Annotation
