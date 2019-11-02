@@ -78,6 +78,7 @@ func getPods(client *kubernetes.Clientset) error {
 // https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go
 // クラスタにDeploymentをデプロイする
 func createDeployment(client *kubernetes.Clientset) error {
+	// https://godoc.org/k8s.io/client-go/kubernetes/typed/apps/v1
 	deploymentClient := client.AppsV1().Deployments(apiv1.NamespaceDefault)
 
 	// subのdeployment
