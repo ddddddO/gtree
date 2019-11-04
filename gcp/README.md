@@ -18,8 +18,8 @@ OS ログインに移行することにより、鍵転送回数を大幅に改�
 (ICMP許可ルール追加前は`100% packet loss`。また、**ルール追加後にVMの削除/再起動も不要だった。**)
 
 - [ ] terraformで上記の構成を作成する。
-    - 上記の構成を手動で作成できるか不安なので答え用として`terraformar`でtfファイルを作成する(https://qiita.com/andromeda/items/fda67a65bbb56f21e6bd)
-        - `terraformer import google --resources=networks,firewalls,instances --regions=asia-east1 --projects=work1111` 実行前の準備
+    - 上記の構成を手動で作成できるか不安なので答え用として`terraformer`でtfファイルを作成する(https://qiita.com/andromeda/items/fda67a65bbb56f21e6bd)
+        - `terraformer import google --resources=networks,firewalls,instances,subnetworks --regions=asia-east1 --projects=work1111` 実行前の準備
             - `export GOOGLE_APPLICATION_CREDENTIALS=/mnt/c/Users/lbfde/Downloads/work-0a0225cca708.json`
             - `cp /usr/bin/terraform-provider-google_v2.17.0_x4 ~/.terraform.d/plugins/linux_amd64/`
         - `work/gcp/terraform/vpc-by-terraformer` 以下に`generated`ディレクトリの作成を確認。
@@ -41,10 +41,17 @@ generated/
         │       ├── outputs.tf
         │       ├── provider.tf
         │       └── terraform.tfstate
-        └── networks
+        ├── networks
+        │   └── asia-east1
+        │       ├── compute_network.tf
+        │       ├── outputs.tf
+        │       ├── provider.tf
+        │       └── terraform.tfstate
+        └── subnetworks
             └── asia-east1
-                ├── compute_network.tf
+                ├── compute_subnetwork.tf
                 ├── outputs.tf
                 ├── provider.tf
                 └── terraform.tfstate
 ```
+- GCPコンソール上から作成したリソースを削除し、生成された各networks,subnetworks,firewalls,instancesディレクト配下で`terraform init` -> `terraform apply` で、リソース作成ができたことを確認。しかし、instancesのみ、`Error: migration error: found metadata key in unexpected format: metadata.%` で作成できず。
