@@ -18,3 +18,33 @@ OS ログインに移行することにより、鍵転送回数を大幅に改�
 (ICMP許可ルール追加前は`100% packet loss`。また、**ルール追加後にVMの削除/再起動も不要だった。**)
 
 - [ ] terraformで上記の構成を作成する。
+    - 上記の構成を手動で作成できるか不安なので答え用として`terraformar`でtfファイルを作成する(https://qiita.com/andromeda/items/fda67a65bbb56f21e6bd)
+        - `terraformer import google --resources=networks,firewalls,instances --regions=asia-east1 --projects=work1111` 実行前の準備
+            - `export GOOGLE_APPLICATION_CREDENTIALS=/mnt/c/Users/lbfde/Downloads/work-0a0225cca708.json`
+            - `cp /usr/bin/terraform-provider-google_v2.17.0_x4 ~/.terraform.d/plugins/linux_amd64/`
+        - `work/gcp/terraform/vpc-by-terraformer` 以下に`generated`ディレクトリの作成を確認。
+```
+20:07:22 > tree generated/
+generated/
+└── google
+    └── work1111
+        ├── firewalls
+        │   └── asia-east1
+        │       ├── compute_firewall.tf
+        │       ├── outputs.tf
+        │       ├── provider.tf
+        │       ├── terraform.tfstate
+        │       └── variables.tf
+        ├── instances
+        │   └── asia-east1
+        │       ├── compute_instance.tf
+        │       ├── outputs.tf
+        │       ├── provider.tf
+        │       └── terraform.tfstate
+        └── networks
+            └── asia-east1
+                ├── compute_network.tf
+                ├── outputs.tf
+                ├── provider.tf
+                └── terraform.tfstate
+```
