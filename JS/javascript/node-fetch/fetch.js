@@ -6,10 +6,18 @@ const fetch = require('node-fetch')
 
 const url = 'http://localhost:8081/fetch';
 
-fetch(url) 
-  .then(function(resp) {
-    return resp.json();
-  })
-  .then(function(myJ) {
-    console.log(JSON.stringify(myJ));
-  });
+async function fetchData() {
+  let rslt = await fetch(url) 
+    .then(function(resp) {
+      let tmp = resp.json();
+      console.log(tmp);
+      return tmp;
+    })
+    .then(function(myJ) {
+      return JSON.stringify(myJ);
+    });
+
+  console.log(rslt);
+}
+
+fetchData();
