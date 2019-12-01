@@ -10,14 +10,24 @@ async function fetchData() {
   let rslt = await fetch(url) 
     .then(function(resp) {
       let tmp = resp.json();
-      console.log(tmp);
+      // console.log(tmp);
       return tmp;
     })
     .then(function(myJ) {
       return JSON.stringify(myJ);
     });
 
-  console.log(rslt);
+
+  parseJSON(rslt);
+}
+
+function parseJSON(json) {
+  let parsed = JSON.parse(json)
+
+  // 以下でJSONキーの配列取得
+  console.log(Object.keys(parsed))
+  // 以下でJSON値の配列取得
+  console.log(Object.values(parsed))
 }
 
 fetchData();
