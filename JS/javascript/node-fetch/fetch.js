@@ -7,7 +7,7 @@ const fetch = require('node-fetch')
 const url = 'http://localhost:8081/fetch';
 
 async function fetchData() {
-  let rslt = await fetch(url) 
+  const rslt = await fetch(url) 
     .then(function(resp) {
       let tmp = resp.json();
       // console.log(tmp);
@@ -22,7 +22,7 @@ async function fetchData() {
 }
 
 function parseJSON(json) {
-  let parsed = JSON.parse(json)
+  const parsed = JSON.parse(json)
 
   // 以下でJSONキーの配列取得
   console.log(Object.keys(parsed))
