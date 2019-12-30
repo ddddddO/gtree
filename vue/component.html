@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <hello-component></hello-component>
+        <hello-component></hello-component>
+        <hello-component></hello-component>
+    </div>
+
+    <script>
+        Vue.component('hello-component', {
+            template: '<p>Hello by component</p>'
+        })
+
+        var app = new Vue({
+            el: '#app',
+        })
+    </script>
+</body>
+
+</html>
