@@ -1,0 +1,43 @@
+<html>
+
+<!--https://jsfiddle.net/ -->
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>
+            <input type="text" v-model="msg">
+        </p>
+        <p>
+            {{ msg }}
+        </p>
+        <p>
+            <input type="text">
+        </p>
+        <p>
+            {{ msg2 }}
+        </p>
+        <p>
+            I'm {{ user.name }}. {{ user.age }}. My favorite coler is {{ colors[0] }}.
+        </p>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                msg: 'aaaaa',
+                msg2: '22222',
+                user: {
+                    name: 'ddd',
+                    age: 27
+                },
+                colors: ['red', 'black']
+            }
+        })
+    </script>
+</body>
+
+</html>
