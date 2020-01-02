@@ -7,6 +7,7 @@ import (
 
 	pb "github.com/ddddddO/work/grpc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 type server struct{}
@@ -24,8 +25,16 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+	cred, err := credentials.NewServerTLSFromFile(
+		"../data/server.crt",
+		"../data/private.key",
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	s := grpc.NewServer()
+	//s := grpc.NewServer()
+	s := grpc.NewServer(grpc.Creds(cred))
 	pb.RegisterGreeterServer(s, &server{})
 
 	log.Printf("gRPC server listening on " + addr)

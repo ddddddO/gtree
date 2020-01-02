@@ -7,11 +7,24 @@ import (
 
 	pb "github.com/ddddddO/work/grpc"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
 func main() {
 	addr := "localhost:50051"
-	conn, err := grpc.Dial(addr, grpc.WithInsecure())
+	cred, err := credentials.NewClientTLSFromFile(
+		"../data/server.crt",
+		"",
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//conn, err := grpc.Dial(addr, grpc.WithInsecure())
+	conn, err := grpc.Dial(
+		addr,
+		grpc.WithTransportCredentials(cred),
+	)
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
