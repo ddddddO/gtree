@@ -1,0 +1,13 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    mecab (0.996)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mecab
+
+BUNDLED WITH
+   2.0.1
