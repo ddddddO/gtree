@@ -14,7 +14,7 @@ test1: $(DIR)/c.txt test1-alt
 		echo 'test1 exec'; \
 	done
 
-./a/b/c.txt:
+$(DIR)/c.txt:
 	@echo 'Hello!' # @付与でmake実行時、実行コマンド非表示
 
 test1-alt:
