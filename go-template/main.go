@@ -51,6 +51,37 @@ func main() {
 		}
 	})
 
+	http.HandleFunc("/b", renderThirdHTML)
+
 	log.Println("server lanched")
 	http.ListenAndServe(":8080", nil)
+}
+
+type ThirdData struct {
+	Title string
+	Todos []Todo
+}
+
+type Todo struct {
+	Title       string
+	Description string
+	IsDone      bool
+}
+
+var thirdTmpl = template.Must(template.ParseFiles("layouts/third.html"))
+
+func renderThirdHTML(w http.ResponseWriter, _ *http.Request) {
+	data := ThirdData{
+		Title: "Third html redered!",
+		Todos: []Todo{
+			Todo{Title: "refacter working process", Description: "その名の通り", IsDone: false},
+			Todo{Title: "棚卸", Description: "...", IsDone: false},
+			Todo{Title: "hobby", Description: "hobby", IsDone: true},
+		},
+	}
+
+	err := thirdTmpl.Execute(w, data)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 }

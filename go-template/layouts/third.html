@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>  
+    <title>{{.Title}}</title>
+  </head>
+  <body>
+    <ul>
+      {{range .Todos}}
+        {{if .IsDone}}
+          <li>{{.Title}}</li>
+        {{else}}
+          <li>{{.Title}}</li>
+          <p>{{.Description}}</p>
+        {{end}}
+      {{end}}
+    </ul>
+  </body>
+</html>
