@@ -6,7 +6,13 @@ import (
 	"net/http"
 )
 
-var base = `
+type RenderData struct {
+	Title       string
+	Description string
+}
+
+func main() {
+	var base = `
 <html>
 <head>
   <title>{{.Title}}</title>
@@ -18,20 +24,29 @@ var base = `
 </html>
 `
 
-type RenderData struct {
-	Title       string
-	Description string
-}
-
-func main() {
 	tmpl := template.Must(template.New("tmpl").Parse(base))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
 		data := RenderData{
 			Title:       "Hello World!",
 			Description: "training go template",
 		}
 
 		if err := tmpl.Execute(w, data); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+		}
+	})
+
+	layoutTmpl := template.Must(template.ParseFiles("layouts/index.html"))
+	http.HandleFunc("/a", func(w http.ResponseWriter, _ *http.Request) {
+		err := layoutTmpl.Execute(w,
+			struct {
+				Text string
+			}{
+				Text: "file path pattern",
+			},
+		)
+
+		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 		}
 	})
