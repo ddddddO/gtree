@@ -1,4 +1,5 @@
 package main
+//ref https://gowebexamples.com/templates/
 
 import (
 	"html/template"
