@@ -11,7 +11,7 @@ https://gowebexamples.com/
 - [x] Forms
 - [x] Middleware (Basic) <- sessions で実装
 - [ ] Middleware (Advanced)
-- [ ] Sessions
+- [x] Sessions
 - [ ] JSON
 - [ ] Websockets
 - [ ] Password Hashing
