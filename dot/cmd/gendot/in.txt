@@ -1,0 +1,2 @@
+node: A, B, C, D
+edge: [A,B], [B,C], [C,D], [D,A]

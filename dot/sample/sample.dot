@@ -1,0 +1,14 @@
+graph sample {
+    graph [
+        layout = fdp
+    ];
+
+    // node
+    A, B, C, D;
+
+    // edge
+    A -- B;
+    B -- C;
+    C -- D;
+    D -- A;
+}
