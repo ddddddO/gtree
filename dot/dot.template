@@ -9,7 +9,7 @@ graph {{.Name}} {
 
     // node
     {{range $i, $node := .Nodes}}
-        {{if eq $i 3}}
+        {{if eq $i 798}}
             {{$node}};
         {{- else}}
             {{$node}},
@@ -17,9 +17,17 @@ graph {{.Name}} {
     {{- end}}
 
     // edge
-    {{range $j, $edge := .Edges}}
-        {{$src := index $edge 0}}
-        {{$dst := index $edge 1}}
-        {{$src}} -- {{$dst}};
+    {{if .IsDigraph}}
+        {{range $j, $edge := .Edges}}
+            {{$src := index $edge 0}}
+            {{$dst := index $edge 1}}
+            {{$src}} -> {{$dst}};
+        {{- end}}
+    {{- else}}
+        {{range $j, $edge := .Edges}}
+            {{$src := index $edge 0}}
+            {{$dst := index $edge 1}}
+            {{$src}} -- {{$dst}};
+        {{- end}}
     {{- end}}
 }
