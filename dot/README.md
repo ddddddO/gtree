@@ -11,3 +11,22 @@
 
 - 「Go + WebAssembly に入門して Dockerfile の依存グラフを図にしてくれるサービスを作ったので、知見とハマりポイントを共有します。」[https://qiita.com/po3rin/items/b964ad8c655c648e65ff]
 - go の dot ライブラリ[https://godoc.org/github.com/gonum/graph/encoding/dot]
+
+- livedoor のまとめランキングの個々のスレッドは、大体以下で抜けそう
+
+```
+.article-body-more
+.article-body-more
+.article-body-more
+.article-body-more
+.article-body-more
+.article-body-more
+.article-body-more
+.article-body-more
+.article-body-more
+.article-body
+.article-body
+#articlebody
+.entrybody
+.more_body
+```
