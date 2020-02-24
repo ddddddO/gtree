@@ -9,16 +9,22 @@ import (
 
 func main() {
 	var isDigraph bool
-	flag.BoolVar(&isDigraph, "digraph", false, "有効グラフの場合は'digraph'を指定する")
+	flag.BoolVar(&isDigraph, "digraph", false, "有向グラフの場合は'digraph'を指定する")
 	flag.Parse()
 
-	generator := dot.NewDotGenerator(
+	g := dot.NewGraph(
+		"test",
 		isDigraph,
-		"dumy/path/xxx.dot",
+		[]string{"A", "B", "C", "D"},
+		[][]string{
+			[]string{"A", "B"},
+			[]string{"B", "C"},
+			[]string{"C", "D"},
+			[]string{"D", "A"},
+		},
 	)
 
-	err := dot.Run(generator)
-	if err != nil {
+	if err := dot.Gen(g); err != nil {
 		log.Fatal(err)
 	}
 }

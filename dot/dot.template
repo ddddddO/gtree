@@ -1,0 +1,25 @@
+{{if .IsDigraph}}
+digraph {{.Name}} {
+{{- else}}
+graph {{.Name}} {
+{{- end}}
+    graph [
+        layout = fdp
+    ];
+
+    // node
+    {{range $i, $node := .Nodes}}
+        {{if eq $i 3}}
+            {{$node}};
+        {{- else}}
+            {{$node}},
+        {{- end}}
+    {{- end}}
+
+    // edge
+    {{range $j, $edge := .Edges}}
+        {{$src := index $edge 0}}
+        {{$dst := index $edge 1}}
+        {{$src}} -- {{$dst}};
+    {{- end}}
+}
