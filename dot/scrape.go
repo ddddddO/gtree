@@ -32,6 +32,13 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 		edges  [][]string
 		parent string
 	)
+
+	// 一番親ノード
+	nodes = append(nodes, Node{
+		Title: quote("livedoor"),
+		Url:   quoteUrl(livedoor),
+	})
+
 	// ul内のli要素(100) * a要素(3)だけ繰り返す
 	liSel.EachWithBreak(func(i int, sel *gq.Selection) bool {
 		if (i % 4) == 0 {
@@ -43,22 +50,18 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 		// 個々の大元のまとめ
 		if len(title) == 0 {
 			parent = sel.Text()
-			nodes = append(nodes,
-				Node{
-					Title: quote(parent),
-					Url:   quoteUrl(href),
-				},
-			)
+			nodes = append(nodes, Node{
+				Title: quote(parent),
+				Url:   quoteUrl(href),
+			})
 			edges = append(edges, []string{quote("livedoor"), quote(parent)})
 			return true
 		}
 
-		nodes = append(nodes,
-			Node{
-				Title: quote(title),
-				Url:   quoteUrl(href),
-			},
-		)
+		nodes = append(nodes, Node{
+			Title: quote(title),
+			Url:   quoteUrl(href),
+		})
 		edges = append(edges, []string{quote(parent), quote(title)})
 
 		// ランキング上位のcnt個数まで、でEachを抜ける
