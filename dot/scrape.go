@@ -9,7 +9,7 @@ import (
 
 const livedoor = "https://blog.livedoor.com/ranking/blog/"
 
-func Scrape(cnt int) ([]string, [][]string, error) {
+func Scrape(cnt int) ([]Node, [][]string, error) {
 	resp, err := http.Get(livedoor)
 	if err != nil {
 		return nil, nil, err
@@ -28,7 +28,7 @@ func Scrape(cnt int) ([]string, [][]string, error) {
 	liSel := doc.Find("#lb-container .ranking-inner > div > div > ul").First().Find("li a")
 
 	var (
-		nodes  []string
+		nodes  []Node
 		edges  [][]string
 		parent string
 	)
@@ -39,18 +39,26 @@ func Scrape(cnt int) ([]string, [][]string, error) {
 		}
 
 		title := sel.Find(".text").Text()
+		href, _ := sel.Attr("href")
 		// 個々の大元のまとめ
 		if len(title) == 0 {
 			parent = sel.Text()
-			nodes = append(nodes, quote(parent))
+			nodes = append(nodes,
+				Node{
+					Title: quote(parent),
+					Url:   quoteUrl(href),
+				},
+			)
 			edges = append(edges, []string{quote("livedoor"), quote(parent)})
-			//href, _ := sel.Attr("href")
 			return true
 		}
-		href, _ := sel.Attr("href")
-		_ = href
 
-		nodes = append(nodes, quote(title))
+		nodes = append(nodes,
+			Node{
+				Title: quote(title),
+				Url:   quoteUrl(href),
+			},
+		)
 		edges = append(edges, []string{quote(parent), quote(title)})
 
 		// ランキング上位のcnt個数まで、でEachを抜ける
@@ -62,6 +70,10 @@ func Scrape(cnt int) ([]string, [][]string, error) {
 	})
 
 	return nodes, edges, nil
+}
+
+func quoteUrl(u string) string {
+	return `"` + u + `"`
 }
 
 func quote(s string) string {

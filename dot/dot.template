@@ -9,11 +9,9 @@ graph {{.Name}} {
 
     // node
     {{range $i, $node := .Nodes}}
-        {{if eq $i 798}}
-            {{$node}};
-        {{- else}}
-            {{$node}},
-        {{- end}}
+        {{$node.Title}} [
+            URL = {{$node.Url}}
+        ];
     {{- end}}
 
     // edge

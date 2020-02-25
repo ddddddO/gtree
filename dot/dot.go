@@ -8,11 +8,16 @@ import (
 type Graph struct {
 	Name      string
 	IsDigraph bool
-	Nodes     []string
+	Nodes     []Node
 	Edges     [][]string
 }
 
-func NewGraph(name string, isDigraph bool, nodes []string, edges [][]string) Graph {
+type Node struct {
+	Title string
+	Url   string
+}
+
+func NewGraph(name string, isDigraph bool, nodes []Node, edges [][]string) Graph {
 	return Graph{
 		Name:      name,
 		IsDigraph: isDigraph,

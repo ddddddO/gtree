@@ -1,3 +1,5 @@
+preopen: gendot svg
+
 gendot:
 	go run main.go --digraph > dot.dot
 
