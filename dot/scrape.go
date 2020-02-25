@@ -35,9 +35,10 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 
 	// 一番親ノード
 	nodes = append(nodes, Node{
-		Title: quote("livedoor"),
-		Url:   quoteUrl(livedoor),
-		Shape: "doubleoctagon",
+		Title:   quote("livedoor"),
+		ToolTip: quoteNonShrink("livedoor"),
+		Url:     quoteNonShrink(livedoor),
+		Shape:   "doubleoctagon",
 	})
 
 	// ul内のli要素(100) * a要素(3)だけ繰り返す
@@ -52,18 +53,20 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 		if len(title) == 0 {
 			parent = sel.Text()
 			nodes = append(nodes, Node{
-				Title: quote(parent),
-				Url:   quoteUrl(href),
-				Shape: "box",
+				Title:   quote(parent),
+				ToolTip: quoteNonShrink(parent),
+				Url:     quoteNonShrink(href),
+				Shape:   "box",
 			})
 			edges = append(edges, []string{quote("livedoor"), quote(parent)})
 			return true
 		}
 
 		nodes = append(nodes, Node{
-			Title: quote(title),
-			Url:   quoteUrl(href),
-			Shape: "ellipse",
+			Title:   quote(title),
+			ToolTip: quoteNonShrink(title),
+			Url:     quoteNonShrink(href),
+			Shape:   "ellipse",
 		})
 		edges = append(edges, []string{quote(parent), quote(title)})
 
@@ -78,8 +81,8 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 	return nodes, edges, nil
 }
 
-func quoteUrl(u string) string {
-	return `"` + u + `"`
+func quoteNonShrink(s string) string {
+	return `"` + s + `"`
 }
 
 func quote(s string) string {

@@ -13,9 +13,10 @@ type Graph struct {
 }
 
 type Node struct {
-	Title string
-	Url   string
-	Shape string
+	Title   string
+	ToolTip string
+	Url     string
+	Shape   string
 }
 
 func NewGraph(name string, isDigraph bool, nodes []Node, edges [][]string) Graph {
