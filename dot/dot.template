@@ -10,6 +10,7 @@ graph {{.Name}} {
     // node
     {{range $i, $node := .Nodes}}
         {{$node.Title}} [
+            shape = {{$node.Shape}},
             URL = {{$node.Url}}
         ];
     {{- end}}

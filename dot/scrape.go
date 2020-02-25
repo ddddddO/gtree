@@ -37,6 +37,7 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 	nodes = append(nodes, Node{
 		Title: quote("livedoor"),
 		Url:   quoteUrl(livedoor),
+		Shape: "doubleoctagon",
 	})
 
 	// ul内のli要素(100) * a要素(3)だけ繰り返す
@@ -53,6 +54,7 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 			nodes = append(nodes, Node{
 				Title: quote(parent),
 				Url:   quoteUrl(href),
+				Shape: "box",
 			})
 			edges = append(edges, []string{quote("livedoor"), quote(parent)})
 			return true
@@ -61,6 +63,7 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 		nodes = append(nodes, Node{
 			Title: quote(title),
 			Url:   quoteUrl(href),
+			Shape: "ellipse",
 		})
 		edges = append(edges, []string{quote(parent), quote(title)})
 
