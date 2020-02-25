@@ -13,7 +13,7 @@ func main() {
 		cnt       int
 	)
 	flag.BoolVar(&isDigraph, "digraph", false, "有向グラフの場合は'digraph'を指定する")
-	flag.IntVar(&cnt, "cnt", 11, "ランキングの昇順からcnt番目までの記事を対象にする")
+	flag.IntVar(&cnt, "cnt", 11, "ランキングの昇順からcnt番目までの記事を対象にする.4ずつ上げる")
 	flag.Parse()
 
 	nodes, edges, err := dot.Scrape(cnt)
