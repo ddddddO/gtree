@@ -16,20 +16,39 @@
 - livedoor のまとめランキングの個々のスレッドは、大体以下で抜けそう
 
 ```
+スレッドセレクタ
+->レスセレクタ
+
 .article-body-more
+->.t_b
 .article-body-more
+->.t_h b
 .article-body-more
+->.t_b
 .article-body-more
+->.t_b
 .article-body-more
+->strong span
 .article-body-more
+->.t_b
 .article-body-more
+->.t_b
 .article-body-more
+->.t_b
 .article-body-more
+->.t_b
+.article-body-more
+->b
 .article-body
-.article-body
+->.t_b
 #articlebody
+->.t_b
+#articlebody
+->b
 .entrybody
+->div#resid1 b span ...「resid<N>」が厳しい
 .more_body
+->.t_b
 ```
 
 - キーワード

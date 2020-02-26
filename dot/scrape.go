@@ -2,6 +2,7 @@ package dot
 
 import (
 	"errors"
+	"log"
 	"net/http"
 
 	gq "github.com/PuerkitoBio/goquery"
@@ -62,6 +63,8 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 			return true
 		}
 
+		Thread(href)
+
 		nodes = append(nodes, Node{
 			Title:   quote(title),
 			ToolTip: quoteNonShrink(title),
@@ -95,4 +98,45 @@ func shrink(s string) string {
 		return string(chars[:10]) + "..."
 	}
 	return s
+}
+
+func Thread(url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		panic("status code is not 200")
+		//return nil, nil, errors.New("status code is not 200")
+	}
+
+	doc, err := gq.NewDocumentFromReader(resp.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println(url)
+	log.Println(finder(doc))
+}
+
+var selectors = []string{
+	".article-body-more",
+	".article-body",
+	"#articlebody",
+	".entrybody",
+	".more_body",
+}
+
+func finder(doc *gq.Document) int {
+	for _, selector := range selectors {
+		n := doc.Find(selector).Length()
+		if n != 0 {
+			log.Println(selector)
+			return n
+		}
+	}
+	log.Println("not match selector")
+	return 0
 }
