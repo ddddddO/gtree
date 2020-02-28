@@ -101,6 +101,7 @@ func shrink(s string) string {
 }
 
 func Thread(url string) {
+	url = "http://blog.livedoor.jp/dqnplus/archives/1998364.html" // euc-jp
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err)
@@ -112,31 +113,53 @@ func Thread(url string) {
 		//return nil, nil, errors.New("status code is not 200")
 	}
 
+	// TODO: ここに、文字化け対策を
+	// https://github.com/PuerkitoBio/goquery/wiki/Tips-and-tricks
+	// detectContentCharset()
+	// DecodeHTMLBody
+
 	doc, err := gq.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		panic(err)
 	}
 
 	log.Println(url)
-	log.Println(finder(doc))
+
+	extractRes(finder(doc))
 }
 
-var selectors = []string{
-	".article-body-more",
-	".article-body",
-	"#articlebody",
-	".entrybody",
-	".more_body",
+var selectors = map[string][]string{
+	".article-body-more": []string{".t_b", "t_b b", "strong span", "b"},
+	".article-body":      []string{".t_b"},
+	"#articlebody":       []string{".t_b", "b"},
+	".more_body":         []string{".t_b"},
+	//".entrybody": []string{},
 }
 
-func finder(doc *gq.Document) int {
-	for _, selector := range selectors {
-		n := doc.Find(selector).Length()
-		if n != 0 {
-			log.Println(selector)
-			return n
+func finder(doc *gq.Document) *gq.Selection {
+	for threadSelector, resSelectors := range selectors {
+		threadDoc := doc.Find(threadSelector)
+		if threadDoc.Length() != 0 {
+			for _, resSelector := range resSelectors {
+				resDoc := threadDoc.Find(resSelector)
+				if resDoc.Length() != 0 {
+					return resDoc
+				}
+			}
+			log.Println("no match res selector")
+			return nil
 		}
 	}
-	log.Println("not match selector")
-	return 0
+	log.Println("no match thread selector")
+	return nil
+}
+
+func extractRes(resDoc *gq.Selection) {
+	if resDoc == nil {
+		return
+	}
+
+	resDoc.Each(func(i int, sel *gq.Selection) {
+		log.Println(sel.Text())
+	})
 }
