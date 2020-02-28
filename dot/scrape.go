@@ -1,9 +1,14 @@
 package dot
 
 import (
+	"bufio"
 	"errors"
+	"io"
 	"log"
 	"net/http"
+
+	"golang.org/x/net/html/charset"
+	"golang.org/x/text/encoding/htmlindex"
 
 	gq "github.com/PuerkitoBio/goquery"
 )
@@ -101,7 +106,7 @@ func shrink(s string) string {
 }
 
 func Thread(url string) {
-	url = "http://blog.livedoor.jp/dqnplus/archives/1998364.html" // euc-jp
+	//url = "http://blog.livedoor.jp/dqnplus/archives/1998364.html" // euc-jp
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err)
@@ -113,19 +118,21 @@ func Thread(url string) {
 		//return nil, nil, errors.New("status code is not 200")
 	}
 
-	// TODO: ここに、文字化け対策を
+	// NOTE: 文字化け対策
 	// https://github.com/PuerkitoBio/goquery/wiki/Tips-and-tricks
-	// detectContentCharset()
-	// DecodeHTMLBody
+	utfBody, err := DecodeHTMLBody(resp)
+	if err != nil {
+		panic(err)
+	}
 
-	doc, err := gq.NewDocumentFromReader(resp.Body)
+	doc, err := gq.NewDocumentFromReader(utfBody)
 	if err != nil {
 		panic(err)
 	}
 
 	log.Println(url)
-
 	extractRes(finder(doc))
+	log.Println("----")
 }
 
 var selectors = map[string][]string{
@@ -162,4 +169,32 @@ func extractRes(resDoc *gq.Selection) {
 	resDoc.Each(func(i int, sel *gq.Selection) {
 		log.Println(sel.Text())
 	})
+}
+
+func detectContentCharset(resp *http.Response) string {
+	r := bufio.NewReader(resp.Body)
+	if data, err := r.Peek(1024); err == nil {
+		if _, name, ok := charset.DetermineEncoding(data, resp.Header.Get("content-type")); ok {
+			return name
+		}
+	}
+	return "utf-8"
+}
+
+// DecodeHTMLBody returns an decoding reader of the html Body for the specified `charset`
+// If `charset` is empty, DecodeHTMLBody tries to guess the encoding from the content
+func DecodeHTMLBody(resp *http.Response) (io.Reader, error) {
+	charset := detectContentCharset(resp)
+	log.Println("charset:", charset)
+
+	e, err := htmlindex.Get(charset)
+	if err != nil {
+		return nil, err
+	}
+
+	if name, _ := htmlindex.Name(e); name != "utf-8" {
+		log.Println("name:", name)
+		return e.NewDecoder().Reader(resp.Body), nil
+	}
+	return resp.Body, nil
 }
