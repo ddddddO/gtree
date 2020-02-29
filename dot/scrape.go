@@ -11,6 +11,7 @@ import (
 	"golang.org/x/text/encoding/htmlindex"
 
 	gq "github.com/PuerkitoBio/goquery"
+	"github.com/ddddddO/work/dot/analyze"
 )
 
 const livedoor = "https://blog.livedoor.com/ranking/blog/"
@@ -131,7 +132,18 @@ func Thread(url string) {
 	}
 
 	log.Println(url)
-	extractRes(finder(doc))
+
+	ress := extractRes(finder(doc))
+	if err := storeExtractedData(url, ress); err != nil {
+		panic(err)
+	}
+
+	// 感情辞書ベースの分析を予定
+	da := analyze.NewDictionaryAnalyzer(url, ress)
+	if err := analyze.Run(da); err != nil {
+		panic(err)
+	}
+
 	log.Println("----")
 }
 
@@ -161,14 +173,17 @@ func finder(doc *gq.Document) *gq.Selection {
 	return nil
 }
 
-func extractRes(resDoc *gq.Selection) {
+func extractRes(resDoc *gq.Selection) []string {
 	if resDoc == nil {
-		return
+		return nil
 	}
 
+	ress := []string{}
 	resDoc.Each(func(i int, sel *gq.Selection) {
-		log.Println(sel.Text())
+		ress = append(ress, sel.Text())
 	})
+
+	return ress
 }
 
 func detectContentCharset(resp *http.Response) string {
@@ -197,4 +212,9 @@ func DecodeHTMLBody(resp *http.Response) (io.Reader, error) {
 		return e.NewDecoder().Reader(resp.Body), nil
 	}
 	return resp.Body, nil
+}
+
+// DBに、url:主キー・ress:text[]で格納する
+func storeExtractedData(url string, ress []string) error {
+	return nil
 }
