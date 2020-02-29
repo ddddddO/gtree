@@ -42,9 +42,9 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 
 	// 一番親ノード
 	nodes = append(nodes, Node{
-		Title:   quote("livedoor"),
-		ToolTip: quoteNonShrink("livedoor"),
-		Url:     quoteNonShrink(livedoor),
+		Title:   quoteWithShrink("livedoor"),
+		ToolTip: quote("livedoor"),
+		Url:     quote(livedoor),
 		Shape:   "doubleoctagon",
 	})
 
@@ -60,24 +60,24 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 		if len(title) == 0 {
 			parent = sel.Text()
 			nodes = append(nodes, Node{
-				Title:   quote(parent),
-				ToolTip: quoteNonShrink(parent),
-				Url:     quoteNonShrink(href),
+				Title:   quoteWithShrink(parent),
+				ToolTip: quote(parent),
+				Url:     quote(href),
 				Shape:   "box",
 			})
-			edges = append(edges, []string{quote("livedoor"), quote(parent)})
+			edges = append(edges, []string{quoteWithShrink("livedoor"), quoteWithShrink(parent)})
 			return true
 		}
 
 		Thread(href)
 
 		nodes = append(nodes, Node{
-			Title:   quote(title),
-			ToolTip: quoteNonShrink(title),
-			Url:     quoteNonShrink(href),
+			Title:   quoteWithShrink(title),
+			ToolTip: quote(title),
+			Url:     quote(href),
 			Shape:   "ellipse",
 		})
-		edges = append(edges, []string{quote(parent), quote(title)})
+		edges = append(edges, []string{quoteWithShrink(parent), quoteWithShrink(title)})
 
 		// ランキング上位のcnt個数まで、でEachを抜ける
 		if i >= cnt {
@@ -90,11 +90,11 @@ func Scrape(cnt int) ([]Node, [][]string, error) {
 	return nodes, edges, nil
 }
 
-func quoteNonShrink(s string) string {
+func quote(s string) string {
 	return `"` + s + `"`
 }
 
-func quote(s string) string {
+func quoteWithShrink(s string) string {
 	return `"` + shrink(s) + `"`
 }
 
