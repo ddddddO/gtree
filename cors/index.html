@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CORS TEST</title>
+
+    <script language="javascript" type="text/javascript">
+      function OnButtonClick() {
+        const url = 'https://us-central1-work1111.cloudfunctions.net/CORSEnabledFunction'
+        fetch(url)
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(json) {
+            console.log(Object.values(json)[0]);
+            alert(Object.values(json)[0]['Name'] + ':' +  Object.values(json)[0]['Age']);
+          })
+          .catch(function(err) {
+            alert('fetch失敗: ' + err);
+          });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>CORS TEST!</h1>
+    <input type="button" value="Exec" onclick="OnButtonClick();" /><br />
+  </body>
+</html>
