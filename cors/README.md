@@ -21,4 +21,13 @@
 ### cors 確認結果
 - オリジンサーバー(raspberry pi)からDLしたhtml -> APIサーバー へのfetch成功
 - オリジンサーバー(local) -> APIサーバー へのfetch失敗
+
+また、
+- GCEを起動(nginxでwork/cors/index.htmlを公開)し、API側でGCEのグローバルIPをORIGINに設定(`http://cors.ddddddo.work`はORIGINから外した状態)し、以下を確認した。
+  - オリジンサーバー(raspberry pi)のドメイン(http://cors.ddddddo.work)をブラウザで入力し、出力されたindex.html -> APIでのfetchは失敗
+  - オリジンサーバー(GCE)のグローバルIPをブラウザで入力し、出力されたindex.html -> APIでのfetchは成功
+
+### ref
+[APIサーバを立てるためのCORS設定決定版](https://qiita.com/hirohero/items/886733f50f37404235db)
+
 2020/03/22
