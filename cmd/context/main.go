@@ -4,31 +4,79 @@ import (
 	"context"
 	"log"
 	"time"
+	"sync"
 )
 
 func main() {
 	log.Println("start")
 
-	ctx := context.Background()
-	ctx1, _ := context.WithTimeout(ctx, time.Second * 5)
-	go ctx1F(ctx1)
-	go ctx2F(ctx1)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	select {
-	case <- ctx1.Done():
-		log.Println("ctx1 done:", ctx1.Err())
-	}
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if err := run1(ctx); err != nil {
+			log.Printf("run1 err: %v\n", err)
+			cancel() // ここをコメントアウトで、run1のcontextのタイムアウトによって、親のcontextがキャンセルされないため、run2は最後まで実行される。
+		}
+	}()
 
-	//time.Sleep(time.Second * 5) // ctx2Fは実行される
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if err := run2(ctx); err != nil {
+			log.Printf("run2 err: %v\n", err)
+		}
+	}()
+	wg.Wait()
+
 	log.Println("end")
 }
 
-func ctx1F(ctx context.Context) {
-	time.Sleep(3 * time.Second)
-	log.Println("in ctx1")
+func run1(ctx context.Context) error {
+	ctx, cancel := context.WithTimeout(ctx, 3 * time.Second)
+	defer cancel()
+	log.Println("in run1")
+
+	go run1child(ctx)
+
+	return exec(ctx, 1)
 }
 
-func ctx2F(ctx context.Context) {
-	time.Sleep(7 * time.Second)
-	log.Println("in ctx2")
+func run2(ctx context.Context) error {
+	log.Println("in run2")
+
+	go run2child(ctx)
+
+	return exec(ctx, 2)
+}
+
+func run1child(ctx context.Context) {
+	log.Println("in run1child")
+	select {
+	case <- ctx.Done():
+		log.Printf("ctx done! in run1child: %v", ctx.Err())
+	case <- time.After(5 * time.Second):
+		log.Println("end run1child")
+	}
+}
+
+func run2child(ctx context.Context) {
+	log.Println("in run2child")
+	time.Sleep(5 * time.Second)
+	log.Println("end run2child")
+}
+
+func exec(ctx context.Context, num int) error {
+	log.Printf("in exec: %d\n", num)
+	select {
+	case <-ctx.Done():
+		log.Println("ctx done!")
+		return ctx.Err()
+	case <-time.After(7 * time.Second):
+		return nil
+	}
+	return nil
 }
