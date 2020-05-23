@@ -73,7 +73,7 @@ func exec(ctx context.Context, num int) error {
 	log.Printf("in exec: %d\n", num)
 	select {
 	case <-ctx.Done():
-		log.Println("ctx done!")
+		log.Printf("ctx done!: %d\n", num)
 		return ctx.Err()
 	case <-time.After(7 * time.Second):
 		return nil
