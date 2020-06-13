@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Try Chart</title>
+</head>
+<body>
+    <canvas id="my_chart">
+        Canvas not supported
+    </canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+
+            var type = 'horizontalBar';
+            var data = {
+                labels: [2017,2018,2019,2020],
+                datasets: [{
+                    label: '@Bob',
+                    data: [120, 300, 200, 210],
+                    backgroundColor: 'skyblue',
+                    borderWidth: 0
+                },
+                {
+                    label: '@Alis',
+                    data: [400, 100, 50, 521],
+                    backgroundColor: [
+                        'hsla(90, 60%, 60%, 0.3)',
+                        'hsla(180, 60%, 60%, 0.3)',
+                        'hsla(270, 60%, 60%, 0.3)',
+                        'hsla(360, 60%, 60%, 0.3)'
+                    ],
+                    borderWidth: 0
+                }]
+            }
+
+            var options = {
+                scales: {
+                    // yAxes: [{
+                    //     ticks: {
+                    //         suggestedMin: 0,
+                    //         suggestedMax: 400,
+                    //         stepSize: 50,
+                    //         callback: function(value, index, values) {
+                    //             return 'JPY ' + value;
+                    //         }
+                    //     }
+                    // }]
+                    xAxes: [{
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                },
+                title: {
+                    display: true,
+                    text: 'Annual Sales',
+                    fontSize: 18,
+                    position: 'left'
+                },
+                animation: {
+                    //duration: 0
+                },
+                legend: {
+                    position: 'right'
+                    //display: false
+                }
+            }
+            var ctx = document.getElementById('my_chart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: type,
+                data: data,
+                options: options
+            })
+        })();
+    </script>
+</body>
+</html>
