@@ -1,0 +1,87 @@
+---
+# ブロックスタイル(シーケンス)
+description: 
+- "配"
+- '列'
+- を表わす。以下は各々の型で、配列内にパースされる。
+- 999
+- false
+- null
+- 2020-06-14
+...
+---
+# フロースタイル(シーケンス)
+[配列(シーケンス)は, こう書いても, ok]
+---
+- a
+- # ここは何も記載しない
+  - b-1
+  - b-2
+- c
+...
+---
+case:
+  name: ddd
+  age: 27
+  list:
+    - aaa
+    - true
+    - off
+    - hash: in list
+    - {deepnest: {deep1: [{deep2-0: aaaaaa, deep2-1: [yes, no]}]}}
+  description: test
+...
+---
+# フロースタイルでも書ける
+{name: ddd, age: 27}
+---
+- name: Bob
+  score: 60
+- name: Alis
+  score: 50
+...
+---
+# 改行
+- |
+  This
+  is
+  a
+  pen.
+
+- |+ # 最終行に改行を付ける
+  This
+  is
+  a
+  pen.
+
+- |- # 最終行の改行を取り除く
+  This
+  is
+  a
+  pen.
+...
+---
+- &leader Alis # アンカー
+- *leader # エイリアス
+- &staff Bob
+- *staff
+- *leader
+...
+---
+# ハッシュのマージ
+common: &common
+  user: dbuser
+  password: dbpassword
+
+development:
+  database: app_dev
+  <<: *common
+
+production:
+  database: app_prd
+  <<: *common
+
+test:
+  database: app_test
+  <<: *common
+...
