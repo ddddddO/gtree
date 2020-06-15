@@ -1,3 +1,5 @@
+use std::net::TcpStream;
+
 struct Cli {
     protocol: String,
     target: String
@@ -17,6 +19,14 @@ impl Cli {
 
     fn send(&self, num: i32) {
         println!("deadline time: {}s", num);
+
+        // ref: https://doc.rust-lang.org/std/net/struct.TcpStream.html#examples-1
+        if let Ok(stream) = TcpStream::connect("127.0.0.1:8888") {
+            // 別ターミナルで、goexec 'http.ListenAndServe(":8888", nil)'　を実行したあとで以下が出力される
+            println!("Connected to the server!");
+        } else {
+            println!("Couldn't connect to server...");
+        }
     }
 }
 
