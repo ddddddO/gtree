@@ -5,7 +5,7 @@ GEM
     multi_json (1.14.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    rack (2.1.1)
+    rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
     ruby2_keywords (0.0.2)
