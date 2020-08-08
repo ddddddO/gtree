@@ -1,0 +1,42 @@
+7477  openat(AT_FDCWD, "test.txt", O_WRONLY|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+7477  write(3, "2020-08-09 02:44:07.578623802 +0"..., 55) = 55
+7477  write(3, "5a76200b-4421-4cd5-8f53-2eb7df0b"..., 37) = 37
+7477  close(3)                          = 0
+7477  openat(AT_FDCWD, "test.txt", O_RDONLY|O_CLOEXEC) = 3
+7477  fstat(3, {st_mode=S_IFREG|0777, st_size=92, ...}) = 0
+7477  read(3, "2020-08-09 02:44:07.578623802 +0"..., 92) = 92
+7477  write(1, "2020-08-09 02:44:07.578623802 +0"..., 93) = 93
+7477  close(3)                          = 0
+7466  openat(AT_FDCWD, "test.txt", O_WRONLY|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+7466  write(3, "2020-08-09 02:44:08.576799416 +0"..., 55) = 55
+7466  write(3, "afa38e6a-7cce-4a7a-bbb8-347a2dba"..., 37) = 37
+7466  close(3)                          = 0
+7466  openat(AT_FDCWD, "test.txt", O_RDONLY|O_CLOEXEC) = 3
+7466  fstat(3, {st_mode=S_IFREG|0777, st_size=276, ...}) = 0
+7466  read(3, "2020-08-09 02:44:07.578623802 +0"..., 276) = 276
+7466  write(1, "2020-08-09 02:44:07.578623802 +0"..., 277) = 277
+7466  close(3)                          = 0
+7466  openat(AT_FDCWD, "test.txt", O_WRONLY|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+7466  write(3, "2020-08-09 02:44:09.573954336 +0"..., 55) = 55
+7466  write(3, "51513dfd-a0ac-4d8c-abdc-bba5abbd"..., 37) = 37
+7466  close(3)                          = 0
+7466  openat(AT_FDCWD, "test.txt", O_RDONLY|O_CLOEXEC) = 3
+7466  fstat(3, {st_mode=S_IFREG|0777, st_size=460, ...}) = 0
+7466  read(3, "2020-08-09 02:44:07.578623802 +0"..., 460) = 460
+7466  write(1, "2020-08-09 02:44:07.578623802 +0"..., 461) = 461
+7466  close(3)                          = 0
+7466  openat(AT_FDCWD, "test.txt", O_WRONLY|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+7466  write(3, "2020-08-09 02:44:10.573651842 +0"..., 55) = 55
+7466  write(3, "a23da1b6-0b73-45dd-85c0-28c42963"..., 37) = 37
+7466  close(3)                          = 0
+7466  openat(AT_FDCWD, "test.txt", O_RDONLY|O_CLOEXEC) = 3
+7466  fstat(3, {st_mode=S_IFREG|0777, st_size=644, ...}) = 0
+7466  read(3, "2020-08-09 02:44:07.578623802 +0"..., 644) = 644
+7466  write(1, "2020-08-09 02:44:07.578623802 +0"..., 645) = 645
+7466  close(3)                          = 0
+7478  +++ exited with 0 +++
+7477  +++ exited with 0 +++
+7476  +++ exited with 0 +++
+7475  +++ exited with 0 +++
+7474  +++ exited with 0 +++
+7466  +++ exited with 0 +++
