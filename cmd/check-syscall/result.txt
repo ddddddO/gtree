@@ -1,72 +1,38 @@
-11254 fstat(3, 0x7ffdbc22bdc0)          = -1 ENOSYS (Function not implemented)
-11254 close(3)                          = -1 ENOSYS (Function not implemented)
-11254 read(3, 0x7ffdbc22bf68, 832)      = -1 ENOSYS (Function not implemented)
-11254 fstat(3, 0x7ffdbc22be00)          = -1 ENOSYS (Function not implemented)
-11254 close(3)                          = -1 ENOSYS (Function not implemented)
-11254 read(3, 0x7ffdbc22bf38, 832)      = -1 ENOSYS (Function not implemented)
-11254 fstat(3, 0x7ffdbc22bdd0)          = -1 ENOSYS (Function not implemented)
-11254 close(3)                          = -1 ENOSYS (Function not implemented)
-11254 openat(AT_FDCWD, "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size", O_RDONLY) = -1 ENOSYS (Function not implemented)
-11254 read(3, 0x7ffdbc22c864, 20)       = -1 ENOSYS (Function not implemented)
-11254 close(3)                          = -1 ENOSYS (Function not implemented)
-11254 openat(AT_FDCWD, "/etc/nsswitch.conf", O_RDONLY|O_CLOEXEC) = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000ac000, 1024)       = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000ac000, 1024)       = -1 ENOSYS (Function not implemented)
-11254 close(3)                          = -1 ENOSYS (Function not implemented)
-11254 openat(AT_FDCWD, "/etc/resolv.conf", O_RDONLY|O_CLOEXEC) = -1 ENOSYS (Function not implemented)
-11254 fstat(3, 0xc000088ed8)            = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000b4000, 65536)      = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000b40c6, 65338)      = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000b4000, 65536)      = -1 ENOSYS (Function not implemented)
-11254 close(3)                          = -1 ENOSYS (Function not implemented)
-11254 openat(AT_FDCWD, "/etc/hosts", O_RDONLY|O_CLOEXEC) = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000ce000, 65536)      = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000ce21d, 64995)      = -1 ENOSYS (Function not implemented)
-11254 read(3, 0xc0000ce000, 65536)      = -1 ENOSYS (Function not implemented)
-11254 close(3)                          = -1 ENOSYS (Function not implemented)
-11254 openat(AT_FDCWD, "/proc/sys/net/core/somaxconn", O_RDONLY|O_CLOEXEC) = -1 ENOSYS (Function not implemented)
-11254 read(5, 0xc0000e8000, 65536)      = -1 ENOSYS (Function not implemented)
-11254 read(5, 0xc0000e8004, 65532)      = -1 ENOSYS (Function not implemented)
-11254 close(5)                          = -1 ENOSYS (Function not implemented)
-11265 write(5, "send from client!", 17) = 17
-11265 read(5, 0xc0000ac400, 1024)       = -1 EAGAIN (Resource temporarily unavailable)
-11264 read(6, "send from client!", 1024) = 17
-11264 openat(AT_FDCWD, "/etc//localtime", O_RDONLY) = 7
-11264 read(7, "TZif2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\4\0\0\0\4\0\0\0\0"..., 4096) = 318
-11264 read(7, "", 4096)                 = 0
-11264 close(7)                          = 0
-11264 write(2, "2020/08/09 14:25:35 debug...: se"..., 1055) = 1055
-11264 write(6, "send from client!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1038) = 1038
-11265 read(5, "send from client!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1024) = 1024
-11265 write(2, "2020/08/09 14:25:35 send from cl"..., 1045) = 1045
-11265 close(5)                          = 0
-11267 read(7, 0xc000120000, 1024)       = -1 EAGAIN (Resource temporarily unavailable)
-11263 write(5, "send from client!", 17) = 17
-11265 read(7,  <unfinished ...>
-11263 read(5,  <unfinished ...>
-11265 <... read resumed> "send from client!", 1024) = 17
-11263 <... read resumed> 0xc0000ad800, 1024) = -1 EAGAIN (Resource temporarily unavailable)
-11265 write(2, "2020/08/09 14:25:36 debug...: se"..., 1055) = 1055
-11265 write(7, "send from client!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1038) = 1038
-11263 read(5, "send from client!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1024) = 1024
-11263 write(2, "2020/08/09 14:25:36 send from cl"..., 1045) = 1045
-11263 close(5)                          = 0
-11265 write(5, "send from client!", 17 <unfinished ...>
-11267 read(8,  <unfinished ...>
-11265 <... write resumed> )             = 17
-11267 <... read resumed> "send from client!", 1024) = 17
-11265 read(5,  <unfinished ...>
-11267 write(2, "2020/08/09 14:25:37 debug...: se"..., 1055 <unfinished ...>
-11265 <... read resumed> 0xc0000adc00, 1024) = -1 EAGAIN (Resource temporarily unavailable)
-11267 <... write resumed> )             = 1055
-11267 write(8, "send from client!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1038) = 1038
-11254 read(5, 0xc0000adc00, 1024)       = -1 ENOSYS (Function not implemented)
-11254 write(2, "2020/08/09 14:25:37 send from cl"..., 1045) = -1 ENOSYS (Function not implemented)
-11254 close(5)                          = -1 ENOSYS (Function not implemented)
-11267 +++ exited with 0 +++
-11266 +++ exited with 0 +++
-11265 +++ exited with 0 +++
-11264 +++ exited with 0 +++
-11263 +++ exited with 0 +++
-11262 +++ exited with 0 +++
-11254 +++ exited with 0 +++
+12111 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12111 write(3, "2020-08-09 15:00:44.81021687 +09"..., 54) = 54
+12111 write(3, "9a8a81d9-9a59-4abe-a819-93b5821b"..., 37) = 37
+12111 close(3)                          = 0
+12111 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12111 read(3, "2020-08-09 15:00:44.81021687 +09"..., 1024) = 91
+12111 write(1, "2020-08-09 15:00:44.81021687 +09"..., 1025) = 1025
+12111 close(3)                          = 0
+12111 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12111 write(3, "2020-08-09 15:00:45.811774132 +0"..., 55) = 55
+12111 write(3, "63648fc5-d951-452d-afc4-9691b23f"..., 37) = 37
+12111 close(3)                          = 0
+12111 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12111 read(3, "2020-08-09 15:00:44.81021687 +09"..., 1024) = 275
+12111 write(1, "2020-08-09 15:00:44.81021687 +09"..., 1025) = 1025
+12111 close(3)                          = 0
+12113 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12113 write(3, "2020-08-09 15:00:46.819275752 +0"..., 55) = 55
+12113 write(3, "66e272dc-6818-42dc-b8b9-c94c6233"..., 37) = 37
+12113 close(3)                          = 0
+12113 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12113 read(3, "2020-08-09 15:00:44.81021687 +09"..., 1024) = 459
+12113 write(1, "2020-08-09 15:00:44.81021687 +09"..., 1025) = 1025
+12113 close(3)                          = 0
+12113 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12113 write(3, "2020-08-09 15:00:47.817858936 +0"..., 55) = 55
+12113 write(3, "443a52d0-4c00-4a82-80b3-663beb28"..., 37) = 37
+12113 close(3)                          = 0
+12113 openat(AT_FDCWD, "test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = 3
+12113 read(3, "2020-08-09 15:00:44.81021687 +09"..., 1024) = 643
+12113 write(1, "2020-08-09 15:00:44.81021687 +09"..., 1025) = 1025
+12113 close(3)                          = 0
+12114 +++ exited with 0 +++
+12113 +++ exited with 0 +++
+12112 +++ exited with 0 +++
+12111 +++ exited with 0 +++
+12110 +++ exited with 0 +++
+12102 +++ exited with 0 +++

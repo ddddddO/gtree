@@ -13,7 +13,7 @@ check_file () {
 }
 
 exec_trace () {
-    ./syscaller >/dev/null &
+    ./syscaller -s=file >/dev/null &
 
     PID=`ps -aux | grep syscaller | awk '{print $2}' | head -n 1`
     echo "target pid: $PID"
@@ -22,10 +22,6 @@ exec_trace () {
     #TARGET_SYSCALLS="all" # default
 
     strace -e trace=$TARGET_SYSCALLS -f -p $PID -o result.txt
-    # straceが失敗することがある
-    if [ $? -ne 0 ]; then
-        kill $PID
-    fi
 }
 
 check_file
