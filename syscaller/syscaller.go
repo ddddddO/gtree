@@ -4,12 +4,6 @@ import (
 	"github.com/ddddddO/work/syscaller/file"
 )
 
-type syscaller interface {
-	Read()
-	Write()
-	Close()
-}
-
 func Run(sc syscaller) {
 	sc.Write()
 
