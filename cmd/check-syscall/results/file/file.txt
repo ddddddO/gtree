@@ -1,0 +1,30 @@
+2032  fstat(3, 0x7ffd4b492c30)          = -1 ENOSYS (Function not implemented)
+2032  close(3)                          = -1 ENOSYS (Function not implemented)
+2032  read(3, 0x7ffd4b492dd8, 832)      = -1 ENOSYS (Function not implemented)
+2032  fstat(3, 0x7ffd4b492c70)          = -1 ENOSYS (Function not implemented)
+2032  close(3)                          = -1 ENOSYS (Function not implemented)
+2032  read(3, 0x7ffd4b492da8, 832)      = -1 ENOSYS (Function not implemented)
+2032  fstat(3, 0x7ffd4b492c40)          = -1 ENOSYS (Function not implemented)
+2032  close(3)                          = -1 ENOSYS (Function not implemented)
+2032  openat(AT_FDCWD, "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size", O_RDONLY) = -1 ENOSYS (Function not implemented)
+2032  read(3, 0x7ffd4b4936d4, 20)       = -1 ENOSYS (Function not implemented)
+2032  close(3)                          = -1 ENOSYS (Function not implemented)
+2032  openat(AT_FDCWD, "results/file/test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = -1 ENOSYS (Function not implemented)
+2032  openat(AT_FDCWD, "/etc//localtime", O_RDONLY) = -1 ENOSYS (Function not implemented)
+2032  read(5, 0xc0000c27b0, 4096)       = -1 ENOSYS (Function not implemented)
+2032  read(5, 0xc0000c27b0, 4096)       = -1 ENOSYS (Function not implemented)
+2032  close(5)                          = -1 ENOSYS (Function not implemented)
+2032  write(3, "2020-08-10 19:32:07.948815515 +0"..., 55) = -1 ENOSYS (Function not implemented)
+2032  write(3, "534bf543-db26-4664-a7f1-26c8f7b2"..., 37) = -1 ENOSYS (Function not implemented)
+2032  close(3)                          = -1 ENOSYS (Function not implemented)
+2032  openat(AT_FDCWD, "results/file/test.txt", O_RDWR|O_CREAT|O_APPEND|O_CLOEXEC, 0644) = -1 ENOSYS (Function not implemented)
+2032  read(3, 0xc0000c3ac0, 1024)       = -1 ENOSYS (Function not implemented)
+2032  write(1, "2020-08-10 19:32:07.948815515 +0"..., 1025) = -1 ENOSYS (Function not implemented)
+2032  close(3)                          = -1 ENOSYS (Function not implemented)
+2045  +++ exited with 0 +++
+2044  +++ exited with 0 +++
+2043  +++ exited with 0 +++
+2042  +++ exited with 0 +++
+2041  +++ exited with 0 +++
+2040  +++ exited with 0 +++
+2032  +++ exited with 0 +++

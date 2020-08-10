@@ -14,7 +14,7 @@ type FileSyscaller struct {
 	f *os.File
 }
 
-const fileName = "test.txt"
+const fileName = "results/file/test.txt"
 
 func Gen() FileSyscaller {
 	f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0644)

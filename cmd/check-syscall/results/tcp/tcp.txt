@@ -1,0 +1,38 @@
+1913  socket(AF_INET, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, IPPROTO_IP) = 5
+1913  setsockopt(5, SOL_SOCKET, SO_BROADCAST, [1], 4) = 0
+1913  connect(5, {sa_family=AF_INET, sin_port=htons(8888), sin_addr=inet_addr("127.0.0.1")}, 16) = -1 EINPROGRESS (Operation now in progress)
+1924  accept4(3, {sa_family=AF_INET, sin_port=htons(37604), sin_addr=inet_addr("127.0.0.1")}, [112->16], SOCK_CLOEXEC|SOCK_NONBLOCK) = 6
+1924  getsockname(6, {sa_family=AF_INET, sin_port=htons(8888), sin_addr=inet_addr("127.0.0.1")}, [112->16]) = 0
+1924  setsockopt(6, SOL_TCP, TCP_NODELAY, [1], 4) = 0
+1924  setsockopt(6, SOL_SOCKET, SO_KEEPALIVE, [1], 4) = 0
+1924  setsockopt(6, SOL_TCP, TCP_KEEPINTVL, [15], 4) = 0
+1924  setsockopt(6, SOL_TCP, TCP_KEEPIDLE, [15], 4) = 0
+1913  getsockopt(5, SOL_SOCKET, SO_ERROR,  <unfinished ...>
+1924  read(6, 0xc000124000, 1024)       = -1 EAGAIN (Resource temporarily unavailable)
+1922  accept4(3, 0xc0000b6c10, [112], SOCK_CLOEXEC|SOCK_NONBLOCK) = -1 EAGAIN (Resource temporarily unavailable)
+1913  <... getsockopt resumed> [0], [4]) = 0
+1913  getsockname(5, {sa_family=AF_INET, sin_port=htons(37604), sin_addr=inet_addr("127.0.0.1")}, [112->16]) = 0
+1913  setsockopt(5, SOL_TCP, TCP_NODELAY, [1], 4) = 0
+1913  setsockopt(5, SOL_SOCKET, SO_KEEPALIVE, [1], 4) = 0
+1913  setsockopt(5, SOL_TCP, TCP_KEEPINTVL, [15], 4) = 0
+1913  setsockopt(5, SOL_TCP, TCP_KEEPIDLE, [15], 4) = 0
+1913  write(5, "send from client!", 17) = 17
+1924  read(6, "send from client!", 1024) = 17
+1924  openat(AT_FDCWD, "/etc//localtime", O_RDONLY) = 7
+1924  read(7, "TZif2\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\4\0\0\0\4\0\0\0\0"..., 4096) = 318
+1924  read(7, "", 4096)                 = 0
+1924  close(7)                          = 0
+1924  write(2, "2020/08/10 19:29:22 debug...: se"..., 1055) = 1055
+1924  write(6, "send from client!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1038) = 1038
+1913  read(5,  <unfinished ...>
+1924  close(6 <unfinished ...>
+1913  <... read resumed> "send from client!\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"..., 1024) = 1024
+1924  <... close resumed> )             = 0
+1913  write(2, "2020/08/10 19:29:22 send from cl"..., 1045) = 1045
+1913  close(5)                          = 0
+1925  +++ exited with 0 +++
+1924  +++ exited with 0 +++
+1923  +++ exited with 0 +++
+1922  +++ exited with 0 +++
+1921  +++ exited with 0 +++
+1913  +++ exited with 0 +++

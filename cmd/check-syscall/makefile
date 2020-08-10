@@ -1,8 +1,11 @@
 gen:
 	go build -o syscaller
 
-run:
-	./check.sh
+runtcp:
+	./check.sh tcp
+
+runfile:
+	./check.sh file
 
 # tcpdump:https://kazmax.zpp.jp/cmd/t/tcpdump.1.html
 td:
