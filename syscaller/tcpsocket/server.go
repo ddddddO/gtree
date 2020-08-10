@@ -15,6 +15,7 @@ func RunServer() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer ln.Close()
 
 	for {
 		conn, err := ln.Accept()
@@ -22,8 +23,6 @@ func RunServer() {
 			log.Fatal(err)
 		}
 		go func(conn net.Conn) {
-			//defer conn.Close()
-
 			bufFromClient := make([]byte, 1024)
 			_, err := conn.Read(bufFromClient)
 			if err != nil {
@@ -37,6 +36,7 @@ func RunServer() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			conn.Close()
 		}(conn)
 	}
 }

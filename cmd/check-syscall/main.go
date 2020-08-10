@@ -15,14 +15,13 @@ const (
 
 var (
 	syscallerType = "file"
+	count         = 1
 )
 
 func main() {
 	flag.StringVar(&syscallerType, "s", syscallerType, "'file' or 'tcp'")
+	flag.IntVar(&count, "c", count, "exec count")
 	flag.Parse()
-
-	interval := time.NewTicker(duration)
-	end := time.NewTicker(duration * 5)
 
 	switch syscallerType {
 	case "tcp":
@@ -30,19 +29,13 @@ func main() {
 		time.Sleep(duration * 2)
 	}
 
-END:
-	for {
-		select {
-		case <-interval.C:
-			switch syscallerType {
-			case "tcp":
-				tcpsocket.RunClient()
-			case "file":
-				f := file.Gen()
-				syscaller.Run(f)
-			}
-		case <-end.C:
-			break END
+	for i := 0; i < count; i++ {
+		switch syscallerType {
+		case "tcp":
+			tcpsocket.RunClient()
+		case "file":
+			f := file.Gen()
+			syscaller.Run(f)
 		}
 	}
 }

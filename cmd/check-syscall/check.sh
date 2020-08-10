@@ -13,7 +13,7 @@ check_file () {
 }
 
 exec_trace () {
-    ./syscaller -s=file >/dev/null &
+    ./syscaller -s=tcp >/dev/null &
 
     PID=`ps -aux | grep syscaller | awk '{print $2}' | head -n 1`
     echo "target pid: $PID"
