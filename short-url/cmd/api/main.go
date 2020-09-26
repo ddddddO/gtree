@@ -75,7 +75,7 @@ func shortenedurlsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method == "GET" {
+	if r.Method == http.MethodGet {
 		sURL := strings.TrimPrefix(r.URL.Path, sortenedURLsPath)
 
 		// KVSからsURLで検索して、リダイレクト
@@ -91,7 +91,7 @@ func shortenedurlsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		http.Redirect(w, r, realURL, http.StatusSeeOther)
 		return
-	} else if r.Method == "POST" {
+	} else if r.Method == http.MethodPost {
 		realURL := r.PostFormValue("url")
 		if realURL == "" {
 			fmt.Fprint(w, "empty url value")
