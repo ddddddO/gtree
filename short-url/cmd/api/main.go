@@ -61,7 +61,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method == "GET" {
+	if r.Method == http.MethodGet {
 		fmt.Fprint(w, "TODO: return shotened url request page")
 		return
 	}
