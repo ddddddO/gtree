@@ -55,6 +55,22 @@ func main() {
 	}
 }
 
+const indexHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Shortened URL Service</title>
+</head>
+<body>
+	<form action="/surls/" method="post">
+		<p>
+			URL：<input type="text" name="url">
+		</p>
+	</form>
+</body>
+</html>
+`
+
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		fmt.Fprint(w, "Bad request")
@@ -62,7 +78,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == http.MethodGet {
-		fmt.Fprint(w, "TODO: return shotened url request page")
+		fmt.Fprint(w, indexHtml)
 		return
 	}
 
