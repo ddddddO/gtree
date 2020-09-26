@@ -1,0 +1,18 @@
+version: '2'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/api/Dockerfile
+    ports:
+      - "80:8888"
+    environment:
+      - REDIS_HOST=redis-host:6379
+    depends_on:
+      - redis
+    links:
+      - redis:redis-host
+  redis:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/redis/Dockerfile
