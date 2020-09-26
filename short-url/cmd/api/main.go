@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	sortenedURLsPath = "/surls/"
+	shortenedURLsPath = "/surls/"
 )
 
 var (
@@ -48,7 +48,7 @@ func main() {
 	log.Print("Start service")
 
 	http.HandleFunc("/", indexHandler)
-	http.HandleFunc(sortenedURLsPath, shortenedurlsHandler)
+	http.HandleFunc(shortenedURLsPath, shortenedurlsHandler)
 
 	if err := http.ListenAndServe(":8888", nil); err != nil {
 		log.Fatalf("Failed: %v", err)
@@ -86,13 +86,13 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func shortenedurlsHandler(w http.ResponseWriter, r *http.Request) {
-	if !strings.HasPrefix(r.URL.Path, sortenedURLsPath) {
+	if !strings.HasPrefix(r.URL.Path, shortenedURLsPath) {
 		fmt.Fprint(w, "Bad request")
 		return
 	}
 
 	if r.Method == http.MethodGet {
-		sURL := strings.TrimPrefix(r.URL.Path, sortenedURLsPath)
+		sURL := strings.TrimPrefix(r.URL.Path, shortenedURLsPath)
 
 		// KVSからsURLで検索して、リダイレクト
 		var ctx = context.Background()
@@ -130,7 +130,7 @@ func shortenedurlsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Fprint(w, host+sortenedURLsPath+genPath+"\n")
+		fmt.Fprint(w, host+shortenedURLsPath+genPath+"\n")
 		return
 	}
 
