@@ -9,5 +9,10 @@
 `<サービス提供するホストのローカルIP>   <サービス提供するホストの任意な名前>`  
 Windowsは、[こちら](https://www.fonepaw.jp/solution/edit-windows-hosts.html)を参考にして追加する。
 
-2. `curl http://<サービス提供するホストの任意な名前>/surls/ -d 'url=<短縮したいURL>'` を実行する。
-3. curl実行結果として、短縮URLが返却される。
+2. curl or Web page で短縮URLを生成する。
+    - curl
+        1. `curl http://<サービス提供するホストの任意な名前>/surls/ -d 'url=<短縮したいURL>'` を実行する。
+    - Web page
+        1. `http://<サービス提供するホストの任意な名前>` をブラウザのURLバーに入力する。
+        2. `URL`フォームに短縮したいURLを入力してENTER
+3. 短縮URLが返却される。
