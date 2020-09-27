@@ -129,6 +129,7 @@ func shortenedurlsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		w.WriteHeader(http.StatusCreated)
 		fmt.Fprint(w, host+shortenedURLsPath+genPath+"\n")
 		return
 	} else {
