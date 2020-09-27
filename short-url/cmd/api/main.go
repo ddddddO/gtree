@@ -12,10 +12,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const (
-	shortenedURLsPath = "/surls/"
-)
-
 var (
 	host        string
 	redisHost   string
@@ -44,6 +40,10 @@ func newRedisClient() *redis.Client {
 	})
 }
 
+const (
+	shortenedURLsPath = "/surls/"
+)
+
 func main() {
 	log.Print("Start service")
 
@@ -51,7 +51,7 @@ func main() {
 	http.HandleFunc(shortenedURLsPath, shortenedurlsHandler)
 
 	if err := http.ListenAndServe(":8888", nil); err != nil {
-		log.Fatalf("Failed: %v", err)
+		log.Fatalf("Failed to start service:\n%v", err)
 	}
 }
 
@@ -73,66 +73,65 @@ const indexHtml = `
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		fmt.Fprint(w, "Bad request")
+		http.Error(w, "Bad request", http.StatusBadRequest)
+		return
+	}
+	if r.Method != http.MethodGet {
+		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
 
-	if r.Method == http.MethodGet {
-		fmt.Fprint(w, indexHtml)
-		return
-	}
-
-	fmt.Fprint(w, "Bad request")
+	fmt.Fprint(w, indexHtml)
 }
 
 func shortenedurlsHandler(w http.ResponseWriter, r *http.Request) {
 	if !strings.HasPrefix(r.URL.Path, shortenedURLsPath) {
-		fmt.Fprint(w, "Bad request")
+		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
 
 	if r.Method == http.MethodGet {
-		sURL := strings.TrimPrefix(r.URL.Path, shortenedURLsPath)
-
 		// KVSからsURLで検索して、リダイレクト
-		var ctx = context.Background()
+		sURL := strings.TrimPrefix(r.URL.Path, shortenedURLsPath)
+		ctx := context.Background()
 		realURL, err := redisClient.Get(ctx, sURL).Result()
 		if err != nil {
 			if err == redis.Nil {
-				fmt.Fprint(w, "key does not exists")
+				http.Error(w, "Not found shortened url", http.StatusNotFound)
 				return
 			}
+
 			fmt.Fprint(w, err)
 			return
 		}
+
 		http.Redirect(w, r, realURL, http.StatusSeeOther)
 		return
 	} else if r.Method == http.MethodPost {
 		realURL := r.PostFormValue("url")
 		if realURL == "" {
-			fmt.Fprint(w, "empty url value")
+			http.Error(w, "Empty url value", http.StatusBadRequest)
 			return
 		}
 
 		// 短縮URL用の文字列を生成して、KVSに登録し、短縮URLを返却
 		uid, err := uuid.NewRandom()
 		if err != nil {
-			fmt.Fprint(w, err)
+			http.Error(w, "Could not generate shortened url", http.StatusInternalServerError)
 			return
 		}
+
 		ust := uid.String()
 		genPath := strings.Split(ust, "-")[0]
-
-		var ctx = context.Background()
-		err = redisClient.Set(ctx, genPath, realURL, 0).Err()
-		if err != nil {
-			fmt.Fprint(w, err)
+		ctx := context.Background()
+		if err := redisClient.Set(ctx, genPath, realURL, 0).Err(); err != nil {
+			http.Error(w, "Could not generate shortened url", http.StatusInternalServerError)
 			return
 		}
 
 		fmt.Fprint(w, host+shortenedURLsPath+genPath+"\n")
 		return
+	} else {
+		http.Error(w, "Bad request", http.StatusBadRequest)
 	}
-
-	fmt.Fprint(w, "Bad request")
 }
