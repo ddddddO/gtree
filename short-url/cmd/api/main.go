@@ -77,7 +77,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if r.Method != http.MethodGet {
-		http.Error(w, "Bad request", http.StatusBadRequest)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -133,6 +133,6 @@ func shortenedurlsHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, host+shortenedURLsPath+genPath+"\n")
 		return
 	} else {
-		http.Error(w, "Bad request", http.StatusBadRequest)
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 }

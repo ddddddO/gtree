@@ -29,7 +29,7 @@ func Test_indexHandler(t *testing.T) {
 			name:       "メソッドがGET以外(POST)",
 			method:     http.MethodPost,
 			path:       "http://shost/",
-			wantStatus: http.StatusBadRequest,
+			wantStatus: http.StatusMethodNotAllowed,
 		},
 	}
 
