@@ -33,4 +33,13 @@ fn main() {
     s.instance_inc();
     s.instance_inc();
     println!("Sample's x is {}.", s.x); // 558
+
+    let mut c = 100;
+    let mut counter_closure = |x| {
+        c = c - x;
+        println!("down! {}", c);
+    };
+    counter_closure(5); // 95
+    counter_closure(3); // 92
+    counter_closure(9); // 83
 }
