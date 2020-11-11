@@ -6,8 +6,17 @@ import (
 )
 
 func main() {
-	a := app.New()
-	w := a.NewWindow("Hello")
-	w.SetContent(widget.NewLabel("Hello, world!"))
-	w.ShowAndRun()
+	myApp := app.New()
+	myWindow := myApp.NewWindow("Entry Widget")
+
+	input := widget.NewEntry()
+	input.SetPlaceHolder("Enter text...")
+
+	content := widget.NewVBox(input)
+	content.Append(widget.NewButton("ADD", func() {
+		content.Append(widget.NewLabel(input.Text))
+	}))
+
+	myWindow.SetContent(content)
+	myWindow.ShowAndRun()
 }
