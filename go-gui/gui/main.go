@@ -7,6 +7,7 @@ import (
 
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
+	"fyne.io/fyne/container"
 	"fyne.io/fyne/dialog"
 	"fyne.io/fyne/widget"
 
@@ -58,12 +59,15 @@ func newSettingsTab(parent fyne.Window, listURLsTab fyne.CanvasObject) fyne.Canv
 
 			listURLsBox.Append(widget.NewLabel("Please Check Extra URLs"))
 			extraDeleteTargetURLs := map[int]string{}
+			checksContainer := container.NewVBox()
 
-			totalCount := 5
+			// NOTE: 500件だと、表示が遅ければ、スクロールも重く、cpu使用率が30%近くなった
+			// 取得したデータの件数が500を著しく超えるようなら、ダイアログをだして、一部だけ出力するようにしてもいいかも
+			totalCount := 100
 			for i := 0; i < totalCount; i++ {
 				ii := i // NOTE: 注意！
 
-				check := widget.NewCheck(strconv.Itoa(ii), func(checked bool) {
+				check := widget.NewCheck("TITLE XXXXXXXXXXXXXXXXXXXXXXXXXXX"+strconv.Itoa(ii), func(checked bool) {
 					if checked {
 						if _, ok := extraDeleteTargetURLs[ii]; !ok {
 							extraDeleteTargetURLs[ii] = "/" + strconv.Itoa(ii)
@@ -76,10 +80,14 @@ func newSettingsTab(parent fyne.Window, listURLsTab fyne.CanvasObject) fyne.Canv
 						log.Println("unchecked: " + strconv.Itoa(ii))
 					}
 				})
-				listURLsBox.Append(check)
+				checksContainer.Add(check)
 			}
+			checksScrollContainer := container.NewVScroll(checksContainer)
+			scrollContainerSize := fyne.NewSize(0, 300)
+			checksScrollContainer.SetMinSize(scrollContainerSize)
+			listURLsBox.Append(checksScrollContainer)
 
-			listURLsBox.Append(widget.NewButton("Print Delete targets", func() {
+			listURLsBox.Append(widget.NewButton("Print Extra Delete targets", func() {
 				log.Println("Print Extra Delete targets")
 				log.Println(extraDeleteTargetURLs)
 			}))
@@ -91,7 +99,7 @@ func newSettingsTab(parent fyne.Window, listURLsTab fyne.CanvasObject) fyne.Canv
 				listURLsBox.Append(progressBar)
 
 				c := 0
-				for range time.Tick(0.3 * 1000 * time.Millisecond) {
+				for range time.Tick(0.1 * 100 * time.Millisecond) {
 					if float64(c) > progressBar.Max {
 						break
 					}
