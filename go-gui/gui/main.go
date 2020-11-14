@@ -60,7 +60,7 @@ func newSettingsTab(parent fyne.Window, listURLsTab fyne.CanvasObject) fyne.Canv
 			extraDeleteTargetURLs := map[int]string{}
 
 			totalCount := 5
-			for i := 0; i < int(totalCount); i++ {
+			for i := 0; i < totalCount; i++ {
 				ii := i // NOTE: 注意！
 
 				check := widget.NewCheck(strconv.Itoa(ii), func(checked bool) {
