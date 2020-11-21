@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"time"
 
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/dialog"
@@ -25,6 +24,8 @@ func main() {
 	application := app.New()
 	window := application.NewWindow("GUI APP")
 
+	activityCh := make(chan string)
+
 	homeContent := widget.NewVBox(widget.NewLabel("Your name?"), widget.NewEntry())
 	menuContent := widget.NewVBox(widget.NewLabel("XXXX"), widget.NewEntry())
 	settingsContent := widget.NewVBox(widget.NewLabel("XXXX"), widget.NewEntry())
@@ -37,6 +38,7 @@ func main() {
 				{Text: "Search word", Widget: searchWord},
 			},
 			OnSubmit: func() {
+				activityCh <- "Enter serch"
 				if searchWord.Text == "" {
 					dialog.ShowError(errors.New("Please input search word"), window)
 					return
@@ -60,6 +62,7 @@ func main() {
 				{Text: "Insert", Widget: insertWord},
 			},
 			OnSubmit: func() {
+				activityCh <- "Enter insert"
 				if insertWord.Text == "" {
 					dialog.ShowError(errors.New("Please input insert word"), window)
 					return
@@ -78,8 +81,10 @@ func main() {
 	// 上記リンクな感じで表示を追加できる
 	go func() {
 		for {
-			time.Sleep(2 * time.Second)
-			historyContent.Append(widget.NewLabel("aa"))
+			select {
+			case activity := <-activityCh:
+				historyContent.Append(widget.NewLabel(activity))
+			}
 		}
 	}()
 
@@ -101,8 +106,5 @@ func main() {
 	tabContainer.SetTabLocation(widget.TabLocationLeading)
 
 	window.SetContent(tabContainer)
-
-	log.Println(window)
-
 	window.ShowAndRun()
 }
