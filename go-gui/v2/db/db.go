@@ -8,11 +8,11 @@ import (
 	"github.com/pkg/errors"
 )
 
-type sqlite struct {
+type Sqlite struct {
 	*sql.DB
 }
 
-func NewDB() (*sqlite, error) {
+func NewDB() (*Sqlite, error) {
 	db, err := sql.Open("sqlite3", "./foo.db")
 	if err != nil {
 		return nil, errors.WithStack(err)
@@ -27,16 +27,16 @@ func NewDB() (*sqlite, error) {
 		return nil, errors.WithStack(err)
 	}
 
-	return &sqlite{
+	return &Sqlite{
 		db,
 	}, nil
 }
 
-func (s *sqlite) CloseSQLite() {
+func (s *Sqlite) CloseSQLite() {
 	s.Close()
 }
 
-func (s *sqlite) Insert(name string) error {
+func (s *Sqlite) Insert(name string) error {
 	tx, err := s.Begin()
 	if err != nil {
 		return errors.WithStack(err)
@@ -56,7 +56,7 @@ func (s *sqlite) Insert(name string) error {
 	return nil
 }
 
-func (s *sqlite) Select(name string) (string, error) {
+func (s *Sqlite) Select(name string) (string, error) {
 	stmt, err := s.Prepare("select id, name from foo where name = ?")
 	if err != nil {
 		return "", errors.WithStack(err)
