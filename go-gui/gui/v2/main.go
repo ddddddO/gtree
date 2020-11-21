@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"fyne.io/fyne/app"
 	"fyne.io/fyne/dialog"
@@ -71,6 +72,16 @@ func main() {
 			},
 		},
 	)
+	historyContent := widget.NewVBox(widget.NewLabel("Activity"), widget.NewSeparator())
+
+	// NOTE: https://developer.fyne.io/tour/basics/canvas.html
+	// 上記リンクな感じで表示を追加できる
+	go func() {
+		for {
+			time.Sleep(2 * time.Second)
+			historyContent.Append(widget.NewLabel("aa"))
+		}
+	}()
 
 	tabs := []*widget.TabItem{
 		{Text: "menu", Icon: theme.MenuIcon(), Content: menuContent},
@@ -79,15 +90,19 @@ func main() {
 		{Text: "folder", Icon: theme.FolderIcon(), Content: folderContent},
 		{Text: "search", Icon: theme.SearchIcon(), Content: searchContent},
 		{Text: "storage", Icon: theme.StorageIcon(), Content: storageContent},
+		{Text: "history", Icon: theme.HistoryIcon(), Content: historyContent},
 	}
 	tabContainer := widget.NewTabContainer()
 	for _, tab := range tabs {
-		tabContainer.Append(widget.NewTabItemWithIcon("", tab.Icon, tab.Content))
+		tabContainer.Append(widget.NewTabItemWithIcon(tab.Text, tab.Icon, tab.Content))
 	}
 
 	// tabバーの位置
 	tabContainer.SetTabLocation(widget.TabLocationLeading)
 
 	window.SetContent(tabContainer)
+
+	log.Println(window)
+
 	window.ShowAndRun()
 }
