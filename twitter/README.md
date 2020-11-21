@@ -29,9 +29,9 @@ Specifically, we plan to aggregate and output data obtained by analyzing weather
 ```
 
 ## twurl
-https://github.com/twitter/twurl
-`twurl authorize --consumer-key key --consumer-secret secret`
-※key/secretは`https://developer.twitter.com/` でログイン後の「Apps > disaster-analyzer」のとこから取得
+https://github.com/twitter/twurl<br>
+`twurl authorize --consumer-key key --consumer-secret secret`<br>
+※key/secretは`https://developer.twitter.com/` でログイン後の「Apps > disaster-analyzer」のとこから取得<br>
 
-https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline
-`twurl -H "api.twitter.com" "/1.1/statuses/user_timeline.json" | jq . > data/timeline.json`
+https://developer.twitter.com/en/docs/tweets/timelines/api-reference/get-statuses-user_timeline<br>
+`twurl -H "api.twitter.com" "/1.1/statuses/user_timeline.json" | jq . > data/timeline.json`<br>
