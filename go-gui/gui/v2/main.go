@@ -8,12 +8,17 @@ import (
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
 
+	"github.com/ddddddO/work/go-gui/v2/db"
 	"github.com/pkg/errors"
 )
 
-var registedSearchWord string
-
 func main() {
+	sqlite, err := db.NewDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer sqlite.CloseSQLite()
+
 	log.Println("a")
 
 	application := app.New()
@@ -35,16 +40,36 @@ func main() {
 					dialog.ShowError(errors.New("Please input search word"), window)
 					return
 				}
-				registedSearchWord = searchWord.Text
-				log.Println(registedSearchWord)
+
+				result, err := sqlite.Select(searchWord.Text)
+				if err != nil {
+					dialog.ShowError(err, window)
+					return
+				}
+
+				dialog.ShowInformation("search", result, window)
 			},
 		},
 	)
+	insertWord := widget.NewEntry()
 	storageContent := widget.NewVBox(
 		widget.NewLabel("XXXX"),
-		widget.NewButton("Result", func() {
-			log.Println(registedSearchWord)
-		}),
+		&widget.Form{
+			Items: []*widget.FormItem{
+				{Text: "Insert", Widget: insertWord},
+			},
+			OnSubmit: func() {
+				if insertWord.Text == "" {
+					dialog.ShowError(errors.New("Please input insert word"), window)
+					return
+				}
+				if err := sqlite.Insert(insertWord.Text); err != nil {
+					dialog.ShowError(err, window)
+					return
+				}
+				dialog.ShowInformation("success", "success!", window)
+			},
+		},
 	)
 
 	tabs := []*widget.TabItem{
