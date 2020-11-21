@@ -85,6 +85,9 @@ func main() {
 		tabContainer.Append(widget.NewTabItemWithIcon("", tab.Icon, tab.Content))
 	}
 
+	// tabバーの位置
+	tabContainer.SetTabLocation(widget.TabLocationLeading)
+
 	window.SetContent(tabContainer)
 	window.ShowAndRun()
 }
