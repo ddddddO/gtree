@@ -13,7 +13,10 @@ func NewHistory(activityCh <-chan string) *widget.TabItem {
 	go func() {
 		for {
 			select {
-			case activity := <-activityCh:
+			case activity, ok := <-activityCh:
+				if !ok {
+					return
+				}
 				historyContent.Append(widget.NewLabel(activity))
 			}
 		}

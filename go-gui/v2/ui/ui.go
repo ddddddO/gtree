@@ -13,6 +13,7 @@ func Run(sqlite *db.Sqlite) {
 	window := application.NewWindow("GUI APP")
 
 	activityCh := make(chan string)
+	defer close(activityCh)
 
 	tabs := []*widget.TabItem{
 		tab.NewMenu(),
