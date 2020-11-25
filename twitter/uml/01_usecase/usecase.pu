@@ -1,0 +1,20 @@
+@startuml
+
+actor プログラム as program
+actor 人 as person
+
+usecase "定期的にツイートを保存する(1)" as uc1
+program - uc1
+
+package "保存されたツイートを確認する(2)" {
+    usecase "一覧で表示する(2-1)" as uc2_1
+    usecase "まとめる(2-2)" as uc2_2
+    usecase "まとめたものを反映する？(2-3)" as uc2_3
+}
+uc2_2 ..> uc2_1 : <<include>>
+uc2_3 ..> uc2_1 : <<include>>
+
+person - uc2_2
+person - uc2_3
+
+@enduml
