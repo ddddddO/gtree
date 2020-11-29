@@ -11,7 +11,7 @@
 # ・現状、取得リツイートが全然足りてない
 
 CURRENT_DATE=`date "+%Y%m%d_%H%M"`
-twurl -H "api.twitter.com" "/1.1/statuses/user_timeline.json" | \
-    jq . > data/${CURRENT_DATE}_timeline.json
+twurl -H "api.twitter.com" "/1.1/statuses/user_timeline.json?user_id=1012936956353761280" | \
+    jq . > ../data/${CURRENT_DATE}_timeline.json
 
-cat data/${CURRENT_DATE}_timeline.json | jq .[].text > data/${CURRENT_DATE}_extract.txt
+cat ../data/${CURRENT_DATE}_timeline.json | jq .[].text > ../data/${CURRENT_DATE}_extract.txt
