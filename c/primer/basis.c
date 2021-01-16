@@ -10,6 +10,8 @@ void loop(void);
 void st_val(void);
 void pointer(void);
 void swap(int *x, int *y);
+void standard_input(void);
+void person_struct(void);
 
 // グローバル変数
 int xx = 0;
@@ -41,6 +43,10 @@ int main(void) {
     swap(&num0, &num1);
     printf("after swap: num0 = %d, num1 = %d\n", num0, num1);
 
+    standard_input();
+
+    person_struct();
+
     return 0;
 }
 
@@ -66,6 +72,7 @@ int data(void) {
     char s[] = {'b', 'o', 'o', 'm', '\0'};
     // 上の書き方と、以下は同じ
     // char s[] = "boom";
+    printf("%s\n", s);
 }
 
 void conditions(void) {
@@ -144,4 +151,79 @@ void swap(int *x, int *y) {
     int tmp = *x;
     *x = *y;
     *y = tmp;
+}
+
+// マクロ
+#define N 10
+
+void standard_input(void) {
+    char buf[20];
+    fgets(buf, sizeof(buf), stdin);
+
+    char out[N];
+    sscanf(buf, "%s", out);
+
+    printf("std_out: %s\n", out);
+}
+
+// 構造体。「person」にあたる部分は「構造体タグ」という。
+struct person {
+    char name[10];  // 各々「メンバ」という。
+    int age;
+    char message[50];
+};
+
+// データ型に名前を付けることができる。
+typedef struct person psn;
+
+// typedefは構造体宣言と一緒に書ける。以下。
+// typedef struct person {
+//     char name[10];
+//     int age;
+//     char message[50];
+// } psn;
+
+// さらに、構造体タグも削除できる。以下。
+// typedef struct {
+//     char name[10];
+//     int age;
+//     char message[50];
+// } psn;
+
+#include <string.h>
+
+// プロトタイプ宣言
+void birthday(psn *p);
+
+void person_struct(void) {
+    struct person d = {
+        "ddd",
+        28,
+        "Hello!"
+    };
+
+    printf("struct person d.name: %s\n", d.name);
+    // d.message = "Bye"; これはダメ
+    strcpy(d.message, "Bye");
+    printf("struct person d.message: %s\n", d.message);
+    d.age = 20;  // これはOK
+    printf("struct person d.age: %d\n", d.age);
+
+    birthday(&d);
+    printf("struct person after birthday d.age: %d\n", d.age);
+
+    psn x = {
+        "XXX",
+        99,
+        "ffff"
+    };
+
+    printf("struct person x.name: %s\n", x.name);
+}
+
+// 構造体のポインタについて
+void birthday(psn *p) {
+    // アロー演算子でアクセス
+    p->age+=1;
+    // (*p).age+=1;  // こちらの書き方でも可
 }
