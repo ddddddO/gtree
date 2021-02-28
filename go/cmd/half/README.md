@@ -1,12 +1,13 @@
-# 概要
+# Description
 
 テキストに含まれる全角文字列を半角文字列に変換するコマンド
 
-# DL
+# Download
 ```sh
 go get github.com/ddddddO/work/go/cmd/half
 ```
 
+# Useage
 - パイプ
 ```sh
 19:20:20 > echo "かの盛名を馳せているアッチラ汗カンとか、スチェンカ・ラージンなど１２３かカエル" | half
