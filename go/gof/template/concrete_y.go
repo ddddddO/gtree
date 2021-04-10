@@ -4,33 +4,35 @@ import (
 	"fmt"
 )
 
-type siteXCrawler struct {
+type siteYCrawler struct {
 	name string
 	path string
 }
 
-func NewSiteXCrawler(name, path string) *siteXCrawler {
-	return &siteXCrawler{
+func NewSiteYCrawler(name, path string) *siteYCrawler {
+	return &siteYCrawler{
 		name: name,
 		path: path,
 	}
 }
 
-func (x *siteXCrawler) Name() string {
+func (x *siteYCrawler) Name() string {
 	return x.name
 }
 
-func (x *siteXCrawler) Get() error {
+func (x *siteYCrawler) Get() error {
 	fmt.Printf("Get request: %s\n", x.path)
 	return nil
 }
 
-func (x *siteXCrawler) Scrape() error {
+func (x *siteYCrawler) Scrape() error {
+	fmt.Println("Scraping now.")
+	fmt.Println("Scraping now..")
 	fmt.Println("Scraping now...")
 	return nil
 }
 
-func (x *siteXCrawler) Store() error {
+func (x *siteYCrawler) Store() error {
 	fmt.Println("Stored!")
 	return nil
 }

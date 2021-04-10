@@ -6,33 +6,33 @@ import (
 
 // 具象クラスの役。
 // 抽象クラスで宣言されているメソッドを具体的に実装するところ。
-type siteYCrawler struct {
+type siteXCrawler struct {
 	name string
 	path string
 }
 
-func NewSiteYCrawler(name, path string) *siteYCrawler {
-	return &siteYCrawler{
+func NewSiteXCrawler(name, path string) *siteXCrawler {
+	return &siteXCrawler{
 		name: name,
 		path: path,
 	}
 }
 
-func (x *siteYCrawler) Name() string {
+func (x *siteXCrawler) Name() string {
 	return x.name
 }
 
-func (x *siteYCrawler) Get() error {
+func (x *siteXCrawler) Get() error {
 	fmt.Printf("Get request: %s\n", x.path)
 	return nil
 }
 
-func (x *siteYCrawler) Scrape() error {
+func (x *siteXCrawler) Scrape() error {
 	fmt.Println("Scraping now...")
 	return nil
 }
 
-func (x *siteYCrawler) Store() error {
+func (x *siteXCrawler) Store() error {
 	fmt.Println("Stored!")
 	return nil
 }
