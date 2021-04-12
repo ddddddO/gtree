@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ddddddO/work/go/gof/template"
+	template "github.com/ddddddO/work/go/gof/template_method"
 )
 
 func main() {
