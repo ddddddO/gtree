@@ -16,23 +16,23 @@ func NewSiteYCrawler(name, path string) *siteYCrawler {
 	}
 }
 
-func (x *siteYCrawler) Name() string {
+func (y *siteYCrawler) Name() string {
 	return x.name
 }
 
-func (x *siteYCrawler) Get() error {
+func (y *siteYCrawler) Get() error {
 	fmt.Printf("Get request: %s\n", x.path)
 	return nil
 }
 
-func (x *siteYCrawler) Scrape() error {
+func (y *siteYCrawler) Scrape() error {
 	fmt.Println("Scraping now.")
 	fmt.Println("Scraping now..")
 	fmt.Println("Scraping now...")
 	return nil
 }
 
-func (x *siteYCrawler) Store() error {
+func (y *siteYCrawler) Store() error {
 	fmt.Println("Stored!")
 	return nil
 }
