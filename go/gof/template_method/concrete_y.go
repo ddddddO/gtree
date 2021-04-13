@@ -17,11 +17,11 @@ func NewSiteYCrawler(name, path string) *siteYCrawler {
 }
 
 func (y *siteYCrawler) Name() string {
-	return x.name
+	return y.name
 }
 
 func (y *siteYCrawler) Get() error {
-	fmt.Printf("Get request: %s\n", x.path)
+	fmt.Printf("Get request: %s\n", y.path)
 	return nil
 }
 
