@@ -28,4 +28,8 @@ func main() {
 
 	c2 := (*human)(nil)
 	c2.echo()
+
+	// Output:
+	// who am i ...
+	// who am i ...
 }
