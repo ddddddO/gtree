@@ -1,8 +1,13 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
@@ -38,6 +43,28 @@ func main() {
 		Pretty:   true,
 		GraphiQL: true,
 	})
-	http.Handle("/graphql", h)
-	http.ListenAndServe(":8080", nil)
+
+	mux := http.NewServeMux()
+	mux.Handle("/graphql", h)
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
+
+	go func() {
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	// graceful shutdown...
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, syscall.SIGTERM, syscall.SIGKILL, syscall.SIGINT)
+	<-sig
+
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal(err)
+	}
+
 }
