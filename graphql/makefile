@@ -14,4 +14,7 @@ neo4j:
 browse_4j:
 	cmd.exe /c start http://localhost:7474/
 
+browse_ql:
+	cmd.exe /c start http://localhost:8080/graphql?query={hello}
+
 .PHONY: neo4j
