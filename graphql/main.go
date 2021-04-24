@@ -31,6 +31,10 @@ func main() {
 		"hello": &graphql.Field{
 			Type: graphql.String,
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				// TODO: ここにneo4jへアクセスする処理をいくのがよいのかどうか
+				if err := matchItem(driver); err != nil {
+					return "", err
+				}
 				return "world", nil
 			},
 		},
