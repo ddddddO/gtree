@@ -46,6 +46,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.Handle("/graphql", h)
+	mux.HandleFunc("/health", health())
 	srv := &http.Server{
 		Addr:    ":8080",
 		Handler: mux,
@@ -67,4 +68,12 @@ func main() {
 		log.Fatal(err)
 	}
 
+}
+
+func health() func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"msg":"health ok"}`))
+	}
 }
