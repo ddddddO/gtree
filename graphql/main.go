@@ -16,14 +16,56 @@ import (
 
 func main() {
 	// neo4j
-	dsn := "neo4j://localhost:7687"
-	driver, err := neo4j.NewDriver(dsn, neo4j.BasicAuth("username", "password", ""))
+	driver, err := newNeo4j()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer driver.Close()
 
 	// graphql
+	h, err := newGraphqlHandler(driver)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mux := http.NewServeMux()
+	mux.Handle("/graphql", h)
+	mux.HandleFunc("/health", health(driver))
+	mux.HandleFunc("/debugNeo4j", debug(driver))
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
+
+	go func() {
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	log.Println("start")
+
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, syscall.SIGTERM, syscall.SIGKILL, syscall.SIGINT)
+	<-sig
+
+	// graceful shutdown...
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func newNeo4j() (neo4j.Driver, error) {
+	const dsn = "neo4j://localhost:7687"
+	driver, err := neo4j.NewDriver(dsn, neo4j.BasicAuth("username", "password", ""))
+	if err != nil {
+		return nil, err
+	}
+	return driver, nil
+}
+
+func newGraphqlHandler(driver neo4j.Driver) (*handler.Handler, error) {
 	// Schema
 	fields := graphql.Fields{
 		"hello": &graphql.Field{
@@ -47,10 +89,8 @@ func main() {
 	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
 	schema, err := graphql.NewSchema(schemaConfig)
 	if err != nil {
-		log.Fatalf("failed to create new schema, error: %v", err)
+		return nil, err
 	}
-
-	log.Println("start")
 
 	h := handler.New(&handler.Config{
 		Schema:   &schema,
@@ -58,29 +98,5 @@ func main() {
 		GraphiQL: true,
 	})
 
-	mux := http.NewServeMux()
-	mux.Handle("/graphql", h)
-	mux.HandleFunc("/health", health(driver))
-	mux.HandleFunc("/debugNeo4j", debug(driver))
-	srv := &http.Server{
-		Addr:    ":8080",
-		Handler: mux,
-	}
-
-	go func() {
-		if err := srv.ListenAndServe(); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	// graceful shutdown...
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGTERM, syscall.SIGKILL, syscall.SIGINT)
-	<-sig
-
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal(err)
-	}
-
+	return h, nil
 }
