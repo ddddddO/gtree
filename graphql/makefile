@@ -11,4 +11,7 @@ neo4j:
 	--env=NEO4J_AUTH=none \
 	neo4j
 
+browse_4j:
+	cmd.exe /c start http://localhost:7474/
+
 .PHONY: neo4j
