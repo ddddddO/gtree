@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func health(driver neo4j.Driver) func(http.ResponseWriter, *http.Request) {
+func Health(driver neo4j.Driver) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 

@@ -1,4 +1,4 @@
-package main
+package handler
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
 
-func debug(driver neo4j.Driver) func(http.ResponseWriter, *http.Request) {
+func Debug(driver neo4j.Driver) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		item, err := insertItem(driver)
 		if err != nil {
