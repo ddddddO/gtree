@@ -8,17 +8,25 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
 
-func Debug(driver neo4j.Driver) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		item, err := insertItem(driver)
-		if err != nil {
-			panic(err)
-		}
-		log.Printf("%+v\n", item)
+type debugHandler struct {
+	driver neo4j.Driver
+}
 
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(fmt.Sprintf("%+v", item)))
+func NewDebugHandler(driver neo4j.Driver) *debugHandler {
+	return &debugHandler{
+		driver: driver,
 	}
+}
+
+func (dh *debugHandler) Debug(w http.ResponseWriter, r *http.Request) {
+	item, err := insertItem(dh.driver)
+	if err != nil {
+		panic(err)
+	}
+	log.Printf("%+v\n", item)
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(fmt.Sprintf("%+v", item)))
 }
 
 func insertItem(driver neo4j.Driver) (*Item, error) {

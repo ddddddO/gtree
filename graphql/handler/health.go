@@ -8,19 +8,27 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Health(driver neo4j.Driver) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
+type healthHandler struct {
+	driver neo4j.Driver
+}
 
-		if err := matchItem(driver); err != nil {
-			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte(fmt.Sprintf(`{"msg":"%v"}`, err)))
-			return
-		}
-
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"msg":"health ok"}`))
+func NewHealthHandler(driver neo4j.Driver) *healthHandler {
+	return &healthHandler{
+		driver: driver,
 	}
+}
+
+func (hh *healthHandler) Health(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	if err := matchItem(hh.driver); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(fmt.Sprintf(`{"msg":"%v"}`, err)))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"msg":"health ok"}`))
 }
 
 func matchItem(driver neo4j.Driver) error {

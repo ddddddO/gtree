@@ -6,14 +6,24 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
 
-func NewGraphqlHandler(driver neo4j.Driver) (*handler.Handler, error) {
+type graphqlHandler struct {
+	driver neo4j.Driver
+}
+
+func NewGraphqlHandler(driver neo4j.Driver) *graphqlHandler {
+	return &graphqlHandler{
+		driver: driver,
+	}
+}
+
+func (gh *graphqlHandler) Handler() (*handler.Handler, error) {
 	// Schema
 	fields := graphql.Fields{
 		"hello": &graphql.Field{
 			Type: graphql.String,
 			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 				// TODO: ここにneo4jへアクセスする処理をいくのがよいのかどうか
-				if err := matchItem(driver); err != nil {
+				if err := matchItem(gh.driver); err != nil {
 					return "", err
 				}
 				return "world", nil

@@ -23,15 +23,21 @@ func main() {
 	defer driver.Close()
 
 	// graphql
-	h, err := myhandler.NewGraphqlHandler(driver)
+	gh := myhandler.NewGraphqlHandler(driver)
+	graphqlHandler, err := gh.Handler()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// health
+	hh := myhandler.NewHealthHandler(driver)
+	// debug
+	dh := myhandler.NewDebugHandler(driver)
+
 	mux := http.NewServeMux()
-	mux.Handle("/graphql", h)
-	mux.HandleFunc("/health", myhandler.Health(driver))
-	mux.HandleFunc("/debugNeo4j", myhandler.Debug(driver))
+	mux.Handle("/graphql", graphqlHandler)
+	mux.HandleFunc("/health", hh.Health)
+	mux.HandleFunc("/debugNeo4j", dh.Debug)
 	srv := &http.Server{
 		Addr:    ":8080",
 		Handler: mux,
