@@ -1,31 +1,34 @@
 package main
 
 import (
+	"io"
+	"strings"
 	"testing"
 )
 
 func TestGen(t *testing.T) {
 	tests := []struct {
-		name, in, out string
+		name, out string
+		in        io.Reader
 	}{
 		{
 			name: "case 1",
-			in: `
+			in: strings.NewReader(`
 - a
-	- b`,
+	- b`),
 			out: `
 a
 └── b`,
 		},
 		{
 			name: "case 2",
-			in: `
+			in: strings.NewReader(`
 - a
 	- b
 		- c
 			- d
 			- e
-			- f`,
+			- f`),
 			out: `
 a
 └── b
@@ -36,7 +39,7 @@ a
 		},
 		{
 			name: "case 3",
-			in: `
+			in: strings.NewReader(`
 - a
 	- i
 		- u
@@ -45,7 +48,7 @@ a
 		- t
 	- e
 		- o
-	- g`,
+	- g`),
 			out: `
 a
 ├── i
