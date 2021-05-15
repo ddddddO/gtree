@@ -33,6 +33,11 @@ func gen(input io.Reader) string {
 	output := ""
 	for scanner.Scan() {
 		row := scanner.Text()
+		// NOTE: test case 3から、次の行を見ないと計算できなくなる。
+		//       そのため、一度入力を全て読み込む必要がある。
+		//       読み込んだ入力を、例えばx軸・y軸な二次元配列で表して、各座標となるノード用の構造体も用意して、、な感じになると思う。以下な感じ。
+		//       https://play.golang.org/p/Ey_T-Xw2MHi
+
 		converted := convert(row)
 		output += converted + "\n"
 	}
