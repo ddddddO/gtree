@@ -32,7 +32,35 @@ func gen(input io.Reader) string {
 
 	output := ""
 	for scanner.Scan() {
-		output += scanner.Text() + "\n"
+		row := scanner.Text()
+		converted := convert(row)
+		output += converted + "\n"
 	}
-	return output
+	return strings.TrimSpace(output)
+}
+
+func convert(row string) string {
+	fmt.Println("↓↓↓↓↓↓")
+
+	converted := ""
+
+	// https://ja.wikipedia.org/wiki/ASCII
+	for _, r := range row {
+		switch r {
+		case 45: // -
+			continue
+		case 32: // space
+			continue
+		case 9: // tab
+			converted += "└" + "─" + "─"
+		default: // directry or file name
+			converted += " " + string(r)
+		}
+
+		fmt.Println(r, string(r))
+	}
+
+	fmt.Println("↑↑↑↑↑↑")
+
+	return converted
 }
