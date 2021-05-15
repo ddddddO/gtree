@@ -44,17 +44,19 @@ func convert(row string) string {
 
 	converted := ""
 
-	// https://ja.wikipedia.org/wiki/ASCII
+	tabCnt := 0
 	for _, r := range row {
+		// https://ja.wikipedia.org/wiki/ASCII
 		switch r {
 		case 45: // -
 			continue
 		case 32: // space
 			continue
 		case 9: // tab
-			converted += "└" + "─" + "─"
-		default: // directry or file name
-			converted += " " + string(r)
+			tabCnt++
+		default: // directry or file name char
+			converted += convertTab(tabCnt) + " " + string(r)
+			tabCnt = 0
 		}
 
 		fmt.Println(r, string(r))
@@ -62,5 +64,20 @@ func convert(row string) string {
 
 	fmt.Println("↑↑↑↑↑↑")
 
+	return converted
+}
+
+const convertedTab = "└" + "─" + "─"
+
+func convertTab(cnt int) string {
+	converted := ""
+	if cnt == 0 {
+		return converted
+	}
+
+	for i := 0; i < cnt-1; i++ {
+		converted += "    "
+	}
+	converted += convertedTab
 	return converted
 }
