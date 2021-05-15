@@ -13,33 +13,33 @@ func TestGen(t *testing.T) {
 	}{
 		{
 			name: "case 1",
-			in: strings.NewReader(`
+			in: strings.NewReader(strings.TrimSpace(`
 - a
-	- b`),
-			out: `
+	- b`)),
+			out: strings.TrimSpace(`
 a
-└── b`,
+└── b`),
 		},
 		{
 			name: "case 2",
-			in: strings.NewReader(`
+			in: strings.NewReader(strings.TrimSpace(`
 - a
 	- b
 		- c
 			- d
 			- e
-			- f`),
-			out: `
+			- f`)),
+			out: strings.TrimSpace(`
 a
 └── b
     └── c
         ├── d
         ├── e
-        └── f`,
+        └── f`),
 		},
 		{
 			name: "case 3",
-			in: strings.NewReader(`
+			in: strings.NewReader(strings.TrimSpace(`
 - a
 	- i
 		- u
@@ -48,8 +48,8 @@ a
 		- t
 	- e
 		- o
-	- g`),
-			out: `
+	- g`)),
+			out: strings.TrimSpace(`
 a
 ├── i
 │   ├── u
@@ -58,7 +58,7 @@ a
 │   └── t
 ├── e
 │   └── o
-└── g`,
+└── g`),
 		},
 	}
 
