@@ -25,6 +25,17 @@ a
 			in: strings.NewReader(strings.TrimSpace(`
 - a
 	- b
+		- c`)),
+			out: strings.TrimSpace(`
+a
+└── b
+    └── c`),
+		},
+		{
+			name: "case 3",
+			in: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
 		- c
 			- d
 			- e
@@ -38,7 +49,7 @@ a
         └── f`),
 		},
 		{
-			name: "case 3",
+			name: "case 4",
 			in: strings.NewReader(strings.TrimSpace(`
 - a
 	- i
@@ -62,7 +73,12 @@ a
 		},
 	}
 
-	for _, tt := range tests {
+	for i, tt := range tests {
+		if i == 0 {
+			t.Log("skip")
+			continue
+		}
+
 		t.Log(tt.name)
 
 		got := gen(tt.in)
