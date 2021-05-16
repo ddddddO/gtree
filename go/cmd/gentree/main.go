@@ -163,20 +163,9 @@ func convertEndTabTo(currentNode *node) string {
 		return converted
 	}
 
-	const tmp = "│   "
-	// memo: case 5のtとoとkkを確認する
-	// 親がいてかつ、その親の階層の下にノードがある場合(o)
-	if currentNode.parent != nil && currentNode.parent.parent != nil {
-		children := currentNode.parent.parent.children // 親の親の子たち
-		for i := range children {
-			if currentNode.parent.name == children[i].name && len(children) > i+1 {
-				for j := 0; j < (currentNode.hierarchy - 2); j++ {
-					converted += tmp
-				}
-				converted += convertedEndTab
-				return converted
-			}
-		}
+	converted = dp(currentNode, convertedEndTab)
+	if converted != "" {
+		return converted
 	}
 
 	for i := 0; i < tabCnt-1; i++ {
@@ -195,7 +184,6 @@ func convertIntermediateTabTo(currentNode *node) string {
 		return converted
 	}
 
-	const tmp = "│   "
 	// memo: case 5のuとkを確認する
 	// 親がいてかつ、子がいる場合(u)
 	if currentNode.parent != nil && currentNode.children != nil {
@@ -206,6 +194,23 @@ func convertIntermediateTabTo(currentNode *node) string {
 		return converted
 	}
 
+	converted = dp(currentNode, convertedIntermediateTab)
+	if converted != "" {
+		return converted
+	}
+
+	for i := 0; i < tabCnt-1; i++ {
+		converted += "    "
+	}
+	converted += convertedIntermediateTab
+	return converted
+}
+
+const tmp = "│   "
+
+func dp(currentNode *node, template string) string {
+	converted := ""
+
 	// 親の親がいてかつ、親と同階層の下にノードがいる場合(k)
 	if currentNode.parent != nil && currentNode.parent.parent != nil {
 		children := currentNode.parent.parent.children // 親の親の子たち
@@ -214,17 +219,13 @@ func convertIntermediateTabTo(currentNode *node) string {
 				for j := 0; j < (currentNode.hierarchy - 2); j++ {
 					converted += tmp
 				}
-				converted += convertedIntermediateTab
+				converted += template
 				return converted
 			}
 		}
 	}
 
-	for i := 0; i < tabCnt-1; i++ {
-		converted += "    "
-	}
-	converted += convertedIntermediateTab
-	return converted
+	return ""
 }
 
 var output = ""
