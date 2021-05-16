@@ -116,8 +116,6 @@ func genTree(scanner *bufio.Scanner) *node {
 
 		// 最後のスタックよりrootに近い
 		for i := range tmpStack {
-			fmt.Println("ininini", tmpStack[len(tmpStack)-1].name, currentNode.name)
-
 			tmpStack = tmpStack[:lastStackIndex-i] // pop
 
 			if len(tmpStack)-1 < 0 {
