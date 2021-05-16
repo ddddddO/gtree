@@ -4,6 +4,7 @@
 - cliです。
 - マークダウン形式の入力から、treeコマンドで出力するような結果が出力されます。
 - マークダウンはタブで整形してください。
+- バグがあります。とは言っても手でツリーを0から作成するよりは幾分ましっちゃましと思います。
 
 ## installation
 ```sh
@@ -25,12 +26,8 @@ a
 └── gggg
 ```
 
----
-
-- TODO: Fix bug
-
 ```sh
-19:17:55 > cat testdata/sample2.md | gentree
+23:43:06 > cat testdata/sample2.md | gentree
 root
 ├── child1
 ├── child2
@@ -38,8 +35,28 @@ root
 ├── dddd
 │   ├── kkkkkkk
 │   │   └── lllll
-            ├── ffff
-            └── ppppp
+│   │       ├── ffff
+│   │       └── ppppp
 │   └── oooo
+└── eee
+```
+
+---
+- TODO: Fix bug
+
+```sh
+00:16:59 > cat testdata/sample3.md | gentree
+root
+├── dddd
+│   └── kkkkkkk
+│       └── lllll
+│           ├── ffff
+│   │   │   ├── LLL
+│   │   │   │   └── WWWWW
+│   │   │   │       └── ZZZZZ
+│           └── ppppp
+│               └── KKK
+│                   └── 1111111
+│                       └── AAAAAAA
 └── eee
 ```

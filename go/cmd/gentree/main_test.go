@@ -127,6 +127,37 @@ root
 │   └── oooo
 └── eee`),
 		},
+		{
+			name: "case 8",
+			in: strings.NewReader(strings.TrimSpace(`
+- root
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee`)),
+			out: strings.TrimSpace(`
+root
+├── dddd
+│   └── kkkkkkk
+│       └── lllll
+│           ├── ffff
+│           ├── LLL
+│           │   └── WWWWW
+│           │       └── ZZZZZ
+│           └── ppppp
+│               └── KKK
+│                   └── 1111111
+│                       └── AAAAAAA
+└── eee`),
+		},
 	}
 
 	for _, tt := range tests {

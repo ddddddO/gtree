@@ -163,7 +163,7 @@ func convertEndTabTo(currentNode *node) string {
 		return converted
 	}
 
-	converted = dp(currentNode, convertedEndTab, 0)
+	converted = dp(currentNode, convertedEndTab, converted, 0)
 	if converted != "" {
 		return converted
 	}
@@ -194,7 +194,7 @@ func convertIntermediateTabTo(currentNode *node) string {
 		return converted
 	}
 
-	converted = dp(currentNode, convertedIntermediateTab, 0)
+	converted = dp(currentNode, convertedIntermediateTab, converted, 0)
 	if converted != "" {
 		return converted
 	}
@@ -208,8 +208,9 @@ func convertIntermediateTabTo(currentNode *node) string {
 
 const tmp = "│   "
 
-func dp(currentNode *node, template string, circuitCnt int /*何回目のdpか。初回は0*/) string {
-	converted := ""
+// FIXME: rootまで遡らないと多分ダメ
+//        多分、ノードからrootまで親を一つずつ遡って、一つずつノード側から枝を構成する記号を組み立てて行かないとダメっぽいし、そうした方が保守できそうな形になりそう。
+func dp(currentNode *node, template string, converted string, circuitCnt int /*何回目のdpか。初回は0*/) string {
 	if currentNode.parent == nil {
 		return converted
 	}
@@ -231,7 +232,7 @@ func dp(currentNode *node, template string, circuitCnt int /*何回目のdpか�
 		}
 
 		circuitCnt++
-		return dp(currentNode.parent, template, circuitCnt)
+		return dp(currentNode.parent, template, converted, circuitCnt)
 	}
 	return ""
 }
