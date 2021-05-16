@@ -76,58 +76,52 @@ func gen(input io.Reader) string {
 	return strings.TrimSpace(output)
 }
 
-// ここできちんとツリーの状態が作られれば、あとはどうにかなりそうな気がするけど、、ここが
-// TODO: 限界がきた。深さ優先探索の考え方で解く
+// 深さ優先探索的な考え方
 func genTree(scanner *bufio.Scanner) *node {
 	var rootNode *node
-	var parentNode *node
-	var prevNodeHierarchy int
-	for {
-		if !scanner.Scan() {
-			break
-		}
+	var tmpStack []*node
 
+	// rootを取得
+	if scanner.Scan() {
+		row := scanner.Text()
+		rootNode = newNode(row)
+		tmpStack = append(tmpStack, rootNode)
+	}
+
+	for scanner.Scan() {
 		row := scanner.Text()
 		currentNode := newNode(row)
 
-		// rootの場合
-		if parentNode == nil {
-			parentNode = currentNode
-			prevNodeHierarchy = 1
+		lastStackIndex := len(tmpStack) - 1
 
-			rootNode = currentNode
-		} else {
-			if currentNode.hierarchy == parentNode.hierarchy+1 {
-				currentNode.parent = parentNode
-				parentNode.children = append(parentNode.children, currentNode)
-			}
+		// 親+1の階層
+		if currentNode.hierarchy == tmpStack[lastStackIndex].hierarchy+1 {
+			currentNode.parent = tmpStack[lastStackIndex]
+			tmpStack[lastStackIndex].children = append(tmpStack[lastStackIndex].children, currentNode)
+			tmpStack = append(tmpStack, currentNode) // push
+			continue
+		}
 
-			if !scanner.Scan() {
+		// 最後のスタックと同階層
+		if currentNode.hierarchy == tmpStack[lastStackIndex].hierarchy {
+			tmpStack = tmpStack[:lastStackIndex] // pop
+
+			currentNode.parent = tmpStack[len(tmpStack)-1]
+			tmpStack[len(tmpStack)-1].children = append(tmpStack[len(tmpStack)-1].children, currentNode)
+			tmpStack = append(tmpStack, currentNode)
+			continue
+		}
+
+		// 最後のスタックよりrootに近い
+		for i := range tmpStack {
+			tmpStack = tmpStack[:lastStackIndex-i] // pop
+			if currentNode.hierarchy == tmpStack[len(tmpStack)-1].hierarchy+1 {
+				currentNode.parent = tmpStack[len(tmpStack)-1]
+				tmpStack[len(tmpStack)-1].children = append(tmpStack[len(tmpStack)-1].children, currentNode)
 				break
 			}
-			row = scanner.Text()
-			nextNode := newNode(row)
-
-			// 前行のノードと親ノードが異なる
-			if currentNode.hierarchy != prevNodeHierarchy {
-				prevNodeHierarchy = currentNode.hierarchy
-
-				// 現行のノード階層が次行のノード階層と異なる
-				if currentNode.hierarchy != nextNode.hierarchy {
-					parentNode = currentNode
-
-					// 次行ノードの親が現行ノード
-					if currentNode.hierarchy == (nextNode.hierarchy - 1) {
-						nextNode.parent = currentNode
-						currentNode.children = append(currentNode.children, nextNode)
-					}
-
-				} else {
-					nextNode.parent = parentNode
-					parentNode.children = append(parentNode.children, nextNode)
-				}
-			}
 		}
+
 	}
 
 	return rootNode
