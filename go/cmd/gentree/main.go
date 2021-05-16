@@ -92,6 +92,10 @@ func genTree(scanner *bufio.Scanner) *node {
 
 		lastStackIndex := len(tmpStack) - 1
 
+		if lastStackIndex < 0 {
+			continue
+		}
+
 		// 親+1の階層
 		if currentNode.hierarchy == tmpStack[lastStackIndex].hierarchy+1 {
 			currentNode.parent = tmpStack[lastStackIndex]
@@ -112,10 +116,18 @@ func genTree(scanner *bufio.Scanner) *node {
 
 		// 最後のスタックよりrootに近い
 		for i := range tmpStack {
+			fmt.Println("ininini", tmpStack[len(tmpStack)-1].name, currentNode.name)
+
 			tmpStack = tmpStack[:lastStackIndex-i] // pop
+
+			if len(tmpStack)-1 < 0 {
+				break
+			}
+
 			if currentNode.hierarchy == tmpStack[len(tmpStack)-1].hierarchy+1 {
 				currentNode.parent = tmpStack[len(tmpStack)-1]
 				tmpStack[len(tmpStack)-1].children = append(tmpStack[len(tmpStack)-1].children, currentNode)
+				tmpStack = append(tmpStack, currentNode) // push
 				break
 			}
 		}

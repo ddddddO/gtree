@@ -83,6 +83,23 @@ a
 │   └── o
 └── g`),
 		},
+		{
+			name: "case 6",
+			in: strings.NewReader(strings.TrimSpace(`
+- a
+	- vvv
+		- jjj
+	- ggg
+		- hhhh
+	- ggggg`)),
+			out: strings.TrimSpace(`
+a
+├── vvv
+│   └── jjj
+├── ggg
+│   └── hhhh
+└── ggggg`),
+		},
 	}
 
 	for _, tt := range tests {
