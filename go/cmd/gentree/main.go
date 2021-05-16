@@ -48,8 +48,6 @@ func (n *node) buildBranch() string {
 }
 
 func main() {
-	// s := `aa`
-	// r := strings.NewReader(s)
 	r := os.Stdin
 	fmt.Println(gen(r))
 }
@@ -156,6 +154,8 @@ func computeTree(currentNode *node) {
 
 const convertedEndTab = "└" + "─" + "─"
 
+const fourSpaces = "    "
+
 func convertEndTabTo(currentNode *node) string {
 	converted := ""
 	tabCnt := currentNode.hierarchy - 1
@@ -163,13 +163,13 @@ func convertEndTabTo(currentNode *node) string {
 		return converted
 	}
 
-	converted = dp(currentNode, convertedEndTab)
+	converted = dp(currentNode, convertedEndTab, 0)
 	if converted != "" {
 		return converted
 	}
 
 	for i := 0; i < tabCnt-1; i++ {
-		converted += "    "
+		converted += fourSpaces
 	}
 	converted += convertedEndTab
 	return converted
@@ -194,13 +194,13 @@ func convertIntermediateTabTo(currentNode *node) string {
 		return converted
 	}
 
-	converted = dp(currentNode, convertedIntermediateTab)
+	converted = dp(currentNode, convertedIntermediateTab, 0)
 	if converted != "" {
 		return converted
 	}
 
 	for i := 0; i < tabCnt-1; i++ {
-		converted += "    "
+		converted += fourSpaces
 	}
 	converted += convertedIntermediateTab
 	return converted
@@ -208,32 +208,37 @@ func convertIntermediateTabTo(currentNode *node) string {
 
 const tmp = "│   "
 
-func dp(currentNode *node, template string) string {
+func dp(currentNode *node, template string, circuitCnt int /*何回目のdpか。初回は0*/) string {
 	converted := ""
+	if currentNode.parent == nil {
+		return converted
+	}
 
 	// 親の親がいてかつ、親と同階層の下にノードがいる場合(k)
-	if currentNode.parent != nil && currentNode.parent.parent != nil {
+	if currentNode.parent.parent != nil {
 		children := currentNode.parent.parent.children // 親の親の子たち
 		for i := range children {
 			if currentNode.parent.name == children[i].name && len(children) > i+1 {
 				for j := 0; j < (currentNode.hierarchy - 2); j++ {
 					converted += tmp
 				}
+				for k := 0; k < circuitCnt; k++ {
+					converted += fourSpaces
+				}
 				converted += template
 				return converted
 			}
 		}
-	}
 
+		circuitCnt++
+		return dp(currentNode.parent, template, circuitCnt)
+	}
 	return ""
 }
-
-var output = ""
 
 // 枝を展開する
 func expandTree(node *node, output string) string {
 	output += node.buildBranch()
-
 	for i := range node.children {
 		output = expandTree(node.children[i], output)
 	}
