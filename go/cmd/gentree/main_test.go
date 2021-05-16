@@ -100,6 +100,33 @@ a
 │   └── hhhh
 └── ggggg`),
 		},
+		{
+			name: "case 7",
+			in: strings.NewReader(strings.TrimSpace(`
+- root
+	- child1
+	- child2
+		- chilchil
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- ppppp
+		- oooo
+	- eee`)),
+			out: strings.TrimSpace(`
+root
+├── child1
+├── child2
+│   └── chilchil
+├── dddd
+│   ├── kkkkkkk
+│   │   └── lllll
+│   │       ├── ffff
+│   │       └── ppppp
+│   └── oooo
+└── eee`),
+		},
 	}
 
 	for _, tt := range tests {
