@@ -71,8 +71,6 @@ func gen(input io.Reader) string {
 	computeTree(tree)
 	output := expandTree(tree, "")
 
-	fmt.Println("---")
-
 	return strings.TrimSpace(output)
 }
 
@@ -128,23 +126,15 @@ func genTree(scanner *bufio.Scanner) *node {
 }
 
 // 描画するための枝を確定するロジック
-// TODO:　あとは、ここで子のノードの個数とか同階層の上下にノードがあるか、とか見ていけば出来そうな気はする。
 func computeTree(currentNode *node) {
 	// rootでない
 	if currentNode.hierarchy != 1 {
-		fmt.Println("- debug -", len(currentNode.parent.children))
-		for i := range currentNode.parent.children {
-			fmt.Println(currentNode.parent.children[i].name)
-		}
-
 		// 親ノードの直接の子で最後の子
 		isParentUnderEndRow := currentNode.name == currentNode.parent.children[len(currentNode.parent.children)-1].name
 
 		if isParentUnderEndRow {
-			//currentNode.branch = convertEndTabTo(currentNode.hierarchy - 1)
 			currentNode.branch = convertEndTabTo(currentNode)
 		} else {
-			//currentNode.branch = convertIntermediateTabTo(currentNode.hierarchy - 1)
 			currentNode.branch = convertIntermediateTabTo(currentNode)
 		}
 	}
@@ -163,6 +153,22 @@ func convertEndTabTo(currentNode *node) string {
 		return converted
 	}
 
+	const tmp = "│   "
+	// memo: case 5のtとoとkkを確認する
+	// 親がいてかつ、その親の階層の下にノードがある場合(o)
+	if currentNode.parent != nil && currentNode.parent.parent != nil {
+		children := currentNode.parent.parent.children // 親の親の子たち
+		for i := range children {
+			if currentNode.parent.name == children[i].name && len(children) > i+1 {
+				for j := 0; j < (currentNode.hierarchy - 2); j++ {
+					converted += tmp
+				}
+				converted += convertedEndTab
+				return converted
+			}
+		}
+	}
+
 	for i := 0; i < tabCnt-1; i++ {
 		converted += "    "
 	}
@@ -177,6 +183,31 @@ func convertIntermediateTabTo(currentNode *node) string {
 	tabCnt := currentNode.hierarchy - 1
 	if tabCnt == 0 {
 		return converted
+	}
+
+	const tmp = "│   "
+	// memo: case 5のuとkを確認する
+	// 親がいてかつ、子がいる場合(u)
+	if currentNode.parent != nil && currentNode.children != nil {
+		for j := 0; j < (currentNode.hierarchy - 2); j++ {
+			converted += tmp
+		}
+		converted += convertedIntermediateTab
+		return converted
+	}
+
+	// 親の親がいてかつ、親と同階層の下にノードがいる場合(k)
+	if currentNode.parent != nil && currentNode.parent.parent != nil {
+		children := currentNode.parent.parent.children // 親の親の子たち
+		for i := range children {
+			if currentNode.parent.name == children[i].name && len(children) > i+1 {
+				for j := 0; j < (currentNode.hierarchy - 2); j++ {
+					converted += tmp
+				}
+				converted += convertedIntermediateTab
+				return converted
+			}
+		}
 	}
 
 	for i := 0; i < tabCnt-1; i++ {
