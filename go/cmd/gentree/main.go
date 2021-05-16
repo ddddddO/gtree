@@ -71,14 +71,22 @@ func gen(input io.Reader) string {
 	computeTree(tree)
 	output := expandTree(tree, "")
 
+	fmt.Println("---")
+
 	return strings.TrimSpace(output)
 }
 
+// ここできちんとツリーの状態が作られれば、あとはどうにかなりそうな気がするけど、、ここが
+// TODO: 限界がきた。深さ優先探索の考え方で解く
 func genTree(scanner *bufio.Scanner) *node {
 	var rootNode *node
 	var parentNode *node
 	var prevNodeHierarchy int
-	for scanner.Scan() {
+	for {
+		if !scanner.Scan() {
+			break
+		}
+
 		row := scanner.Text()
 		currentNode := newNode(row)
 
@@ -89,13 +97,35 @@ func genTree(scanner *bufio.Scanner) *node {
 
 			rootNode = currentNode
 		} else {
-			currentNode.parent = parentNode
-			parentNode.children = append(parentNode.children, currentNode)
+			if currentNode.hierarchy == parentNode.hierarchy+1 {
+				currentNode.parent = parentNode
+				parentNode.children = append(parentNode.children, currentNode)
+			}
 
-			// 前行のノードと親ノードが異なる場合
+			if !scanner.Scan() {
+				break
+			}
+			row = scanner.Text()
+			nextNode := newNode(row)
+
+			// 前行のノードと親ノードが異なる
 			if currentNode.hierarchy != prevNodeHierarchy {
-				parentNode = currentNode
 				prevNodeHierarchy = currentNode.hierarchy
+
+				// 現行のノード階層が次行のノード階層と異なる
+				if currentNode.hierarchy != nextNode.hierarchy {
+					parentNode = currentNode
+
+					// 次行ノードの親が現行ノード
+					if currentNode.hierarchy == (nextNode.hierarchy - 1) {
+						nextNode.parent = currentNode
+						currentNode.children = append(currentNode.children, nextNode)
+					}
+
+				} else {
+					nextNode.parent = parentNode
+					parentNode.children = append(parentNode.children, nextNode)
+				}
 			}
 		}
 	}
@@ -105,22 +135,32 @@ func genTree(scanner *bufio.Scanner) *node {
 
 // 描画するための枝を確定するロジック
 // TODO:　あとは、ここで子のノードの個数とか同階層の上下にノードがあるか、とか見ていけば出来そうな気はする。
-func computeTree(node *node) {
-	// root
-	if node.hierarchy == 1 {
-		node.branch = convertTab(node.hierarchy - 1)
-	} else {
-		node.branch = convertTab(node.hierarchy - 1)
+func computeTree(currentNode *node) {
+	// rootでない
+	if currentNode.hierarchy != 1 {
+		fmt.Println("- debug -", len(currentNode.parent.children))
+		for i := range currentNode.parent.children {
+			fmt.Println(currentNode.parent.children[i].name)
+		}
+
+		// 親ノードの直接の子で最後の子
+		isParentUnderEndRow := currentNode.name == currentNode.parent.children[len(currentNode.parent.children)-1].name
+
+		if isParentUnderEndRow {
+			currentNode.branch = convertEndTabTo(currentNode.hierarchy - 1)
+		} else {
+			currentNode.branch = convertIntermediateTabTo(currentNode.hierarchy - 1)
+		}
 	}
 
-	for i := range node.children {
-		computeTree(node.children[i])
+	for i := range currentNode.children {
+		computeTree(currentNode.children[i])
 	}
 }
 
-const convertedTab = "└" + "─" + "─"
+const convertedEndTab = "└" + "─" + "─"
 
-func convertTab(tabCnt int) string {
+func convertEndTabTo(tabCnt int) string {
 	converted := ""
 	if tabCnt == 0 {
 		return converted
@@ -129,7 +169,22 @@ func convertTab(tabCnt int) string {
 	for i := 0; i < tabCnt-1; i++ {
 		converted += "    "
 	}
-	converted += convertedTab
+	converted += convertedEndTab
+	return converted
+}
+
+const convertedIntermediateTab = "├" + "─" + "─"
+
+func convertIntermediateTabTo(tabCnt int) string {
+	converted := ""
+	if tabCnt == 0 {
+		return converted
+	}
+
+	for i := 0; i < tabCnt-1; i++ {
+		converted += "    "
+	}
+	converted += convertedIntermediateTab
 	return converted
 }
 
