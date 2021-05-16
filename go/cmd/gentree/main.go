@@ -141,9 +141,11 @@ func computeTree(currentNode *node) {
 		isParentUnderEndRow := currentNode.name == currentNode.parent.children[len(currentNode.parent.children)-1].name
 
 		if isParentUnderEndRow {
-			currentNode.branch = convertEndTabTo(currentNode.hierarchy - 1)
+			//currentNode.branch = convertEndTabTo(currentNode.hierarchy - 1)
+			currentNode.branch = convertEndTabTo(currentNode)
 		} else {
-			currentNode.branch = convertIntermediateTabTo(currentNode.hierarchy - 1)
+			//currentNode.branch = convertIntermediateTabTo(currentNode.hierarchy - 1)
+			currentNode.branch = convertIntermediateTabTo(currentNode)
 		}
 	}
 
@@ -154,8 +156,9 @@ func computeTree(currentNode *node) {
 
 const convertedEndTab = "└" + "─" + "─"
 
-func convertEndTabTo(tabCnt int) string {
+func convertEndTabTo(currentNode *node) string {
 	converted := ""
+	tabCnt := currentNode.hierarchy - 1
 	if tabCnt == 0 {
 		return converted
 	}
@@ -169,8 +172,9 @@ func convertEndTabTo(tabCnt int) string {
 
 const convertedIntermediateTab = "├" + "─" + "─"
 
-func convertIntermediateTabTo(tabCnt int) string {
+func convertIntermediateTabTo(currentNode *node) string {
 	converted := ""
+	tabCnt := currentNode.hierarchy - 1
 	if tabCnt == 0 {
 		return converted
 	}
