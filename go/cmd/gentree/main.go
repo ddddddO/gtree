@@ -47,6 +47,34 @@ func (n *node) buildBranch() string {
 	return n.branch + " " + n.name + fmt.Sprintln()
 }
 
+type stack struct {
+	nodes []*node
+}
+
+func newStack() *stack {
+	return &stack{}
+}
+
+func (s *stack) push(n *node) {
+	s.nodes = append(s.nodes, n)
+}
+
+func (s *stack) pop() *node {
+	lastIndex := len(s.nodes) - 1
+	tmp := s.nodes[lastIndex]
+	s.nodes = s.nodes[:lastIndex]
+	return tmp
+}
+
+func (s *stack) size() int {
+	return len(s.nodes)
+}
+
+func (s *stack) lastStackedHierarchy() int {
+	lastIndex := len(s.nodes) - 1
+	return s.nodes[lastIndex].hierarchy
+}
+
 func main() {
 	r := os.Stdin
 	fmt.Println(gen(r))
@@ -75,59 +103,55 @@ func gen(input io.Reader) string {
 // 深さ優先探索的な考え方
 func genTree(scanner *bufio.Scanner) *node {
 	var rootNode *node
-	var tmpStack []*node
+	tmpStack := newStack()
 
 	// rootを取得
 	if scanner.Scan() {
 		row := scanner.Text()
 		rootNode = newNode(row)
-		tmpStack = append(tmpStack, rootNode)
+		tmpStack.push(rootNode)
 	}
 
 	for scanner.Scan() {
 		row := scanner.Text()
 		currentNode := newNode(row)
 
-		lastStackIndex := len(tmpStack) - 1
-
-		if lastStackIndex < 0 {
-			continue
-		}
-
 		// 親+1の階層
-		if currentNode.hierarchy == tmpStack[lastStackIndex].hierarchy+1 {
-			currentNode.parent = tmpStack[lastStackIndex]
-			tmpStack[lastStackIndex].children = append(tmpStack[lastStackIndex].children, currentNode)
-			tmpStack = append(tmpStack, currentNode) // push
+		if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
+			lastStackedNode := tmpStack.pop()
+			currentNode.parent = lastStackedNode
+			lastStackedNode.children = append(lastStackedNode.children, currentNode)
+			tmpStack.push(lastStackedNode)
+			tmpStack.push(currentNode)
 			continue
 		}
 
 		// 最後のスタックと同階層
-		if currentNode.hierarchy == tmpStack[lastStackIndex].hierarchy {
-			tmpStack = tmpStack[:lastStackIndex] // pop
+		if currentNode.hierarchy == tmpStack.lastStackedHierarchy() {
+			_ = tmpStack.pop()
 
-			currentNode.parent = tmpStack[len(tmpStack)-1]
-			tmpStack[len(tmpStack)-1].children = append(tmpStack[len(tmpStack)-1].children, currentNode)
-			tmpStack = append(tmpStack, currentNode)
+			lastStackedNode := tmpStack.pop()
+			currentNode.parent = lastStackedNode
+			lastStackedNode.children = append(lastStackedNode.children, currentNode)
+			tmpStack.push(lastStackedNode)
+			tmpStack.push(currentNode)
 			continue
 		}
 
 		// 最後のスタックよりrootに近い
-		for i := range tmpStack {
-			tmpStack = tmpStack[:lastStackIndex-i] // pop
+		stackSize := tmpStack.size()
+		for i := 0; i < stackSize; i++ {
+			_ = tmpStack.pop()
 
-			if len(tmpStack)-1 < 0 {
-				break
-			}
-
-			if currentNode.hierarchy == tmpStack[len(tmpStack)-1].hierarchy+1 {
-				currentNode.parent = tmpStack[len(tmpStack)-1]
-				tmpStack[len(tmpStack)-1].children = append(tmpStack[len(tmpStack)-1].children, currentNode)
-				tmpStack = append(tmpStack, currentNode) // push
+			if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
+				lastStackedNode := tmpStack.pop()
+				currentNode.parent = lastStackedNode
+				lastStackedNode.children = append(lastStackedNode.children, currentNode)
+				tmpStack.push(lastStackedNode)
+				tmpStack.push(currentNode)
 				break
 			}
 		}
-
 	}
 
 	return rootNode
