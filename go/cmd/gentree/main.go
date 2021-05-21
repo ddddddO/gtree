@@ -75,6 +75,7 @@ func (s *stack) lastStackedHierarchy() int {
 	return s.nodes[lastIndex].hierarchy
 }
 
+// TODO: -f <markdownファイルパス> で処理できるようにする。
 func main() {
 	r := os.Stdin
 	fmt.Println(gen(r))
