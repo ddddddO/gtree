@@ -27,7 +27,8 @@ a
 └── gggg
 ```
 
-or `gentree -f testdata/sample1.md` or `cat testdata/sample1.md | gentree -f -`
+or `gentree -f testdata/sample1.md`
+or `cat testdata/sample1.md | gentree -f -`
 
 ```sh
 23:43:06 > cat testdata/sample2.md | gentree
