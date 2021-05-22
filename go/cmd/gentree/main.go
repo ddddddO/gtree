@@ -131,10 +131,10 @@ func genTree(scanner *bufio.Scanner) *node {
 
 		// 親+1の階層
 		if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
-			lastStackedNode := tmpStack.pop()
-			currentNode.parent = lastStackedNode
-			lastStackedNode.children = append(lastStackedNode.children, currentNode)
-			tmpStack.push(lastStackedNode)
+			parentNode := tmpStack.pop()
+			currentNode.parent = parentNode
+			parentNode.children = append(parentNode.children, currentNode)
+			tmpStack.push(parentNode)
 			tmpStack.push(currentNode)
 			continue
 		}
@@ -143,10 +143,10 @@ func genTree(scanner *bufio.Scanner) *node {
 		if currentNode.hierarchy == tmpStack.lastStackedHierarchy() {
 			_ = tmpStack.pop()
 
-			lastStackedNode := tmpStack.pop()
-			currentNode.parent = lastStackedNode
-			lastStackedNode.children = append(lastStackedNode.children, currentNode)
-			tmpStack.push(lastStackedNode)
+			parentNode := tmpStack.pop()
+			currentNode.parent = parentNode
+			parentNode.children = append(parentNode.children, currentNode)
+			tmpStack.push(parentNode)
 			tmpStack.push(currentNode)
 			continue
 		}
@@ -157,10 +157,10 @@ func genTree(scanner *bufio.Scanner) *node {
 			_ = tmpStack.pop()
 
 			if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
-				lastStackedNode := tmpStack.pop()
-				currentNode.parent = lastStackedNode
-				lastStackedNode.children = append(lastStackedNode.children, currentNode)
-				tmpStack.push(lastStackedNode)
+				parentNode := tmpStack.pop()
+				currentNode.parent = parentNode
+				parentNode.children = append(parentNode.children, currentNode)
+				tmpStack.push(parentNode)
 				tmpStack.push(currentNode)
 				break
 			}
