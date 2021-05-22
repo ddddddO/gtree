@@ -107,7 +107,7 @@ func gen(input io.Reader) string {
 
 	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
 	tree := genTree(scanner)
-	computeTree(tree)
+	determineTreeBranch(tree)
 	output := expandTree(tree, "")
 
 	return strings.TrimSpace(output)
@@ -159,7 +159,7 @@ func genTree(scanner *bufio.Scanner) *node {
 }
 
 // 描画するための枝を確定するロジック
-func computeTree(currentNode *node) {
+func determineTreeBranch(currentNode *node) {
 	// rootでない
 	if currentNode.hierarchy != 1 {
 		// 親ノードの直接の子で最後の子
@@ -173,7 +173,7 @@ func computeTree(currentNode *node) {
 	}
 
 	for i := range currentNode.children {
-		computeTree(currentNode.children[i])
+		determineTreeBranch(currentNode.children[i])
 	}
 }
 
