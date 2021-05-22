@@ -131,11 +131,7 @@ func genTree(scanner *bufio.Scanner) *node {
 
 		// 親+1の階層
 		if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
-			parentNode := tmpStack.pop()
-			currentNode.parent = parentNode
-			parentNode.children = append(parentNode.children, currentNode)
-			tmpStack.push(parentNode)
-			tmpStack.push(currentNode)
+			computeNode(tmpStack, currentNode)
 			continue
 		}
 
@@ -145,17 +141,21 @@ func genTree(scanner *bufio.Scanner) *node {
 			_ = tmpStack.pop()
 
 			if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
-				parentNode := tmpStack.pop()
-				currentNode.parent = parentNode
-				parentNode.children = append(parentNode.children, currentNode)
-				tmpStack.push(parentNode)
-				tmpStack.push(currentNode)
+				computeNode(tmpStack, currentNode)
 				break
 			}
 		}
 	}
 
 	return rootNode
+}
+
+func computeNode(tmpStack *stack, currentNode *node) {
+	parentNode := tmpStack.pop()
+	currentNode.parent = parentNode
+	parentNode.children = append(parentNode.children, currentNode)
+	tmpStack.push(parentNode)
+	tmpStack.push(currentNode)
 }
 
 // 描画するための枝を確定するロジック
