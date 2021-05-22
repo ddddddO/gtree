@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -75,23 +77,33 @@ func (s *stack) lastStackedHierarchy() int {
 	return s.nodes[lastIndex].hierarchy
 }
 
-// TODO: -f <markdownファイルパス> で処理できるようにする。
 func main() {
-	r := os.Stdin
-	fmt.Println(gen(r))
+	var f string
+	flag.StringVar(&f, "f", "", "markdown file path")
+	flag.Parse()
+
+	var input io.Reader
+	if f == "" || f == "-" {
+		input = os.Stdin
+	} else {
+		filePath, err := filepath.Abs(f)
+		if err != nil {
+			fmt.Errorf("%+v", err)
+			os.Exit(1)
+		}
+		input, err = os.Open(filePath)
+		if err != nil {
+			fmt.Errorf("%+v", err)
+			os.Exit(1)
+		}
+		defer input.(*os.File).Close()
+	}
+
+	fmt.Println(gen(input))
 }
 
 func gen(input io.Reader) string {
-	var scanner *bufio.Scanner
-
-	switch input.(type) {
-	case *strings.Reader:
-		scanner = bufio.NewScanner(input)
-	case *os.File:
-		scanner = bufio.NewScanner(input)
-	default:
-		panic("unsupported type")
-	}
+	scanner := bufio.NewScanner(input)
 
 	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
 	tree := genTree(scanner)
