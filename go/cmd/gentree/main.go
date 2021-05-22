@@ -139,19 +139,7 @@ func genTree(scanner *bufio.Scanner) *node {
 			continue
 		}
 
-		// 最後のスタックと同階層
-		if currentNode.hierarchy == tmpStack.lastStackedHierarchy() {
-			_ = tmpStack.pop()
-
-			parentNode := tmpStack.pop()
-			currentNode.parent = parentNode
-			parentNode.children = append(parentNode.children, currentNode)
-			tmpStack.push(parentNode)
-			tmpStack.push(currentNode)
-			continue
-		}
-
-		// 最後のスタックよりrootに近い
+		// 最後のスタックと同階層かよりrootに近い
 		stackSize := tmpStack.size()
 		for i := 0; i < stackSize; i++ {
 			_ = tmpStack.pop()
