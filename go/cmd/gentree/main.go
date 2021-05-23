@@ -233,8 +233,7 @@ func convertIntermediateTabTo(currentNode *node) string {
 
 const tmp = "│   "
 
-// FIXME: rootまで遡らないと多分ダメ
-//        多分、ノードからrootまで親を一つずつ遡って、一つずつノード側から枝を構成する記号を組み立てて行かないとダメっぽいし、そうした方が保守できそうな形になりそう。
+// FIXME: rootから降りて各階層の枝を確定させる必要がありそう。子からrootは多分厳しい
 func dp(currentNode *node, template string, converted string, circuitCnt int /*何回目のdpか。初回は0*/) string {
 	if currentNode.parent == nil {
 		return converted
