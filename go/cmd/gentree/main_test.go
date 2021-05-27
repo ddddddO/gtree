@@ -158,6 +158,51 @@ root
 │                       └── AAAAAAA
 └── eee`),
 		},
+		// FIXME: testableに
+		// 		{
+		// 			name: "case 9(indent 2spaces)",
+		// 			in: strings.NewReader(strings.TrimSpace(`
+		// - a
+		//   - i
+		//     - u
+		//       - k
+		//       - kk
+		//     - t
+		//   - e
+		//     - o
+		//   - g`)),
+		// 			out: strings.TrimSpace(`
+		// a
+		// ├── i
+		// │   ├── u
+		// │   │   ├── k
+		// │   │   └── kk
+		// │   └── t
+		// ├── e
+		// │   └── o
+		// └── g`)},
+		// 		{
+		// 			name: "case 10(indent 4spaces)",
+		// 			in: strings.NewReader(strings.TrimSpace(`
+		// - a
+		//     - i
+		//         - u
+		//             - k
+		//             - kk
+		//         - t
+		//     - e
+		//         - o
+		//     - g`)),
+		// 			out: strings.TrimSpace(`
+		// a
+		// ├── i
+		// │   ├── u
+		// │   │   ├── k
+		// │   │   └── kk
+		// │   └── t
+		// ├── e
+		// │   └── o
+		// └── g`)},
 	}
 
 	for _, tt := range tests {

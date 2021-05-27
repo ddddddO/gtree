@@ -18,17 +18,32 @@ type node struct {
 	children  []*node
 }
 
+var (
+	isTwoSpaces  bool
+	isFourSpaces bool
+)
+
 func newNode(row string) *node {
 	myselfNode := &node{}
 	name := ""
 	hierarchy := 1
 
+	spaceCnt := 0
 	for _, r := range row {
 		// https://ja.wikipedia.org/wiki/ASCII
 		switch r {
 		case 45: // -
+			if isTwoSpaces && spaceCnt%2 == 0 {
+				tmp := spaceCnt / 2
+				hierarchy += tmp
+			}
+			if isFourSpaces && spaceCnt%4 == 0 {
+				tmp := spaceCnt / 4
+				hierarchy += tmp
+			}
 			continue
 		case 32: // space
+			spaceCnt++
 			continue
 		case 9: // tab
 			hierarchy++
@@ -80,7 +95,14 @@ func (s *stack) lastStackedHierarchy() int {
 func main() {
 	var f string
 	flag.StringVar(&f, "f", "", "markdown file path")
+	flag.BoolVar(&isTwoSpaces, "ts", false, "for indent two spaces")
+	flag.BoolVar(&isFourSpaces, "fs", false, "for indent four spaces")
 	flag.Parse()
+
+	if isTwoSpaces && isFourSpaces {
+		fmt.Errorf("%s", `choose either "ts" or "fs".`)
+		os.Exit(1)
+	}
 
 	var input io.Reader
 	if f == "" || f == "-" {
