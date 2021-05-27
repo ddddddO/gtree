@@ -2,9 +2,13 @@
 
 ## description
 - cliです。
-- マークダウン形式の入力から、treeコマンドで出力するような結果が出力されます。
+- マークダウンファイルの入力で、treeコマンドで出力するような結果が出力されます。
 - マークダウンファイルは、testdataディレクトリ内のファイルを参考に作成してください。
-    - ディレクトリ階層はインデントで表します。タブでインデントしてください。
+    - ディレクトリ階層はインデントで表します。
+    - インデントは以下のいずれかで統一してください。
+        - タブ
+        - 半角スペース２つ（`-ts`フラグ必須）
+        - 半角スペース４つ（`-fs`フラグ必須）
 - バグがあります。とは言っても手でツリーを0から作成するよりは幾分ましっちゃましと思います。
 
 ## installation
@@ -27,7 +31,7 @@ a
 └── gggg
 ```
 
-or `gentree -f testdata/sample1.md`
+or `gentree -f testdata/sample1.md`<br>
 or `cat testdata/sample1.md | gentree -f -`
 
 ```sh
@@ -44,6 +48,38 @@ root
 │   └── oooo
 └── eee
 ```
+
+---
+- Two spaces indent
+
+```sh
+01:15:25 > cat testdata/sample4.md | gentree -ts
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+```
+
+- Four spaces indent
+
+```sh
+01:16:46 > cat testdata/sample5.md | gentree -fs
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+```
+
 
 ---
 - TODO: Fix bug
