@@ -84,11 +84,6 @@ func (s *stack) size() int {
 	return len(s.nodes)
 }
 
-func (s *stack) lastStackedHierarchy() int {
-	lastIndex := len(s.nodes) - 1
-	return s.nodes[lastIndex].hierarchy
-}
-
 func main() {
 	var f string
 	flag.StringVar(&f, "f", "", "markdown file path")
@@ -132,7 +127,6 @@ func gen(input io.Reader) string {
 	return strings.TrimSpace(output)
 }
 
-// 深さ優先探索的な考え方
 func generateTree(scanner *bufio.Scanner) *node {
 	var rootNode *node
 	tmpStack := newStack()
@@ -148,19 +142,14 @@ func generateTree(scanner *bufio.Scanner) *node {
 		row := scanner.Text()
 		currentNode := newNode(row)
 
-		// 親+1の階層
-		if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
-			computeNode(tmpStack, currentNode)
-			continue
-		}
-
-		// 最後のスタックと同階層かよりrootに近い
+		// 深さ優先探索的な考え方
 		stackSize := tmpStack.size()
 		for i := 0; i < stackSize; i++ {
-			_ = tmpStack.pop()
+			tmpNode := tmpStack.pop()
 
-			if currentNode.hierarchy == tmpStack.lastStackedHierarchy()+1 {
-				computeNode(tmpStack, currentNode)
+			if currentNode.hierarchy == tmpNode.hierarchy+1 {
+				parentNode := tmpNode
+				computeNode(tmpStack, currentNode, parentNode)
 				break
 			}
 		}
@@ -169,8 +158,7 @@ func generateTree(scanner *bufio.Scanner) *node {
 	return rootNode
 }
 
-func computeNode(tmpStack *stack, currentNode *node) {
-	parentNode := tmpStack.pop()
+func computeNode(tmpStack *stack, currentNode, parentNode *node) {
 	currentNode.parent = parentNode
 	parentNode.children = append(parentNode.children, currentNode)
 	tmpStack.push(parentNode)
@@ -189,7 +177,7 @@ func determineTreeBranch(currentNode *node) {
 
 	parentNode := currentNode.parent
 	lastChildIndex := len(parentNode.children) - 1
-	// 階層の最後のノードか
+	// 階層の最後のノード
 	if currentNode.name == parentNode.children[lastChildIndex].name {
 		currentNode.branch += "└──"
 	} else { // 階層の途中のノード
