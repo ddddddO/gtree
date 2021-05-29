@@ -9,7 +9,6 @@
         - タブ
         - 半角スペース２つ（`-ts`フラグ必須）
         - 半角スペース４つ（`-fs`フラグ必須）
-- バグがあります。とは言っても手でツリーを0から作成するよりは幾分ましっちゃましと思います。
 
 ## installation
 ```sh
@@ -80,9 +79,8 @@ a
 └── g
 ```
 
+- Fixed bug!(2021/05/29)
 
----
-- TODO: Fix bug
 
 ```sh
 00:16:59 > cat testdata/sample3.md | gentree
@@ -94,6 +92,23 @@ root
 │   │   │   ├── LLL
 │   │   │   │   └── WWWWW
 │   │   │   │       └── ZZZZZ
+│           └── ppppp
+│               └── KKK
+│                   └── 1111111
+│                       └── AAAAAAA
+└── eee
+```
+↓
+```sh
+22:21:29 > cat testdata/sample3.md | gentree
+root
+├── dddd
+│   └── kkkkkkk
+│       └── lllll
+│           ├── ffff
+│           ├── LLL
+│           │   └── WWWWW
+│           │       └── ZZZZZ
 │           └── ppppp
 │               └── KKK
 │                   └── 1111111

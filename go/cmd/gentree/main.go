@@ -179,105 +179,44 @@ func computeNode(tmpStack *stack, currentNode *node) {
 
 // 描画するための枝を確定するロジック
 func determineTreeBranch(currentNode *node) {
-	// rootでない
-	if currentNode.hierarchy != 1 {
-		// 親ノードの直接の子で最後の子
-		isParentUnderEndRow := currentNode.name == currentNode.parent.children[len(currentNode.parent.children)-1].name
-
-		if isParentUnderEndRow {
-			currentNode.branch = convertEndTabTo(currentNode)
-		} else {
-			currentNode.branch = convertIntermediateTabTo(currentNode)
+	// root
+	if currentNode.hierarchy == 1 {
+		for i := range currentNode.children {
+			determineTreeBranch(currentNode.children[i])
 		}
+		return
+	}
+
+	parentNode := currentNode.parent
+	lastChildIndex := len(parentNode.children) - 1
+	// 階層の最後のノードか
+	if currentNode.name == parentNode.children[lastChildIndex].name {
+		currentNode.branch += "└──"
+	} else { // 階層の途中のノード
+		currentNode.branch += "├──"
+	}
+
+	// rootまで親を遡って枝を構成する
+	tmpNode := parentNode
+	for {
+		// rootまで遡った
+		if tmpNode.parent == nil {
+			break
+		}
+
+		tmpParent := tmpNode.parent
+		lastChildIndex := len(tmpParent.children) - 1
+		if tmpNode.name == tmpParent.children[lastChildIndex].name {
+			currentNode.branch = "    " + currentNode.branch
+		} else {
+			currentNode.branch = "│   " + currentNode.branch
+		}
+		tmpNode = tmpParent
 	}
 
 	for i := range currentNode.children {
 		determineTreeBranch(currentNode.children[i])
 	}
-}
-
-const convertedEndTab = "└" + "─" + "─"
-
-const fourSpaces = "    "
-
-func convertEndTabTo(currentNode *node) string {
-	converted := ""
-	tabCnt := currentNode.hierarchy - 1
-	if tabCnt == 0 {
-		return converted
-	}
-
-	converted = dp(currentNode, convertedEndTab, converted, 0)
-	if converted != "" {
-		return converted
-	}
-
-	for i := 0; i < tabCnt-1; i++ {
-		converted += fourSpaces
-	}
-	converted += convertedEndTab
-	return converted
-}
-
-const convertedIntermediateTab = "├" + "─" + "─"
-
-func convertIntermediateTabTo(currentNode *node) string {
-	converted := ""
-	tabCnt := currentNode.hierarchy - 1
-	if tabCnt == 0 {
-		return converted
-	}
-
-	// memo: case 5のuとkを確認する
-	// 親がいてかつ、子がいる場合(u)
-	if currentNode.parent != nil && currentNode.children != nil {
-		for j := 0; j < (currentNode.hierarchy - 2); j++ {
-			converted += tmp
-		}
-		converted += convertedIntermediateTab
-		return converted
-	}
-
-	converted = dp(currentNode, convertedIntermediateTab, converted, 0)
-	if converted != "" {
-		return converted
-	}
-
-	for i := 0; i < tabCnt-1; i++ {
-		converted += fourSpaces
-	}
-	converted += convertedIntermediateTab
-	return converted
-}
-
-const tmp = "│   "
-
-// FIXME: rootから降りて各階層の枝を確定させる必要がありそう。子からrootは多分厳しい
-func dp(currentNode *node, template string, converted string, circuitCnt int /*何回目のdpか。初回は0*/) string {
-	if currentNode.parent == nil {
-		return converted
-	}
-
-	// 親の親がいてかつ、親と同階層の下にノードがいる場合(k)
-	if currentNode.parent.parent != nil {
-		children := currentNode.parent.parent.children // 親の親の子たち
-		for i := range children {
-			if currentNode.parent.name == children[i].name && len(children) > i+1 {
-				for j := 0; j < (currentNode.hierarchy - 2); j++ {
-					converted += tmp
-				}
-				for k := 0; k < circuitCnt; k++ {
-					converted += fourSpaces
-				}
-				converted += template
-				return converted
-			}
-		}
-
-		circuitCnt++
-		return dp(currentNode.parent, template, converted, circuitCnt)
-	}
-	return ""
 }
 
 // 枝を展開する
