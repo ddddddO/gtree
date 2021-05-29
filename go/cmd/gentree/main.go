@@ -125,7 +125,7 @@ func gen(input io.Reader) string {
 	scanner := bufio.NewScanner(input)
 
 	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
-	tree := genTree(scanner)
+	tree := generateTree(scanner)
 	determineTreeBranch(tree)
 	output := expandTree(tree, "")
 
@@ -133,7 +133,7 @@ func gen(input io.Reader) string {
 }
 
 // 深さ優先探索的な考え方
-func genTree(scanner *bufio.Scanner) *node {
+func generateTree(scanner *bufio.Scanner) *node {
 	var rootNode *node
 	tmpStack := newStack()
 
