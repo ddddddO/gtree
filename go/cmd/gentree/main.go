@@ -41,13 +41,10 @@ func newNode(row string) *node {
 				tmp := spaceCnt / 4
 				hierarchy += tmp
 			}
-			continue
 		case 32: // space
 			spaceCnt++
-			continue
 		case 9: // tab
 			hierarchy++
-			continue
 		default: // directry or file name char
 			name += string(r)
 		}
