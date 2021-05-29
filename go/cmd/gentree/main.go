@@ -158,11 +158,11 @@ func generateTree(scanner *bufio.Scanner) *node {
 	return rootNode
 }
 
-func computeNode(tmpStack *stack, currentNode, parentNode *node) {
+func computeNode(stack *stack, currentNode, parentNode *node) {
 	currentNode.parent = parentNode
 	parentNode.children = append(parentNode.children, currentNode)
-	tmpStack.push(parentNode)
-	tmpStack.push(currentNode)
+	stack.push(parentNode)
+	stack.push(currentNode)
 }
 
 // 描画するための枝を確定するロジック
