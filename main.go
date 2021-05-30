@@ -85,6 +85,13 @@ func (s *stack) size() int {
 }
 
 func main() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Printf("failed to gentree...\nplease review the file format.\nhint: %s\n", err)
+			os.Exit(1)
+		}
+	}()
+
 	var f string
 	flag.StringVar(&f, "f", "", "markdown file path")
 	flag.BoolVar(&isTwoSpaces, "ts", false, "for indent two spaces")
