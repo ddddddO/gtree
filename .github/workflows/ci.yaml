@@ -1,0 +1,18 @@
+name: ci
+on: [push]
+
+jobs:
+  test:
+    name: go test
+    runs-on: ubuntu-latest
+    steps:
+      - name: set up
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+
+      - name: checkout
+        uses: actions/checkout@v1
+
+      - name: test
+        run: go test ./... -v
