@@ -1,1 +1,0 @@
-# client↔server間で対話
