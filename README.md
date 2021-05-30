@@ -1,14 +1,14 @@
 # gentree
 
 ## description
-- cliです。
-- マークダウンファイルの入力で、treeコマンドで出力するような結果が出力されます。
-- マークダウンファイルは、testdataディレクトリ内のファイルを参考に作成してください。
-    - ディレクトリ階層はインデントで表します。
-    - インデントは以下のいずれかで統一してください。
-        - タブ
-        - 半角スペース２つ（`-ts`フラグ必須）
-        - 半角スペース４つ（`-fs`フラグ必須）
+- CLI.
+- When you enter the markdown file, the tree command result is output.
+- Create the markdown file by referring to the file in the `testdata/` directory.
+    - The directory hierarchy is represented by indentation.
+    - Indent should be unified by one of the following.
+        - Tab
+        - Two half-width spaces（required option: `-ts`）
+        - Four half-width spaces（required option: `-fs`）
 
 ## installation
 ```sh
@@ -88,6 +88,8 @@ a
 │   └── o
 └── g
 ```
+
+---
 
 - Fixed bug!(2021/05/29)
 
