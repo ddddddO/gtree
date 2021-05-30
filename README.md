@@ -1,5 +1,7 @@
 # gentree
 
+[![ci](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml)
+
 ## description
 - CLI.
 - When you enter the markdown file, the tree command result is output.
