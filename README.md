@@ -34,18 +34,28 @@ or `gentree -f testdata/sample1.md`<br>
 or `cat testdata/sample1.md | gentree -f -`
 
 ```sh
-23:43:06 > cat testdata/sample2.md | gentree
-root
-├── child1
-├── child2
-│   └── chilchil
-├── dddd
-│   ├── kkkkkkk
-│   │   └── lllll
-│   │       ├── ffff
-│   │       └── ppppp
-│   └── oooo
-└── eee
+16:31:42 > cat testdata/sample2.md | gentree
+k8s_resources
+├── (Tier3)
+│   └── (Tier2)
+│       └── (Tier1)
+│           └── (Tier0)
+├── Deployments
+│   └── ReplicaSet
+│       └── Pod
+│           └── containers
+├── CronJob
+│   └── Job
+│       └── Pod
+│           └── containers
+├── (empty1)
+│   └── DaemonSet
+│       └── Pod
+│           └── containers
+└── (empty2)
+    └── StatefulSet
+        └── Pod
+            └── containers
 ```
 
 ---

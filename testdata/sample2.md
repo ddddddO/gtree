@@ -1,11 +1,21 @@
-- root
-	- child1
-	- child2
-		- chilchil
-	- dddd
-		- kkkkkkk
-			- lllll
-				- ffff
-				- ppppp
-		- oooo
-	- eee
+- k8s_resources
+	- (Tier3)
+		- (Tier2)
+			- (Tier1)
+				- (Tier0)
+	- Deployments
+		- ReplicaSet
+			- Pod
+				- containers
+	- CronJob
+		- Job
+			- Pod
+				- containers
+	- (empty1)
+		- DaemonSet
+			- Pod
+				- containers
+	- (empty2)
+		- StatefulSet
+			- Pod
+				- containers
