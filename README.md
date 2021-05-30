@@ -12,7 +12,7 @@
 
 ## installation
 ```sh
-go get github.com/ddddddO/work/go/cmd/gentree
+go get github.com/ddddddO/gentree
 ```
 
 ## how to use
