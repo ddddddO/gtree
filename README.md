@@ -2,6 +2,49 @@
 
 [![ci](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml)
 
+
+## demo
+
+### input
+
+```sh
+23:23:26 > cat testdata/sample3.md
+- root
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+```
+
+### output
+
+```
+23:25:09 > cat testdata/sample3.md | gentree
+root
+├── dddd
+│   └── kkkkkkk
+│       └── lllll
+│           ├── ffff
+│           ├── LLL
+│           │   └── WWWWW
+│           │       └── ZZZZZ
+│           └── ppppp
+│               └── KKK
+│                   └── 1111111
+│                       └── AAAAAAA
+└── eee
+```
+
+
+
 ## description
 - CLI.
 - When you enter the markdown file, the tree command result is output.
@@ -32,8 +75,8 @@ a
 └── gggg
 ```
 
-or `gentree -f testdata/sample1.md`<br>
-or `cat testdata/sample1.md | gentree -f -`
+- or `gentree -f testdata/sample1.md`<br>
+- or `cat testdata/sample1.md | gentree -f -`
 
 ```sh
 16:31:42 > cat testdata/sample2.md | gentree
@@ -89,43 +132,4 @@ a
 ├── e
 │   └── o
 └── g
-```
-
----
-
-- Fixed bug!(2021/05/29)
-
-
-```sh
-00:16:59 > cat testdata/sample3.md | gentree
-root
-├── dddd
-│   └── kkkkkkk
-│       └── lllll
-│           ├── ffff
-│   │   │   ├── LLL
-│   │   │   │   └── WWWWW
-│   │   │   │       └── ZZZZZ
-│           └── ppppp
-│               └── KKK
-│                   └── 1111111
-│                       └── AAAAAAA
-└── eee
-```
-↓
-```sh
-22:21:29 > cat testdata/sample3.md | gentree
-root
-├── dddd
-│   └── kkkkkkk
-│       └── lllll
-│           ├── ffff
-│           ├── LLL
-│           │   └── WWWWW
-│           │       └── ZZZZZ
-│           └── ppppp
-│               └── KKK
-│                   └── 1111111
-│                       └── AAAAAAA
-└── eee
 ```
