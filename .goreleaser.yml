@@ -6,7 +6,7 @@ before:
     - go mod tidy
 builds:
   - main: .
-    binary: git-bump
+    binary: gentree
     ldflags:
       - -s -w
       - -X main.Version={{.Version}}
