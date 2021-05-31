@@ -60,6 +60,9 @@ root
 go get github.com/ddddddO/gentree
 ```
 
+or, download from https://github.com/ddddddO/gentree/releases.
+
+
 ## how to use
 
 ```sh
