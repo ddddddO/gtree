@@ -83,6 +83,10 @@ a
 - or `gentree -f testdata/sample1.md`<br>
 - or `cat testdata/sample1.md | gentree -f -`
 
+---
+
+- Usage other than representing a directory.
+
 ```sh
 16:31:42 > cat testdata/sample2.md | gentree
 k8s_resources
