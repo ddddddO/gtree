@@ -2,8 +2,10 @@
 
 [![ci](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml)
 
+markdown to tree.
 
-## demo
+
+## Demo
 
 ### input
 
@@ -45,7 +47,7 @@ root
 
 
 
-## description
+## Description
 - CLI.
 - When you enter the markdown file, the tree command result is output.
 - Create the markdown file by referring to the file in the `testdata/` directory.
@@ -55,7 +57,7 @@ root
         - Two half-width spaces（required option: `-ts`）
         - Four half-width spaces（required option: `-fs`）
 
-## installation
+## Installation
 ```sh
 go get github.com/ddddddO/gentree
 ```
@@ -63,7 +65,7 @@ go get github.com/ddddddO/gentree
 or, download from https://github.com/ddddddO/gentree/releases.
 
 
-## how to use
+## Usage
 
 ```sh
 19:17:07 > cat testdata/sample1.md | gentree
@@ -88,22 +90,22 @@ k8s_resources
 │   └── (Tier2)
 │       └── (Tier1)
 │           └── (Tier0)
-├── Deployments
+├── Deployment
 │   └── ReplicaSet
 │       └── Pod
-│           └── containers
+│           └── container(s)
 ├── CronJob
 │   └── Job
 │       └── Pod
-│           └── containers
+│           └── container(s)
 ├── (empty1)
 │   └── DaemonSet
 │       └── Pod
-│           └── containers
+│           └── container(s)
 └── (empty2)
     └── StatefulSet
         └── Pod
-            └── containers
+            └── container(s)
 ```
 
 ---

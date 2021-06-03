@@ -3,19 +3,19 @@
 		- (Tier2)
 			- (Tier1)
 				- (Tier0)
-	- Deployments
+	- Deployment
 		- ReplicaSet
 			- Pod
-				- containers
+				- container(s)
 	- CronJob
 		- Job
 			- Pod
-				- containers
+				- container(s)
 	- (empty1)
 		- DaemonSet
 			- Pod
-				- containers
+				- container(s)
 	- (empty2)
 		- StatefulSet
 			- Pod
-				- containers
+				- container(s)
