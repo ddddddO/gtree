@@ -207,6 +207,7 @@ func determineTreeBranch(currentNode *node) {
 
 		tmpParent := tmpNode.parent
 		lastChildIndex := len(tmpParent.children) - 1
+		// FIXME: 同じ名前が複数あると破綻。
 		if tmpNode.name == tmpParent.children[lastChildIndex].name {
 			currentNode.branch = "    " + currentNode.branch
 		} else {
