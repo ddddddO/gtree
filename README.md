@@ -62,7 +62,7 @@ root
 go get github.com/ddddddO/gentree
 ```
 
-or, download from https://github.com/ddddddO/gentree/releases.
+or, download from [here](https://github.com/ddddddO/gentree/releases).
 
 
 ## Usage
