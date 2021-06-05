@@ -203,6 +203,15 @@ root
 		// ├── e
 		// │   └── o
 		// └── g`)},
+		{
+			name: "case 11(1space & -)",
+			in: strings.NewReader(strings.TrimSpace(`
+- root dir aaa
+	- child-dir`)),
+			out: strings.TrimSpace(`
+root dir aaa
+└── child-dir`),
+		},
 	}
 
 	for _, tt := range tests {

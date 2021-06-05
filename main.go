@@ -29,10 +29,16 @@ func newNode(row string) *node {
 	hierarchy := 1
 
 	spaceCnt := 0
+	isPrevChar := false
 	for _, r := range row {
 		// https://ja.wikipedia.org/wiki/ASCII
 		switch r {
 		case 45: // -
+			if isPrevChar {
+				name += string(r)
+				continue
+			}
+
 			if isTwoSpaces && spaceCnt%2 == 0 {
 				tmp := spaceCnt / 2
 				hierarchy += tmp
@@ -41,12 +47,19 @@ func newNode(row string) *node {
 				tmp := spaceCnt / 4
 				hierarchy += tmp
 			}
+			isPrevChar = false
 		case 32: // space
+			if isPrevChar {
+				name += string(r)
+				continue
+			}
+
 			spaceCnt++
 		case 9: // tab
 			hierarchy++
 		default: // directry or file name char
 			name += string(r)
+			isPrevChar = true
 		}
 	}
 	myselfNode.name = name

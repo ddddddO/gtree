@@ -1,4 +1,1 @@
-*.json
-*/spreadsheet/memo.txt
-/memos
-__pycache__
+tmp.md
