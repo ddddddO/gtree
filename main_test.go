@@ -212,6 +212,23 @@ root
 root dir aaa
 └── child-dir`),
 		},
+		{
+			name: "case 12(same name)",
+			in: strings.NewReader(strings.TrimSpace(`
+- parent
+	- child
+		- chilchil
+		- chilchil
+		- chilchil
+	- child`)),
+			out: strings.TrimSpace(`
+parent
+├── child
+│   ├── chilchil
+│   ├── chilchil
+│   └── chilchil
+└── child`),
+		},
 	}
 
 	for _, tt := range tests {

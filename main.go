@@ -12,7 +12,8 @@ import (
 
 type node struct {
 	name      string
-	hierarchy int
+	hierarchy int // 階層
+	num       int // 上から何番目のノードか
 	branch    string
 	parent    *node
 	children  []*node
@@ -23,10 +24,13 @@ var (
 	isFourSpaces bool
 )
 
+var nodeNum int
+
 func newNode(row string) *node {
 	myselfNode := &node{}
 	name := ""
 	hierarchy := 1
+	nodeNum++
 
 	spaceCnt := 0
 	isPrevChar := false
@@ -64,6 +68,7 @@ func newNode(row string) *node {
 	}
 	myselfNode.name = name
 	myselfNode.hierarchy = hierarchy
+	myselfNode.num = nodeNum
 	return myselfNode
 }
 
@@ -204,7 +209,7 @@ func determineTreeBranch(currentNode *node) {
 	parentNode := currentNode.parent
 	lastChildIndex := len(parentNode.children) - 1
 	// 階層の最後のノード
-	if currentNode.name == parentNode.children[lastChildIndex].name {
+	if currentNode.num == parentNode.children[lastChildIndex].num {
 		currentNode.branch += "└──"
 	} else { // 階層の途中のノード
 		currentNode.branch += "├──"
@@ -220,8 +225,7 @@ func determineTreeBranch(currentNode *node) {
 
 		tmpParent := tmpNode.parent
 		lastChildIndex := len(tmpParent.children) - 1
-		// FIXME: 同じ名前が複数あると破綻。
-		if tmpNode.name == tmpParent.children[lastChildIndex].name {
+		if tmpNode.num == tmpParent.children[lastChildIndex].num {
 			currentNode.branch = "    " + currentNode.branch
 		} else {
 			currentNode.branch = "│   " + currentNode.branch

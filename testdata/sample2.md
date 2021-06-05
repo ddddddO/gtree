@@ -11,11 +11,11 @@
 		- Job
 			- Pod
 				- container(s)
-	- (empty1)
+	- (empty)
 		- DaemonSet
 			- Pod
 				- container(s)
-	- (empty2)
+	- (empty)
 		- StatefulSet
 			- Pod
 				- container(s)
