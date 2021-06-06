@@ -1,8 +1,8 @@
 - ## Description
     - CLI.
-    - When you enter the markdown file, tree command result is output.
+    - When you give the markdown file, tree command result is output.
     - Create markdown file by referring to the file in the `testdata/` directory.
-        - The directory hierarchy is represented by indentation.
+        - Hierarchy is represented by indentation.
         - Indent should be unified by one of the following.
             - Tab
             - Two half-width spaces（required: `-ts`）
