@@ -28,7 +28,7 @@ markdown to tree.
 
 ### output
 
-```
+```sh
 23:25:09 > cat testdata/sample3.md | gentree
 root
 ├── dddd
@@ -82,8 +82,11 @@ a
 └── gggg
 ```
 
-- or `gentree -f testdata/sample1.md`<br>
-- or `cat testdata/sample1.md | gentree -f -`
+#### OR
+```
+├── gentree -f testdata/sample1.md
+└── cat testdata/sample1.md | gentree -f -
+```
 
 ---
 
