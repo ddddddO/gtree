@@ -6,46 +6,38 @@ markdown to tree.
 
 
 ## Demo
-
-### input
-
 ```sh
-23:23:26 > cat testdata/sample3.md
+12:24:56 > gentree -ts << EOS
 - root
-	- dddd
-		- kkkkkkk
-			- lllll
-				- ffff
-				- LLL
-					- WWWWW
-						- ZZZZZ
-				- ppppp
-					- KKK
-						- 1111111
-							- AAAAAAA
-	- eee
-```
-
-### output
-
-```sh
-23:25:09 > cat testdata/sample3.md | gentree
+  - parent_a
+  - parent_b
+    - child_a
+      - 1
+      - 2
+        - a
+          - 1
+    - child_b
+      - 1
+        - a
+  - parent_c
+    - child_a
+  - parent_d
+EOS
 root
-├── dddd
-│   └── kkkkkkk
-│       └── lllll
-│           ├── ffff
-│           ├── LLL
-│           │   └── WWWWW
-│           │       └── ZZZZZ
-│           └── ppppp
-│               └── KKK
-│                   └── 1111111
-│                       └── AAAAAAA
-└── eee
+├── parent_a
+├── parent_b
+│   ├── child_a
+│   │   ├── 1
+│   │   └── 2
+│   │       └── a
+│   │           └── 1
+│   └── child_b
+│       └── 1
+│           └── a
+├── parent_c
+│   └── child_a
+└── parent_d
 ```
-
-
 
 ## Description
 ```
