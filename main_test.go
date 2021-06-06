@@ -8,8 +8,9 @@ import (
 
 func TestGen(t *testing.T) {
 	tests := []struct {
-		name, out string
-		in        io.Reader
+		name, out       string
+		in              io.Reader
+		setup, teardown func()
 	}{
 		{
 			name: "case 1",
@@ -158,51 +159,56 @@ root
 │                       └── AAAAAAA
 └── eee`),
 		},
-		// FIXME: testableに
-		// 		{
-		// 			name: "case 9(indent 2spaces)",
-		// 			in: strings.NewReader(strings.TrimSpace(`
-		// - a
-		//   - i
-		//     - u
-		//       - k
-		//       - kk
-		//     - t
-		//   - e
-		//     - o
-		//   - g`)),
-		// 			out: strings.TrimSpace(`
-		// a
-		// ├── i
-		// │   ├── u
-		// │   │   ├── k
-		// │   │   └── kk
-		// │   └── t
-		// ├── e
-		// │   └── o
-		// └── g`)},
-		// 		{
-		// 			name: "case 10(indent 4spaces)",
-		// 			in: strings.NewReader(strings.TrimSpace(`
-		// - a
-		//     - i
-		//         - u
-		//             - k
-		//             - kk
-		//         - t
-		//     - e
-		//         - o
-		//     - g`)),
-		// 			out: strings.TrimSpace(`
-		// a
-		// ├── i
-		// │   ├── u
-		// │   │   ├── k
-		// │   │   └── kk
-		// │   └── t
-		// ├── e
-		// │   └── o
-		// └── g`)},
+		{
+			name: "case 9(indent 2spaces)",
+			in: strings.NewReader(strings.TrimSpace(`
+- a
+  - i
+    - u
+      - k
+      - kk
+    - t
+  - e
+    - o
+  - g`)),
+			out: strings.TrimSpace(`
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g`),
+			setup:    func() { isTwoSpaces = true },
+			teardown: func() { isTwoSpaces = false },
+		},
+		{
+			name: "case 10(indent 4spaces)",
+			in: strings.NewReader(strings.TrimSpace(`
+- a
+    - i
+        - u
+            - k
+            - kk
+        - t
+    - e
+        - o
+    - g`)),
+			out: strings.TrimSpace(`
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g`),
+			setup:    func() { isFourSpaces = true },
+			teardown: func() { isFourSpaces = false },
+		},
 		{
 			name: "case 11(1space & -)",
 			in: strings.NewReader(strings.TrimSpace(`
@@ -234,7 +240,15 @@ parent
 	for _, tt := range tests {
 		t.Log(tt.name)
 
+		if tt.setup != nil {
+			tt.setup()
+		}
+
 		got := gen(tt.in)
+
+		if tt.teardown != nil {
+			tt.teardown()
+		}
 
 		if got != tt.out {
 			t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.out)
