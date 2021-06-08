@@ -13,7 +13,7 @@ import (
 type node struct {
 	name      string
 	hierarchy int // 階層
-	num       int // 上から何番目のノードか
+	index     int // 上から何番目のノードか
 	branch    string
 	parent    *node
 	children  []*node
@@ -24,13 +24,13 @@ var (
 	isFourSpaces bool
 )
 
-var nodeNum int
+var nodeIdx int
 
 func newNode(row string) *node {
 	myselfNode := &node{}
 	name := ""
 	hierarchy := 1
-	nodeNum++
+	nodeIdx++
 
 	spaceCnt := 0
 	isPrevChar := false
@@ -68,7 +68,7 @@ func newNode(row string) *node {
 	}
 	myselfNode.name = name
 	myselfNode.hierarchy = hierarchy
-	myselfNode.num = nodeNum
+	myselfNode.index = nodeIdx
 	return myselfNode
 }
 
@@ -178,9 +178,9 @@ func generateTree(scanner *bufio.Scanner) *node {
 		for i := 0; i < stackSize; i++ {
 			tmpNode := tmpStack.pop()
 
+			// 現在のノードが親の直接の子
 			if currentNode.hierarchy == tmpNode.hierarchy+1 {
-				parentNode := tmpNode
-				computeNode(tmpStack, currentNode, parentNode)
+				computeNode(tmpStack, tmpNode, currentNode)
 				break
 			}
 		}
@@ -189,11 +189,11 @@ func generateTree(scanner *bufio.Scanner) *node {
 	return rootNode
 }
 
-func computeNode(stack *stack, currentNode, parentNode *node) {
-	currentNode.parent = parentNode
-	parentNode.children = append(parentNode.children, currentNode)
+func computeNode(stack *stack, parentNode, childNode *node) {
+	childNode.parent = parentNode
+	parentNode.children = append(parentNode.children, childNode)
 	stack.push(parentNode)
-	stack.push(currentNode)
+	stack.push(childNode)
 }
 
 // 描画するための枝を確定するロジック
@@ -209,7 +209,7 @@ func determineTreeBranch(currentNode *node) {
 	parentNode := currentNode.parent
 	lastChildIndex := len(parentNode.children) - 1
 	// 階層の最後のノード
-	if currentNode.num == parentNode.children[lastChildIndex].num {
+	if currentNode.index == parentNode.children[lastChildIndex].index {
 		currentNode.branch += "└──"
 	} else { // 階層の途中のノード
 		currentNode.branch += "├──"
@@ -225,7 +225,7 @@ func determineTreeBranch(currentNode *node) {
 
 		tmpParent := tmpNode.parent
 		lastChildIndex := len(tmpParent.children) - 1
-		if tmpNode.num == tmpParent.children[lastChildIndex].num {
+		if tmpNode.index == tmpParent.children[lastChildIndex].index {
 			currentNode.branch = "    " + currentNode.branch
 		} else {
 			currentNode.branch = "│   " + currentNode.branch
