@@ -42,10 +42,11 @@ root
 ## Description
 ```
 ├── CLI.
-├── When you give the markdown file, tree command result is output.
+├── Given a markdown file or format, the result of the tree command is printed.
+├── `gentree` does not temporarily create directories or files.
 └── Create markdown file by referring to the file in the `testdata/` directory.
     ├── Hierarchy is represented by indentation.
-    └── Indent should be unified by one of the following.
+    └── Indentation should be unified by one of the following.
         ├── Tab
         ├── Two half-width spaces（required: `-ts`）
         └── Four half-width spaces（required: `-fs`）
