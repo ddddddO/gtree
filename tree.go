@@ -20,18 +20,24 @@ func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 		tmpStack.push(rootNode)
 	}
 
+	// rootの子たちを取得
 	for scanner.Scan() {
 		row := scanner.Text()
 		currentNode := newNode(row, isTwoSpaces, isFourSpaces)
 
-		// 深さ優先探索的な考え方
-		stackSize := tmpStack.size()
-		for i := 0; i < stackSize; i++ {
+		// 深さ優先探索的な？考え方
+		for i := 0; i < tmpStack.size(); i++ {
 			tmpNode := tmpStack.pop()
 
 			// 現在のノードが親の直接の子
 			if currentNode.hierarchy == tmpNode.hierarchy+1 {
-				computeNode(tmpStack, tmpNode, currentNode)
+				parent := tmpNode
+				child := currentNode
+
+				parent.children = append(parent.children, child)
+				child.parent = parent
+				tmpStack.push(parent)
+				tmpStack.push(child)
 				break
 			}
 		}
@@ -40,13 +46,6 @@ func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 	return &tree{
 		root: rootNode,
 	}
-}
-
-func computeNode(stack *stack, parentNode, childNode *node) {
-	childNode.parent = parentNode
-	parentNode.children = append(parentNode.children, childNode)
-	stack.push(parentNode)
-	stack.push(childNode)
 }
 
 func (t *tree) grow() {
