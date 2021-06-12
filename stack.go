@@ -1,4 +1,4 @@
-package main
+package gentree
 
 type stack struct {
 	nodes []*node

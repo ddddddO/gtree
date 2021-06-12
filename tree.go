@@ -1,11 +1,23 @@
-package main
+package gentree
 
 import (
 	"bufio"
+	"io"
+	"strings"
 )
 
 type tree struct {
 	root *node
+}
+
+func Execute(input io.Reader, isTwoSpaces, isFourSpaces bool) string {
+	scanner := bufio.NewScanner(input)
+	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
+	tree := sprout(scanner, isTwoSpaces, isFourSpaces)
+	tree.grow()
+	output := tree.expand()
+
+	return strings.TrimSpace(output)
 }
 
 // Sprout：芽が出る

@@ -5,12 +5,12 @@ before:
   hooks:
     - go mod tidy
 builds:
-  - main: .
+  - main: ./cmd
     binary: gentree
     ldflags:
       - -s -w
-      - -X main.Version={{.Version}}
-      - -X main.Revision={{.ShortCommit}}
+      - -X github.com/ddddddO/gentree/cmd/main.Version={{.Version}}
+      - -X github.com/ddddddO/gentree/cmd/main.Revision={{.ShortCommit}}
     env:
       - CGO_ENABLED=0
 archives:

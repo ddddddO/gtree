@@ -1,6 +1,7 @@
-package main
+package gentree
 
 import (
+	"bytes"
 	"io"
 	"strings"
 	"testing"
@@ -252,12 +253,23 @@ parent
 │   └── chilchil
 └── child`),
 		},
+		{
+			name: "case 13(byte)",
+			in: in{
+				input: bytes.NewBufferString(strings.TrimSpace(`
+- a
+	- b`)),
+			},
+			out: strings.TrimSpace(`
+a
+└── b`),
+		},
 	}
 
 	for _, tt := range tests {
 		t.Log(tt.name)
 
-		got := gen(tt.in.input, tt.in.isTwoSpaces, tt.in.isFourSpaces)
+		got := Execute(tt.in.input, tt.in.isTwoSpaces, tt.in.isFourSpaces)
 
 		if got != tt.out {
 			t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.out)

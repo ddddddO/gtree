@@ -1,13 +1,13 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
-	"strings"
+
+	"github.com/ddddddO/gentree"
 )
 
 // These variables are set in build step
@@ -55,15 +55,5 @@ func main() {
 		defer input.(*os.File).Close()
 	}
 
-	fmt.Println(gen(input, isTwoSpaces, isFourSpaces))
-}
-
-func gen(input io.Reader, isTwoSpaces, isFourSpaces bool) string {
-	scanner := bufio.NewScanner(input)
-	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
-	tree := sprout(scanner, isTwoSpaces, isFourSpaces)
-	tree.grow()
-	output := tree.expand()
-
-	return strings.TrimSpace(output)
+	fmt.Println(gentree.Execute(input, isTwoSpaces, isFourSpaces))
 }

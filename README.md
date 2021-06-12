@@ -41,7 +41,7 @@ root
 
 ## Description
 ```
-├── CLI.
+├── CLI or Library.
 ├── Given a markdown file or format, the result of the tree command is printed.
 ├── `gentree` does not temporarily create directories or files.
 └── Create markdown file by referring to the file in the `testdata/` directory.
@@ -52,15 +52,15 @@ root
         └── Four half-width spaces（required: `-fs`）
 ```
 
-## Installation
+## Installation(CLI)
 ```sh
-go get github.com/ddddddO/gentree
+go get github.com/ddddddO/gentree/cmd/gentree
 ```
 
 or, download from [here](https://github.com/ddddddO/gentree/releases).
 
 
-## Usage
+## Usage(CLI)
 
 ```sh
 19:17:07 > cat testdata/sample1.md | gentree
@@ -139,4 +139,63 @@ a
 ├── e
 │   └── o
 └── g
+```
+
+## Installation(Library)
+```sh
+go get github.com/ddddddO/gentree
+```
+
+## Usage(Library)
+
+```go
+package main
+
+import (
+	"bytes"
+	"strings"
+
+	"github.com/ddddddO/gentree"
+)
+
+func main() {
+	buf := bytes.NewBufferString(strings.TrimSpace(`
+- root
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee`)
+}
+
+	var (
+		isTwoSpaces bool = false  // `true` when indentation is two half-width spaces
+		isFourSpaces bool = false // `true` when indentation is four half-width spaces
+	)
+
+	output := gentree.Execute(buf, isTwoSpaces, isFourSpaces)
+	fmt.Println(output)
+
+// output
+//
+// root
+// ├── dddd
+// │   └── kkkkkkk
+// │       └── lllll
+// │           ├── ffff
+// │           ├── LLL
+// │           │   └── WWWWW
+// │           │       └── ZZZZZ
+// │           └── ppppp
+// │               └── KKK
+// │                   └── 1111111
+// │                       └── AAAAAAA
+// └── eee
 ```
