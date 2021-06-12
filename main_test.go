@@ -6,27 +6,35 @@ import (
 	"testing"
 )
 
+type in struct {
+	input                     io.Reader
+	isTwoSpaces, isFourSpaces bool
+}
+
 func TestGen(t *testing.T) {
 	tests := []struct {
-		name, out       string
-		in              io.Reader
-		setup, teardown func()
+		name, out string
+		in        in
 	}{
 		{
 			name: "case 1",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b`)),
+			},
 			out: strings.TrimSpace(`
 a
 └── b`),
 		},
 		{
 			name: "case 2",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b
-		- c`)),
+		- c`))},
+
 			out: strings.TrimSpace(`
 a
 └── b
@@ -34,25 +42,26 @@ a
 		},
 		{
 			name: "case 3",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b
-	- c`)),
+	- c`))},
 			out: strings.TrimSpace(`
 a
 ├── b
 └── c`),
 		},
-
 		{
 			name: "case 4",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b
 		- c
 			- d
 			- e
-			- f`)),
+			- f`))},
 			out: strings.TrimSpace(`
 a
 └── b
@@ -63,7 +72,8 @@ a
 		},
 		{
 			name: "case 5",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- i
 		- u
@@ -72,7 +82,7 @@ a
 		- t
 	- e
 		- o
-	- g`)),
+	- g`))},
 			out: strings.TrimSpace(`
 a
 ├── i
@@ -86,13 +96,14 @@ a
 		},
 		{
 			name: "case 6",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- vvv
 		- jjj
 	- ggg
 		- hhhh
-	- ggggg`)),
+	- ggggg`))},
 			out: strings.TrimSpace(`
 a
 ├── vvv
@@ -103,7 +114,8 @@ a
 		},
 		{
 			name: "case 7",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - root
 	- child1
 	- child2
@@ -114,7 +126,7 @@ a
 				- ffff
 				- ppppp
 		- oooo
-	- eee`)),
+	- eee`))},
 			out: strings.TrimSpace(`
 root
 ├── child1
@@ -130,7 +142,8 @@ root
 		},
 		{
 			name: "case 8",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - root
 	- dddd
 		- kkkkkkk
@@ -143,7 +156,7 @@ root
 					- KKK
 						- 1111111
 							- AAAAAAA
-	- eee`)),
+	- eee`))},
 			out: strings.TrimSpace(`
 root
 ├── dddd
@@ -161,7 +174,8 @@ root
 		},
 		{
 			name: "case 9(indent 2spaces)",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
   - i
     - u
@@ -171,6 +185,8 @@ root
   - e
     - o
   - g`)),
+				isTwoSpaces: true,
+			},
 			out: strings.TrimSpace(`
 a
 ├── i
@@ -181,12 +197,11 @@ a
 ├── e
 │   └── o
 └── g`),
-			setup:    func() { isTwoSpaces = true },
-			teardown: func() { isTwoSpaces = false },
 		},
 		{
 			name: "case 10(indent 4spaces)",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - a
     - i
         - u
@@ -196,6 +211,8 @@ a
     - e
         - o
     - g`)),
+				isFourSpaces: true,
+			},
 			out: strings.TrimSpace(`
 a
 ├── i
@@ -206,27 +223,27 @@ a
 ├── e
 │   └── o
 └── g`),
-			setup:    func() { isFourSpaces = true },
-			teardown: func() { isFourSpaces = false },
 		},
 		{
 			name: "case 11(1space & -)",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - root dir aaa
-	- child-dir`)),
+	- child-dir`))},
 			out: strings.TrimSpace(`
 root dir aaa
 └── child-dir`),
 		},
 		{
 			name: "case 12(same name)",
-			in: strings.NewReader(strings.TrimSpace(`
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
 - parent
 	- child
 		- chilchil
 		- chilchil
 		- chilchil
-	- child`)),
+	- child`))},
 			out: strings.TrimSpace(`
 parent
 ├── child
@@ -240,15 +257,7 @@ parent
 	for _, tt := range tests {
 		t.Log(tt.name)
 
-		if tt.setup != nil {
-			tt.setup()
-		}
-
-		got := gen(tt.in)
-
-		if tt.teardown != nil {
-			tt.teardown()
-		}
+		got := gen(tt.in.input, tt.in.isTwoSpaces, tt.in.isFourSpaces)
 
 		if got != tt.out {
 			t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.out)

@@ -19,14 +19,9 @@ type node struct {
 	children  []*node
 }
 
-var (
-	isTwoSpaces  bool
-	isFourSpaces bool
-)
-
 var nodeIdx int
 
-func newNode(row string) *node {
+func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 	myselfNode := &node{}
 	name := ""
 	hierarchy := 1
@@ -116,7 +111,10 @@ func main() {
 		}
 	}()
 
-	var f string
+	var (
+		f                         string
+		isTwoSpaces, isFourSpaces bool
+	)
 	flag.StringVar(&f, "f", "", "markdown file path")
 	flag.BoolVar(&isTwoSpaces, "ts", false, "for indent two spaces")
 	flag.BoolVar(&isFourSpaces, "fs", false, "for indent four spaces")
@@ -144,34 +142,33 @@ func main() {
 		defer input.(*os.File).Close()
 	}
 
-	fmt.Println(gen(input))
+	fmt.Println(gen(input, isTwoSpaces, isFourSpaces))
 }
 
-func gen(input io.Reader) string {
+func gen(input io.Reader, isTwoSpaces, isFourSpaces bool) string {
 	scanner := bufio.NewScanner(input)
-
 	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
-	tree := generateTree(scanner)
+	tree := generateTree(scanner, isTwoSpaces, isFourSpaces)
 	determineTreeBranch(tree)
 	output := expandTree(tree, "")
 
 	return strings.TrimSpace(output)
 }
 
-func generateTree(scanner *bufio.Scanner) *node {
+func generateTree(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *node {
 	var rootNode *node
 	tmpStack := newStack()
 
 	// rootを取得
 	if scanner.Scan() {
 		row := scanner.Text()
-		rootNode = newNode(row)
+		rootNode = newNode(row, isTwoSpaces, isFourSpaces)
 		tmpStack.push(rootNode)
 	}
 
 	for scanner.Scan() {
 		row := scanner.Text()
-		currentNode := newNode(row)
+		currentNode := newNode(row, isTwoSpaces, isFourSpaces)
 
 		// 深さ優先探索的な考え方
 		stackSize := tmpStack.size()
