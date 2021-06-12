@@ -26,7 +26,8 @@ func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 		currentNode := newNode(row, isTwoSpaces, isFourSpaces)
 
 		// 深さ優先探索的な？考え方
-		for i := 0; i < tmpStack.size(); i++ {
+		stackSize := tmpStack.size()
+		for i := 0; i < stackSize; i++ {
 			tmpNode := tmpStack.pop()
 
 			// 現在のノードが親の直接の子
