@@ -41,7 +41,7 @@ root
 
 ## Description
 ```
-├── CLI or Library.
+├── CLI or Package.
 ├── Given a markdown file or format, the result of the tree command is printed.
 ├── `gentree` does not temporarily create directories or files.
 └── Create markdown file by referring to the file in the `testdata/` directory.
@@ -145,12 +145,12 @@ a
 
 ---
 
-## Installation(Library)
+## Installation(Package)
 ```sh
 go get github.com/ddddddO/gentree
 ```
 
-## Usage(Library)
+## Usage(Package)
 
 ```go
 package main
