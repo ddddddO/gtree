@@ -172,8 +172,7 @@ func main() {
 					- KKK
 						- 1111111
 							- AAAAAAA
-	- eee`)
-}
+	- eee`))
 
 	var (
 		isTwoSpaces bool = false  // `true` when indentation is two half-width spaces
@@ -198,4 +197,6 @@ func main() {
 // │                   └── 1111111
 // │                       └── AAAAAAA
 // └── eee
+}
+
 ```
