@@ -50,15 +50,17 @@ func computeNode(stack *stack, parentNode, childNode *node) {
 }
 
 func (t *tree) grow() {
-	determineBranches(t.root)
+	(*tree)(nil).determineBranches(t.root)
 }
 
 // 描画するための枝を確定するロジック
-func determineBranches(currentNode *node) {
+func (*tree) determineBranches(currentNode *node) {
+	t := (*tree)(nil)
+
 	// root
 	if currentNode.hierarchy == 1 {
 		for i := range currentNode.children {
-			determineBranches(currentNode.children[i])
+			t.determineBranches(currentNode.children[i])
 		}
 		return
 	}
@@ -91,19 +93,19 @@ func determineBranches(currentNode *node) {
 	}
 
 	for i := range currentNode.children {
-		determineBranches(currentNode.children[i])
+		t.determineBranches(currentNode.children[i])
 	}
 }
 
 func (t *tree) expand() string {
-	return expandBranches(t.root, "")
+	return (*tree)(nil).expandBranches(t.root, "")
 }
 
 // 枝を展開する
-func expandBranches(currentNode *node, output string) string {
+func (*tree) expandBranches(currentNode *node, output string) string {
 	output += currentNode.buildBranch()
 	for i := range currentNode.children {
-		output = expandBranches(currentNode.children[i], output)
+		output = (*tree)(nil).expandBranches(currentNode.children[i], output)
 	}
 	return output
 }
