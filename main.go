@@ -61,9 +61,9 @@ func main() {
 func gen(input io.Reader, isTwoSpaces, isFourSpaces bool) string {
 	scanner := bufio.NewScanner(input)
 	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
-	tree := generateTree(scanner, isTwoSpaces, isFourSpaces)
-	determineTreeBranch(tree)
-	output := expandTree(tree, "")
+	tree := sprout(scanner, isTwoSpaces, isFourSpaces)
+	tree.grow()
+	output := tree.expand()
 
 	return strings.TrimSpace(output)
 }

@@ -4,7 +4,12 @@ import (
 	"bufio"
 )
 
-func generateTree(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *node {
+type tree struct {
+	root *node
+}
+
+// Sprout：芽が出る
+func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 	var rootNode *node
 	tmpStack := newStack()
 
@@ -32,7 +37,9 @@ func generateTree(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *node 
 		}
 	}
 
-	return rootNode
+	return &tree{
+		root: rootNode,
+	}
 }
 
 func computeNode(stack *stack, parentNode, childNode *node) {
@@ -42,12 +49,16 @@ func computeNode(stack *stack, parentNode, childNode *node) {
 	stack.push(childNode)
 }
 
+func (t *tree) grow() {
+	determineBranches(t.root)
+}
+
 // 描画するための枝を確定するロジック
-func determineTreeBranch(currentNode *node) {
+func determineBranches(currentNode *node) {
 	// root
 	if currentNode.hierarchy == 1 {
 		for i := range currentNode.children {
-			determineTreeBranch(currentNode.children[i])
+			determineBranches(currentNode.children[i])
 		}
 		return
 	}
@@ -80,15 +91,19 @@ func determineTreeBranch(currentNode *node) {
 	}
 
 	for i := range currentNode.children {
-		determineTreeBranch(currentNode.children[i])
+		determineBranches(currentNode.children[i])
 	}
 }
 
+func (t *tree) expand() string {
+	return expandBranches(t.root, "")
+}
+
 // 枝を展開する
-func expandTree(currentNode *node, output string) string {
+func expandBranches(currentNode *node, output string) string {
 	output += currentNode.buildBranch()
 	for i := range currentNode.children {
-		output = expandTree(currentNode.children[i], output)
+		output = expandBranches(currentNode.children[i], output)
 	}
 	return output
 }
