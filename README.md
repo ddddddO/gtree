@@ -52,6 +52,8 @@ root
         └── Four half-width spaces（required: `-fs`）
 ```
 
+---
+
 ## Installation(CLI)
 ```sh
 go get github.com/ddddddO/gentree/cmd/gentree
