@@ -143,6 +143,8 @@ a
 └── g
 ```
 
+---
+
 ## Installation(Library)
 ```sh
 go get github.com/ddddddO/gentree
@@ -184,21 +186,21 @@ func main() {
 	output := gentree.Execute(buf, isTwoSpaces, isFourSpaces)
 	fmt.Println(output)
 
-// output
-//
-// root
-// ├── dddd
-// │   └── kkkkkkk
-// │       └── lllll
-// │           ├── ffff
-// │           ├── LLL
-// │           │   └── WWWWW
-// │           │       └── ZZZZZ
-// │           └── ppppp
-// │               └── KKK
-// │                   └── 1111111
-// │                       └── AAAAAAA
-// └── eee
+	// output
+
+	// root
+	// ├── dddd
+	// │   └── kkkkkkk
+	// │       └── lllll
+	// │           ├── ffff
+	// │           ├── LLL
+	// │           │   └── WWWWW
+	// │           │       └── ZZZZZ
+	// │           └── ppppp
+	// │               └── KKK
+	// │                   └── 1111111
+	// │                       └── AAAAAAA
+	// └── eee
 }
 
 ```
