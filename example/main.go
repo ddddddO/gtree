@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	fmt.Println("exapmle\n")
+	fmt.Printf("exapmle\n\n")
 
 	dataTab := strings.NewReader(strings.TrimSpace(`
 - a
