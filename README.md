@@ -1,6 +1,6 @@
 # gentree
 
-[![ci](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml) [![codecov](https://codecov.io/gh/ddddddO/gentree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gentree)
+[![ci](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml) [![codecov](https://codecov.io/gh/ddddddO/gentree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gentree) [![GitHub release](https://img.shields.io/github/release/ddddddO/gentree.svg)](https://github.com/ddddddO/gentree/releases)
 
 markdown to tree.
 
