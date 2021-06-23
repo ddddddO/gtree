@@ -12,7 +12,7 @@ type in struct {
 	isTwoSpaces, isFourSpaces bool
 }
 
-func TestGen(t *testing.T) {
+func TestExecute(t *testing.T) {
 	tests := []struct {
 		name, out string
 		in        in

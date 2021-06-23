@@ -61,7 +61,7 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 
 func (n *node) buildBranch() string {
 	if n.hierarchy == 1 {
-		return n.name + fmt.Sprintln()
+		return fmt.Sprintf("%s\n", n.name)
 	}
-	return n.branch + " " + n.name + fmt.Sprintln()
+	return fmt.Sprintf("%s %s\n", n.branch, n.name)
 }

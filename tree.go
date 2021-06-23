@@ -17,7 +17,7 @@ func Execute(input io.Reader, isTwoSpaces, isFourSpaces bool) string {
 	tree.grow()
 	output := tree.expand()
 
-	return strings.TrimSpace(output)
+	return output
 }
 
 // Sprout：芽が出る
@@ -108,7 +108,8 @@ func (*tree) determineBranches(currentNode *node) {
 }
 
 func (t *tree) expand() string {
-	return (*tree)(nil).expandBranches(t.root, "")
+	branches := (*tree)(nil).expandBranches(t.root, "")
+	return strings.TrimSpace(branches)
 }
 
 // 枝を展開する
