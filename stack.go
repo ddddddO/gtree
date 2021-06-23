@@ -1,11 +1,16 @@
 package gentree
 
+var singleton *stack
+
 type stack struct {
 	nodes []*node
 }
 
-func newStack() *stack {
-	return &stack{}
+func getStack() *stack {
+	if singleton == nil {
+		singleton = &stack{}
+	}
+	return singleton
 }
 
 func (s *stack) push(n *node) {
