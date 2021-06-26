@@ -179,11 +179,16 @@ func main() {
 	- eee`))
 
 	var (
-		isTwoSpaces bool = false  // `true` when indentation is two half-width spaces
+		isTwoSpaces  bool = false // `true` when indentation is two half-width spaces
 		isFourSpaces bool = false // `true` when indentation is four half-width spaces
 	)
 
-	output := gentree.Execute(buf, isTwoSpaces, isFourSpaces)
+	conf := gentree.Config{
+		IsTwoSpaces: isTwoSpaces,
+		IsFourSpaces: isFourSpaces,
+	}
+
+	output := gentree.Execute(buf, conf)
 	fmt.Println(output)
 
 	// output

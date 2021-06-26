@@ -8,8 +8,8 @@ import (
 )
 
 type in struct {
-	input                     io.Reader
-	isTwoSpaces, isFourSpaces bool
+	input io.Reader
+	conf  Config
 }
 
 func TestExecute(t *testing.T) {
@@ -186,7 +186,9 @@ root
   - e
     - o
   - g`)),
-				isTwoSpaces: true,
+				conf: Config{
+					IsTwoSpaces: true,
+				},
 			},
 			out: strings.TrimSpace(`
 a
@@ -212,7 +214,9 @@ a
     - e
         - o
     - g`)),
-				isFourSpaces: true,
+				conf: Config{
+					IsFourSpaces: true,
+				},
 			},
 			out: strings.TrimSpace(`
 a
@@ -269,7 +273,7 @@ a
 	for _, tt := range tests {
 		t.Log(tt.name)
 
-		got := Execute(tt.in.input, tt.in.isTwoSpaces, tt.in.isFourSpaces)
+		got := Execute(tt.in.input, tt.in.conf)
 
 		if got != tt.out {
 			t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.out)

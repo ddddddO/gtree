@@ -6,14 +6,19 @@ import (
 	"strings"
 )
 
+type Config struct {
+	IsTwoSpaces  bool
+	IsFourSpaces bool
+}
+
 type tree struct {
 	root *node
 }
 
-func Execute(input io.Reader, isTwoSpaces, isFourSpaces bool) string {
+func Execute(input io.Reader, conf Config) string {
 	scanner := bufio.NewScanner(input)
 	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
-	tree := sprout(scanner, isTwoSpaces, isFourSpaces)
+	tree := sprout(scanner, conf.IsTwoSpaces, conf.IsFourSpaces)
 	tree.grow()
 	output := tree.expand()
 
