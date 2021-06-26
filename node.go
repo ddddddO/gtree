@@ -13,6 +13,13 @@ type node struct {
 
 var nodeIdx int
 
+// https://ja.wikipedia.org/wiki/ASCII
+const (
+	hyphen = 45
+	space  = 32
+	tab    = 9
+)
+
 func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 	myselfNode := &node{}
 	name := ""
@@ -22,9 +29,8 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 	spaceCnt := 0
 	isPrevChar := false
 	for _, r := range row {
-		// https://ja.wikipedia.org/wiki/ASCII
 		switch r {
-		case 45: // -
+		case hyphen:
 			if isPrevChar {
 				name += string(r)
 				continue
@@ -39,14 +45,14 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 				hierarchy += tmp
 			}
 			isPrevChar = false
-		case 32: // space
+		case space:
 			if isPrevChar {
 				name += string(r)
 				continue
 			}
 
 			spaceCnt++
-		case 9: // tab
+		case tab:
 			hierarchy++
 		default: // directry or file name char
 			name += string(r)
