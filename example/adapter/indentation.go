@@ -6,17 +6,13 @@ import (
 	"github.com/ddddddO/gentree"
 )
 
-const (
-	enableTwoSpaces  = true
-	enableFourSpaces = true
-)
-
 type Tab struct {
 	Data io.Reader
 }
 
 func (tab *Tab) Execute() string {
-	return gentree.Execute(tab.Data, !enableTwoSpaces, !enableFourSpaces)
+	conf := gentree.Config{}
+	return gentree.Execute(tab.Data, conf)
 }
 
 type TwoSpaces struct {
@@ -24,7 +20,10 @@ type TwoSpaces struct {
 }
 
 func (ts *TwoSpaces) Execute() string {
-	return gentree.Execute(ts.Data, enableTwoSpaces, !enableFourSpaces)
+	conf := gentree.Config{
+		IsTwoSpaces: true,
+	}
+	return gentree.Execute(ts.Data, conf)
 }
 
 type FourSpaces struct {
@@ -32,5 +31,8 @@ type FourSpaces struct {
 }
 
 func (fs *FourSpaces) Execute() string {
-	return gentree.Execute(fs.Data, !enableTwoSpaces, enableFourSpaces)
+	conf := gentree.Config{
+		IsFourSpaces: true,
+	}
+	return gentree.Execute(fs.Data, conf)
 }

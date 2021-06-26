@@ -55,5 +55,10 @@ func main() {
 		defer input.(*os.File).Close()
 	}
 
-	fmt.Println(gentree.Execute(input, isTwoSpaces, isFourSpaces))
+	conf := gentree.Config{
+		IsTwoSpaces:  isTwoSpaces,
+		IsFourSpaces: isFourSpaces,
+	}
+
+	fmt.Println(gentree.Execute(input, conf))
 }
