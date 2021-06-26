@@ -54,7 +54,9 @@ root
 
 ---
 
-## Installation(CLI)
+## As CLI
+
+### Installation
 ```sh
 go get github.com/ddddddO/gentree/cmd/gentree
 ```
@@ -62,7 +64,7 @@ go get github.com/ddddddO/gentree/cmd/gentree
 or, download from [here](https://github.com/ddddddO/gentree/releases).
 
 
-## Usage(CLI)
+### Usage
 
 ```sh
 19:17:07 > cat testdata/sample1.md | gentree
@@ -145,12 +147,14 @@ a
 
 ---
 
-## Installation(Package)
+## As Package
+
+### Installation
 ```sh
 go get github.com/ddddddO/gentree
 ```
 
-## Usage(Package)
+### Usage
 
 ```go
 package main
