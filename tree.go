@@ -80,9 +80,7 @@ func (*tree) determineBranches(currentNode *node) {
 	}
 
 	parentNode := currentNode.parent
-	lastChildIndex := len(parentNode.children) - 1
-	isLastNodeOfHierarchy := currentNode.index == parentNode.children[lastChildIndex].index
-	if isLastNodeOfHierarchy {
+	if isLastNodeOfHierarchy(currentNode, parentNode) {
 		currentNode.branch += "└──"
 	} else {
 		currentNode.branch += "├──"
@@ -97,9 +95,7 @@ func (*tree) determineBranches(currentNode *node) {
 		}
 
 		tmpParent := tmpNode.parent
-		lastChildIndex := len(tmpParent.children) - 1
-		isLastNodeOfHierarchy := tmpNode.index == tmpParent.children[lastChildIndex].index
-		if isLastNodeOfHierarchy {
+		if isLastNodeOfHierarchy(tmpNode, tmpParent) {
 			currentNode.branch = "    " + currentNode.branch
 		} else {
 			currentNode.branch = "│   " + currentNode.branch
@@ -110,6 +106,11 @@ func (*tree) determineBranches(currentNode *node) {
 	for i := range currentNode.children {
 		(*tree)(nil).determineBranches(currentNode.children[i])
 	}
+}
+
+func isLastNodeOfHierarchy(tmpNode, parentNode *node) bool {
+	lastChildIndex := len(parentNode.children) - 1
+	return tmpNode.index == parentNode.children[lastChildIndex].index
 }
 
 func (t *tree) expand() string {
