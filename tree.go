@@ -66,15 +66,15 @@ func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 }
 
 func (t *tree) grow() {
-	(*tree)(nil).determineBranches(t.root)
+	determineBranches(t.root)
 }
 
 // 描画するための枝を確定するロジック
-func (*tree) determineBranches(currentNode *node) {
+func determineBranches(currentNode *node) {
 	isRoot := currentNode.hierarchy == rootHierarchyNum
 	if isRoot {
 		for i := range currentNode.children {
-			(*tree)(nil).determineBranches(currentNode.children[i])
+			determineBranches(currentNode.children[i])
 		}
 		return
 	}
@@ -104,7 +104,7 @@ func (*tree) determineBranches(currentNode *node) {
 	}
 
 	for i := range currentNode.children {
-		(*tree)(nil).determineBranches(currentNode.children[i])
+		determineBranches(currentNode.children[i])
 	}
 }
 
@@ -114,15 +114,15 @@ func isLastNodeOfHierarchy(tmpNode, parentNode *node) bool {
 }
 
 func (t *tree) expand() string {
-	branches := (*tree)(nil).expandBranches(t.root, "")
+	branches := expandBranches(t.root, "")
 	return strings.TrimSpace(branches)
 }
 
 // 枝を展開する
-func (*tree) expandBranches(currentNode *node, output string) string {
+func expandBranches(currentNode *node, output string) string {
 	output += currentNode.buildBranch()
 	for i := range currentNode.children {
-		output = (*tree)(nil).expandBranches(currentNode.children[i], output)
+		output = expandBranches(currentNode.children[i], output)
 	}
 	return output
 }
