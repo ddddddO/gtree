@@ -73,7 +73,7 @@ func (t *tree) grow() {
 // 描画するための枝を確定するロジック
 func (*tree) determineBranches(currentNode *node) {
 	// root
-	if currentNode.hierarchy == 1 {
+	if currentNode.hierarchy == rootHierarchyNum {
 		for i := range currentNode.children {
 			(*tree)(nil).determineBranches(currentNode.children[i])
 		}

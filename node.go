@@ -20,10 +20,14 @@ const (
 	tab    = 9
 )
 
+const (
+	rootHierarchyNum = 1
+)
+
 func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 	myselfNode := &node{}
 	name := ""
-	hierarchy := 1
+	hierarchy := rootHierarchyNum
 	nodeIdx++
 
 	spaceCnt := 0
@@ -66,7 +70,7 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 }
 
 func (n *node) buildBranch() string {
-	if n.hierarchy == 1 {
+	if n.hierarchy == rootHierarchyNum {
 		return fmt.Sprintf("%s\n", n.name)
 	}
 	return fmt.Sprintf("%s %s\n", n.branch, n.name)
