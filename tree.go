@@ -81,8 +81,8 @@ func (*tree) determineBranches(currentNode *node) {
 
 	parentNode := currentNode.parent
 	lastChildIndex := len(parentNode.children) - 1
-	isEndNodeOfHierarchy := currentNode.index == parentNode.children[lastChildIndex].index
-	if isEndNodeOfHierarchy {
+	isLastNodeOfHierarchy := currentNode.index == parentNode.children[lastChildIndex].index
+	if isLastNodeOfHierarchy {
 		currentNode.branch += "└──"
 	} else {
 		currentNode.branch += "├──"
@@ -98,8 +98,8 @@ func (*tree) determineBranches(currentNode *node) {
 
 		tmpParent := tmpNode.parent
 		lastChildIndex := len(tmpParent.children) - 1
-		isEndNodeOfHierarchy := tmpNode.index == tmpParent.children[lastChildIndex].index
-		if isEndNodeOfHierarchy {
+		isLastNodeOfHierarchy := tmpNode.index == tmpParent.children[lastChildIndex].index
+		if isLastNodeOfHierarchy {
 			currentNode.branch = "    " + currentNode.branch
 		} else {
 			currentNode.branch = "│   " + currentNode.branch
