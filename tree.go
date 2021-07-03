@@ -46,9 +46,8 @@ func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 		stackSize := tmpStack.size()
 		for i := 0; i < stackSize; i++ {
 			tmpNode := tmpStack.pop()
-
-			// 現在のノードが親の直接の子
-			if currentNode.hierarchy == tmpNode.hierarchy+1 {
+			isCurrentNodeDirectlyUnderParent := currentNode.hierarchy == tmpNode.hierarchy+1
+			if isCurrentNodeDirectlyUnderParent {
 				parent := tmpNode
 				child := currentNode
 
@@ -72,8 +71,8 @@ func (t *tree) grow() {
 
 // 描画するための枝を確定するロジック
 func (*tree) determineBranches(currentNode *node) {
-	// root
-	if currentNode.hierarchy == rootHierarchyNum {
+	isRoot := currentNode.hierarchy == rootHierarchyNum
+	if isRoot {
 		for i := range currentNode.children {
 			(*tree)(nil).determineBranches(currentNode.children[i])
 		}
@@ -82,10 +81,10 @@ func (*tree) determineBranches(currentNode *node) {
 
 	parentNode := currentNode.parent
 	lastChildIndex := len(parentNode.children) - 1
-	// 階層の最後のノード
-	if currentNode.index == parentNode.children[lastChildIndex].index {
+	isEndNodeOfHierarchy := currentNode.index == parentNode.children[lastChildIndex].index
+	if isEndNodeOfHierarchy {
 		currentNode.branch += "└──"
-	} else { // 階層の途中のノード
+	} else {
 		currentNode.branch += "├──"
 	}
 
@@ -99,7 +98,8 @@ func (*tree) determineBranches(currentNode *node) {
 
 		tmpParent := tmpNode.parent
 		lastChildIndex := len(tmpParent.children) - 1
-		if tmpNode.index == tmpParent.children[lastChildIndex].index {
+		isEndNodeOfHierarchy := tmpNode.index == tmpParent.children[lastChildIndex].index
+		if isEndNodeOfHierarchy {
 			currentNode.branch = "    " + currentNode.branch
 		} else {
 			currentNode.branch = "│   " + currentNode.branch
