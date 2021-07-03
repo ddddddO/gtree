@@ -6,11 +6,8 @@ type stack struct {
 	nodes []*node
 }
 
-func getStack() *stack {
-	if singleton == nil {
-		singleton = &stack{}
-	}
-	return singleton
+func newStack() *stack {
+	return &stack{}
 }
 
 func (s *stack) push(n *node) {

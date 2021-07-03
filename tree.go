@@ -28,7 +28,7 @@ func Execute(input io.Reader, conf Config) string {
 // Sprout：芽が出る
 func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 	var rootNode *node
-	tmpStack := getStack()
+	tmpStack := newStack()
 
 	// rootを取得
 	if scanner.Scan() {
