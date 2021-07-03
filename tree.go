@@ -16,13 +16,9 @@ type tree struct {
 }
 
 func Execute(input io.Reader, conf Config) string {
-	scanner := bufio.NewScanner(input)
-	// ここで、全入力をrootを頂点としたツリー上のデータに変換する。
-	tree := sprout(scanner, conf.IsTwoSpaces, conf.IsFourSpaces)
+	tree := sprout(bufio.NewScanner(input), conf.IsTwoSpaces, conf.IsFourSpaces) // 全入力をrootを頂点としたツリー上のデータに変換する。
 	tree.grow()
-	output := tree.expand()
-
-	return output
+	return tree.expand()
 }
 
 // Sprout：芽が出る
@@ -47,6 +43,7 @@ func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
 		for i := 0; i < stackSize; i++ {
 			tmpNode := tmpStack.pop()
 			isCurrentNodeDirectlyUnderParent := currentNode.hierarchy == tmpNode.hierarchy+1
+
 			if isCurrentNodeDirectlyUnderParent {
 				parent := tmpNode
 				child := currentNode
@@ -69,7 +66,6 @@ func (t *tree) grow() {
 	determineBranches(t.root)
 }
 
-// 描画するための枝を確定するロジック
 func determineBranches(currentNode *node) {
 	isRoot := currentNode.hierarchy == rootHierarchyNum
 	if isRoot {
@@ -118,7 +114,6 @@ func (t *tree) expand() string {
 	return strings.TrimSpace(branches)
 }
 
-// 枝を展開する
 func expandBranches(currentNode *node, output string) string {
 	output += currentNode.buildBranch()
 	for i := range currentNode.children {

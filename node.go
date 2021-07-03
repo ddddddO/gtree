@@ -4,14 +4,12 @@ import "fmt"
 
 type node struct {
 	name      string
-	hierarchy int // 階層
-	index     int // 上から何番目のノードか
+	hierarchy int
+	index     int // 上からscanしたときの順番
 	branch    string
 	parent    *node
 	children  []*node
 }
-
-var nodeIdx int
 
 // https://ja.wikipedia.org/wiki/ASCII
 const (
@@ -24,14 +22,21 @@ const (
 	rootHierarchyNum = 1
 )
 
+var nodeIdx int
+
 func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
-	myselfNode := &node{}
-	name := ""
-	hierarchy := rootHierarchyNum
 	nodeIdx++
 
-	spaceCnt := 0
-	isPrevChar := false
+	var (
+		myselfNode = &node{}
+		name       = ""
+		hierarchy  = rootHierarchyNum
+	)
+	var (
+		spaceCnt   = 0
+		isPrevChar = false
+	)
+
 	for _, r := range row {
 		switch r {
 		case hyphen:
@@ -39,7 +44,6 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 				name += string(r)
 				continue
 			}
-
 			if isTwoSpaces && spaceCnt%2 == 0 {
 				tmp := spaceCnt / 2
 				hierarchy += tmp
@@ -54,7 +58,6 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 				name += string(r)
 				continue
 			}
-
 			spaceCnt++
 		case tab:
 			hierarchy++
@@ -63,6 +66,7 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 			isPrevChar = true
 		}
 	}
+
 	myselfNode.name = name
 	myselfNode.hierarchy = hierarchy
 	myselfNode.index = nodeIdx

@@ -1,7 +1,5 @@
 package gentree
 
-var singleton *stack
-
 type stack struct {
 	nodes []*node
 }
