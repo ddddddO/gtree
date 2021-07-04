@@ -16,27 +16,30 @@ type tree struct {
 }
 
 func Execute(input io.Reader, conf Config) string {
-	tree := sprout(bufio.NewScanner(input), conf.IsTwoSpaces, conf.IsFourSpaces) // 全入力をrootを頂点としたツリー上のデータに変換する。
+	nodeGenerator := newNodeGenerator(conf)
+
+	tree := sprout(bufio.NewScanner(input), nodeGenerator)
 	tree.grow()
 	return tree.expand()
 }
 
 // Sprout：芽が出る
-func sprout(scanner *bufio.Scanner, isTwoSpaces, isFourSpaces bool) *tree {
+// 全入力をrootを頂点としたツリー上のデータに変換する。
+func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) *tree {
 	var rootNode *node
 	tmpStack := newStack()
 
 	// rootを取得
 	if scanner.Scan() {
 		row := scanner.Text()
-		rootNode = newNode(row, isTwoSpaces, isFourSpaces)
+		rootNode = nodeGenerator.generate(row)
 		tmpStack.push(rootNode)
 	}
 
 	// rootの子たちを取得
 	for scanner.Scan() {
 		row := scanner.Text()
-		currentNode := newNode(row, isTwoSpaces, isFourSpaces)
+		currentNode := nodeGenerator.generate(row)
 
 		// 深さ優先探索的な？考え方
 		stackSize := tmpStack.size()
