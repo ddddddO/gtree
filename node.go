@@ -2,6 +2,24 @@ package gentree
 
 import "fmt"
 
+type nodeGenerator interface {
+	generate(row string) *node
+}
+
+type nodeGeneratorForTab struct{}
+type nodeGeneratorForTwoSpaces struct{}
+type nodeGeneratorForFourSpaces struct{}
+
+func newNodeGenerator(conf Config) nodeGenerator {
+	if conf.IsTwoSpaces {
+		return &nodeGeneratorForTwoSpaces{}
+	}
+	if conf.IsFourSpaces {
+		return &nodeGeneratorForFourSpaces{}
+	}
+	return &nodeGeneratorForTab{}
+}
+
 type node struct {
 	name      string
 	hierarchy int
@@ -24,7 +42,7 @@ const (
 
 var nodeIdx int
 
-func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
+func (*nodeGeneratorForTab) generate(row string) *node {
 	nodeIdx++
 
 	var (
@@ -44,11 +62,91 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 				name += string(r)
 				continue
 			}
-			if isTwoSpaces && spaceCnt%2 == 0 {
+			isPrevChar = false
+		case space:
+			if isPrevChar {
+				name += string(r)
+				continue
+			}
+			spaceCnt++
+		case tab:
+			hierarchy++
+		default: // directry or file name char
+			name += string(r)
+			isPrevChar = true
+		}
+	}
+
+	myselfNode.name = name
+	myselfNode.hierarchy = hierarchy
+	myselfNode.index = nodeIdx
+	return myselfNode
+}
+
+func (*nodeGeneratorForTwoSpaces) generate(row string) *node {
+	nodeIdx++
+
+	var (
+		myselfNode = &node{}
+		name       = ""
+		hierarchy  = rootHierarchyNum
+	)
+	var (
+		spaceCnt   = 0
+		isPrevChar = false
+	)
+
+	for _, r := range row {
+		switch r {
+		case hyphen:
+			if isPrevChar {
+				name += string(r)
+				continue
+			}
+			if spaceCnt%2 == 0 {
 				tmp := spaceCnt / 2
 				hierarchy += tmp
 			}
-			if isFourSpaces && spaceCnt%4 == 0 {
+			isPrevChar = false
+		case space:
+			if isPrevChar {
+				name += string(r)
+				continue
+			}
+			spaceCnt++
+		default: // directry or file name char
+			name += string(r)
+			isPrevChar = true
+		}
+	}
+
+	myselfNode.name = name
+	myselfNode.hierarchy = hierarchy
+	myselfNode.index = nodeIdx
+	return myselfNode
+}
+
+func (*nodeGeneratorForFourSpaces) generate(row string) *node {
+	nodeIdx++
+
+	var (
+		myselfNode = &node{}
+		name       = ""
+		hierarchy  = rootHierarchyNum
+	)
+	var (
+		spaceCnt   = 0
+		isPrevChar = false
+	)
+
+	for _, r := range row {
+		switch r {
+		case hyphen:
+			if isPrevChar {
+				name += string(r)
+				continue
+			}
+			if spaceCnt%4 == 0 {
 				tmp := spaceCnt / 4
 				hierarchy += tmp
 			}
@@ -59,8 +157,6 @@ func newNode(row string, isTwoSpaces, isFourSpaces bool) *node {
 				continue
 			}
 			spaceCnt++
-		case tab:
-			hierarchy++
 		default: // directry or file name char
 			name += string(r)
 			isPrevChar = true
