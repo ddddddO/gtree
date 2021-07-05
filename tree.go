@@ -70,8 +70,7 @@ func (t *tree) grow() {
 }
 
 func determineBranches(currentNode *node) {
-	isRoot := currentNode.hierarchy == rootHierarchyNum
-	if isRoot {
+	if currentNode.isRoot() {
 		for i := range currentNode.children {
 			determineBranches(currentNode.children[i])
 		}
@@ -79,37 +78,31 @@ func determineBranches(currentNode *node) {
 	}
 
 	parentNode := currentNode.parent
-	if isLastNodeOfHierarchy(currentNode, parentNode) {
+	if currentNode.isLastNodeOfHierarchy() {
 		currentNode.branch += "└──"
 	} else {
 		currentNode.branch += "├──"
 	}
 
 	// rootまで親を遡って枝を構成する
-	tmpNode := parentNode
+	tmpParent := parentNode
 	for {
 		// rootまで遡った
-		if tmpNode.parent == nil {
+		if tmpParent.parent == nil {
 			break
 		}
 
-		tmpParent := tmpNode.parent
-		if isLastNodeOfHierarchy(tmpNode, tmpParent) {
+		if tmpParent.isLastNodeOfHierarchy() {
 			currentNode.branch = "    " + currentNode.branch
 		} else {
 			currentNode.branch = "│   " + currentNode.branch
 		}
-		tmpNode = tmpParent
+		tmpParent = tmpParent.parent
 	}
 
 	for i := range currentNode.children {
 		determineBranches(currentNode.children[i])
 	}
-}
-
-func isLastNodeOfHierarchy(tmpNode, parentNode *node) bool {
-	lastChildIndex := len(parentNode.children) - 1
-	return tmpNode.index == parentNode.children[lastChildIndex].index
 }
 
 func (t *tree) expand() string {

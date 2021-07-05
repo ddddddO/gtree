@@ -169,8 +169,17 @@ func (*nodeGeneratorForFourSpaces) generate(row string) *node {
 	return myselfNode
 }
 
+func (n *node) isLastNodeOfHierarchy() bool {
+	lastChildIndex := len(n.parent.children) - 1
+	return n.index == n.parent.children[lastChildIndex].index
+}
+
+func (n *node) isRoot() bool {
+	return n.hierarchy == rootHierarchyNum
+}
+
 func (n *node) buildBranch() string {
-	if n.hierarchy == rootHierarchyNum {
+	if n.isRoot() {
 		return fmt.Sprintf("%s\n", n.name)
 	}
 	return fmt.Sprintf("%s %s\n", n.branch, n.name)
