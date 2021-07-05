@@ -77,7 +77,6 @@ func determineBranches(currentNode *node) {
 		return
 	}
 
-	parentNode := currentNode.parent
 	if currentNode.isLastNodeOfHierarchy() {
 		currentNode.branch += "└──"
 	} else {
@@ -85,10 +84,10 @@ func determineBranches(currentNode *node) {
 	}
 
 	// rootまで親を遡って枝を構成する
-	tmpParent := parentNode
+	tmpParent := currentNode.parent
 	for {
 		// rootまで遡った
-		if tmpParent.parent == nil {
+		if tmpParent.isRoot() {
 			break
 		}
 
