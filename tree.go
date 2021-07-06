@@ -16,9 +16,10 @@ type tree struct {
 }
 
 func Execute(input io.Reader, conf Config) string {
+	seed := bufio.NewScanner(input)
 	nodeGenerator := newNodeGenerator(conf)
 
-	tree := sprout(bufio.NewScanner(input), nodeGenerator)
+	tree := sprout(seed, nodeGenerator)
 	tree.grow()
 	return tree.expand()
 }
