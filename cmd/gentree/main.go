@@ -25,13 +25,20 @@ func main() {
 	}()
 
 	var (
+		isVersion                 bool
 		f                         string
 		isTwoSpaces, isFourSpaces bool
 	)
+	flag.BoolVar(&isVersion, "v", false, "current gentree version")
 	flag.StringVar(&f, "f", "", "markdown file path")
 	flag.BoolVar(&isTwoSpaces, "ts", false, "for indent two spaces")
 	flag.BoolVar(&isFourSpaces, "fs", false, "for indent four spaces")
 	flag.Parse()
+
+	if isVersion {
+		fmt.Printf("gentree version %s / revision %s\n", Version, Revision)
+		return
+	}
 
 	if isTwoSpaces && isFourSpaces {
 		fmt.Errorf("%s", `choose either "ts" or "fs".`)
