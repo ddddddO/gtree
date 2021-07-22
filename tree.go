@@ -77,8 +77,8 @@ func (t *tree) grow() {
 
 func determineBranches(currentNode *node) {
 	if currentNode.isRoot() {
-		for i := range currentNode.children {
-			determineBranches(currentNode.children[i])
+		for _, child := range currentNode.children {
+			determineBranches(child)
 		}
 		return
 	}
@@ -105,8 +105,8 @@ func determineBranches(currentNode *node) {
 		tmpParent = tmpParent.parent
 	}
 
-	for i := range currentNode.children {
-		determineBranches(currentNode.children[i])
+	for _, child := range currentNode.children {
+		determineBranches(child)
 	}
 }
 
@@ -120,8 +120,8 @@ func (t *tree) expand() string {
 
 func expandBranches(currentNode *node, output string) string {
 	output += currentNode.buildBranch()
-	for i := range currentNode.children {
-		output = expandBranches(currentNode.children[i], output)
+	for _, child := range currentNode.children {
+		output = expandBranches(child, output)
 	}
 	return output
 }
