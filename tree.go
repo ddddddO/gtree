@@ -30,17 +30,15 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) *tree {
 	var rootNode *node
 	tmpStack := newStack()
 
-	// rootを取得
-	if scanner.Scan() {
-		row := scanner.Text()
-		rootNode = nodeGenerator.generate(row)
-		tmpStack.push(rootNode)
-	}
-
-	// rootの子たちを取得
 	for scanner.Scan() {
 		row := scanner.Text()
 		currentNode := nodeGenerator.generate(row)
+
+		if currentNode.isRoot() {
+			rootNode = currentNode
+			tmpStack.push(rootNode)
+			continue
+		}
 
 		// 深さ優先探索的な？考え方
 		stackSize := tmpStack.size()

@@ -29,6 +29,14 @@ type node struct {
 	children  []*node
 }
 
+func newNode(name string, hierarchy, index int) *node {
+	return &node{
+		name:      name,
+		hierarchy: hierarchy,
+		index:     index,
+	}
+}
+
 // https://ja.wikipedia.org/wiki/ASCII
 const (
 	hyphen = 45
@@ -46,9 +54,8 @@ func (*nodeGeneratorForTab) generate(row string) *node {
 	nodeIdx++
 
 	var (
-		myselfNode = &node{}
-		name       = ""
-		hierarchy  = rootHierarchyNum
+		name      = ""
+		hierarchy = rootHierarchyNum
 	)
 	var (
 		spaceCnt   = 0
@@ -77,19 +84,15 @@ func (*nodeGeneratorForTab) generate(row string) *node {
 		}
 	}
 
-	myselfNode.name = name
-	myselfNode.hierarchy = hierarchy
-	myselfNode.index = nodeIdx
-	return myselfNode
+	return newNode(name, hierarchy, nodeIdx)
 }
 
 func (*nodeGeneratorForTwoSpaces) generate(row string) *node {
 	nodeIdx++
 
 	var (
-		myselfNode = &node{}
-		name       = ""
-		hierarchy  = rootHierarchyNum
+		name      = ""
+		hierarchy = rootHierarchyNum
 	)
 	var (
 		spaceCnt   = 0
@@ -120,19 +123,15 @@ func (*nodeGeneratorForTwoSpaces) generate(row string) *node {
 		}
 	}
 
-	myselfNode.name = name
-	myselfNode.hierarchy = hierarchy
-	myselfNode.index = nodeIdx
-	return myselfNode
+	return newNode(name, hierarchy, nodeIdx)
 }
 
 func (*nodeGeneratorForFourSpaces) generate(row string) *node {
 	nodeIdx++
 
 	var (
-		myselfNode = &node{}
-		name       = ""
-		hierarchy  = rootHierarchyNum
+		name      = ""
+		hierarchy = rootHierarchyNum
 	)
 	var (
 		spaceCnt   = 0
@@ -163,10 +162,7 @@ func (*nodeGeneratorForFourSpaces) generate(row string) *node {
 		}
 	}
 
-	myselfNode.name = name
-	myselfNode.hierarchy = hierarchy
-	myselfNode.index = nodeIdx
-	return myselfNode
+	return newNode(name, hierarchy, nodeIdx)
 }
 
 func (n *node) isLastNodeOfHierarchy() bool {
