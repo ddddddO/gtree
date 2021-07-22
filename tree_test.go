@@ -268,6 +268,48 @@ parent
 a
 └── b`),
 		},
+		{
+			name: "case 14(multi root)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g`))},
+			out: strings.TrimSpace(`
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g`),
+		},
 	}
 
 	for _, tt := range tests {

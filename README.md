@@ -145,6 +145,29 @@ a
 └── g
 ```
 
+- Multiple roots
+
+```sh
+13:06:26 > cat testdata/sample6.md | gentree
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+```
 ---
 
 ## As Package

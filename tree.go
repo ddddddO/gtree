@@ -12,7 +12,7 @@ type Config struct {
 }
 
 type tree struct {
-	root *node
+	roots []*node
 }
 
 func Execute(input io.Reader, conf Config) string {
@@ -27,15 +27,20 @@ func Execute(input io.Reader, conf Config) string {
 // Sprout：芽が出る
 // 全入力をrootを頂点としたツリー上のデータに変換する。
 func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) *tree {
-	var rootNode *node
-	tmpStack := newStack()
+	var (
+		rootNode *node
+		roots    []*node
+		tmpStack *stack
+	)
 
 	for scanner.Scan() {
 		row := scanner.Text()
 		currentNode := nodeGenerator.generate(row)
 
 		if currentNode.isRoot() {
+			tmpStack = newStack()
 			rootNode = currentNode
+			roots = append(roots, rootNode)
 			tmpStack.push(rootNode)
 			continue
 		}
@@ -60,12 +65,14 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) *tree {
 	}
 
 	return &tree{
-		root: rootNode,
+		roots: roots,
 	}
 }
 
 func (t *tree) grow() {
-	determineBranches(t.root)
+	for _, root := range t.roots {
+		determineBranches(root)
+	}
 }
 
 func determineBranches(currentNode *node) {
@@ -104,7 +111,10 @@ func determineBranches(currentNode *node) {
 }
 
 func (t *tree) expand() string {
-	branches := expandBranches(t.root, "")
+	branches := ""
+	for _, root := range t.roots {
+		branches += expandBranches(root, "")
+	}
 	return strings.TrimSpace(branches)
 }
 
