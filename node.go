@@ -74,7 +74,6 @@ func (*nodeGeneratorForTab) generate(row string) *node {
 		hierarchy = rootHierarchyNum
 	)
 	var (
-		spaceCnt   = 0
 		isPrevChar = false
 	)
 
@@ -91,7 +90,6 @@ func (*nodeGeneratorForTab) generate(row string) *node {
 				name += string(r)
 				continue
 			}
-			spaceCnt++
 		case tab:
 			hierarchy++
 		default: // directry or file name char
