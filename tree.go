@@ -11,8 +11,18 @@ type Config struct {
 	IsFourSpaces bool
 }
 
+type lastNodeBranchFormat struct {
+	directlyBranch, indirectlyBranch string
+}
+
+type intermedialNodeBranchFormat struct {
+	directlyBranch, indirectlyBranch string
+}
+
 type tree struct {
-	roots []*node
+	roots                       []*node
+	lastNodeBranchFormat        lastNodeBranchFormat
+	intermedialNodeBranchFormat intermedialNodeBranchFormat
 }
 
 func Execute(input io.Reader, conf Config) (string, error) {
@@ -78,29 +88,38 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) 
 		return nil, err
 	}
 
+	// TODO: ユーザーが枝のフォーマットを決められるようにする
 	return &tree{
 		roots: roots,
+		lastNodeBranchFormat: lastNodeBranchFormat{
+			directlyBranch:   "└──",
+			indirectlyBranch: "    ",
+		},
+		intermedialNodeBranchFormat: intermedialNodeBranchFormat{
+			directlyBranch:   "├──",
+			indirectlyBranch: "│   ",
+		},
 	}, nil
 }
 
 func (t *tree) grow() {
 	for _, root := range t.roots {
-		determineBranches(root)
+		t.determineBranches(root)
 	}
 }
 
-func determineBranches(currentNode *node) {
+func (t *tree) determineBranches(currentNode *node) {
 	if currentNode.isRoot() {
 		for _, child := range currentNode.children {
-			determineBranches(child)
+			t.determineBranches(child)
 		}
 		return
 	}
 
 	if currentNode.isLastNodeOfHierarchy() {
-		currentNode.branch += "└──"
+		currentNode.branch += t.lastNodeBranchFormat.directlyBranch
 	} else {
-		currentNode.branch += "├──"
+		currentNode.branch += t.intermedialNodeBranchFormat.directlyBranch
 	}
 
 	// rootまで親を遡って枝を構成する
@@ -112,15 +131,15 @@ func determineBranches(currentNode *node) {
 		}
 
 		if tmpParent.isLastNodeOfHierarchy() {
-			currentNode.branch = "    " + currentNode.branch
+			currentNode.branch = t.lastNodeBranchFormat.indirectlyBranch + currentNode.branch
 		} else {
-			currentNode.branch = "│   " + currentNode.branch
+			currentNode.branch = t.intermedialNodeBranchFormat.indirectlyBranch + currentNode.branch
 		}
 		tmpParent = tmpParent.parent
 	}
 
 	for _, child := range currentNode.children {
-		determineBranches(child)
+		t.determineBranches(child)
 	}
 }
 
