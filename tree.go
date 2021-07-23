@@ -51,6 +51,10 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) 
 			continue
 		}
 
+		if tmpStack == nil {
+			return nil, ErrNilStack
+		}
+
 		// 深さ優先探索的な？考え方
 		stackSize := tmpStack.size()
 		for i := 0; i < stackSize; i++ {

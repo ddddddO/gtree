@@ -1,5 +1,9 @@
 package gtree
 
+import "github.com/pkg/errors"
+
+var ErrNilStack = errors.New("nil stack")
+
 type stack struct {
 	nodes []*node
 }

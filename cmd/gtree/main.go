@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/ddddddO/gtree"
 )
@@ -28,11 +29,13 @@ func main() {
 		isVersion                 bool
 		f                         string
 		isTwoSpaces, isFourSpaces bool
+		isWatching                bool
 	)
 	flag.BoolVar(&isVersion, "v", false, "current gtree version")
 	flag.StringVar(&f, "f", "", "markdown file path")
 	flag.BoolVar(&isTwoSpaces, "ts", false, "for indent two spaces")
 	flag.BoolVar(&isFourSpaces, "fs", false, "for indent four spaces")
+	flag.BoolVar(&isWatching, "w", false, "watching input file")
 	flag.Parse()
 
 	if isVersion {
@@ -45,6 +48,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	conf := gtree.Config{
+		IsTwoSpaces:  isTwoSpaces,
+		IsFourSpaces: isFourSpaces,
+	}
+
+	// TODO: 要リファクター
 	var input io.Reader
 	if f == "" || f == "-" {
 		input = os.Stdin
@@ -54,17 +63,51 @@ func main() {
 			fmt.Errorf("%+v", err)
 			os.Exit(1)
 		}
-		input, err = os.Open(filePath)
-		if err != nil {
-			fmt.Errorf("%+v", err)
-			os.Exit(1)
-		}
-		defer input.(*os.File).Close()
-	}
 
-	conf := gtree.Config{
-		IsTwoSpaces:  isTwoSpaces,
-		IsFourSpaces: isFourSpaces,
+		if isWatching {
+			ticker := time.NewTicker(1 * time.Second)
+			var preFileModTime time.Time
+
+			for {
+				select {
+				case <-ticker.C:
+					func() {
+						file, err := os.Open(filePath)
+						if err != nil {
+							fmt.Errorf("%+v", err)
+							os.Exit(1)
+						}
+						defer file.Close()
+
+						fileInfo, err := file.Stat()
+						if err != nil {
+							fmt.Errorf("%+v", err)
+							os.Exit(1)
+						}
+
+						if fileInfo.ModTime() == preFileModTime {
+							return
+						} else {
+							preFileModTime = fileInfo.ModTime()
+							output, err := gtree.Execute(file, conf)
+							if err != nil {
+								return
+							}
+							fmt.Printf("%s\n\n", output)
+						}
+					}()
+				}
+			}
+			return
+
+		} else {
+			input, err = os.Open(filePath)
+			if err != nil {
+				fmt.Errorf("%+v", err)
+				os.Exit(1)
+			}
+			defer input.(*os.File).Close()
+		}
 	}
 
 	output, err := gtree.Execute(input, conf)
