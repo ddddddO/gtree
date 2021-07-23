@@ -70,6 +70,10 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) 
 		}
 	}
 
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
 	return &tree{
 		roots: roots,
 	}, nil

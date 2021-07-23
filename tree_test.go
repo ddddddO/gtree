@@ -1,7 +1,9 @@
 package gtree
 
 import (
+	"bufio"
 	"bytes"
+	"fmt"
 	"io"
 	"strings"
 	"testing"
@@ -373,6 +375,7 @@ a
 		{
 			// TODO: inputのパターンが3つ(tab/ts/fs)と実行時のモードが3つで、それぞれの正常系(3つ)を上でしてるから、このパターン含めると、
 			//       3*3-3=6パターンのケースが必要
+			//       そのため、case 17 ~ case 21を予約
 			name: "case 16(incorrect input format(input 4spaces indent / execute tab mode))",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
@@ -382,6 +385,18 @@ a
 			out: out{
 				output: "",
 				err:    ErrIncorrectFormat,
+			},
+		},
+		{
+			name: "case 22(bufio.Scanner err)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(fmt.Sprintf(`
+- a
+	- %s`, strings.Repeat("a", 64*1024)))),
+			},
+			out: out{
+				output: "",
+				err:    bufio.ErrTooLong,
 			},
 		},
 	}
