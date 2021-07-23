@@ -1,3 +1,3 @@
-module github.com/ddddddO/gentree
+module github.com/ddddddO/gtree
 
 go 1.16

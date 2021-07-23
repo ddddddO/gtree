@@ -1,16 +1,16 @@
-project_name: gentree
+project_name: gtree
 env:
   - GO111MODULE=on
 before:
   hooks:
     - go mod tidy
 builds:
-  - main: ./cmd/gentree
-    binary: gentree
+  - main: ./cmd/gtree
+    binary: gtree
     ldflags:
       - -s -w
-      - -X github.com/ddddddO/gentree/cmd/gentree/main.Version={{.Version}}
-      - -X github.com/ddddddO/gentree/cmd/gentree/main.Revision={{.ShortCommit}}
+      - -X github.com/ddddddO/gtree/cmd/gtree/main.Version={{.Version}}
+      - -X github.com/ddddddO/gtree/cmd/gtree/main.Revision={{.ShortCommit}}
     env:
       - CGO_ENABLED=0
 archives:

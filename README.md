@@ -1,13 +1,13 @@
-# gentree
+# gtree
 
-[![ci](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gentree/actions/workflows/ci.yaml) [![codecov](https://codecov.io/gh/ddddddO/gentree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gentree) [![GitHub release](https://img.shields.io/github/release/ddddddO/gentree.svg)](https://github.com/ddddddO/gentree/releases)
+[![ci](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml) [![codecov](https://codecov.io/gh/ddddddO/gtree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gtree) [![GitHub release](https://img.shields.io/github/release/ddddddO/gtree.svg)](https://github.com/ddddddO/gtree/releases)
 
 markdown to tree.
 
 
 ## Demo
 ```sh
-12:24:56 > gentree -ts << EOS
+12:24:56 > gtree -ts << EOS
 - root
   - parent_a
   - parent_b
@@ -43,7 +43,7 @@ root
 ```
 ├── CLI or Package.
 ├── Given a markdown file or format, the result of the tree command is printed.
-├── `gentree` does not temporarily create directories or files.
+├── `gtree` does not temporarily create directories or files.
 └── Create markdown file by referring to the file in the `testdata/` directory.
     ├── Hierarchy is represented by indentation.
     └── Indentation should be unified by one of the following.
@@ -58,16 +58,16 @@ root
 
 ### Installation
 ```sh
-go get github.com/ddddddO/gentree/cmd/gentree
+go get github.com/ddddddO/gtree/cmd/gtree
 ```
 
-or, download from [here](https://github.com/ddddddO/gentree/releases).
+or, download from [here](https://github.com/ddddddO/gtree/releases).
 
 
 ### Usage
 
 ```sh
-19:17:07 > cat testdata/sample1.md | gentree
+19:17:07 > cat testdata/sample1.md | gtree
 a
 ├── vvv
 │   └── jjj
@@ -81,8 +81,8 @@ a
 
 #### OR
 ```
-├── gentree -f testdata/sample1.md
-└── cat testdata/sample1.md | gentree -f -
+├── gtree -f testdata/sample1.md
+└── cat testdata/sample1.md | gtree -f -
 ```
 
 ---
@@ -90,7 +90,7 @@ a
 - Usage other than representing a directory.
 
 ```sh
-16:31:42 > cat testdata/sample2.md | gentree
+16:31:42 > cat testdata/sample2.md | gtree
 k8s_resources
 ├── (Tier3)
 │   └── (Tier2)
@@ -118,7 +118,7 @@ k8s_resources
 - Two spaces indent
 
 ```sh
-01:15:25 > cat testdata/sample4.md | gentree -ts
+01:15:25 > cat testdata/sample4.md | gtree -ts
 a
 ├── i
 │   ├── u
@@ -133,7 +133,7 @@ a
 - Four spaces indent
 
 ```sh
-01:16:46 > cat testdata/sample5.md | gentree -fs
+01:16:46 > cat testdata/sample5.md | gtree -fs
 a
 ├── i
 │   ├── u
@@ -148,7 +148,7 @@ a
 - Multiple roots
 
 ```sh
-13:06:26 > cat testdata/sample6.md | gentree
+13:06:26 > cat testdata/sample6.md | gtree
 a
 ├── i
 │   ├── u
@@ -174,7 +174,7 @@ a
 
 ### Installation
 ```sh
-go get github.com/ddddddO/gentree
+go get github.com/ddddddO/gtree
 ```
 
 ### Usage
@@ -186,7 +186,7 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/ddddddO/gentree"
+	"github.com/ddddddO/gtree"
 )
 
 func main() {
@@ -210,12 +210,12 @@ func main() {
 		isFourSpaces bool = false // `true` when indentation is four half-width spaces
 	)
 
-	conf := gentree.Config{
+	conf := gtree.Config{
 		IsTwoSpaces: isTwoSpaces,
 		IsFourSpaces: isFourSpaces,
 	}
 
-	output := gentree.Execute(buf, conf)
+	output := gtree.Execute(buf, conf)
 	fmt.Println(output)
 
 	// output

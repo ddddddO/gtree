@@ -1,4 +1,4 @@
-package gentree
+package gtree
 
 import (
 	"bytes"

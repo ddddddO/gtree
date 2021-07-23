@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ddddddO/gentree"
+	"github.com/ddddddO/gtree"
 )
 
 // These variables are set in build step
@@ -19,7 +19,7 @@ var (
 func main() {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf("failed to gentree...\nplease review the file format.\nhint: %s\n", err)
+			fmt.Printf("failed to gtree...\nplease review the file format.\nhint: %s\n", err)
 			os.Exit(1)
 		}
 	}()
@@ -29,14 +29,14 @@ func main() {
 		f                         string
 		isTwoSpaces, isFourSpaces bool
 	)
-	flag.BoolVar(&isVersion, "v", false, "current gentree version")
+	flag.BoolVar(&isVersion, "v", false, "current gtree version")
 	flag.StringVar(&f, "f", "", "markdown file path")
 	flag.BoolVar(&isTwoSpaces, "ts", false, "for indent two spaces")
 	flag.BoolVar(&isFourSpaces, "fs", false, "for indent four spaces")
 	flag.Parse()
 
 	if isVersion {
-		fmt.Printf("gentree version %s / revision %s\n", Version, Revision)
+		fmt.Printf("gtree version %s / revision %s\n", Version, Revision)
 		return
 	}
 
@@ -62,10 +62,10 @@ func main() {
 		defer input.(*os.File).Close()
 	}
 
-	conf := gentree.Config{
+	conf := gtree.Config{
 		IsTwoSpaces:  isTwoSpaces,
 		IsFourSpaces: isFourSpaces,
 	}
 
-	fmt.Println(gentree.Execute(input, conf))
+	fmt.Println(gtree.Execute(input, conf))
 }

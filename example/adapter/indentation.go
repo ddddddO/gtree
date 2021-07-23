@@ -3,7 +3,7 @@ package adapter
 import (
 	"io"
 
-	"github.com/ddddddO/gentree"
+	"github.com/ddddddO/gtree"
 )
 
 type Tab struct {
@@ -11,8 +11,8 @@ type Tab struct {
 }
 
 func (tab *Tab) Execute() string {
-	conf := gentree.Config{}
-	return gentree.Execute(tab.Data, conf)
+	conf := gtree.Config{}
+	return gtree.Execute(tab.Data, conf)
 }
 
 type TwoSpaces struct {
@@ -20,10 +20,10 @@ type TwoSpaces struct {
 }
 
 func (ts *TwoSpaces) Execute() string {
-	conf := gentree.Config{
+	conf := gtree.Config{
 		IsTwoSpaces: true,
 	}
-	return gentree.Execute(ts.Data, conf)
+	return gtree.Execute(ts.Data, conf)
 }
 
 type FourSpaces struct {
@@ -31,8 +31,8 @@ type FourSpaces struct {
 }
 
 func (fs *FourSpaces) Execute() string {
-	conf := gentree.Config{
+	conf := gtree.Config{
 		IsFourSpaces: true,
 	}
-	return gentree.Execute(fs.Data, conf)
+	return gtree.Execute(fs.Data, conf)
 }

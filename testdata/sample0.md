@@ -1,7 +1,7 @@
 - ## Description
     - CLI or Package.
     - Given a markdown file or format, the result of the tree command is printed.
-    - `gentree` does not temporarily create directories or files.
+    - `gtree` does not temporarily create directories or files.
     - Create markdown file by referring to the file in the `testdata/` directory.
         - Hierarchy is represented by indentation.
         - Indentation should be unified by one of the following.
