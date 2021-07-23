@@ -1,6 +1,10 @@
 package gtree
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/pkg/errors"
+)
 
 type node struct {
 	name      string
@@ -33,6 +37,21 @@ func (n *node) buildBranch() string {
 		return fmt.Sprintf("%s\n", n.name)
 	}
 	return fmt.Sprintf("%s %s\n", n.branch, n.name)
+}
+
+var (
+	ErrEmptyName       = errors.New("empty name")
+	ErrIncorrectFormat = errors.New("incorrect input format")
+)
+
+func (n *node) validate() error {
+	if len(n.name) == 0 {
+		return ErrEmptyName
+	}
+	if n.hierarchy == 0 {
+		return ErrIncorrectFormat
+	}
+	return nil
 }
 
 type nodeGenerator interface {
@@ -75,11 +94,15 @@ func (*nodeGeneratorForTab) generate(row string) *node {
 	)
 	var (
 		isPrevChar = false
+		isRoot     = false
 	)
 
-	for _, r := range row {
+	for i, r := range row {
 		switch r {
 		case hyphen:
+			if i == 0 {
+				isRoot = true
+			}
 			if isPrevChar {
 				name += string(r)
 				continue
@@ -96,6 +119,9 @@ func (*nodeGeneratorForTab) generate(row string) *node {
 			name += string(r)
 			isPrevChar = true
 		}
+	}
+	if !isRoot && hierarchy == rootHierarchyNum {
+		hierarchy = 0
 	}
 
 	return newNode(name, hierarchy, nodeIdx)

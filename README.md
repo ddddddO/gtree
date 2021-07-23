@@ -215,7 +215,11 @@ func main() {
 		IsFourSpaces: isFourSpaces,
 	}
 
-	output := gtree.Execute(buf, conf)
+	output, err := gtree.Execute(buf, conf)
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Println(output)
 
 	// output

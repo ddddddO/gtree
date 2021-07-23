@@ -67,5 +67,11 @@ func main() {
 		IsFourSpaces: isFourSpaces,
 	}
 
-	fmt.Println(gtree.Execute(input, conf))
+	output, err := gtree.Execute(input, conf)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	fmt.Println(output)
 }

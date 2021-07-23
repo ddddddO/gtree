@@ -15,18 +15,22 @@ type tree struct {
 	roots []*node
 }
 
-func Execute(input io.Reader, conf Config) string {
+func Execute(input io.Reader, conf Config) (string, error) {
 	seed := bufio.NewScanner(input)
 	nodeGenerator := newNodeGenerator(conf)
 
-	tree := sprout(seed, nodeGenerator)
+	tree, err := sprout(seed, nodeGenerator)
+	if err != nil {
+		return "", err
+	}
+
 	tree.grow()
-	return tree.expand()
+	return tree.expand(), nil
 }
 
 // Sprout：芽が出る
 // 全入力をrootを頂点としたツリー上のデータに変換する。
-func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) *tree {
+func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) {
 	var (
 		rootNode *node
 		roots    []*node
@@ -36,6 +40,10 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) *tree {
 	for scanner.Scan() {
 		row := scanner.Text()
 		currentNode := nodeGenerator.generate(row)
+
+		if err := currentNode.validate(); err != nil {
+			return nil, err
+		}
 
 		if currentNode.isRoot() {
 			tmpStack = newStack()
@@ -66,7 +74,7 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) *tree {
 
 	return &tree{
 		roots: roots,
-	}
+	}, nil
 }
 
 func (t *tree) grow() {

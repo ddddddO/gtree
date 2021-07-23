@@ -12,10 +12,16 @@ type in struct {
 	conf  Config
 }
 
+type out struct {
+	output string
+	err    error
+}
+
 func TestExecute(t *testing.T) {
 	tests := []struct {
-		name, out string
-		in        in
+		name string
+		in   in
+		out  out
 	}{
 		{
 			name: "case 1",
@@ -24,9 +30,12 @@ func TestExecute(t *testing.T) {
 - a
 	- b`)),
 			},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 └── b`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 2",
@@ -36,10 +45,13 @@ a
 	- b
 		- c`))},
 
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 └── b
     └── c`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 3",
@@ -48,10 +60,13 @@ a
 - a
 	- b
 	- c`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 ├── b
 └── c`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 4",
@@ -63,13 +78,16 @@ a
 			- d
 			- e
 			- f`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 └── b
     └── c
         ├── d
         ├── e
         └── f`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 5",
@@ -84,7 +102,8 @@ a
 	- e
 		- o
 	- g`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 ├── i
 │   ├── u
@@ -94,6 +113,8 @@ a
 ├── e
 │   └── o
 └── g`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 6",
@@ -105,13 +126,16 @@ a
 	- ggg
 		- hhhh
 	- ggggg`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 ├── vvv
 │   └── jjj
 ├── ggg
 │   └── hhhh
 └── ggggg`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 7",
@@ -128,7 +152,8 @@ a
 				- ppppp
 		- oooo
 	- eee`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 root
 ├── child1
 ├── child2
@@ -140,6 +165,8 @@ root
 │   │       └── ppppp
 │   └── oooo
 └── eee`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 8",
@@ -158,7 +185,8 @@ root
 						- 1111111
 							- AAAAAAA
 	- eee`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 root
 ├── dddd
 │   └── kkkkkkk
@@ -172,6 +200,8 @@ root
 │                   └── 1111111
 │                       └── AAAAAAA
 └── eee`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 9(indent 2spaces)",
@@ -190,7 +220,8 @@ root
 					IsTwoSpaces: true,
 				},
 			},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 ├── i
 │   ├── u
@@ -200,6 +231,8 @@ a
 ├── e
 │   └── o
 └── g`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 10(indent 4spaces)",
@@ -218,7 +251,8 @@ a
 					IsFourSpaces: true,
 				},
 			},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 ├── i
 │   ├── u
@@ -228,6 +262,8 @@ a
 ├── e
 │   └── o
 └── g`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 11(1space & -)",
@@ -235,9 +271,12 @@ a
 				input: strings.NewReader(strings.TrimSpace(`
 - root dir aaa
 	- child-dir`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 root dir aaa
 └── child-dir`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 12(same name)",
@@ -249,13 +288,16 @@ root dir aaa
 		- chilchil
 		- chilchil
 	- child`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 parent
 ├── child
 │   ├── chilchil
 │   ├── chilchil
 │   └── chilchil
 └── child`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 13(byte)",
@@ -264,9 +306,12 @@ parent
 - a
 	- b`)),
 			},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 └── b`),
+				err: nil,
+			},
 		},
 		{
 			name: "case 14(multi root)",
@@ -290,7 +335,8 @@ a
 	- e
 		- o
 	- g`))},
-			out: strings.TrimSpace(`
+			out: out{
+				output: strings.TrimSpace(`
 a
 ├── i
 │   ├── u
@@ -309,16 +355,47 @@ a
 ├── e
 │   └── o
 └── g`),
+				err: nil,
+			},
+		},
+		{
+			name: "case 15(empty name)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	-`)),
+			},
+			out: out{
+				output: "",
+				err:    ErrEmptyName,
+			},
+		},
+		{
+			// TODO: inputのパターンが3つ(tab/ts/fs)と実行時のモードが3つで、それぞれの正常系(3つ)を上でしてるから、このパターン含めると、
+			//       3*3-3=6パターンのケースが必要
+			name: "case 16(incorrect input format(input 4spaces indent / execute tab mode))",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+    - b`)),
+			},
+			out: out{
+				output: "",
+				err:    ErrIncorrectFormat,
+			},
 		},
 	}
 
 	for _, tt := range tests {
 		t.Log(tt.name)
 
-		got := Execute(tt.in.input, tt.in.conf)
+		gotOutput, gotErr := Execute(tt.in.input, tt.in.conf)
 
-		if got != tt.out {
-			t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.out)
+		if gotOutput != tt.out.output {
+			t.Errorf("\ngot: \n%s\nwant: \n%s", gotOutput, tt.out.output)
+		}
+		if gotErr != tt.out.err {
+			t.Errorf("\ngot: \n%v\nwant: \n%v", gotErr, tt.out.err)
 		}
 	}
 }

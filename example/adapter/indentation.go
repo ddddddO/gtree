@@ -12,7 +12,8 @@ type Tab struct {
 
 func (tab *Tab) Execute() string {
 	conf := gtree.Config{}
-	return gtree.Execute(tab.Data, conf)
+	output, _ := gtree.Execute(tab.Data, conf)
+	return output
 }
 
 type TwoSpaces struct {
@@ -23,7 +24,8 @@ func (ts *TwoSpaces) Execute() string {
 	conf := gtree.Config{
 		IsTwoSpaces: true,
 	}
-	return gtree.Execute(ts.Data, conf)
+	output, _ := gtree.Execute(ts.Data, conf)
+	return output
 }
 
 type FourSpaces struct {
@@ -34,5 +36,6 @@ func (fs *FourSpaces) Execute() string {
 	conf := gtree.Config{
 		IsFourSpaces: true,
 	}
-	return gtree.Execute(fs.Data, conf)
+	output, _ := gtree.Execute(fs.Data, conf)
+	return output
 }
