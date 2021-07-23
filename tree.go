@@ -32,7 +32,6 @@ func Execute(input io.Reader, conf Config) (string, error) {
 // 全入力をrootを頂点としたツリー上のデータに変換する。
 func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) {
 	var (
-		rootNode *node
 		roots    []*node
 		tmpStack *stack
 	)
@@ -47,9 +46,8 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) 
 
 		if currentNode.isRoot() {
 			tmpStack = newStack()
-			rootNode = currentNode
-			roots = append(roots, rootNode)
-			tmpStack.push(rootNode)
+			roots = append(roots, currentNode)
+			tmpStack.push(currentNode)
 			continue
 		}
 
