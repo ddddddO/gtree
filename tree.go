@@ -11,18 +11,18 @@ type Config struct {
 	IsFourSpaces bool
 }
 
-type lastNodeBranchFormat struct {
-	directlyBranch, indirectlyBranch string
+type lastNodeFormat struct {
+	directly, indirectly string
 }
 
-type intermedialNodeBranchFormat struct {
-	directlyBranch, indirectlyBranch string
+type intermedialNodeFormat struct {
+	directly, indirectly string
 }
 
 type tree struct {
-	roots                       []*node
-	lastNodeBranchFormat        lastNodeBranchFormat
-	intermedialNodeBranchFormat intermedialNodeBranchFormat
+	roots                 []*node
+	lastNodeFormat        lastNodeFormat
+	intermedialNodeFormat intermedialNodeFormat
 }
 
 func Execute(input io.Reader, conf Config) (string, error) {
@@ -33,7 +33,6 @@ func Execute(input io.Reader, conf Config) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	tree.grow()
 	return tree.expand(), nil
 }
@@ -91,13 +90,13 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) 
 	// TODO: ユーザーが枝のフォーマットを決められるようにする
 	return &tree{
 		roots: roots,
-		lastNodeBranchFormat: lastNodeBranchFormat{
-			directlyBranch:   "└──",
-			indirectlyBranch: "    ",
+		lastNodeFormat: lastNodeFormat{
+			directly:   "└──",
+			indirectly: "    ",
 		},
-		intermedialNodeBranchFormat: intermedialNodeBranchFormat{
-			directlyBranch:   "├──",
-			indirectlyBranch: "│   ",
+		intermedialNodeFormat: intermedialNodeFormat{
+			directly:   "├──",
+			indirectly: "│   ",
 		},
 	}, nil
 }
@@ -117,9 +116,9 @@ func (t *tree) determineBranches(currentNode *node) {
 	}
 
 	if currentNode.isLastNodeOfHierarchy() {
-		currentNode.branch += t.lastNodeBranchFormat.directlyBranch
+		currentNode.branch += t.lastNodeFormat.directly
 	} else {
-		currentNode.branch += t.intermedialNodeBranchFormat.directlyBranch
+		currentNode.branch += t.intermedialNodeFormat.directly
 	}
 
 	// rootまで親を遡って枝を構成する
@@ -131,9 +130,9 @@ func (t *tree) determineBranches(currentNode *node) {
 		}
 
 		if tmpParent.isLastNodeOfHierarchy() {
-			currentNode.branch = t.lastNodeBranchFormat.indirectlyBranch + currentNode.branch
+			currentNode.branch = t.lastNodeFormat.indirectly + currentNode.branch
 		} else {
-			currentNode.branch = t.intermedialNodeBranchFormat.indirectlyBranch + currentNode.branch
+			currentNode.branch = t.intermedialNodeFormat.indirectly + currentNode.branch
 		}
 		tmpParent = tmpParent.parent
 	}
