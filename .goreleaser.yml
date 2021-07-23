@@ -9,8 +9,8 @@ builds:
     binary: gtree
     ldflags:
       - -s -w
-      - -X github.com/ddddddO/gtree/cmd/gtree/main.Version={{.Version}}
-      - -X github.com/ddddddO/gtree/cmd/gtree/main.Revision={{.ShortCommit}}
+      - -X main.Version={{.Version}}
+      - -X main.Revision={{.ShortCommit}}
     env:
       - CGO_ENABLED=0
 archives:
