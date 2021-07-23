@@ -2,6 +2,39 @@ package gtree
 
 import "fmt"
 
+type node struct {
+	name      string
+	hierarchy int
+	index     int // 上からscanしたときの順番
+	branch    string
+	parent    *node
+	children  []*node
+}
+
+func newNode(name string, hierarchy, index int) *node {
+	return &node{
+		name:      name,
+		hierarchy: hierarchy,
+		index:     index,
+	}
+}
+
+func (n *node) isLastNodeOfHierarchy() bool {
+	lastChildIndex := len(n.parent.children) - 1
+	return n.index == n.parent.children[lastChildIndex].index
+}
+
+func (n *node) isRoot() bool {
+	return n.hierarchy == rootHierarchyNum
+}
+
+func (n *node) buildBranch() string {
+	if n.isRoot() {
+		return fmt.Sprintf("%s\n", n.name)
+	}
+	return fmt.Sprintf("%s %s\n", n.branch, n.name)
+}
+
 type nodeGenerator interface {
 	generate(row string) *node
 }
@@ -18,23 +51,6 @@ func newNodeGenerator(conf Config) nodeGenerator {
 		return &nodeGeneratorForFourSpaces{}
 	}
 	return &nodeGeneratorForTab{}
-}
-
-type node struct {
-	name      string
-	hierarchy int
-	index     int // 上からscanしたときの順番
-	branch    string
-	parent    *node
-	children  []*node
-}
-
-func newNode(name string, hierarchy, index int) *node {
-	return &node{
-		name:      name,
-		hierarchy: hierarchy,
-		index:     index,
-	}
 }
 
 // https://ja.wikipedia.org/wiki/ASCII
@@ -163,20 +179,4 @@ func (*nodeGeneratorForFourSpaces) generate(row string) *node {
 	}
 
 	return newNode(name, hierarchy, nodeIdx)
-}
-
-func (n *node) isLastNodeOfHierarchy() bool {
-	lastChildIndex := len(n.parent.children) - 1
-	return n.index == n.parent.children[lastChildIndex].index
-}
-
-func (n *node) isRoot() bool {
-	return n.hierarchy == rootHierarchyNum
-}
-
-func (n *node) buildBranch() string {
-	if n.isRoot() {
-		return fmt.Sprintf("%s\n", n.name)
-	}
-	return fmt.Sprintf("%s %s\n", n.branch, n.name)
 }
