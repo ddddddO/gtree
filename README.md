@@ -42,7 +42,7 @@ root
 ## Description
 ```
 ├── CLI or Package.
-├── Given a markdown file or format, the result of the tree command is printed.
+├── Given a markdown file or format, the result of Linux tree command is printed.
 ├── `gtree` does not temporarily create directories or files.
 └── Create markdown file by referring to the file in the `testdata/` directory.
     ├── Hierarchy is represented by indentation.
