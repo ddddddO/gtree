@@ -1,9 +1,18 @@
 package gtree
 
-import "io"
+import (
+	"github.com/pkg/errors"
+	"io"
+)
+
+var ErrNotRoot = errors.New("not root node")
 
 // TODO: 命名がイマイチ
 func ExecuteProgrammably(root *node, w io.Writer) error {
+	if !root.isRoot() {
+		return ErrNotRoot
+	}
+
 	tree := &tree{
 		roots: []*node{root},
 		lastNodeFormat: lastNodeFormat{
