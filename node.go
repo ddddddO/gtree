@@ -58,18 +58,18 @@ type nodeGenerator interface {
 	generate(row string) *node
 }
 
-type nodeGeneratorForTab struct{}
-type nodeGeneratorForTwoSpaces struct{}
-type nodeGeneratorForFourSpaces struct{}
+type nodeGeneratorTab struct{}
+type nodeGeneratorTwoSpaces struct{}
+type nodeGeneratorFourSpaces struct{}
 
 func newNodeGenerator(conf Config) nodeGenerator {
 	if conf.IsTwoSpaces {
-		return &nodeGeneratorForTwoSpaces{}
+		return &nodeGeneratorTwoSpaces{}
 	}
 	if conf.IsFourSpaces {
-		return &nodeGeneratorForFourSpaces{}
+		return &nodeGeneratorFourSpaces{}
 	}
-	return &nodeGeneratorForTab{}
+	return &nodeGeneratorTab{}
 }
 
 // https://ja.wikipedia.org/wiki/ASCII
@@ -85,7 +85,7 @@ const (
 
 var nodeIdx int
 
-func (*nodeGeneratorForTab) generate(row string) *node {
+func (*nodeGeneratorTab) generate(row string) *node {
 	nodeIdx++
 
 	var (
@@ -127,7 +127,7 @@ func (*nodeGeneratorForTab) generate(row string) *node {
 	return newNode(name, hierarchy, nodeIdx)
 }
 
-func (*nodeGeneratorForTwoSpaces) generate(row string) *node {
+func (*nodeGeneratorTwoSpaces) generate(row string) *node {
 	nodeIdx++
 
 	var (
@@ -147,8 +147,7 @@ func (*nodeGeneratorForTwoSpaces) generate(row string) *node {
 				continue
 			}
 			if spaceCnt%2 == 0 {
-				tmp := spaceCnt / 2
-				hierarchy += tmp
+				hierarchy += spaceCnt / 2
 			}
 			isPrevChar = false
 		case space:
@@ -166,7 +165,7 @@ func (*nodeGeneratorForTwoSpaces) generate(row string) *node {
 	return newNode(name, hierarchy, nodeIdx)
 }
 
-func (*nodeGeneratorForFourSpaces) generate(row string) *node {
+func (*nodeGeneratorFourSpaces) generate(row string) *node {
 	nodeIdx++
 
 	var (
@@ -186,8 +185,7 @@ func (*nodeGeneratorForFourSpaces) generate(row string) *node {
 				continue
 			}
 			if spaceCnt%4 == 0 {
-				tmp := spaceCnt / 4
-				hierarchy += tmp
+				hierarchy += spaceCnt / 4
 			}
 			isPrevChar = false
 		case space:
