@@ -61,8 +61,9 @@ func main() {
 		fourSpaces,
 	}
 
-	for i := range executors {
-		rslt := executors[i].Execute()
-		fmt.Printf("%s\n\n", rslt)
+	for _, ex := range executors {
+		if err := ex.Execute(); err != nil {
+			panic(err)
+		}
 	}
 }

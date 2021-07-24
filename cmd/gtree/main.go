@@ -89,11 +89,9 @@ func main() {
 							return
 						} else {
 							preFileModTime = fileInfo.ModTime()
-							output, err := gtree.Execute(file, conf)
-							if err != nil {
+							if err := gtree.Execute(os.Stdout, file, conf); err != nil {
 								return
 							}
-							fmt.Printf("%s\n\n", output)
 						}
 					}()
 				}
@@ -110,11 +108,8 @@ func main() {
 		}
 	}
 
-	output, err := gtree.Execute(input, conf)
-	if err != nil {
+	if err := gtree.Execute(os.Stdout, input, conf); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
-	fmt.Println(output)
 }

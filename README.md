@@ -192,7 +192,7 @@ import (
 )
 
 func main() {
-	buf := bytes.NewBufferString(strings.TrimSpace(`
+	r := bytes.NewBufferString(strings.TrimSpace(`
 - root
 	- dddd
 		- kkkkkkk
@@ -212,12 +212,9 @@ func main() {
 		IsFourSpaces: false, // `true` when indentation is four half-width spaces
 	}
 
-	output, err := gtree.Execute(buf, conf)
-	if err != nil {
+	if err := gtree.Execute(os.Stdout, r, conf); err != nil {
 		panic(err)
 	}
-
-	fmt.Println(output)
 
 	// output
 

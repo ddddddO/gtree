@@ -3,7 +3,6 @@ package gtree
 import (
 	"bufio"
 	"io"
-	"strings"
 )
 
 type Config struct {
@@ -25,16 +24,16 @@ type tree struct {
 	intermedialNodeFormat intermedialNodeFormat
 }
 
-func Execute(input io.Reader, conf Config) (string, error) {
-	seed := bufio.NewScanner(input)
+func Execute(w io.Writer, r io.Reader, conf Config) error {
+	seed := bufio.NewScanner(r)
 	nodeGenerator := newNodeGenerator(conf)
 
 	tree, err := sprout(seed, nodeGenerator)
 	if err != nil {
-		return "", err
+		return err
 	}
 	tree.grow()
-	return tree.expand(), nil
+	return tree.expand(w)
 }
 
 // Sprout：芽が出る
@@ -142,12 +141,20 @@ func (t *tree) determineBranches(currentNode *node) {
 	}
 }
 
-func (t *tree) expand() string {
+func (t *tree) expand(w io.Writer) error {
 	branches := ""
 	for _, root := range t.roots {
 		branches += expandBranches(root, "")
 	}
-	return strings.TrimSpace(branches)
+
+	buf := bufio.NewWriter(w)
+	if _, err := buf.WriteString(branches); err != nil {
+		return err
+	}
+	if err := buf.Flush(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func expandBranches(currentNode *node, output string) string {

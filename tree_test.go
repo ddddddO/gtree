@@ -33,9 +33,10 @@ func TestExecute(t *testing.T) {
 	- b`)),
 			},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
-└── b`),
+└── b
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -48,10 +49,11 @@ a
 		- c`))},
 
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 └── b
-    └── c`),
+    └── c
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -63,10 +65,11 @@ a
 	- b
 	- c`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 ├── b
-└── c`),
+└── c
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -81,13 +84,14 @@ a
 			- e
 			- f`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 └── b
     └── c
         ├── d
         ├── e
-        └── f`),
+        └── f
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -105,7 +109,7 @@ a
 		- o
 	- g`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 ├── i
 │   ├── u
@@ -114,7 +118,8 @@ a
 │   └── t
 ├── e
 │   └── o
-└── g`),
+└── g
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -129,13 +134,14 @@ a
 		- hhhh
 	- ggggg`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 ├── vvv
 │   └── jjj
 ├── ggg
 │   └── hhhh
-└── ggggg`),
+└── ggggg
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -155,7 +161,7 @@ a
 		- oooo
 	- eee`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 root
 ├── child1
 ├── child2
@@ -166,7 +172,8 @@ root
 │   │       ├── ffff
 │   │       └── ppppp
 │   └── oooo
-└── eee`),
+└── eee
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -188,7 +195,7 @@ root
 							- AAAAAAA
 	- eee`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 root
 ├── dddd
 │   └── kkkkkkk
@@ -201,7 +208,8 @@ root
 │               └── KKK
 │                   └── 1111111
 │                       └── AAAAAAA
-└── eee`),
+└── eee
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -223,7 +231,7 @@ root
 				},
 			},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 ├── i
 │   ├── u
@@ -232,7 +240,8 @@ a
 │   └── t
 ├── e
 │   └── o
-└── g`),
+└── g
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -254,7 +263,7 @@ a
 				},
 			},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 ├── i
 │   ├── u
@@ -263,7 +272,8 @@ a
 │   └── t
 ├── e
 │   └── o
-└── g`),
+└── g
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -274,9 +284,10 @@ a
 - root dir aaa
 	- child-dir`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 root dir aaa
-└── child-dir`),
+└── child-dir
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -291,13 +302,14 @@ root dir aaa
 		- chilchil
 	- child`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 parent
 ├── child
 │   ├── chilchil
 │   ├── chilchil
 │   └── chilchil
-└── child`),
+└── child
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -309,9 +321,10 @@ parent
 	- b`)),
 			},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
-└── b`),
+└── b
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -338,7 +351,7 @@ a
 		- o
 	- g`))},
 			out: out{
-				output: strings.TrimSpace(`
+				output: strings.TrimPrefix(`
 a
 ├── i
 │   ├── u
@@ -356,7 +369,8 @@ a
 │   └── t
 ├── e
 │   └── o
-└── g`),
+└── g
+`, "\n"),
 				err: nil,
 			},
 		},
@@ -404,7 +418,9 @@ a
 	for _, tt := range tests {
 		t.Log(tt.name)
 
-		gotOutput, gotErr := Execute(tt.in.input, tt.in.conf)
+		buf := &bytes.Buffer{}
+		gotErr := Execute(buf, tt.in.input, tt.in.conf)
+		gotOutput := buf.String()
 
 		if gotOutput != tt.out.output {
 			t.Errorf("\ngot: \n%s\nwant: \n%s", gotOutput, tt.out.output)

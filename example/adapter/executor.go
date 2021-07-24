@@ -1,5 +1,5 @@
 package adapter
 
 type Executor interface {
-	Execute() string
+	Execute() error
 }
