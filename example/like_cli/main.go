@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ddddddO/gtree/example/adapter"
+	"github.com/ddddddO/gtree/example/like_cli/adapter"
 )
 
 func main() {

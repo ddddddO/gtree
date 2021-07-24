@@ -1,10 +1,13 @@
 - ## Description
-    - CLI or Package.
-    - Given a markdown file or format, the result of the tree command is printed.
-    - `gtree` does not temporarily create directories or files.
-    - Create markdown file by referring to the file in the `testdata/` directory.
-        - Hierarchy is represented by indentation.
-        - Indentation should be unified by one of the following.
-            - Tab
-            - Two half-width spaces（required: `-ts`）
-            - Four half-width spaces（required: `-fs`）
+    - CLI and Package(1).
+        - Given a markdown file or format, the result of the tree command is printed.
+        - `gtree` does not temporarily create directories or files.
+        - Create markdown file by referring to the file in the `testdata/` directory.
+            - Hierarchy is represented by indentation.
+            - Indentation should be unified by one of the following.
+                - Tab
+                - Two half-width spaces（required: `-ts`）
+                - Four half-width spaces（required: `-fs`）
+    - Package(2).
+        - You can also generate a tree programmatically.
+        - Markdown is irrelevant.
