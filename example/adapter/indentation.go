@@ -1,7 +1,11 @@
 package adapter
 
 import (
+	"bytes"
+	"fmt"
 	"io"
+	"os"
+	"strings"
 
 	"github.com/ddddddO/gtree"
 )
@@ -10,32 +14,39 @@ type Tab struct {
 	Data io.Reader
 }
 
-func (tab *Tab) Execute() string {
+func (tab *Tab) Execute() error {
 	conf := gtree.Config{}
-	output, _ := gtree.Execute(tab.Data, conf)
-	return output
+	buf := &strings.Builder{}
+	if err := gtree.Execute(buf, tab.Data, conf); err != nil {
+		return err
+	}
+	fmt.Printf("%s\n\n", buf.String())
+	return nil
 }
 
 type TwoSpaces struct {
 	Data io.Reader
 }
 
-func (ts *TwoSpaces) Execute() string {
+func (ts *TwoSpaces) Execute() error {
 	conf := gtree.Config{
 		IsTwoSpaces: true,
 	}
-	output, _ := gtree.Execute(ts.Data, conf)
-	return output
+	buf := &bytes.Buffer{}
+	if err := gtree.Execute(buf, ts.Data, conf); err != nil {
+		return err
+	}
+	fmt.Printf("%s\n\n", buf.String())
+	return nil
 }
 
 type FourSpaces struct {
 	Data io.Reader
 }
 
-func (fs *FourSpaces) Execute() string {
+func (fs *FourSpaces) Execute() error {
 	conf := gtree.Config{
 		IsFourSpaces: true,
 	}
-	output, _ := gtree.Execute(fs.Data, conf)
-	return output
+	return gtree.Execute(os.Stdout, fs.Data, conf)
 }
