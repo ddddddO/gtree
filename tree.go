@@ -151,10 +151,7 @@ func (t *tree) expand(w io.Writer) error {
 	if _, err := buf.WriteString(branches); err != nil {
 		return err
 	}
-	if err := buf.Flush(); err != nil {
-		return err
-	}
-	return nil
+	return buf.Flush()
 }
 
 func expandBranches(currentNode *node, output string) string {
