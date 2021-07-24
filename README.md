@@ -207,14 +207,9 @@ func main() {
 							- AAAAAAA
 	- eee`))
 
-	var (
-		isTwoSpaces  bool = false // `true` when indentation is two half-width spaces
-		isFourSpaces bool = false // `true` when indentation is four half-width spaces
-	)
-
 	conf := gtree.Config{
-		IsTwoSpaces: isTwoSpaces,
-		IsFourSpaces: isFourSpaces,
+		IsTwoSpaces:  false, // `true` when indentation is two half-width spaces
+		IsFourSpaces: false, // `true` when indentation is four half-width spaces
 	}
 
 	output, err := gtree.Execute(buf, conf)
