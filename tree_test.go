@@ -375,7 +375,7 @@ a
 			},
 		},
 		{
-			name: "case 15(empty name)",
+			name: "case 15(empty text)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -383,7 +383,7 @@ a
 			},
 			out: out{
 				output: "",
-				err:    ErrEmptyName,
+				err:    ErrEmptyText,
 			},
 		},
 		{

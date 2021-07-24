@@ -7,7 +7,7 @@ import (
 )
 
 type node struct {
-	name      string
+	text      string
 	hierarchy int
 	index     int // 上からscanしたときの順番
 	branch    string
@@ -15,9 +15,9 @@ type node struct {
 	children  []*node
 }
 
-func newNode(name string, hierarchy, index int) *node {
+func newNode(text string, hierarchy, index int) *node {
 	return &node{
-		name:      name,
+		text:      text,
 		hierarchy: hierarchy,
 		index:     index,
 	}
@@ -34,19 +34,19 @@ func (n *node) isRoot() bool {
 
 func (n *node) buildBranch() string {
 	if n.isRoot() {
-		return fmt.Sprintf("%s\n", n.name)
+		return fmt.Sprintf("%s\n", n.text)
 	}
-	return fmt.Sprintf("%s %s\n", n.branch, n.name)
+	return fmt.Sprintf("%s %s\n", n.branch, n.text)
 }
 
 var (
-	ErrEmptyName       = errors.New("empty name")
+	ErrEmptyText       = errors.New("empty text")
 	ErrIncorrectFormat = errors.New("incorrect input format")
 )
 
 func (n *node) validate() error {
-	if len(n.name) == 0 {
-		return ErrEmptyName
+	if len(n.text) == 0 {
+		return ErrEmptyText
 	}
 	if n.hierarchy == 0 {
 		return ErrIncorrectFormat
@@ -89,7 +89,7 @@ func (*nodeGeneratorTab) generate(row string) *node {
 	nodeIdx++
 
 	var (
-		name      = ""
+		text      = ""
 		hierarchy = rootHierarchyNum
 	)
 	var (
@@ -104,19 +104,19 @@ func (*nodeGeneratorTab) generate(row string) *node {
 				isRoot = true
 			}
 			if isPrevChar {
-				name += string(r)
+				text += string(r)
 				continue
 			}
 			isPrevChar = false
 		case space:
 			if isPrevChar {
-				name += string(r)
+				text += string(r)
 				continue
 			}
 		case tab:
 			hierarchy++
-		default: // directry or file name char
-			name += string(r)
+		default: // directry or file text char
+			text += string(r)
 			isPrevChar = true
 		}
 	}
@@ -124,14 +124,14 @@ func (*nodeGeneratorTab) generate(row string) *node {
 		hierarchy = 0
 	}
 
-	return newNode(name, hierarchy, nodeIdx)
+	return newNode(text, hierarchy, nodeIdx)
 }
 
 func (*nodeGeneratorTwoSpaces) generate(row string) *node {
 	nodeIdx++
 
 	var (
-		name      = ""
+		text      = ""
 		hierarchy = rootHierarchyNum
 	)
 	var (
@@ -143,7 +143,7 @@ func (*nodeGeneratorTwoSpaces) generate(row string) *node {
 		switch r {
 		case hyphen:
 			if isPrevChar {
-				name += string(r)
+				text += string(r)
 				continue
 			}
 			if spaceCnt%2 == 0 {
@@ -152,24 +152,24 @@ func (*nodeGeneratorTwoSpaces) generate(row string) *node {
 			isPrevChar = false
 		case space:
 			if isPrevChar {
-				name += string(r)
+				text += string(r)
 				continue
 			}
 			spaceCnt++
-		default: // directry or file name char
-			name += string(r)
+		default: // directry or file text char
+			text += string(r)
 			isPrevChar = true
 		}
 	}
 
-	return newNode(name, hierarchy, nodeIdx)
+	return newNode(text, hierarchy, nodeIdx)
 }
 
 func (*nodeGeneratorFourSpaces) generate(row string) *node {
 	nodeIdx++
 
 	var (
-		name      = ""
+		text      = ""
 		hierarchy = rootHierarchyNum
 	)
 	var (
@@ -181,7 +181,7 @@ func (*nodeGeneratorFourSpaces) generate(row string) *node {
 		switch r {
 		case hyphen:
 			if isPrevChar {
-				name += string(r)
+				text += string(r)
 				continue
 			}
 			if spaceCnt%4 == 0 {
@@ -190,15 +190,15 @@ func (*nodeGeneratorFourSpaces) generate(row string) *node {
 			isPrevChar = false
 		case space:
 			if isPrevChar {
-				name += string(r)
+				text += string(r)
 				continue
 			}
 			spaceCnt++
-		default: // directry or file name char
-			name += string(r)
+		default: // directry or file text char
+			text += string(r)
 			isPrevChar = true
 		}
 	}
 
-	return newNode(name, hierarchy, nodeIdx)
+	return newNode(text, hierarchy, nodeIdx)
 }

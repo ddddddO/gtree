@@ -22,16 +22,16 @@ func ExecuteProgrammably(root *node, w io.Writer) error {
 
 var programableNodeIdx int
 
-func NewRoot(name string) *node {
+func NewRoot(text string) *node {
 	programableNodeIdx++
 
-	return newNode(name, rootHierarchyNum, programableNodeIdx)
+	return newNode(text, rootHierarchyNum, programableNodeIdx)
 }
 
-func (current *node) Add(name string) *node {
+func (current *node) Add(text string) *node {
 	programableNodeIdx++
 
-	n := newNode(name, current.hierarchy+1, programableNodeIdx)
+	n := newNode(text, current.hierarchy+1, programableNodeIdx)
 	n.parent = current
 	current.children = append(current.children, n)
 	return n
