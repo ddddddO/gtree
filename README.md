@@ -193,9 +193,6 @@ func main() {
 	if err := gtree.Execute(os.Stdout, r, conf); err != nil {
 		panic(err)
 	}
-
-	// output
-
 	// root
 	// ├── dddd
 	// │   └── kkkkkkk
