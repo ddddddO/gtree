@@ -37,21 +37,21 @@ func main() {
 	// │       ├── Galagidae
 	// │       └── Lorisidae
 	// └── Haplorrhini
-	//  	├── Tarsiiformes
-	//  	│   └── Tarsiidae
-	// 		├── Simiiformes
-	// 		│   └── Catarrhini
-	// 		│       ├── Cercopithecoidea
-	// 		│       │   └── Cercopithecidae
-	// 		│       └── Hominoidea
-	// 		│           ├── Hylobatidae
-	// 		│           └── Hominidae
-	// 		└── Platyrrhini
-	// 			├── Ceboidea
-	// 			│   ├── Atelidae
-	// 			│   └── Cebidae
-	// 			└── Pithecioidea
-	// 				└── Pitheciidae
+	//     ├── Tarsiiformes
+	//     │   └── Tarsiidae
+	//     ├── Simiiformes
+	//     │   └── Catarrhini
+	//     │       ├── Cercopithecoidea
+	//     │       │   └── Cercopithecidae
+	//     │       └── Hominoidea
+	//     │           ├── Hylobatidae
+	//     │           └── Hominidae
+	//     └── Platyrrhini
+	//         ├── Ceboidea
+	//         │   ├── Atelidae
+	//         │   └── Cebidae
+	//         └── Pithecioidea
+	//             └── Pitheciidae
 }
 
 func preparePrimate() *gtree.Node {
