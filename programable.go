@@ -38,11 +38,11 @@ func NewRoot(text string) *Node {
 	return newNode(text, rootHierarchyNum, programableNodeIdx)
 }
 
-func (current *Node) Add(text string) *Node {
+func (parent *Node) Add(text string) *Node {
 	programableNodeIdx++
 
-	n := newNode(text, current.hierarchy+1, programableNodeIdx)
-	n.parent = current
-	current.children = append(current.children, n)
-	return n
+	current := newNode(text, parent.hierarchy+1, programableNodeIdx)
+	current.parent = parent
+	parent.children = append(parent.children, current)
+	return current
 }
