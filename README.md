@@ -36,7 +36,17 @@ or, download from [here](https://github.com/ddddddO/gtree/releases).
 ### Usage
 
 ```sh
-19:17:07 > cat testdata/sample1.md | gtree
+20:25:28 > gtree -ts << EOS
+> - a
+>   - vvv
+>     - jjj
+>   - kggg
+>     - kkdd
+>     - tggg
+>   - edddd
+>     - orrr
+>   - gggg
+> EOS
 a
 ├── vvv
 │   └── jjj
@@ -51,7 +61,8 @@ a
 #### OR
 ```
 ├── gtree -f testdata/sample1.md
-└── cat testdata/sample1.md | gtree -f -
+├── cat testdata/sample1.md | gtree -f -
+└── cat testdata/sample1.md | gtree
 ```
 
 ---
