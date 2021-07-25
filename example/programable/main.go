@@ -39,19 +39,19 @@ func main() {
 	// └── Haplorrhini
 	//     ├── Tarsiiformes
 	//     │   └── Tarsiidae
-	//     ├── Simiiformes
-	//     │   └── Catarrhini
-	//     │       ├── Cercopithecoidea
-	//     │       │   └── Cercopithecidae
-	//     │       └── Hominoidea
-	//     │           ├── Hylobatidae
-	//     │           └── Hominidae
-	//     └── Platyrrhini
-	//         ├── Ceboidea
-	//         │   ├── Atelidae
-	//         │   └── Cebidae
-	//         └── Pithecioidea
-	//             └── Pitheciidae
+	//     └── Simiiformes
+	//         ├── Platyrrhini
+	//         │   ├── Ceboidea
+	//         │   │   ├── Atelidae
+	//         │   │   └── Cebidae
+	//         │   └── Pithecioidea
+	//         │       └── Pitheciidae
+	//         └── Catarrhini
+	//             ├── Cercopithecoidea
+	//             │   └── Cercopithecidae
+	//             └── Hominoidea
+	//                 ├── Hylobatidae
+	//                 └── Hominidae
 }
 
 func preparePrimate() *gtree.Node {
@@ -67,7 +67,6 @@ func preparePrimate() *gtree.Node {
 	lemuroidea.Add("Indriidae")
 	lemuroidea.Add("Lemuridae")
 	lemuroidea.Add("Lepilemuridae")
-
 	lemuriformes.Add("Daubentonioidea").Add("Daubentoniidae")
 
 	lorisiformes.Add("Galagidae")
@@ -76,7 +75,7 @@ func preparePrimate() *gtree.Node {
 	haplorrhini.Add("Tarsiiformes").Add("Tarsiidae")
 	simiiformes := haplorrhini.Add("Simiiformes")
 
-	platyrrhini := haplorrhini.Add("Platyrrhini")
+	platyrrhini := simiiformes.Add("Platyrrhini")
 	ceboidea := platyrrhini.Add("Ceboidea")
 	ceboidea.Add("Atelidae")
 	ceboidea.Add("Cebidae")

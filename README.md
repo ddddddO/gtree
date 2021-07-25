@@ -262,19 +262,19 @@ func main() {
 	// └── Haplorrhini
 	//     ├── Tarsiiformes
 	//     │   └── Tarsiidae
-	//     ├── Simiiformes
-	//     │   └── Catarrhini
-	//     │       ├── Cercopithecoidea
-	//     │       │   └── Cercopithecidae
-	//     │       └── Hominoidea
-	//     │           ├── Hylobatidae
-	//     │           └── Hominidae
-	//     └── Platyrrhini
-	//         ├── Ceboidea
-	//         │   ├── Atelidae
-	//         │   └── Cebidae
-	//         └── Pithecioidea
-	//             └── Pitheciidae
+	//     └── Simiiformes
+	//         ├── Platyrrhini
+	//         │   ├── Ceboidea
+	//         │   │   ├── Atelidae
+	//         │   │   └── Cebidae
+	//         │   └── Pithecioidea
+	//         │       └── Pitheciidae
+	//         └── Catarrhini
+	//             ├── Cercopithecoidea
+	//             │   └── Cercopithecidae
+	//             └── Hominoidea
+	//                 ├── Hylobatidae
+	//                 └── Hominidae
 }
 
 func preparePrimate() *gtree.Node {
