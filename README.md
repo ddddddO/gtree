@@ -4,42 +4,6 @@
 
 (markdown || program) to tree.
 
-
-## Demo
-```sh
-12:24:56 > gtree -ts << EOS
-- root
-  - parent_a
-  - parent_b
-    - child_a
-      - 1
-      - 2
-        - a
-          - 1
-    - child_b
-      - 1
-        - a
-  - parent_c
-    - child_a
-  - parent_d
-EOS
-root
-├── parent_a
-├── parent_b
-│   ├── child_a
-│   │   ├── 1
-│   │   └── 2
-│   │       └── a
-│   │           └── 1
-│   └── child_b
-│       └── 1
-│           └── a
-├── parent_c
-│   └── child_a
-└── parent_d
-```
-
-## Description
 ```
 ├── CLI and Package(1).
 │   ├── Given a markdown file or format, the result of linux tree command is printed.
@@ -175,7 +139,7 @@ a
 ```
 ---
 
-## As Package 1 (like CLI)
+## As Package(1) / like CLI
 
 ### Installation
 ```sh
@@ -238,7 +202,7 @@ func main() {
 
 ```
 
-## As Package 2 (generate a tree programmatically)
+## As Package(2) / generate a tree programmatically
 
 ### Installation
 ```sh
