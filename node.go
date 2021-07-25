@@ -6,33 +6,33 @@ import (
 	"github.com/pkg/errors"
 )
 
-type node struct {
+type Node struct {
 	text      string
 	hierarchy int
 	index     int // 上からscanしたときの順番
 	branch    string
-	parent    *node
-	children  []*node
+	parent    *Node
+	children  []*Node
 }
 
-func newNode(text string, hierarchy, index int) *node {
-	return &node{
+func newNode(text string, hierarchy, index int) *Node {
+	return &Node{
 		text:      text,
 		hierarchy: hierarchy,
 		index:     index,
 	}
 }
 
-func (n *node) isLastNodeOfHierarchy() bool {
+func (n *Node) isLastNodeOfHierarchy() bool {
 	lastChildIndex := len(n.parent.children) - 1
 	return n.index == n.parent.children[lastChildIndex].index
 }
 
-func (n *node) isRoot() bool {
+func (n *Node) isRoot() bool {
 	return n.hierarchy == rootHierarchyNum
 }
 
-func (n *node) buildBranch() string {
+func (n *Node) buildBranch() string {
 	if n.isRoot() {
 		return fmt.Sprintf("%s\n", n.text)
 	}
@@ -44,7 +44,7 @@ var (
 	ErrIncorrectFormat = errors.New("incorrect input format")
 )
 
-func (n *node) validate() error {
+func (n *Node) validate() error {
 	if len(n.text) == 0 {
 		return ErrEmptyText
 	}
@@ -55,7 +55,7 @@ func (n *node) validate() error {
 }
 
 type nodeGenerator interface {
-	generate(row string) *node
+	generate(row string) *Node
 }
 
 type nodeGeneratorTab struct{}
@@ -85,7 +85,7 @@ const (
 
 var nodeIdx int
 
-func (*nodeGeneratorTab) generate(row string) *node {
+func (*nodeGeneratorTab) generate(row string) *Node {
 	nodeIdx++
 
 	var (
@@ -127,7 +127,7 @@ func (*nodeGeneratorTab) generate(row string) *node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func (*nodeGeneratorTwoSpaces) generate(row string) *node {
+func (*nodeGeneratorTwoSpaces) generate(row string) *Node {
 	nodeIdx++
 
 	var (
@@ -165,7 +165,7 @@ func (*nodeGeneratorTwoSpaces) generate(row string) *node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func (*nodeGeneratorFourSpaces) generate(row string) *node {
+func (*nodeGeneratorFourSpaces) generate(row string) *Node {
 	nodeIdx++
 
 	var (

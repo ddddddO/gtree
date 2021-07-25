@@ -5,18 +5,18 @@ import "github.com/pkg/errors"
 var ErrNilStack = errors.New("nil stack")
 
 type stack struct {
-	nodes []*node
+	nodes []*Node
 }
 
 func newStack() *stack {
 	return &stack{}
 }
 
-func (s *stack) push(n *node) {
+func (s *stack) push(n *Node) {
 	s.nodes = append(s.nodes, n)
 }
 
-func (s *stack) pop() *node {
+func (s *stack) pop() *Node {
 	lastIndex := len(s.nodes) - 1
 	tmp := s.nodes[lastIndex]
 	s.nodes = s.nodes[:lastIndex]

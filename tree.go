@@ -19,7 +19,7 @@ type intermedialNodeFormat struct {
 }
 
 type tree struct {
-	roots                 []*node
+	roots                 []*Node
 	lastNodeFormat        lastNodeFormat
 	intermedialNodeFormat intermedialNodeFormat
 }
@@ -40,7 +40,7 @@ func Execute(w io.Writer, r io.Reader, conf Config) error {
 // 全入力をrootを頂点としたツリー上のデータに変換する。
 func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) {
 	var (
-		roots    []*node
+		roots    []*Node
 		tmpStack *stack
 	)
 
@@ -106,7 +106,7 @@ func (t *tree) grow() {
 	}
 }
 
-func (t *tree) determineBranches(currentNode *node) {
+func (t *tree) determineBranches(currentNode *Node) {
 	if currentNode.isRoot() {
 		for _, child := range currentNode.children {
 			t.determineBranches(child)
@@ -154,7 +154,7 @@ func (t *tree) expand(w io.Writer) error {
 	return buf.Flush()
 }
 
-func expandBranches(currentNode *node, output string) string {
+func expandBranches(currentNode *Node, output string) string {
 	output += currentNode.buildBranch()
 	for _, child := range currentNode.children {
 		output = expandBranches(child, output)

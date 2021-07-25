@@ -9,7 +9,7 @@ import (
 func TestExecuteProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string
-		root    *node
+		root    *Node
 		want    string
 		wantErr error
 	}{
@@ -47,13 +47,13 @@ root
 	}
 }
 
-func prepare() *node {
+func prepare() *Node {
 	root := NewRoot("root")
 	root.Add("child 1").Add("child 2")
 	return root
 }
 
-func prepareNotRoot() *node {
+func prepareNotRoot() *Node {
 	root := NewRoot("root")
 	child1 := root.Add("child 1")
 	return child1

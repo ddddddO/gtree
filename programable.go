@@ -1,20 +1,21 @@
 package gtree
 
 import (
-	"github.com/pkg/errors"
 	"io"
+
+	"github.com/pkg/errors"
 )
 
 var ErrNotRoot = errors.New("not root node")
 
 // TODO: 命名がイマイチ
-func ExecuteProgrammably(root *node, w io.Writer) error {
+func ExecuteProgrammably(root *Node, w io.Writer) error {
 	if !root.isRoot() {
 		return ErrNotRoot
 	}
 
 	tree := &tree{
-		roots: []*node{root},
+		roots: []*Node{root},
 		lastNodeFormat: lastNodeFormat{
 			directly:   "└──",
 			indirectly: "    ",
@@ -31,13 +32,13 @@ func ExecuteProgrammably(root *node, w io.Writer) error {
 
 var programableNodeIdx int
 
-func NewRoot(text string) *node {
+func NewRoot(text string) *Node {
 	programableNodeIdx++
 
 	return newNode(text, rootHierarchyNum, programableNodeIdx)
 }
 
-func (current *node) Add(text string) *node {
+func (current *Node) Add(text string) *Node {
 	programableNodeIdx++
 
 	n := newNode(text, current.hierarchy+1, programableNodeIdx)

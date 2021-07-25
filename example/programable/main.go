@@ -19,22 +19,74 @@ func main() {
 	// │       └── child 3
 	// └── child 4
 
-	// https://ja.wikipedia.org/wiki/%E3%82%B5%E3%83%AB%E7%9B%AE
-	primate := gtree.NewRoot("Primate")
-	strepsirrhini := primate.Add("Strepsirrhini")
-	haplorrhini := primate.Add("Haplorrhini")
-	_ = strepsirrhini.Add("Lemuriformes")
-	_ = strepsirrhini.Add("Lorisiformes")
-	_ = haplorrhini.Add("Tarsiiformes")
-	_ = haplorrhini.Add("Simiiformes")
+	primate := preparePrimate()
 	if err := gtree.ExecuteProgrammably(primate, os.Stdout); err != nil {
 		panic(err)
 	}
 	// Primate
 	// ├── Strepsirrhini
 	// │   ├── Lemuriformes
+	// │   │   ├── Lemuroidea
+	// │   │   │   ├── Cheirogaleidae
+	// │   │   │   ├── Indriidae
+	// │   │   │   ├── Lemuridae
+	// │   │   │   └── Lepilemuridae
+	// │   │   └── Daubentonioidea
+	// │   │       └── Daubentoniidae
 	// │   └── Lorisiformes
+	// │       ├── Galagidae
+	// │       └── Lorisidae
 	// └── Haplorrhini
-	//     ├── Tarsiiformes
-	//     └── Simiiformes
+	//  	├── Tarsiiformes
+	//  	│   └── Tarsiidae
+	// 		├── Simiiformes
+	// 		│   └── Catarrhini
+	// 		│       ├── Cercopithecoidea
+	// 		│       │   └── Cercopithecidae
+	// 		│       └── Hominoidea
+	// 		│           ├── Hylobatidae
+	// 		│           └── Hominidae
+	// 		└── Platyrrhini
+	// 			├── Ceboidea
+	// 			│   ├── Atelidae
+	// 			│   └── Cebidae
+	// 			└── Pithecioidea
+	// 				└── Pitheciidae
+}
+
+func preparePrimate() *gtree.Node {
+	// https://ja.wikipedia.org/wiki/%E3%82%B5%E3%83%AB%E7%9B%AE
+	primate := gtree.NewRoot("Primate")
+	strepsirrhini := primate.Add("Strepsirrhini")
+	haplorrhini := primate.Add("Haplorrhini")
+	lemuriformes := strepsirrhini.Add("Lemuriformes")
+	lorisiformes := strepsirrhini.Add("Lorisiformes")
+
+	lemuroidea := lemuriformes.Add("Lemuroidea")
+	lemuroidea.Add("Cheirogaleidae")
+	lemuroidea.Add("Indriidae")
+	lemuroidea.Add("Lemuridae")
+	lemuroidea.Add("Lepilemuridae")
+
+	lemuriformes.Add("Daubentonioidea").Add("Daubentoniidae")
+
+	lorisiformes.Add("Galagidae")
+	lorisiformes.Add("Lorisidae")
+
+	haplorrhini.Add("Tarsiiformes").Add("Tarsiidae")
+	simiiformes := haplorrhini.Add("Simiiformes")
+
+	platyrrhini := haplorrhini.Add("Platyrrhini")
+	ceboidea := platyrrhini.Add("Ceboidea")
+	ceboidea.Add("Atelidae")
+	ceboidea.Add("Cebidae")
+	platyrrhini.Add("Pithecioidea").Add("Pitheciidae")
+
+	catarrhini := simiiformes.Add("Catarrhini")
+	catarrhini.Add("Cercopithecoidea").Add("Cercopithecidae")
+	hominoidea := catarrhini.Add("Hominoidea")
+	hominoidea.Add("Hylobatidae")
+	hominoidea.Add("Hominidae")
+
+	return primate
 }
