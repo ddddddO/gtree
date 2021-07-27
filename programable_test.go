@@ -46,7 +46,7 @@ root
 		t.Log(tt.name)
 
 		buf := &bytes.Buffer{}
-		gotErr := ExecuteProgrammably(tt.root, buf)
+		gotErr := ExecuteProgrammably(buf, tt.root)
 		got := buf.String()
 
 		if got != tt.want {

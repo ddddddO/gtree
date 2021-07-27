@@ -234,7 +234,7 @@ func main() {
 	root.Add("child 1").Add("child 2").Add("child 3")
 	root.Add("child 5")
 	root.Add("child 1").Add("child 2").Add("child 4")
-	if err := gtree.ExecuteProgrammably(root, os.Stdout); err != nil {
+	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
 		panic(err)
 	}
 	// root
@@ -245,7 +245,7 @@ func main() {
 	// └── child 5
 
 	primate := preparePrimate()
-	if err := gtree.ExecuteProgrammably(primate, os.Stdout); err != nil {
+	if err := gtree.ExecuteProgrammably(os.Stdout, primate); err != nil {
 		panic(err)
 	}
 	// Primate

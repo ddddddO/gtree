@@ -9,7 +9,7 @@ import (
 var ErrNotRoot = errors.New("not root node")
 
 // TODO: 命名がイマイチ
-func ExecuteProgrammably(root *Node, w io.Writer) error {
+func ExecuteProgrammably(w io.Writer, root *Node) error {
 	if !root.isRoot() {
 		return ErrNotRoot
 	}
