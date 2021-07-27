@@ -24,7 +24,18 @@ root
 			wantErr: nil,
 		},
 		{
-			name:    "case2(not root)",
+			name: "case2(succeeded / added same name)",
+			root: prepareSameNameChild(),
+			want: strings.TrimPrefix(`
+root
+└── child 1
+    ├── child 2
+    └── child 3
+`, "\n"),
+			wantErr: nil,
+		},
+		{
+			name:    "case3(not root)",
 			root:    prepareNotRoot(),
 			want:    "",
 			wantErr: ErrNotRoot,
@@ -50,6 +61,13 @@ root
 func prepare() *Node {
 	root := NewRoot("root")
 	root.Add("child 1").Add("child 2")
+	return root
+}
+
+func prepareSameNameChild() *Node {
+	root := NewRoot("root")
+	root.Add("child 1").Add("child 2")
+	root.Add("child 1").Add("child 3")
 	return root
 }
 

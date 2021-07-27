@@ -39,6 +39,12 @@ func NewRoot(text string) *Node {
 }
 
 func (parent *Node) Add(text string) *Node {
+	for _, child := range parent.children {
+		if text == child.text {
+			return child
+		}
+	}
+
 	programableNodeIdx++
 
 	current := newNode(text, parent.hierarchy+1, programableNodeIdx)

@@ -9,15 +9,17 @@ import (
 func main() {
 	root := gtree.NewRoot("root")
 	root.Add("child 1").Add("child 2").Add("child 3")
-	root.Add("child 4")
+	root.Add("child 5")
+	root.Add("child 1").Add("child 2").Add("child 4")
 	if err := gtree.ExecuteProgrammably(root, os.Stdout); err != nil {
 		panic(err)
 	}
 	// root
 	// ├── child 1
 	// │   └── child 2
-	// │       └── child 3
-	// └── child 4
+	// │       ├── child 3
+	// │       └── child 4
+	// └── child 5
 
 	primate := preparePrimate()
 	if err := gtree.ExecuteProgrammably(primate, os.Stdout); err != nil {
