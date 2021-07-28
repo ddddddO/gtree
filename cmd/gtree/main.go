@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"time"
@@ -18,13 +17,6 @@ var (
 )
 
 func main() {
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Printf("failed to gtree...\nplease review the file format.\nhint: %s\n", err)
-			os.Exit(1)
-		}
-	}()
-
 	var (
 		isVersion                 bool
 		f                         string
@@ -53,63 +45,56 @@ func main() {
 		IsFourSpaces: isFourSpaces,
 	}
 
-	// TODO: 要リファクター
-	var input io.Reader
 	if f == "" || f == "-" {
-		input = os.Stdin
-	} else {
-		filePath, err := filepath.Abs(f)
+		if err := gtree.Execute(os.Stdout, os.Stdin, conf); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		return
+	}
+
+	filePath, err := filepath.Abs(f)
+	if err != nil {
+		fmt.Errorf("%+v", err)
+		os.Exit(1)
+	}
+
+	if !isWatching {
+		file, err := os.Open(filePath)
 		if err != nil {
 			fmt.Errorf("%+v", err)
 			os.Exit(1)
 		}
+		defer file.Close()
 
-		if isWatching {
-			ticker := time.NewTicker(1 * time.Second)
-			var preFileModTime time.Time
+		if err := gtree.Execute(os.Stdout, file, conf); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		return
+	}
 
-			for {
-				select {
-				case <-ticker.C:
-					func() {
-						file, err := os.Open(filePath)
-						if err != nil {
-							fmt.Errorf("%+v", err)
-							os.Exit(1)
-						}
-						defer file.Close()
-
-						fileInfo, err := file.Stat()
-						if err != nil {
-							fmt.Errorf("%+v", err)
-							os.Exit(1)
-						}
-
-						if fileInfo.ModTime() == preFileModTime {
-							return
-						} else {
-							preFileModTime = fileInfo.ModTime()
-							if err := gtree.Execute(os.Stdout, file, conf); err != nil {
-								return
-							}
-						}
-					}()
-				}
-			}
-			return
-
-		} else {
-			input, err = os.Open(filePath)
+	ticker := time.NewTicker(1 * time.Second)
+	var preFileModTime time.Time
+	for range ticker.C {
+		func() {
+			file, err := os.Open(filePath)
 			if err != nil {
 				fmt.Errorf("%+v", err)
 				os.Exit(1)
 			}
-			defer input.(*os.File).Close()
-		}
-	}
+			defer file.Close()
 
-	if err := gtree.Execute(os.Stdout, input, conf); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+			fileInfo, err := file.Stat()
+			if err != nil {
+				fmt.Errorf("%+v", err)
+				os.Exit(1)
+			}
+
+			if fileInfo.ModTime() != preFileModTime {
+				preFileModTime = fileInfo.ModTime()
+				gtree.Execute(os.Stdout, file, conf)
+			}
+		}()
 	}
 }
