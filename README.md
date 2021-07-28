@@ -335,8 +335,8 @@ import (
 // find . -type d -name .git -prune -o -type f -print | go run example/find_pipe_programable-gtree/main.go
 func main() {
 	var (
-		root  *gtree.Node
-		child *gtree.Node
+		root *gtree.Node
+		node *gtree.Node
 	)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -347,14 +347,14 @@ func main() {
 			if i == 0 {
 				if root == nil {
 					root = gtree.NewRoot(s)
+					node = root
 				}
-				child = root
 				continue
 			}
-			tmp := child.Add(s)
-			child = tmp
+			tmp := node.Add(s)
+			node = tmp
 		}
-		child = root
+		node = root
 	}
 
 	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
