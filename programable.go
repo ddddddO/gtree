@@ -6,10 +6,17 @@ import (
 	"github.com/pkg/errors"
 )
 
-var ErrNotRoot = errors.New("not root node")
+var (
+	ErrNilNode = errors.New("nil node")
+	ErrNotRoot = errors.New("not root node")
+)
 
 // TODO: 命名がイマイチ
 func ExecuteProgrammably(w io.Writer, root *Node) error {
+	if root == nil {
+		return ErrNilNode
+	}
+
 	if !root.isRoot() {
 		return ErrNotRoot
 	}

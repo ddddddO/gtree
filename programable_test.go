@@ -40,6 +40,12 @@ root
 			want:    "",
 			wantErr: ErrNotRoot,
 		},
+		{
+			name:    "case4(nil node)",
+			root:    prepareNilNode(),
+			want:    "",
+			wantErr: ErrNilNode,
+		},
 	}
 
 	for _, tt := range tests {
@@ -75,4 +81,9 @@ func prepareNotRoot() *Node {
 	root := NewRoot("root")
 	child1 := root.Add("child 1")
 	return child1
+}
+
+func prepareNilNode() *Node {
+	var node *Node
+	return node
 }
