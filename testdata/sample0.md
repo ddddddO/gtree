@@ -3,9 +3,9 @@
         - Given a markdown file or format, the result of linux tree command is printed.
         - `gtree` does not temporarily create directories or files.
         - Create markdown file by referring to the file in the `testdata/` directory.
-            - Hierarchy is represented by indentation.
+            - Hierarchy is represented by hyphen and indentation.
             - Indentation should be unified by one of the following.
-                - Tab
+                - Tab（default）
                 - Two half-width spaces（required: `-ts`）
                 - Four half-width spaces（required: `-fs`）
     - Package(2).
