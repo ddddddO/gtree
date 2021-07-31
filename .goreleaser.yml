@@ -11,6 +11,10 @@ builds:
       - -s -w
       - -X main.Version={{.Version}}
       - -X main.Revision={{.ShortCommit}}
+    goos:
+      - linux
+      - darwin
+      - windows
     env:
       - CGO_ENABLED=0
 archives:
