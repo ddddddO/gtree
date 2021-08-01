@@ -8,11 +8,15 @@ import (
 )
 
 func Example() {
-	root := NewRoot("root")
+	var root *Node
+	root = NewRoot("root")
 	root.Add("child 1").Add("child 2")
 	root.Add("child 1").Add("child 3")
 	child4 := root.Add("child 4")
-	child4.Add("child 5").Add("child 6").Add("child 7")
+
+	var child7 *Node
+	child7 = child4.Add("child 5").Add("child 6").Add("child 7")
+	child7.Add("child 8")
 
 	buf := &bytes.Buffer{}
 	if err := ExecuteProgrammably(buf, root); err != nil {
@@ -29,6 +33,7 @@ func Example() {
 	//     └── child 5
 	//         └── child 6
 	//             └── child 7
+	//                 └── child 8
 }
 
 func TestExecuteProgrammably(t *testing.T) {
