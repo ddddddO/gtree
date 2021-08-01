@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/ddddddO/gtree"
+	"github.com/ddddddO/gtree/v5"
 )
 
 // These variables are set in build step

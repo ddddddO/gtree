@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ddddddO/gtree"
+	"github.com/ddddddO/gtree/v5"
 )
 
 type Tab struct {
