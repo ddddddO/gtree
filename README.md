@@ -232,7 +232,6 @@ go get github.com/ddddddO/gtree/v5
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/ddddddO/gtree/v5"
