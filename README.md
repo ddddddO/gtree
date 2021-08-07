@@ -59,13 +59,18 @@ a
 ```
 
 
-
 #### OR
+
+When Markdown data is indented as a tab.
+
 ```
 ├── gtree -f testdata/sample1.md
 ├── cat testdata/sample1.md | gtree -f -
 └── cat testdata/sample1.md | gtree
 ```
+
+For 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
+
 
 <details>
 <summary>More details</summary>
