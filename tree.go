@@ -5,6 +5,7 @@ import (
 	"io"
 )
 
+// Config is used only by the Execute function.
 type Config struct {
 	IsTwoSpaces  bool
 	IsFourSpaces bool
@@ -24,6 +25,7 @@ type tree struct {
 	intermedialNodeFormat intermedialNodeFormat
 }
 
+// Execute outputs a tree to w with r as Markdown format input.
 func Execute(w io.Writer, r io.Reader, conf Config) error {
 	seed := bufio.NewScanner(r)
 	nodeGenerator := newNodeGenerator(conf)
@@ -60,7 +62,7 @@ func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) 
 		}
 
 		if tmpStack == nil {
-			return nil, ErrNilStack
+			return nil, errNilStack
 		}
 
 		// 深さ優先探索的な？考え方

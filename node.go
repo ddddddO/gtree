@@ -40,16 +40,16 @@ func (n *Node) buildBranch() string {
 }
 
 var (
-	ErrEmptyText       = errors.New("empty text")
-	ErrIncorrectFormat = errors.New("incorrect input format")
+	errEmptyText       = errors.New("empty text")
+	errIncorrectFormat = errors.New("incorrect input format")
 )
 
 func (n *Node) validate() error {
 	if len(n.text) == 0 {
-		return ErrEmptyText
+		return errEmptyText
 	}
 	if n.hierarchy == 0 {
-		return ErrIncorrectFormat
+		return errIncorrectFormat
 	}
 	return nil
 }

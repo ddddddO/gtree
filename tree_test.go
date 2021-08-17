@@ -384,7 +384,7 @@ a
 			},
 			out: out{
 				output: "",
-				err:    ErrEmptyText,
+				err:    errEmptyText,
 			},
 		},
 		{
@@ -399,7 +399,7 @@ a
 			},
 			out: out{
 				output: "",
-				err:    ErrIncorrectFormat,
+				err:    errIncorrectFormat,
 			},
 		},
 		{
