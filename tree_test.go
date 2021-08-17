@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"os"
 	"strings"
 	"testing"
 )
@@ -413,6 +414,34 @@ a
 				err:    bufio.ErrTooLong,
 			},
 		},
+		{
+			name: "case 23(input markdown file)",
+			in: in{
+				input: prepareMarkdownFile(t)},
+			out: out{
+				output: strings.TrimPrefix(`
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+`, "\n"),
+				err: nil,
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -428,5 +457,18 @@ a
 		if gotErr != tt.out.err {
 			t.Errorf("\ngot: \n%v\nwant: \n%v", gotErr, tt.out.err)
 		}
+
+		if file, ok := tt.in.input.(*os.File); ok {
+			file.Close()
+		}
 	}
+}
+
+func prepareMarkdownFile(t *testing.T) *os.File {
+	const testfilepath = "./testdata/sample6.md"
+	file, err := os.Open(testfilepath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return file
 }
