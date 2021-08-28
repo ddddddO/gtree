@@ -6,6 +6,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Node is main struct for gtree.
 type Node struct {
 	text      string
 	hierarchy int
