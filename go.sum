@@ -1,5 +1,2 @@
-github.com/ddddddO/gtree v1.1.1 h1:vc2iftR3HIIQkioqI0Iitor3erLOL2qpP9Z9vIVuLo0=
-github.com/ddddddO/gtree/v5 v5.0.10 h1:hm8hT2/cCjKDGxBZ7XVHsMEE8aPn60tx2wedAwoK3Fk=
-github.com/ddddddO/gtree/v5 v5.0.10/go.mod h1:MODanNvgyg86+rXC+s3anm4LQwPbi51mYVTQdPWS+vw=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
