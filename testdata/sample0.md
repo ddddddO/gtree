@@ -1,14 +1,16 @@
 - ## Description
-    - CLI and Package(1).
-        - Given a markdown file or format, the result of linux tree command is printed.
-        - `gtree` does not temporarily create directories or files.
-        - Create markdown file by referring to the file in the `testdata/` directory.
+    - There are three ways to generate tree (CLI, Package(1), Package(2)). They are explained below.
+    - CLI and Package(1)
+        - Given a Markdown file or format, the result of linux tree command is printed.
+        - Create Markdown file by referring to the file in the `testdata/` directory.
             - Hierarchy is represented by hyphen and indentation.
             - Indentation should be unified by one of the following.
-                - Tab（default）
-                - Two half-width spaces（required: `-ts`）
-                - Four half-width spaces（required: `-fs`）
-    - Package(2).
+                - Tab (default)
+                - Two half-width spaces (required: `-ts`)
+                - Four half-width spaces (required: `-fs`)
+    - Package(1)
+        - You can customize branch format.
+    - Package(2)
         - You can also generate a tree programmatically.
         - Markdown is irrelevant.
         - You can customize branch format.

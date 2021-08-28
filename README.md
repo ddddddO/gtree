@@ -5,16 +5,18 @@
 (markdown || program) to tree.
 
 ```
-├── CLI and Package(1).
-│   ├── Given a markdown file or format, the result of linux tree command is printed.
-│   ├── `gtree` does not temporarily create directories or files.
-│   └── Create markdown file by referring to the file in the `testdata/` directory.
+├── There are three ways to generate tree (CLI, Package(1), Package(2)). They are explained below.
+├── CLI and Package(1)
+│   ├── Given a Markdown file or format, the result of linux tree command is printed.
+│   └── Create Markdown file by referring to the file in the `testdata/` directory.
 │       ├── Hierarchy is represented by hyphen and indentation.
 │       └── Indentation should be unified by one of the following.
-│           ├── Tab（default）
-│           ├── Two half-width spaces（required: `-ts`）
-│           └── Four half-width spaces（required: `-fs`）
-└── Package(2).
+│           ├── Tab (default)
+│           ├── Two half-width spaces (required: `-ts`)
+│           └── Four half-width spaces (required: `-fs`)
+├── Package(1)
+│   └── You can customize branch format.
+└── Package(2)
     ├── You can also generate a tree programmatically.
     ├── Markdown is irrelevant.
     └── You can customize branch format.
@@ -201,6 +203,7 @@ func main() {
 	if err := gtree.Execute(os.Stdout, r1); err != nil {
 		panic(err)
 	}
+	// Output:
 	// root
 	// ├── dddd
 	// │   └── kkkkkkk
@@ -227,18 +230,24 @@ func main() {
     - o
   - g`))
 	// When indentation is four spaces, use IndentFourSpaces func instead of IndentTwoSpaces func.
-	if err := gtree.Execute(os.Stdout, r2, gtree.IndentTwoSpaces()); err != nil {
+	// and, you can customize branch format.
+	if err := gtree.Execute(os.Stdout, r2,
+		gtree.IndentTwoSpaces(),
+		gtree.BranchFormatIntermedialNode("+->", ":   "),
+		gtree.BranchFormatLastNode("+->", "    "),
+	); err != nil {
 		panic(err)
 	}
+	// Output:
 	// a
-	// ├── i
-	// │   ├── u
-	// │   │   ├── k
-	// │   │   └── kk
-	// │   └── t
-	// ├── e
-	// │   └── o
-	// └── g
+	// +-> i
+	// :   +-> u
+	// :   :   +-> k
+	// :   :   +-> kk
+	// :   +-> t
+	// +-> e
+	// :   +-> o
+	// +-> g
 }
 
 ```
@@ -276,6 +285,7 @@ func main() {
 	); err != nil {
 		panic(err)
 	}
+	// Output:
 	// root
 	// +-- child 1
 	// :   +-- child 2
@@ -288,6 +298,7 @@ func main() {
 	if err := gtree.ExecuteProgrammably(os.Stdout, primate); err != nil {
 		panic(err)
 	}
+	// Output:
 	// Primate
 	// ├── Strepsirrhini
 	// │   ├── Lemuriformes
@@ -400,6 +411,7 @@ func main() {
 	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
 		panic(err)
 	}
+	// Output:
 	// .
 	// ├── .github
 	// │   └── workflows

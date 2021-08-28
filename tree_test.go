@@ -449,6 +449,40 @@ a
 				err:    errInvalidOption,
 			},
 		},
+		{
+			name: "case 25(indent 2spaces and cutom branch format)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+  - i
+    - u
+      - k
+      - kk
+    - t
+  - e
+    - o
+  - g`)),
+				optFns: []optFn{
+					IndentTwoSpaces(),
+					BranchFormatIntermedialNode("+->", ":   "),
+					BranchFormatLastNode("+->", "    "),
+				},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+a
++-> i
+:   +-> u
+:   :   +-> k
+:   :   +-> kk
+:   +-> t
++-> e
+:   +-> o
++-> g
+`, "\n"),
+				err: nil,
+			},
+		},
 	}
 
 	for _, tt := range tests {
