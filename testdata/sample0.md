@@ -6,8 +6,8 @@
             - Hierarchy is represented by hyphen and indentation.
             - Indentation should be unified by one of the following.
                 - Tab (default)
-                - Two half-width spaces (required: `-ts`)
-                - Four half-width spaces (required: `-fs`)
+                - Two spaces (required: `-ts`)
+                - Four spaces (required: `-fs`)
     - Package(1)
         - You can customize branch format.
     - Package(2)
