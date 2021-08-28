@@ -3,11 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"time"
 
-	"github.com/ddddddO/gtree/v5"
+	"github.com/ddddddO/gtree/v6"
 )
 
 // These variables are set in build step
@@ -34,19 +35,13 @@ func main() {
 		fmt.Printf("gtree version %s / revision %s\n", Version, Revision)
 		return
 	}
-
 	if isTwoSpaces && isFourSpaces {
 		fmt.Errorf("%s", `choose either "ts" or "fs".`)
 		os.Exit(1)
 	}
 
-	conf := gtree.Config{
-		IsTwoSpaces:  isTwoSpaces,
-		IsFourSpaces: isFourSpaces,
-	}
-
 	if f == "" || f == "-" {
-		if err := gtree.Execute(os.Stdout, os.Stdin, conf); err != nil {
+		if err := execute(os.Stdout, os.Stdin, isTwoSpaces, isFourSpaces); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -67,7 +62,7 @@ func main() {
 		}
 		defer file.Close()
 
-		if err := gtree.Execute(os.Stdout, file, conf); err != nil {
+		if err := execute(os.Stdout, file, isTwoSpaces, isFourSpaces); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -93,8 +88,22 @@ func main() {
 
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
-				gtree.Execute(os.Stdout, file, conf)
+
+				_ = execute(os.Stdout, file, isTwoSpaces, isFourSpaces)
 			}
 		}()
 	}
+}
+
+func execute(out io.Writer, in io.Reader, isTwoSpaces, isFourSpaces bool) error {
+	var err error
+	switch {
+	case isTwoSpaces:
+		err = gtree.Execute(out, in, gtree.IndentTwoSpaces())
+	case isFourSpaces:
+		err = gtree.Execute(out, in, gtree.IndentFourSpaces())
+	default:
+		err = gtree.Execute(out, in)
+	}
+	return err
 }

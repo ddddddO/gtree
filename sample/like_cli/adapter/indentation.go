@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ddddddO/gtree/v5"
+	"github.com/ddddddO/gtree/v6"
 )
 
 type Tab struct {
@@ -15,9 +15,8 @@ type Tab struct {
 }
 
 func (tab *Tab) Execute() error {
-	conf := gtree.Config{}
 	buf := &strings.Builder{}
-	if err := gtree.Execute(buf, tab.Data, conf); err != nil {
+	if err := gtree.Execute(buf, tab.Data); err != nil {
 		return err
 	}
 	fmt.Printf("%s\n\n", buf.String())
@@ -29,11 +28,8 @@ type TwoSpaces struct {
 }
 
 func (ts *TwoSpaces) Execute() error {
-	conf := gtree.Config{
-		IsTwoSpaces: true,
-	}
 	buf := &bytes.Buffer{}
-	if err := gtree.Execute(buf, ts.Data, conf); err != nil {
+	if err := gtree.Execute(buf, ts.Data, gtree.IndentTwoSpaces()); err != nil {
 		return err
 	}
 	fmt.Printf("%s\n\n", buf.String())
@@ -45,8 +41,5 @@ type FourSpaces struct {
 }
 
 func (fs *FourSpaces) Execute() error {
-	conf := gtree.Config{
-		IsFourSpaces: true,
-	}
-	return gtree.Execute(os.Stdout, fs.Data, conf)
+	return gtree.Execute(os.Stdout, fs.Data, gtree.IndentFourSpaces())
 }

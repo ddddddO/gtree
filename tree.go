@@ -3,12 +3,48 @@ package gtree
 import (
 	"bufio"
 	"io"
+
+	"github.com/pkg/errors"
 )
 
-// Config is used only by the Execute function.
-type Config struct {
+// optFunc is functional options pattern
+type optFn func(*config) error
+
+// IndentTwoSpaces returns function for two spaces indent input.
+func IndentTwoSpaces() optFn {
+	return func(c *config) error {
+		c.IsTwoSpaces = true
+		return nil
+	}
+}
+
+// IndentFourSpaces returns function for four spaces indent input.
+func IndentFourSpaces() optFn {
+	return func(c *config) error {
+		c.IsFourSpaces = true
+		return nil
+	}
+}
+
+var errInvalidOption = errors.New("invalid option")
+
+type config struct {
 	IsTwoSpaces  bool
 	IsFourSpaces bool
+}
+
+func newConfig(optFns ...optFn) (*config, error) {
+	c := &config{}
+	for _, opt := range optFns {
+		if err := opt(c); err != nil {
+			return nil, err
+		}
+	}
+
+	if c.IsTwoSpaces && c.IsFourSpaces {
+		return nil, errInvalidOption
+	}
+	return c, nil
 }
 
 type lastNodeFormat struct {
@@ -26,11 +62,14 @@ type tree struct {
 }
 
 // Execute outputs a tree to w with r as Markdown format input.
-func Execute(w io.Writer, r io.Reader, conf Config) error {
+func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
+	conf, err := newConfig(optFns...)
+	if err != nil {
+		return err
+	}
 	seed := bufio.NewScanner(r)
-	nodeGenerator := newNodeGenerator(conf)
 
-	tree, err := sprout(seed, nodeGenerator)
+	tree, err := sprout(seed, conf)
 	if err != nil {
 		return err
 	}
@@ -40,10 +79,11 @@ func Execute(w io.Writer, r io.Reader, conf Config) error {
 
 // Sprout：芽が出る
 // 全入力をrootを頂点としたツリー上のデータに変換する。
-func sprout(scanner *bufio.Scanner, nodeGenerator nodeGenerator) (*tree, error) {
+func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	var (
-		roots    []*Node
-		tmpStack *stack
+		roots         []*Node
+		tmpStack      *stack
+		nodeGenerator = newNodeGenerator(conf)
 	)
 
 	for scanner.Scan() {

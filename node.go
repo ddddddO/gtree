@@ -9,7 +9,7 @@ import (
 type Node struct {
 	text      string
 	hierarchy int
-	index     int // 上からscanしたときの順番
+	index     int
 	branch    string
 	parent    *Node
 	children  []*Node
@@ -62,7 +62,7 @@ type nodeGeneratorTab struct{}
 type nodeGeneratorTwoSpaces struct{}
 type nodeGeneratorFourSpaces struct{}
 
-func newNodeGenerator(conf Config) nodeGenerator {
+func newNodeGenerator(conf *config) nodeGenerator {
 	if conf.IsTwoSpaces {
 		return &nodeGeneratorTwoSpaces{}
 	}

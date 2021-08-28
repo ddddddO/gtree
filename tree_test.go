@@ -11,8 +11,8 @@ import (
 )
 
 type in struct {
-	input io.Reader
-	conf  Config
+	input  io.Reader
+	optFns []optFn
 }
 
 type out struct {
@@ -227,9 +227,7 @@ root
   - e
     - o
   - g`)),
-				conf: Config{
-					IsTwoSpaces: true,
-				},
+				optFns: []optFn{IndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -259,9 +257,7 @@ a
     - e
         - o
     - g`)),
-				conf: Config{
-					IsFourSpaces: true,
-				},
+				optFns: []optFn{IndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -442,20 +438,31 @@ a
 				err: nil,
 			},
 		},
+		{
+			name: "case 24(invalid options)",
+			in: in{
+				input:  prepareMarkdownFile(t),
+				optFns: []optFn{IndentTwoSpaces(), IndentFourSpaces()},
+			},
+			out: out{
+				output: "",
+				err:    errInvalidOption,
+			},
+		},
 	}
 
 	for _, tt := range tests {
 		t.Log(tt.name)
 
-		buf := &bytes.Buffer{}
-		gotErr := Execute(buf, tt.in.input, tt.in.conf)
-		gotOutput := buf.String()
+		out := &bytes.Buffer{}
+		gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+		gotOutput := out.String()
 
 		if gotOutput != tt.out.output {
 			t.Errorf("\ngot: \n%s\nwant: \n%s", gotOutput, tt.out.output)
 		}
 		if gotErr != tt.out.err {
-			t.Errorf("\ngot: \n%v\nwant: \n%v", gotErr, tt.out.err)
+			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
 		}
 
 		if file, ok := tt.in.input.(*os.File); ok {
