@@ -20,23 +20,19 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...optFn) error {
 	if root == nil {
 		return ErrNilNode
 	}
-
 	if !root.isRoot() {
 		return ErrNotRoot
 	}
-
-	tree := &tree{
-		roots: []*Node{root},
-		lastNodeFormat: lastNodeFormat{
-			directly:   "└──",
-			indirectly: "    ",
-		},
-		intermedialNodeFormat: intermedialNodeFormat{
-			directly:   "├──",
-			indirectly: "│   ",
-		},
+	conf, err := newConfig(optFns...)
+	if err != nil {
+		return err
 	}
 
+	tree := &tree{
+		roots:                 []*Node{root},
+		lastNodeFormat:        conf.lastNodeFormat,
+		intermedialNodeFormat: conf.intermedialNodeFormat,
+	}
 	tree.grow()
 	return tree.expand(w)
 }

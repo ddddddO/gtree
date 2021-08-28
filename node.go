@@ -63,10 +63,10 @@ type nodeGeneratorTwoSpaces struct{}
 type nodeGeneratorFourSpaces struct{}
 
 func newNodeGenerator(conf *config) nodeGenerator {
-	if conf.IsTwoSpaces {
+	if conf.isTwoSpaces {
 		return &nodeGeneratorTwoSpaces{}
 	}
-	if conf.IsFourSpaces {
+	if conf.isFourSpaces {
 		return &nodeGeneratorFourSpaces{}
 	}
 	return &nodeGeneratorTab{}

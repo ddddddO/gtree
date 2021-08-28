@@ -13,7 +13,7 @@ type optFn func(*config) error
 // IndentTwoSpaces returns function for two spaces indent input.
 func IndentTwoSpaces() optFn {
 	return func(c *config) error {
-		c.IsTwoSpaces = true
+		c.isTwoSpaces = true
 		return nil
 	}
 }
@@ -21,7 +21,7 @@ func IndentTwoSpaces() optFn {
 // IndentFourSpaces returns function for four spaces indent input.
 func IndentFourSpaces() optFn {
 	return func(c *config) error {
-		c.IsFourSpaces = true
+		c.isFourSpaces = true
 		return nil
 	}
 }
@@ -29,19 +29,31 @@ func IndentFourSpaces() optFn {
 var errInvalidOption = errors.New("invalid option")
 
 type config struct {
-	IsTwoSpaces  bool
-	IsFourSpaces bool
+	isTwoSpaces  bool
+	isFourSpaces bool
+
+	lastNodeFormat        lastNodeFormat
+	intermedialNodeFormat intermedialNodeFormat
 }
 
 func newConfig(optFns ...optFn) (*config, error) {
-	c := &config{}
+	c := &config{
+		lastNodeFormat: lastNodeFormat{
+			directly:   "└──",
+			indirectly: "    ",
+		},
+		intermedialNodeFormat: intermedialNodeFormat{
+			directly:   "├──",
+			indirectly: "│   ",
+		},
+	}
 	for _, opt := range optFns {
 		if err := opt(c); err != nil {
 			return nil, err
 		}
 	}
 
-	if c.IsTwoSpaces && c.IsFourSpaces {
+	if c.isTwoSpaces && c.isFourSpaces {
 		return nil, errInvalidOption
 	}
 	return c, nil
@@ -130,15 +142,9 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 
 	// TODO: ユーザーが枝のフォーマットを決められるようにする
 	return &tree{
-		roots: roots,
-		lastNodeFormat: lastNodeFormat{
-			directly:   "└──",
-			indirectly: "    ",
-		},
-		intermedialNodeFormat: intermedialNodeFormat{
-			directly:   "├──",
-			indirectly: "│   ",
-		},
+		roots:                 roots,
+		lastNodeFormat:        conf.lastNodeFormat,
+		intermedialNodeFormat: conf.intermedialNodeFormat,
 	}, nil
 }
 
