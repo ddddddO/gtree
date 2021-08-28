@@ -10,6 +10,7 @@ func TestExecuteProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *Node
+		optFns  []optFn
 		want    string
 		wantErr error
 	}{
@@ -46,13 +47,29 @@ root
 			want:    "",
 			wantErr: ErrNilNode,
 		},
+		{
+			name: "case5(succeeded / branch format)",
+			root: prepareMultiNode(),
+			optFns: []optFn{
+				BranchFormatIntermedialNode("+--", ":   "),
+				BranchFormatLastNode("+--", "    "),
+			},
+			want: strings.TrimPrefix(`
+root
++-- child 1
+:   +-- child 2
+:       +-- child 3
+:       +-- child 4
++-- child 5
+`, "\n"),
+		},
 	}
 
 	for _, tt := range tests {
 		t.Log(tt.name)
 
 		buf := &bytes.Buffer{}
-		gotErr := ExecuteProgrammably(buf, tt.root)
+		gotErr := ExecuteProgrammably(buf, tt.root, tt.optFns...)
 		got := buf.String()
 
 		if got != tt.want {
@@ -86,4 +103,12 @@ func prepareNotRoot() *Node {
 func prepareNilNode() *Node {
 	var node *Node
 	return node
+}
+
+func prepareMultiNode() *Node {
+	root := NewRoot("root")
+	root.Add("child 1").Add("child 2").Add("child 3")
+	root.Add("child 5")
+	root.Add("child 1").Add("child 2").Add("child 4")
+	return root
 }

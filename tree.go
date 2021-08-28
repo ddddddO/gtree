@@ -26,6 +26,24 @@ func IndentFourSpaces() optFn {
 	}
 }
 
+// BranchFormatIntermedialNode returns function for branch format.
+func BranchFormatIntermedialNode(directly, indirectly string) optFn {
+	return func(c *config) error {
+		c.intermedialNodeFormat.directly = directly
+		c.intermedialNodeFormat.indirectly = indirectly
+		return nil
+	}
+}
+
+// BranchFormatLastNode returns function for branch format.
+func BranchFormatLastNode(directly, indirectly string) optFn {
+	return func(c *config) error {
+		c.lastNodeFormat.directly = directly
+		c.lastNodeFormat.indirectly = indirectly
+		return nil
+	}
+}
+
 var errInvalidOption = errors.New("invalid option")
 
 type config struct {
@@ -140,7 +158,6 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 		return nil, err
 	}
 
-	// TODO: ユーザーが枝のフォーマットを決められるようにする
 	return &tree{
 		roots:                 roots,
 		lastNodeFormat:        conf.lastNodeFormat,

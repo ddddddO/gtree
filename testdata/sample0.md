@@ -11,3 +11,4 @@
     - Package(2).
         - You can also generate a tree programmatically.
         - Markdown is irrelevant.
+        - You can customize branch format.
