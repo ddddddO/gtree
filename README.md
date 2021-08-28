@@ -372,7 +372,7 @@ import (
 )
 
 // cd github.com/ddddddO/gtree
-// find . -type d -name .git -prune -o -type f -print | go run sample/find_pipe_programable-gtree/main.go
+// find . -type d -name .git -prune -o -type f -print | go run sample/find_pipe_programmable-gtree/main.go
 func main() {
 	var (
 		root *gtree.Node
@@ -410,23 +410,24 @@ func main() {
 	// ├── cmd
 	// │   └── gtree
 	// │       └── main.go
-	// ├── example_programable_test.go
+	// ├── config.go
+	// ├── example_programmable_test.go
 	// ├── go.mod
 	// ├── go.sum
 	// ├── LICENSE
 	// ├── node.go
-	// ├── programable.go
-	// ├── programable_test.go
+	// ├── programmable.go
+	// ├── programmable_test.go
 	// ├── README.md
 	// ├── sample
-	// │   ├── find_pipe_programable-gtree
+	// │   ├── find_pipe_programmable-gtree
 	// │   │   └── main.go
 	// │   ├── like_cli
 	// │   │   ├── adapter
 	// │   │   │   ├── executor.go
 	// │   │   │   └── indentation.go
 	// │   │   └── main.go
-	// │   └── programable
+	// │   └── programmable
 	// │       └── main.go
 	// ├── stack.go
 	// ├── testdata
