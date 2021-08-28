@@ -3,92 +3,16 @@ package gtree
 import (
 	"bufio"
 	"io"
-
-	"github.com/pkg/errors"
 )
-
-// optFunc is functional options pattern
-type optFn func(*config) error
-
-// IndentTwoSpaces returns function for two spaces indent input.
-func IndentTwoSpaces() optFn {
-	return func(c *config) error {
-		c.isTwoSpaces = true
-		return nil
-	}
-}
-
-// IndentFourSpaces returns function for four spaces indent input.
-func IndentFourSpaces() optFn {
-	return func(c *config) error {
-		c.isFourSpaces = true
-		return nil
-	}
-}
-
-// BranchFormatIntermedialNode returns function for branch format.
-func BranchFormatIntermedialNode(directly, indirectly string) optFn {
-	return func(c *config) error {
-		c.intermedialNodeFormat.directly = directly
-		c.intermedialNodeFormat.indirectly = indirectly
-		return nil
-	}
-}
-
-// BranchFormatLastNode returns function for branch format.
-func BranchFormatLastNode(directly, indirectly string) optFn {
-	return func(c *config) error {
-		c.lastNodeFormat.directly = directly
-		c.lastNodeFormat.indirectly = indirectly
-		return nil
-	}
-}
-
-var errInvalidOption = errors.New("invalid option")
-
-type config struct {
-	isTwoSpaces  bool
-	isFourSpaces bool
-
-	lastNodeFormat        lastNodeFormat
-	intermedialNodeFormat intermedialNodeFormat
-}
-
-func newConfig(optFns ...optFn) (*config, error) {
-	c := &config{
-		lastNodeFormat: lastNodeFormat{
-			directly:   "└──",
-			indirectly: "    ",
-		},
-		intermedialNodeFormat: intermedialNodeFormat{
-			directly:   "├──",
-			indirectly: "│   ",
-		},
-	}
-	for _, opt := range optFns {
-		if err := opt(c); err != nil {
-			return nil, err
-		}
-	}
-
-	if c.isTwoSpaces && c.isFourSpaces {
-		return nil, errInvalidOption
-	}
-	return c, nil
-}
-
-type lastNodeFormat struct {
-	directly, indirectly string
-}
-
-type intermedialNodeFormat struct {
-	directly, indirectly string
-}
 
 type tree struct {
 	roots                 []*Node
-	lastNodeFormat        lastNodeFormat
-	intermedialNodeFormat intermedialNodeFormat
+	lastNodeFormat        nodeBranchFormat
+	intermedialNodeFormat nodeBranchFormat
+}
+
+type nodeBranchFormat struct {
+	directly, indirectly string
 }
 
 // Execute outputs a tree to w with r as Markdown format input.
