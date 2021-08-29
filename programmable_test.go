@@ -60,7 +60,10 @@ root
 :   +-- child 2
 :       +-- child 3
 :       +-- child 4
-+-- child 5
+:           +-- child5
+:           +-- child6
+:               +-- child7
++-- child8
 `, "\n"),
 		},
 	}
@@ -106,9 +109,11 @@ func prepareNilNode() *Node {
 }
 
 func prepareMultiNode() *Node {
-	root := NewRoot("root")
+	var root *Node = NewRoot("root")
 	root.Add("child 1").Add("child 2").Add("child 3")
-	root.Add("child 5")
-	root.Add("child 1").Add("child 2").Add("child 4")
+	var child4 *Node = root.Add("child 1").Add("child 2").Add("child 4")
+	child4.Add("child5")
+	child4.Add("child6").Add("child7")
+	root.Add("child8")
 	return root
 }

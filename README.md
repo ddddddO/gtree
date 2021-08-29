@@ -273,11 +273,12 @@ import (
 )
 
 func main() {
-	root := gtree.NewRoot("root")
+	var root *gtree.Node = gtree.NewRoot("root")
 	root.Add("child 1").Add("child 2").Add("child 3")
-	root.Add("child 5")
-	root.Add("child 1").Add("child 2").Add("child 4")
-
+	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("child 4")
+	child4.Add("child5")
+	child4.Add("child6").Add("child7")
+	root.Add("child8")
 	// you can customize branch format.
 	if err := gtree.ExecuteProgrammably(os.Stdout, root,
 		gtree.BranchFormatIntermedialNode("+--", ":   "),
@@ -291,7 +292,10 @@ func main() {
 	// :   +-- child 2
 	// :       +-- child 3
 	// :       +-- child 4
-	// +-- child 5
+	// :           +-- child5
+	// :           +-- child6
+	// :               +-- child7
+	// +-- child8
 
 	primate := preparePrimate()
 	// default branch format.
