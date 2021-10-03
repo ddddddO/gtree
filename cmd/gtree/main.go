@@ -19,10 +19,10 @@ var (
 
 func main() {
 	var (
-		showVersion                 bool
-		mdFilepath                         string
+		showVersion           bool
+		mdFilepath            string
 		twoSpaces, fourSpaces bool
-		watching                bool
+		watching              bool
 	)
 	flag.BoolVar(&showVersion, "v", false, "current gtree version")
 	flag.StringVar(&mdFilepath, "f", "", "markdown file path")
