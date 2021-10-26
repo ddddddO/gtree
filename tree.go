@@ -27,8 +27,7 @@ func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
 	if err != nil {
 		return err
 	}
-	tree.grow()
-	return tree.expand(w)
+	return tree.grow().expand(w)
 }
 
 // Sprout：芽が出る
@@ -89,10 +88,11 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	}, nil
 }
 
-func (t *tree) grow() {
+func (t *tree) grow() *tree {
 	for _, root := range t.roots {
 		t.determineBranches(root)
 	}
+	return t
 }
 
 func (t *tree) determineBranches(currentNode *Node) {

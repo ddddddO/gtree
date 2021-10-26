@@ -33,8 +33,7 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...optFn) error {
 		lastNodeFormat:        conf.lastNodeFormat,
 		intermedialNodeFormat: conf.intermedialNodeFormat,
 	}
-	tree.grow()
-	return tree.expand(w)
+	return tree.grow().expand(w)
 }
 
 var programableNodeIdx int
