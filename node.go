@@ -24,7 +24,19 @@ func newNode(text string, hierarchy, index int) *Node {
 	}
 }
 
-func (n *Node) isLastNodeOfHierarchy() bool {
+func (n *Node) setParent(parent *Node) {
+	n.parent = parent
+}
+
+func (n *Node) addChild(child *Node) {
+	n.children = append(n.children, child)
+}
+
+func (n *Node) isDirectlyUnderParent(parent *Node) bool {
+	return n.hierarchy == parent.hierarchy+1
+}
+
+func (n *Node) isLastOfHierarchy() bool {
 	lastChildIndex := len(n.parent.children) - 1
 	return n.index == n.parent.children[lastChildIndex].index
 }
@@ -33,7 +45,7 @@ func (n *Node) isRoot() bool {
 	return n.hierarchy == rootHierarchyNum
 }
 
-func (n *Node) buildBranch() string {
+func (n *Node) getBranch() string {
 	if n.isRoot() {
 		return fmt.Sprintf("%s\n", n.text)
 	}

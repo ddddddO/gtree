@@ -30,8 +30,8 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...optFn) error {
 
 	tree := &tree{
 		roots:                 []*Node{root},
-		lastNodeFormat:        conf.lastNodeFormat,
-		intermedialNodeFormat: conf.intermedialNodeFormat,
+		formatLastNode:        conf.formatLastNode,
+		formatIntermedialNode: conf.formatIntermedialNode,
 	}
 	return tree.grow().expand(w)
 }
@@ -57,7 +57,7 @@ func (parent *Node) Add(text string) *Node {
 	programableNodeIdx++
 
 	current := newNode(text, parent.hierarchy+1, programableNodeIdx)
-	current.parent = parent
-	parent.children = append(parent.children, current)
+	current.setParent(parent)
+	parent.addChild(current)
 	return current
 }

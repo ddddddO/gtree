@@ -7,11 +7,11 @@ import (
 
 type tree struct {
 	roots                 []*Node
-	lastNodeFormat        nodeBranchFormat
-	intermedialNodeFormat nodeBranchFormat
+	formatLastNode        branchFormat
+	formatIntermedialNode branchFormat
 }
 
-type nodeBranchFormat struct {
+type branchFormat struct {
 	directly, indirectly string
 }
 
@@ -62,16 +62,11 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 		stackSize := tmpStack.size()
 		for i := 0; i < stackSize; i++ {
 			tmpNode := tmpStack.pop()
-			isCurrentNodeDirectlyUnderParent := currentNode.hierarchy == tmpNode.hierarchy+1
 
-			if isCurrentNodeDirectlyUnderParent {
-				parent := tmpNode
-				child := currentNode
-
-				parent.children = append(parent.children, child)
-				child.parent = parent
-				tmpStack.push(parent)
-				tmpStack.push(child)
+			if currentNode.isDirectlyUnderParent(tmpNode) {
+				tmpNode.addChild(currentNode)
+				currentNode.setParent(tmpNode)
+				tmpStack.push(tmpNode).push(currentNode)
 				break
 			}
 		}
@@ -83,8 +78,8 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 
 	return &tree{
 		roots:                 roots,
-		lastNodeFormat:        conf.lastNodeFormat,
-		intermedialNodeFormat: conf.intermedialNodeFormat,
+		formatLastNode:        conf.formatLastNode,
+		formatIntermedialNode: conf.formatIntermedialNode,
 	}, nil
 }
 
@@ -103,10 +98,10 @@ func (t *tree) determineBranches(currentNode *Node) {
 		return
 	}
 
-	if currentNode.isLastNodeOfHierarchy() {
-		currentNode.branch += t.lastNodeFormat.directly
+	if currentNode.isLastOfHierarchy() {
+		currentNode.branch += t.formatLastNode.directly
 	} else {
-		currentNode.branch += t.intermedialNodeFormat.directly
+		currentNode.branch += t.formatIntermedialNode.directly
 	}
 
 	// rootまで親を遡って枝を構成する
@@ -117,10 +112,10 @@ func (t *tree) determineBranches(currentNode *Node) {
 			break
 		}
 
-		if tmpParent.isLastNodeOfHierarchy() {
-			currentNode.branch = t.lastNodeFormat.indirectly + currentNode.branch
+		if tmpParent.isLastOfHierarchy() {
+			currentNode.branch = t.formatLastNode.indirectly + currentNode.branch
 		} else {
-			currentNode.branch = t.intermedialNodeFormat.indirectly + currentNode.branch
+			currentNode.branch = t.formatIntermedialNode.indirectly + currentNode.branch
 		}
 		tmpParent = tmpParent.parent
 	}
@@ -144,7 +139,7 @@ func (t *tree) expand(w io.Writer) error {
 }
 
 func expandBranches(currentNode *Node, output string) string {
-	output += currentNode.buildBranch()
+	output += currentNode.getBranch()
 	for _, child := range currentNode.children {
 		output = expandBranches(child, output)
 	}

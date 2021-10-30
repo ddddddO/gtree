@@ -10,17 +10,17 @@ type config struct {
 	isTwoSpaces  bool
 	isFourSpaces bool
 
-	lastNodeFormat        nodeBranchFormat
-	intermedialNodeFormat nodeBranchFormat
+	formatLastNode        branchFormat
+	formatIntermedialNode branchFormat
 }
 
 func newConfig(optFns ...optFn) (*config, error) {
 	c := &config{
-		lastNodeFormat: nodeBranchFormat{
+		formatLastNode: branchFormat{
 			directly:   "└──",
 			indirectly: "    ",
 		},
-		intermedialNodeFormat: nodeBranchFormat{
+		formatIntermedialNode: branchFormat{
 			directly:   "├──",
 			indirectly: "│   ",
 		},
@@ -59,8 +59,8 @@ func IndentFourSpaces() optFn {
 // BranchFormatIntermedialNode returns function for branch format.
 func BranchFormatIntermedialNode(directly, indirectly string) optFn {
 	return func(c *config) error {
-		c.intermedialNodeFormat.directly = directly
-		c.intermedialNodeFormat.indirectly = indirectly
+		c.formatIntermedialNode.directly = directly
+		c.formatIntermedialNode.indirectly = indirectly
 		return nil
 	}
 }
@@ -68,8 +68,8 @@ func BranchFormatIntermedialNode(directly, indirectly string) optFn {
 // BranchFormatLastNode returns function for branch format.
 func BranchFormatLastNode(directly, indirectly string) optFn {
 	return func(c *config) error {
-		c.lastNodeFormat.directly = directly
-		c.lastNodeFormat.indirectly = indirectly
+		c.formatLastNode.directly = directly
+		c.formatLastNode.indirectly = indirectly
 		return nil
 	}
 }

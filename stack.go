@@ -12,8 +12,9 @@ func newStack() *stack {
 	return &stack{}
 }
 
-func (s *stack) push(n *Node) {
+func (s *stack) push(n *Node) *stack {
 	s.nodes = append(s.nodes, n)
+	return s
 }
 
 func (s *stack) pop() *Node {
