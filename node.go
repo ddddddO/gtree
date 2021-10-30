@@ -71,7 +71,7 @@ type generateFunc func(row string) *Node
 
 func decideGenearateFunc(conf *config) generateFunc {
 	if conf.isTwoSpaces {
-		return generateNodeofTwoSpaces
+		return generateNodeOfTwoSpaces
 	}
 	if conf.isFourSpaces {
 		return generateNodeOfFourSpaces
@@ -134,7 +134,7 @@ func generateNodeOfTab(row string) *Node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func generateNodeofTwoSpaces(row string) *Node {
+func generateNodeOfTwoSpaces(row string) *Node {
 	nodeIdx++
 
 	var (
