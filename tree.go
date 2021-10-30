@@ -128,7 +128,7 @@ func (t *tree) determineBranches(currentNode *Node) {
 func (t *tree) expand(w io.Writer) error {
 	branches := ""
 	for _, root := range t.roots {
-		branches += expandBranches(root, "")
+		branches += (*tree)(nil).expandBranches(root, "")
 	}
 
 	buf := bufio.NewWriter(w)
@@ -138,10 +138,10 @@ func (t *tree) expand(w io.Writer) error {
 	return buf.Flush()
 }
 
-func expandBranches(currentNode *Node, output string) string {
+func (*tree) expandBranches(currentNode *Node, output string) string {
 	output += currentNode.getBranch()
 	for _, child := range currentNode.children {
-		output = expandBranches(child, output)
+		output = (*tree)(nil).expandBranches(child, output)
 	}
 	return output
 }
