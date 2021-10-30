@@ -51,8 +51,8 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 		}
 
 		if currentNode.isRoot() {
-			stack = newStack()
 			tree.addRoot(currentNode)
+			stack = newStack()
 			stack.push(currentNode)
 			continue
 		}
