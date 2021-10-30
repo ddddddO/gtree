@@ -35,7 +35,7 @@ func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
 func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	var (
 		roots         []*Node
-		tmpStack      *stack
+		stack         *stack
 		nodeGenerator = newNodeGenerator(conf)
 	)
 
@@ -48,25 +48,25 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 		}
 
 		if currentNode.isRoot() {
-			tmpStack = newStack()
+			stack = newStack()
 			roots = append(roots, currentNode)
-			tmpStack.push(currentNode)
+			stack.push(currentNode)
 			continue
 		}
 
-		if tmpStack == nil {
+		if stack == nil {
 			return nil, errNilStack
 		}
 
 		// 深さ優先探索的な？考え方
-		stackSize := tmpStack.size()
+		stackSize := stack.size()
 		for i := 0; i < stackSize; i++ {
-			tmpNode := tmpStack.pop()
+			tmpNode := stack.pop()
 
 			if currentNode.isDirectlyUnderParent(tmpNode) {
 				tmpNode.addChild(currentNode)
 				currentNode.setParent(tmpNode)
-				tmpStack.push(tmpNode).push(currentNode)
+				stack.push(tmpNode).push(currentNode)
 				break
 			}
 		}
