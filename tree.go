@@ -85,15 +85,15 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 
 func (t *tree) grow() *tree {
 	for _, root := range t.roots {
-		t.determineBranches(root)
+		t.determineBranch(root)
 	}
 	return t
 }
 
-func (t *tree) determineBranches(currentNode *Node) {
+func (t *tree) determineBranch(currentNode *Node) {
 	if currentNode.isRoot() {
 		for _, child := range currentNode.children {
-			t.determineBranches(child)
+			t.determineBranch(child)
 		}
 		return
 	}
@@ -114,7 +114,7 @@ func (t *tree) determineBranches(currentNode *Node) {
 	}
 
 	for _, child := range currentNode.children {
-		t.determineBranches(child)
+		t.determineBranch(child)
 	}
 }
 
@@ -137,7 +137,7 @@ func (t *tree) assembleBranchIndirectly(current, parent *Node) {
 func (t *tree) expand(w io.Writer) error {
 	branches := ""
 	for _, root := range t.roots {
-		branches += (*tree)(nil).expandBranches(root, "")
+		branches += (*tree)(nil).expandBranch(root, "")
 	}
 
 	buf := bufio.NewWriter(w)
@@ -147,10 +147,10 @@ func (t *tree) expand(w io.Writer) error {
 	return buf.Flush()
 }
 
-func (*tree) expandBranches(currentNode *Node, output string) string {
+func (*tree) expandBranch(currentNode *Node, output string) string {
 	output += currentNode.getBranch()
 	for _, child := range currentNode.children {
-		output = (*tree)(nil).expandBranches(child, output)
+		output = (*tree)(nil).expandBranch(child, output)
 	}
 	return output
 }
