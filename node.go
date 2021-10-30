@@ -67,22 +67,16 @@ func (n *Node) validate() error {
 	return nil
 }
 
-type nodeGenerator interface {
-	generate(row string) *Node
-}
+type generateFunc func(row string) *Node
 
-type nodeGeneratorTab struct{}
-type nodeGeneratorTwoSpaces struct{}
-type nodeGeneratorFourSpaces struct{}
-
-func newNodeGenerator(conf *config) nodeGenerator {
+func decideGenearateFunc(conf *config) generateFunc {
 	if conf.isTwoSpaces {
-		return &nodeGeneratorTwoSpaces{}
+		return generateNodeofTwoSpaces
 	}
 	if conf.isFourSpaces {
-		return &nodeGeneratorFourSpaces{}
+		return generateNodeOfFourSpaces
 	}
-	return &nodeGeneratorTab{}
+	return generateNodeOfTab
 }
 
 // https://ja.wikipedia.org/wiki/ASCII
@@ -98,7 +92,7 @@ const (
 
 var nodeIdx int
 
-func (*nodeGeneratorTab) generate(row string) *Node {
+func generateNodeOfTab(row string) *Node {
 	nodeIdx++
 
 	var (
@@ -140,7 +134,7 @@ func (*nodeGeneratorTab) generate(row string) *Node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func (*nodeGeneratorTwoSpaces) generate(row string) *Node {
+func generateNodeofTwoSpaces(row string) *Node {
 	nodeIdx++
 
 	var (
@@ -178,7 +172,7 @@ func (*nodeGeneratorTwoSpaces) generate(row string) *Node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func (*nodeGeneratorFourSpaces) generate(row string) *Node {
+func generateNodeOfFourSpaces(row string) *Node {
 	nodeIdx++
 
 	var (
