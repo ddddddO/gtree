@@ -35,7 +35,7 @@ func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
 func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	var (
 		stack        *stack
-		generateNode = decideGenearateFunc(conf)
+		generateNode = decideGenerateFunc(conf)
 		tree         = &tree{
 			formatLastNode:        conf.formatLastNode,
 			formatIntermedialNode: conf.formatIntermedialNode,

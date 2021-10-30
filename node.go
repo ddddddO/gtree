@@ -69,7 +69,7 @@ func (n *Node) validate() error {
 
 type generateFunc func(row string) *Node
 
-func decideGenearateFunc(conf *config) generateFunc {
+func decideGenerateFunc(conf *config) generateFunc {
 	if conf.isTwoSpaces {
 		return generateNodeOfTwoSpaces
 	}
