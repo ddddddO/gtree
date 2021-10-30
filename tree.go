@@ -98,11 +98,7 @@ func (t *tree) determineBranches(currentNode *Node) {
 		return
 	}
 
-	if currentNode.isLastOfHierarchy() {
-		currentNode.branch += t.formatLastNode.directly
-	} else {
-		currentNode.branch += t.formatIntermedialNode.directly
-	}
+	t.assembleBranchDirectly(currentNode)
 
 	// rootまで親を遡って枝を構成する
 	tmpParent := currentNode.parent
@@ -112,16 +108,29 @@ func (t *tree) determineBranches(currentNode *Node) {
 			break
 		}
 
-		if tmpParent.isLastOfHierarchy() {
-			currentNode.branch = t.formatLastNode.indirectly + currentNode.branch
-		} else {
-			currentNode.branch = t.formatIntermedialNode.indirectly + currentNode.branch
-		}
+		t.assembleBranchIndirectly(currentNode, tmpParent)
+
 		tmpParent = tmpParent.parent
 	}
 
 	for _, child := range currentNode.children {
 		t.determineBranches(child)
+	}
+}
+
+func (t *tree) assembleBranchDirectly(current *Node) {
+	if current.isLastOfHierarchy() {
+		current.branch += t.formatLastNode.directly
+	} else {
+		current.branch += t.formatIntermedialNode.directly
+	}
+}
+
+func (t *tree) assembleBranchIndirectly(current, parent *Node) {
+	if parent.isLastOfHierarchy() {
+		current.branch = t.formatLastNode.indirectly + current.branch
+	} else {
+		current.branch = t.formatIntermedialNode.indirectly + current.branch
 	}
 }
 
