@@ -29,10 +29,10 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...optFn) error {
 	}
 
 	tree := &tree{
-		roots:                 []*Node{root},
 		formatLastNode:        conf.formatLastNode,
 		formatIntermedialNode: conf.formatIntermedialNode,
 	}
+	tree.addRoot(root)
 	return tree.grow().expand(w)
 }
 
