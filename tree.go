@@ -34,9 +34,12 @@ func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
 // 全入力をrootを頂点としたツリー上のデータに変換する。
 func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	var (
-		roots         []*Node
 		stack         *stack
 		nodeGenerator = newNodeGenerator(conf)
+		tree          = &tree{
+			formatLastNode:        conf.formatLastNode,
+			formatIntermedialNode: conf.formatIntermedialNode,
+		}
 	)
 
 	for scanner.Scan() {
@@ -49,7 +52,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 
 		if currentNode.isRoot() {
 			stack = newStack()
-			roots = append(roots, currentNode)
+			tree.addRoot(currentNode)
 			stack.push(currentNode)
 			continue
 		}
@@ -76,11 +79,11 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 		return nil, err
 	}
 
-	return &tree{
-		roots:                 roots,
-		formatLastNode:        conf.formatLastNode,
-		formatIntermedialNode: conf.formatIntermedialNode,
-	}, nil
+	return tree, nil
+}
+
+func (t *tree) addRoot(root *Node) {
+	t.roots = append(t.roots, root)
 }
 
 func (t *tree) grow() *tree {
