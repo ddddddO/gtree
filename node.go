@@ -71,12 +71,12 @@ type generateFunc func(row string) *Node
 
 func decideGenerateFunc(conf *config) generateFunc {
 	if conf.isTwoSpaces {
-		return generateNodeOfTwoSpaces
+		return generateFuncIfTwoSpaces
 	}
 	if conf.isFourSpaces {
-		return generateNodeOfFourSpaces
+		return generateFuncIfFourSpaces
 	}
-	return generateNodeOfTab
+	return generateFuncIfTab
 }
 
 // https://ja.wikipedia.org/wiki/ASCII
@@ -92,7 +92,7 @@ const (
 
 var nodeIdx int
 
-func generateNodeOfTab(row string) *Node {
+func generateFuncIfTab(row string) *Node {
 	nodeIdx++
 
 	var (
@@ -134,7 +134,7 @@ func generateNodeOfTab(row string) *Node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func generateNodeOfTwoSpaces(row string) *Node {
+func generateFuncIfTwoSpaces(row string) *Node {
 	nodeIdx++
 
 	var (
@@ -172,7 +172,7 @@ func generateNodeOfTwoSpaces(row string) *Node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func generateNodeOfFourSpaces(row string) *Node {
+func generateFuncIfFourSpaces(row string) *Node {
 	nodeIdx++
 
 	var (

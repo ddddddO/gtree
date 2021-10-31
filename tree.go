@@ -93,31 +93,35 @@ func (t *tree) grow() *tree {
 	return t
 }
 
-func (t *tree) determineBranch(currentNode *Node) {
-	if currentNode.isRoot() {
-		for _, child := range currentNode.children {
+func (t *tree) determineBranch(current *Node) {
+	if current.isRoot() {
+		for _, child := range current.children {
 			t.determineBranch(child)
 		}
 		return
 	}
 
-	t.assembleBranchDirectly(currentNode)
+	t.assembleBranch(current)
+
+	for _, child := range current.children {
+		t.determineBranch(child)
+	}
+}
+
+func (t *tree) assembleBranch(current *Node) {
+	t.assembleBranchDirectly(current)
 
 	// rootまで親を遡って枝を構成する
-	tmpParent := currentNode.parent
+	tmpParent := current.parent
 	for {
 		// rootまで遡った
 		if tmpParent.isRoot() {
 			break
 		}
 
-		t.assembleBranchIndirectly(currentNode, tmpParent)
+		t.assembleBranchIndirectly(current, tmpParent)
 
 		tmpParent = tmpParent.parent
-	}
-
-	for _, child := range currentNode.children {
-		t.determineBranch(child)
 	}
 }
 
@@ -150,9 +154,9 @@ func (t *tree) expand(w io.Writer) error {
 	return buf.Flush()
 }
 
-func (*tree) expandBranch(currentNode *Node, output string) string {
-	output += currentNode.getBranch()
-	for _, child := range currentNode.children {
+func (*tree) expandBranch(current *Node, output string) string {
+	output += current.getBranch()
+	for _, child := range current.children {
 		output = (*tree)(nil).expandBranch(child, output)
 	}
 	return output
