@@ -155,9 +155,9 @@ func (*tree) expandBranch(current *Node, out string) string {
 	return out
 }
 
-func (*tree) write(w io.Writer, branches string) error {
+func (*tree) write(w io.Writer, in string) error {
 	buf := bufio.NewWriter(w)
-	if _, err := buf.WriteString(branches); err != nil {
+	if _, err := buf.WriteString(in); err != nil {
 		return err
 	}
 	return buf.Flush()
