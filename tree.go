@@ -147,12 +147,12 @@ func (t *tree) expand(w io.Writer) error {
 	return (*tree)(nil).write(w, branches)
 }
 
-func (*tree) expandBranch(current *Node, output string) string {
-	output += current.getBranch()
+func (*tree) expandBranch(current *Node, out string) string {
+	out += current.getBranch()
 	for _, child := range current.children {
-		output = (*tree)(nil).expandBranch(child, output)
+		out = (*tree)(nil).expandBranch(child, out)
 	}
-	return output
+	return out
 }
 
 func (*tree) write(w io.Writer, branches string) error {
