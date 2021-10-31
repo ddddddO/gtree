@@ -94,13 +94,6 @@ func (t *tree) grow() *tree {
 }
 
 func (t *tree) determineBranch(current *Node) {
-	if current.isRoot() {
-		for _, child := range current.children {
-			t.determineBranch(child)
-		}
-		return
-	}
-
 	t.assembleBranch(current)
 
 	for _, child := range current.children {
@@ -109,6 +102,10 @@ func (t *tree) determineBranch(current *Node) {
 }
 
 func (t *tree) assembleBranch(current *Node) {
+	if current.isRoot() {
+		return
+	}
+
 	t.assembleBranchDirectly(current)
 
 	// rootまで親を遡って枝を構成する
@@ -147,11 +144,7 @@ func (t *tree) expand(w io.Writer) error {
 		branches += (*tree)(nil).expandBranch(root, "")
 	}
 
-	buf := bufio.NewWriter(w)
-	if _, err := buf.WriteString(branches); err != nil {
-		return err
-	}
-	return buf.Flush()
+	return (*tree)(nil).write(w, branches)
 }
 
 func (*tree) expandBranch(current *Node, output string) string {
@@ -160,4 +153,12 @@ func (*tree) expandBranch(current *Node, output string) string {
 		output = (*tree)(nil).expandBranch(child, output)
 	}
 	return output
+}
+
+func (*tree) write(w io.Writer, branches string) error {
+	buf := bufio.NewWriter(w)
+	if _, err := buf.WriteString(branches); err != nil {
+		return err
+	}
+	return buf.Flush()
 }
