@@ -486,22 +486,25 @@ a
 	}
 
 	for _, tt := range tests {
-		t.Log(tt.name)
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 
-		out := &bytes.Buffer{}
-		gotErr := Execute(out, tt.in.input, tt.in.optFns...)
-		gotOutput := out.String()
+			out := &bytes.Buffer{}
+			gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+			gotOutput := out.String()
 
-		if gotOutput != tt.out.output {
-			t.Errorf("\ngot: \n%s\nwant: \n%s", gotOutput, tt.out.output)
-		}
-		if gotErr != tt.out.err {
-			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
-		}
+			if gotOutput != tt.out.output {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", gotOutput, tt.out.output)
+			}
+			if gotErr != tt.out.err {
+				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
+			}
 
-		if file, ok := tt.in.input.(*os.File); ok {
-			file.Close()
-		}
+			if file, ok := tt.in.input.(*os.File); ok {
+				file.Close()
+			}
+		})
 	}
 }
 

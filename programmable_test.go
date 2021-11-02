@@ -69,18 +69,21 @@ root
 	}
 
 	for _, tt := range tests {
-		t.Log(tt.name)
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 
-		buf := &bytes.Buffer{}
-		gotErr := ExecuteProgrammably(buf, tt.root, tt.optFns...)
-		got := buf.String()
+			buf := &bytes.Buffer{}
+			gotErr := ExecuteProgrammably(buf, tt.root, tt.optFns...)
+			got := buf.String()
 
-		if got != tt.want {
-			t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.want)
-		}
-		if gotErr != tt.wantErr {
-			t.Errorf("\ngot: \n%v\nwant: \n%v", gotErr, tt.wantErr)
-		}
+			if got != tt.want {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.want)
+			}
+			if gotErr != tt.wantErr {
+				t.Errorf("\ngot: \n%v\nwant: \n%v", gotErr, tt.wantErr)
+			}
+		})
 	}
 }
 
