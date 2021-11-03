@@ -11,6 +11,13 @@ type tree struct {
 	formatIntermedialNode branchFormat
 }
 
+func newTree(conf *config) *tree {
+	return &tree{
+		formatLastNode:        conf.formatLastNode,
+		formatIntermedialNode: conf.formatIntermedialNode,
+	}
+}
+
 type branchFormat struct {
 	directly, indirectly string
 }
@@ -36,10 +43,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	var (
 		stack            *stack
 		generateNodeFunc = decideGenerateFunc(conf)
-		tree             = &tree{
-			formatLastNode:        conf.formatLastNode,
-			formatIntermedialNode: conf.formatIntermedialNode,
-		}
+		tree             = newTree(conf)
 	)
 
 	for scanner.Scan() {

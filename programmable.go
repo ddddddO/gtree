@@ -24,15 +24,13 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...optFn) error {
 	if !root.isRoot() {
 		return ErrNotRoot
 	}
+
 	conf, err := newConfig(optFns...)
 	if err != nil {
 		return err
 	}
 
-	tree := &tree{
-		formatLastNode:        conf.formatLastNode,
-		formatIntermedialNode: conf.formatIntermedialNode,
-	}
+	tree := newTree(conf)
 	tree.addRoot(root)
 	return tree.grow().expand(w)
 }
