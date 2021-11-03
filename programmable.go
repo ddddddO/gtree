@@ -3,6 +3,7 @@ package gtree
 
 import (
 	"io"
+	"sync"
 
 	"github.com/pkg/errors"
 )
@@ -36,11 +37,16 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...optFn) error {
 	return tree.grow().expand(w)
 }
 
-var programableNodeIdx int
+var (
+	programableNodeIdx   int
+	programableNodeIdxMu sync.Mutex
+)
 
 // NewRoot creates a starting node for building tree.
 func NewRoot(text string) *Node {
+	programableNodeIdxMu.Lock()
 	programableNodeIdx++
+	defer programableNodeIdxMu.Unlock()
 
 	return newNode(text, rootHierarchyNum, programableNodeIdx)
 }
@@ -54,7 +60,9 @@ func (parent *Node) Add(text string) *Node {
 		}
 	}
 
+	programableNodeIdxMu.Lock()
 	programableNodeIdx++
+	defer programableNodeIdxMu.Unlock()
 
 	current := newNode(text, parent.hierarchy+1, programableNodeIdx)
 	current.setParent(parent)

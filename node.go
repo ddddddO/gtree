@@ -2,6 +2,7 @@ package gtree
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/pkg/errors"
 )
@@ -90,10 +91,15 @@ const (
 	rootHierarchyNum = 1
 )
 
-var nodeIdx int
+var (
+	nodeIdx   int
+	nodeIdxMu sync.Mutex
+)
 
 func generateFuncIfTab(row string) *Node {
+	nodeIdxMu.Lock()
 	nodeIdx++
+	defer nodeIdxMu.Unlock()
 
 	var (
 		text      = ""
@@ -135,7 +141,9 @@ func generateFuncIfTab(row string) *Node {
 }
 
 func generateFuncIfTwoSpaces(row string) *Node {
+	nodeIdxMu.Lock()
 	nodeIdx++
+	defer nodeIdxMu.Unlock()
 
 	var (
 		text      = ""
@@ -173,7 +181,9 @@ func generateFuncIfTwoSpaces(row string) *Node {
 }
 
 func generateFuncIfFourSpaces(row string) *Node {
+	nodeIdxMu.Lock()
 	nodeIdx++
+	defer nodeIdxMu.Unlock()
 
 	var (
 		text      = ""
