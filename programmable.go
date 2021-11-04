@@ -59,8 +59,9 @@ func (parent *Node) Add(text string) *Node {
 	}
 
 	programableNodeIdxMu.Lock()
-	programableNodeIdx++
 	defer programableNodeIdxMu.Unlock()
+
+	programableNodeIdx++
 
 	current := newNode(text, parent.hierarchy+1, programableNodeIdx)
 	current.setParent(parent)

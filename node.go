@@ -98,8 +98,9 @@ var (
 
 func generateFuncIfTab(row string) *Node {
 	nodeIdxMu.Lock()
-	nodeIdx++
 	defer nodeIdxMu.Unlock()
+
+	nodeIdx++
 
 	var (
 		text      = ""
@@ -142,8 +143,9 @@ func generateFuncIfTab(row string) *Node {
 
 func generateFuncIfTwoSpaces(row string) *Node {
 	nodeIdxMu.Lock()
-	nodeIdx++
 	defer nodeIdxMu.Unlock()
+
+	nodeIdx++
 
 	var (
 		text      = ""
@@ -182,8 +184,9 @@ func generateFuncIfTwoSpaces(row string) *Node {
 
 func generateFuncIfFourSpaces(row string) *Node {
 	nodeIdxMu.Lock()
-	nodeIdx++
 	defer nodeIdxMu.Unlock()
+
+	nodeIdx++
 
 	var (
 		text      = ""
