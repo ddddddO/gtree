@@ -43,8 +43,9 @@ var (
 // NewRoot creates a starting node for building tree.
 func NewRoot(text string) *Node {
 	programableNodeIdxMu.Lock()
-	programableNodeIdx++
 	defer programableNodeIdxMu.Unlock()
+
+	programableNodeIdx++
 
 	return newNode(text, rootHierarchyNum, programableNodeIdx)
 }
