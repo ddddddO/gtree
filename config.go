@@ -12,7 +12,16 @@ type config struct {
 
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
+
+	selectedMode mode
 }
+
+type mode int
+
+const (
+	modeDefault mode = iota
+	modeJSON
+)
 
 func newConfig(optFns ...optFn) (*config, error) {
 	c := &config{
@@ -24,6 +33,7 @@ func newConfig(optFns ...optFn) (*config, error) {
 			directly:   "├──",
 			indirectly: "│   ",
 		},
+		selectedMode: modeDefault,
 	}
 	for _, opt := range optFns {
 		if err := opt(c); err != nil {
@@ -70,6 +80,14 @@ func BranchFormatLastNode(directly, indirectly string) optFn {
 	return func(c *config) error {
 		c.formatLastNode.directly = directly
 		c.formatLastNode.indirectly = indirectly
+		return nil
+	}
+}
+
+// ModeJSON returns function for json output.
+func ModeJSON() optFn {
+	return func(c *config) error {
+		c.selectedMode = modeJSON
 		return nil
 	}
 }

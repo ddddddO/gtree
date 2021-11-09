@@ -5,14 +5,27 @@ import (
 	"io"
 )
 
-type tree struct {
+type tree interface {
+	addRoot(root *Node)
+	grow() tree
+	expand(w io.Writer) error
+}
+
+func newTree(conf *config) tree {
+	if conf.selectedMode == modeJSON {
+		return newJSONTree(conf)
+	}
+	return newDefaultTree(conf)
+}
+
+type defaultTree struct {
 	roots                 []*Node
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
 }
 
-func newTree(conf *config) *tree {
-	return &tree{
+func newDefaultTree(conf *config) *defaultTree {
+	return &defaultTree{
 		formatLastNode:        conf.formatLastNode,
 		formatIntermedialNode: conf.formatIntermedialNode,
 	}
@@ -39,7 +52,7 @@ func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
 
 // Sprout：芽が出る
 // 全入力をrootを頂点としたツリー上のデータに変換する。
-func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
+func sprout(scanner *bufio.Scanner, conf *config) (tree, error) {
 	var (
 		stack            *stack
 		generateNodeFunc = decideGenerateFunc(conf)
@@ -86,18 +99,18 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	return tree, nil
 }
 
-func (t *tree) addRoot(root *Node) {
+func (t *defaultTree) addRoot(root *Node) {
 	t.roots = append(t.roots, root)
 }
 
-func (t *tree) grow() *tree {
+func (t *defaultTree) grow() tree {
 	for _, root := range t.roots {
 		t.determineBranch(root)
 	}
 	return t
 }
 
-func (t *tree) determineBranch(current *Node) {
+func (t *defaultTree) determineBranch(current *Node) {
 	t.assembleBranch(current)
 
 	for _, child := range current.children {
@@ -105,7 +118,7 @@ func (t *tree) determineBranch(current *Node) {
 	}
 }
 
-func (t *tree) assembleBranch(current *Node) {
+func (t *defaultTree) assembleBranch(current *Node) {
 	if current.isRoot() {
 		return
 	}
@@ -126,7 +139,7 @@ func (t *tree) assembleBranch(current *Node) {
 	}
 }
 
-func (t *tree) assembleBranchDirectly(current *Node) {
+func (t *defaultTree) assembleBranchDirectly(current *Node) {
 	if current.isLastOfHierarchy() {
 		current.branch += t.formatLastNode.directly
 	} else {
@@ -134,7 +147,7 @@ func (t *tree) assembleBranchDirectly(current *Node) {
 	}
 }
 
-func (t *tree) assembleBranchIndirectly(current, parent *Node) {
+func (t *defaultTree) assembleBranchIndirectly(current, parent *Node) {
 	if parent.isLastOfHierarchy() {
 		current.branch = t.formatLastNode.indirectly + current.branch
 	} else {
@@ -142,24 +155,24 @@ func (t *tree) assembleBranchIndirectly(current, parent *Node) {
 	}
 }
 
-func (t *tree) expand(w io.Writer) error {
+func (t *defaultTree) expand(w io.Writer) error {
 	branches := ""
 	for _, root := range t.roots {
-		branches += (*tree)(nil).expandBranch(root, "")
+		branches += (*defaultTree)(nil).expandBranch(root, "")
 	}
 
-	return (*tree)(nil).write(w, branches)
+	return (*defaultTree)(nil).write(w, branches)
 }
 
-func (*tree) expandBranch(current *Node, out string) string {
+func (*defaultTree) expandBranch(current *Node, out string) string {
 	out += current.getBranch()
 	for _, child := range current.children {
-		out = (*tree)(nil).expandBranch(child, out)
+		out = (*defaultTree)(nil).expandBranch(child, out)
 	}
 	return out
 }
 
-func (*tree) write(w io.Writer, in string) error {
+func (*defaultTree) write(w io.Writer, in string) error {
 	buf := bufio.NewWriter(w)
 	if _, err := buf.WriteString(in); err != nil {
 		return err
