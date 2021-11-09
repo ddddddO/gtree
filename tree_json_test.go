@@ -22,6 +22,15 @@ func TestExecute_jsonTree(t *testing.T) {
 			want:    `{"a":["b"]}`,
 			wantErr: nil,
 		},
+		{
+			name: "case 2",
+			in: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
+	- c`)),
+			want:    `{"a":["b","c"]}`,
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {

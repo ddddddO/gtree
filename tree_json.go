@@ -29,9 +29,7 @@ func (t *jsonTree) grow() tree {
 func (t *jsonTree) assembleJSON(current *Node) {
 	t.assembleObject(current)
 
-	for _, child := range current.children {
-		t.assembleArray(child)
-	}
+	t.assembleArray(current.children)
 }
 
 func (t *jsonTree) assembleObject(current *Node) {
@@ -39,8 +37,17 @@ func (t *jsonTree) assembleObject(current *Node) {
 	t.tmp += tmp
 }
 
-func (t *jsonTree) assembleArray(current *Node) {
-	tmp := "[" + quote(current.text) + "]"
+func (t *jsonTree) assembleArray(nodes []*Node) {
+	tmp := "["
+	for i, n := range nodes {
+		tmp += quote(n.text)
+
+		if i != len(nodes)-1 {
+			tmp += ","
+		}
+	}
+	tmp += "]"
+
 	t.tmp += tmp
 }
 
