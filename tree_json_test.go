@@ -31,11 +31,22 @@ func TestExecute_jsonTree(t *testing.T) {
 			want:    `{"a":["b","c"]}`,
 			wantErr: nil,
 		},
+		{
+			name: "case 3",
+			in: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
+		- c`)),
+			want:    `{"a":{"b":["c"]}}`,
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
 			out := &bytes.Buffer{}
 
 			gotErr := Execute(out, tt.in, ModeJSON())

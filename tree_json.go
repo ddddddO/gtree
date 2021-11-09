@@ -16,20 +16,34 @@ func newJSONTree(conf *config) *jsonTree {
 }
 
 func (t *jsonTree) grow() tree {
-	t.tmp += "{"
-
 	// 一旦、1 rootで考える
 	root := t.roots[0]
 	t.assembleJSON(root)
 
-	t.tmp += "}"
 	return t
 }
 
 func (t *jsonTree) assembleJSON(current *Node) {
+	t.tmp += "{"
 	t.assembleObject(current)
 
-	t.assembleArray(current.children)
+	if hasChildrenOfAnyChild(current.children) {
+		t.tmp += "{"
+		t.assembleObject(current.children[0])
+	} else {
+		t.assembleArray(current.children)
+	}
+
+	t.tmp += "}"
+}
+
+func hasChildrenOfAnyChild(children []*Node) bool {
+	for _, child := range children {
+		if len(child.children) != 0 {
+			return true
+		}
+	}
+	return false
 }
 
 func (t *jsonTree) assembleObject(current *Node) {
