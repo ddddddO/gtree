@@ -19,7 +19,7 @@ func TestExecute_jsonTree(t *testing.T) {
 			in: strings.NewReader(strings.TrimSpace(`
 - a
 	- b`)),
-			want:    "not yet impl",
+			want:    `{"a":["b"]}`,
 			wantErr: nil,
 		},
 	}
