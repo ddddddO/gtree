@@ -9,17 +9,17 @@ import (
 
 // Node is main struct for gtree.
 type Node struct {
-	text      string
+	Text      string `json:"value"`
 	hierarchy int
 	index     int
 	branch    string
 	parent    *Node
-	children  []*Node
+	Children  []*Node `json:"children"`
 }
 
 func newNode(text string, hierarchy, index int) *Node {
 	return &Node{
-		text:      text,
+		Text:      text,
 		hierarchy: hierarchy,
 		index:     index,
 	}
@@ -30,7 +30,7 @@ func (n *Node) setParent(parent *Node) {
 }
 
 func (n *Node) addChild(child *Node) {
-	n.children = append(n.children, child)
+	n.Children = append(n.Children, child)
 }
 
 func (n *Node) isDirectlyUnderParent(parent *Node) bool {
@@ -38,8 +38,8 @@ func (n *Node) isDirectlyUnderParent(parent *Node) bool {
 }
 
 func (n *Node) isLastOfHierarchy() bool {
-	lastChildIndex := len(n.parent.children) - 1
-	return n.index == n.parent.children[lastChildIndex].index
+	lastChildIndex := len(n.parent.Children) - 1
+	return n.index == n.parent.Children[lastChildIndex].index
 }
 
 func (n *Node) isRoot() bool {
@@ -48,9 +48,9 @@ func (n *Node) isRoot() bool {
 
 func (n *Node) getBranch() string {
 	if n.isRoot() {
-		return fmt.Sprintf("%s\n", n.text)
+		return fmt.Sprintf("%s\n", n.Text)
 	}
-	return fmt.Sprintf("%s %s\n", n.branch, n.text)
+	return fmt.Sprintf("%s %s\n", n.branch, n.Text)
 }
 
 var (
@@ -59,7 +59,7 @@ var (
 )
 
 func (n *Node) validate() error {
-	if len(n.text) == 0 {
+	if len(n.Text) == 0 {
 		return errEmptyText
 	}
 	if n.hierarchy == 0 {

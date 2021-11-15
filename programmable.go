@@ -53,8 +53,8 @@ func NewRoot(text string) *Node {
 // Add adds a node and returns an instance of it.
 // If a node with the same text already exists in the same hierarchy of the tree, that node will be returned.
 func (parent *Node) Add(text string) *Node {
-	for _, child := range parent.children {
-		if text == child.text {
+	for _, child := range parent.Children {
+		if text == child.Text {
 			return child
 		}
 	}

@@ -6,12 +6,21 @@ import (
 
 var errInvalidOption = errors.New("invalid option")
 
+type encode int
+
+const (
+	encodeDefault encode = iota
+	encodeJSON
+)
+
 type config struct {
 	isTwoSpaces  bool
 	isFourSpaces bool
 
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
+
+	encode encode
 }
 
 func newConfig(optFns ...optFn) (*config, error) {
@@ -24,6 +33,7 @@ func newConfig(optFns ...optFn) (*config, error) {
 			directly:   "├──",
 			indirectly: "│   ",
 		},
+		encode: encodeDefault,
 	}
 	for _, opt := range optFns {
 		if err := opt(c); err != nil {
@@ -70,6 +80,14 @@ func BranchFormatLastNode(directly, indirectly string) optFn {
 	return func(c *config) error {
 		c.formatLastNode.directly = directly
 		c.formatLastNode.indirectly = indirectly
+		return nil
+	}
+}
+
+// EncodeJSON returns function for output json format.
+func EncodeJSON() optFn {
+	return func(c *config) error {
+		c.encode = encodeJSON
 		return nil
 	}
 }
