@@ -205,3 +205,9 @@ func main() {
 }
 
 ```
+
+- You can also output JSON.
+
+[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go)
+
+---

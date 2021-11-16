@@ -5,16 +5,29 @@ import (
 	"io"
 )
 
+type treeer interface {
+	addRoot(root *Node)
+	grow() treeer
+	expand(w io.Writer) error
+}
+
 type tree struct {
 	roots                 []*Node
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
 }
 
-func newTree(conf *config) *tree {
-	return &tree{
-		formatLastNode:        conf.formatLastNode,
-		formatIntermedialNode: conf.formatIntermedialNode,
+func newTree(conf *config) treeer {
+	switch conf.encode {
+	case encodeJSON:
+		return &jsonTree{
+			&tree{},
+		}
+	default:
+		return &tree{
+			formatLastNode:        conf.formatLastNode,
+			formatIntermedialNode: conf.formatIntermedialNode,
+		}
 	}
 }
 
@@ -23,7 +36,7 @@ type branchFormat struct {
 }
 
 // Execute outputs a tree to w with r as Markdown format input.
-func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
+func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	conf, err := newConfig(optFns...)
 	if err != nil {
 		return err
@@ -39,7 +52,7 @@ func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
 
 // Sprout：芽が出る
 // 全入力をrootを頂点としたツリー上のデータに変換する。
-func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
+func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	var (
 		stack            *stack
 		generateNodeFunc = decideGenerateFunc(conf)
@@ -90,7 +103,7 @@ func (t *tree) addRoot(root *Node) {
 	t.roots = append(t.roots, root)
 }
 
-func (t *tree) grow() *tree {
+func (t *tree) grow() treeer {
 	for _, root := range t.roots {
 		t.determineBranch(root)
 	}
@@ -100,7 +113,7 @@ func (t *tree) grow() *tree {
 func (t *tree) determineBranch(current *Node) {
 	t.assembleBranch(current)
 
-	for _, child := range current.children {
+	for _, child := range current.Children {
 		t.determineBranch(child)
 	}
 }
@@ -153,7 +166,7 @@ func (t *tree) expand(w io.Writer) error {
 
 func (*tree) expandBranch(current *Node, out string) string {
 	out += current.getBranch()
-	for _, child := range current.children {
+	for _, child := range current.Children {
 		out = (*tree)(nil).expandBranch(child, out)
 	}
 	return out

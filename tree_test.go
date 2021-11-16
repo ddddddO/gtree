@@ -12,7 +12,7 @@ import (
 
 type in struct {
 	input  io.Reader
-	optFns []optFn
+	optFns []OptFn
 }
 
 type out struct {
@@ -227,7 +227,7 @@ root
   - e
     - o
   - g`)),
-				optFns: []optFn{IndentTwoSpaces()},
+				optFns: []OptFn{IndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -257,7 +257,7 @@ a
     - e
         - o
     - g`)),
-				optFns: []optFn{IndentFourSpaces()},
+				optFns: []OptFn{IndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -442,7 +442,7 @@ a
 			name: "case 24(invalid options)",
 			in: in{
 				input:  prepareMarkdownFile(t),
-				optFns: []optFn{IndentTwoSpaces(), IndentFourSpaces()},
+				optFns: []OptFn{IndentTwoSpaces(), IndentFourSpaces()},
 			},
 			out: out{
 				output: "",
@@ -462,7 +462,7 @@ a
   - e
     - o
   - g`)),
-				optFns: []optFn{
+				optFns: []OptFn{
 					IndentTwoSpaces(),
 					BranchFormatIntermedialNode("+->", ":   "),
 					BranchFormatLastNode("+->", "    "),
@@ -479,6 +479,82 @@ a
 +-> e
 :   +-> o
 +-> g
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 26(tab spaces & multi root & output json)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g`)),
+				optFns: []OptFn{EncodeJSON()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+{"value":"a","children":[{"value":"i","children":[{"value":"u","children":[{"value":"k","children":null},{"value":"kk","children":null}]},{"value":"t","children":null}]},{"value":"e","children":[{"value":"o","children":null}]},{"value":"g","children":null}]}
+{"value":"a","children":[{"value":"i","children":[{"value":"u","children":[{"value":"k","children":null},{"value":"kk","children":null}]},{"value":"t","children":null}]},{"value":"e","children":[{"value":"o","children":null}]},{"value":"g","children":null}]}
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 27(indent 2spaces & output json)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+  - i
+    - u
+      - k
+      - kk
+    - t
+  - e
+    - o
+  - g`)),
+				optFns: []OptFn{IndentTwoSpaces(), EncodeJSON()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+{"value":"a","children":[{"value":"i","children":[{"value":"u","children":[{"value":"k","children":null},{"value":"kk","children":null}]},{"value":"t","children":null}]},{"value":"e","children":[{"value":"o","children":null}]},{"value":"g","children":null}]}
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 28(indent 4spaces & output json)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+    - i
+        - u
+            - k
+            - kk
+        - t
+    - e
+        - o
+    - g`)),
+				optFns: []OptFn{IndentFourSpaces(), EncodeJSON()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+{"value":"a","children":[{"value":"i","children":[{"value":"u","children":[{"value":"k","children":null},{"value":"kk","children":null}]},{"value":"t","children":null}]},{"value":"e","children":[{"value":"o","children":null}]},{"value":"g","children":null}]}
 `, "\n"),
 				err: nil,
 			},

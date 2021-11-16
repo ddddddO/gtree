@@ -14,6 +14,7 @@ func main() {
 	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
 		panic(err)
 	}
+	// Output:
 	// root
 	// ├── child 1
 	// │   └── child 2
@@ -22,9 +23,11 @@ func main() {
 	// └── child 5
 
 	primate := preparePrimate()
+	// default branch format.
 	if err := gtree.ExecuteProgrammably(os.Stdout, primate); err != nil {
 		panic(err)
 	}
+	// Output:
 	// Primate
 	// ├── Strepsirrhini
 	// │   ├── Lemuriformes
@@ -54,6 +57,143 @@ func main() {
 	//             └── Hominoidea
 	//                 ├── Hylobatidae
 	//                 └── Hominidae
+
+	// output json
+	if err := gtree.ExecuteProgrammably(os.Stdout, primate, gtree.EncodeJSON()); err != nil {
+		panic(err)
+	}
+	// Output(using 'jq'):
+	// {
+	// 	"value": "Primate",
+	// 	"children": [
+	// 	  {
+	// 		"value": "Strepsirrhini",
+	// 		"children": [
+	// 		  {
+	// 			"value": "Lemuriformes",
+	// 			"children": [
+	// 			  {
+	// 				"value": "Lemuroidea",
+	// 				"children": [
+	// 				  {
+	// 					"value": "Cheirogaleidae",
+	// 					"children": null
+	// 				  },
+	// 				  {
+	// 					"value": "Indriidae",
+	// 					"children": null
+	// 				  },
+	// 				  {
+	// 					"value": "Lemuridae",
+	// 					"children": null
+	// 				  },
+	// 				  {
+	// 					"value": "Lepilemuridae",
+	// 					"children": null
+	// 				  }
+	// 				]
+	// 			  },
+	// 			  {
+	// 				"value": "Daubentonioidea",
+	// 				"children": [
+	// 				  {
+	// 					"value": "Daubentoniidae",
+	// 					"children": null
+	// 				  }
+	// 				]
+	// 			  }
+	// 			]
+	// 		  },
+	// 		  {
+	// 			"value": "Lorisiformes",
+	// 			"children": [
+	// 			  {
+	// 				"value": "Galagidae",
+	// 				"children": null
+	// 			  },
+	// 			  {
+	// 				"value": "Lorisidae",
+	// 				"children": null
+	// 			  }
+	// 			]
+	// 		  }
+	// 		]
+	// 	  },
+	// 	  {
+	// 		"value": "Haplorrhini",
+	// 		"children": [
+	// 		  {
+	// 			"value": "Tarsiiformes",
+	// 			"children": [
+	// 			  {
+	// 				"value": "Tarsiidae",
+	// 				"children": null
+	// 			  }
+	// 			]
+	// 		  },
+	// 		  {
+	// 			"value": "Simiiformes",
+	// 			"children": [
+	// 			  {
+	// 				"value": "Platyrrhini",
+	// 				"children": [
+	// 				  {
+	// 					"value": "Ceboidea",
+	// 					"children": [
+	// 					  {
+	// 						"value": "Atelidae",
+	// 						"children": null
+	// 					  },
+	// 					  {
+	// 						"value": "Cebidae",
+	// 						"children": null
+	// 					  }
+	// 					]
+	// 				  },
+	// 				  {
+	// 					"value": "Pithecioidea",
+	// 					"children": [
+	// 					  {
+	// 						"value": "Pitheciidae",
+	// 						"children": null
+	// 					  }
+	// 					]
+	// 				  }
+	// 				]
+	// 			  },
+	// 			  {
+	// 				"value": "Catarrhini",
+	// 				"children": [
+	// 				  {
+	// 					"value": "Cercopithecoidea",
+	// 					"children": [
+	// 					  {
+	// 						"value": "Cercopithecidae",
+	// 						"children": null
+	// 					  }
+	// 					]
+	// 				  },
+	// 				  {
+	// 					"value": "Hominoidea",
+	// 					"children": [
+	// 					  {
+	// 						"value": "Hylobatidae",
+	// 						"children": null
+	// 					  },
+	// 					  {
+	// 						"value": "Hominidae",
+	// 						"children": null
+	// 					  }
+	// 					]
+	// 				  }
+	// 				]
+	// 			  }
+	// 			]
+	// 		  }
+	// 		]
+	// 	  }
+	// 	]
+	// }
 }
 
 func preparePrimate() *gtree.Node {

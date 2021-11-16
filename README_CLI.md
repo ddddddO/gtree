@@ -132,5 +132,50 @@ a
 └── g
 ```
 
+- output JSON
+
+```sh
+22:40:31 > cat testdata/sample5.md | gtree -fs -j | jq
+{
+  "value": "a",
+  "children": [
+    {
+      "value": "i",
+      "children": [
+        {
+          "value": "u",
+          "children": [
+            {
+              "value": "k",
+              "children": null
+            },
+            {
+              "value": "kk",
+              "children": null
+            }
+          ]
+        },
+        {
+          "value": "t",
+          "children": null
+        }
+      ]
+    },
+    {
+      "value": "e",
+      "children": [
+        {
+          "value": "o",
+          "children": null
+        }
+      ]
+    },
+    {
+      "value": "g",
+      "children": null
+    }
+  ]
+}
+```
 
 </details>

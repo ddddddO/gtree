@@ -10,7 +10,7 @@ func TestExecuteProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *Node
-		optFns  []optFn
+		optFns  []OptFn
 		want    string
 		wantErr error
 	}{
@@ -50,7 +50,7 @@ root
 		{
 			name: "case5(succeeded / branch format)",
 			root: prepareMultiNode(),
-			optFns: []optFn{
+			optFns: []OptFn{
 				BranchFormatIntermedialNode("+--", ":   "),
 				BranchFormatLastNode("+--", "    "),
 			},
@@ -64,6 +64,14 @@ root
 :           +-- child 6
 :               +-- child 7
 +-- child 8
+`, "\n"),
+		},
+		{
+			name:   "case6(succeeded / output json format)",
+			root:   prepareMultiNode(),
+			optFns: []OptFn{EncodeJSON()},
+			want: strings.TrimPrefix(`
+{"value":"root","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
 `, "\n"),
 		},
 	}
