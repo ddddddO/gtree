@@ -66,6 +66,14 @@ root
 +-- child 8
 `, "\n"),
 		},
+		{
+			name:   "case6(succeeded / output json format)",
+			root:   prepareMultiNode(),
+			optFns: []OptFn{EncodeJSON()},
+			want: strings.TrimPrefix(`
+{"value":"root","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
+`, "\n"),
+		},
 	}
 
 	for _, tt := range tests {
