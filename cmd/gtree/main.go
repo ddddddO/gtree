@@ -23,7 +23,7 @@ func main() {
 		mdFilepath            string
 		twoSpaces, fourSpaces bool
 		watching              bool
-		outJSON bool
+		outJSON               bool
 	)
 	flag.BoolVar(&showVersion, "v", false, "current gtree version")
 	flag.StringVar(&mdFilepath, "f", "", "markdown file path")
