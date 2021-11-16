@@ -36,7 +36,7 @@ type branchFormat struct {
 }
 
 // Execute outputs a tree to w with r as Markdown format input.
-func Execute(w io.Writer, r io.Reader, optFns ...optFn) error {
+func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	conf, err := newConfig(optFns...)
 	if err != nil {
 		return err

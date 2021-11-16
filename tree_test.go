@@ -12,7 +12,7 @@ import (
 
 type in struct {
 	input  io.Reader
-	optFns []optFn
+	optFns []OptFn
 }
 
 type out struct {
@@ -227,7 +227,7 @@ root
   - e
     - o
   - g`)),
-				optFns: []optFn{IndentTwoSpaces()},
+				optFns: []OptFn{IndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -257,7 +257,7 @@ a
     - e
         - o
     - g`)),
-				optFns: []optFn{IndentFourSpaces()},
+				optFns: []OptFn{IndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -442,7 +442,7 @@ a
 			name: "case 24(invalid options)",
 			in: in{
 				input:  prepareMarkdownFile(t),
-				optFns: []optFn{IndentTwoSpaces(), IndentFourSpaces()},
+				optFns: []OptFn{IndentTwoSpaces(), IndentFourSpaces()},
 			},
 			out: out{
 				output: "",
@@ -462,7 +462,7 @@ a
   - e
     - o
   - g`)),
-				optFns: []optFn{
+				optFns: []OptFn{
 					IndentTwoSpaces(),
 					BranchFormatIntermedialNode("+->", ":   "),
 					BranchFormatLastNode("+->", "    "),

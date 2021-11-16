@@ -23,7 +23,7 @@ type config struct {
 	encode encode
 }
 
-func newConfig(optFns ...optFn) (*config, error) {
+func newConfig(OptFns ...OptFn) (*config, error) {
 	c := &config{
 		formatLastNode: branchFormat{
 			directly:   "└──",
@@ -35,7 +35,7 @@ func newConfig(optFns ...optFn) (*config, error) {
 		},
 		encode: encodeDefault,
 	}
-	for _, opt := range optFns {
+	for _, opt := range OptFns {
 		if err := opt(c); err != nil {
 			return nil, err
 		}
@@ -47,11 +47,11 @@ func newConfig(optFns ...optFn) (*config, error) {
 	return c, nil
 }
 
-// optFn is functional options pattern
-type optFn func(*config) error
+// OptFn is functional options pattern
+type OptFn func(*config) error
 
 // IndentTwoSpaces returns function for two spaces indent input.
-func IndentTwoSpaces() optFn {
+func IndentTwoSpaces() OptFn {
 	return func(c *config) error {
 		c.isTwoSpaces = true
 		return nil
@@ -59,7 +59,7 @@ func IndentTwoSpaces() optFn {
 }
 
 // IndentFourSpaces returns function for four spaces indent input.
-func IndentFourSpaces() optFn {
+func IndentFourSpaces() OptFn {
 	return func(c *config) error {
 		c.isFourSpaces = true
 		return nil
@@ -67,7 +67,7 @@ func IndentFourSpaces() optFn {
 }
 
 // BranchFormatIntermedialNode returns function for branch format.
-func BranchFormatIntermedialNode(directly, indirectly string) optFn {
+func BranchFormatIntermedialNode(directly, indirectly string) OptFn {
 	return func(c *config) error {
 		c.formatIntermedialNode.directly = directly
 		c.formatIntermedialNode.indirectly = indirectly
@@ -76,7 +76,7 @@ func BranchFormatIntermedialNode(directly, indirectly string) optFn {
 }
 
 // BranchFormatLastNode returns function for branch format.
-func BranchFormatLastNode(directly, indirectly string) optFn {
+func BranchFormatLastNode(directly, indirectly string) OptFn {
 	return func(c *config) error {
 		c.formatLastNode.directly = directly
 		c.formatLastNode.indirectly = indirectly
@@ -85,7 +85,7 @@ func BranchFormatLastNode(directly, indirectly string) optFn {
 }
 
 // EncodeJSON returns function for output json format.
-func EncodeJSON() optFn {
+func EncodeJSON() OptFn {
 	return func(c *config) error {
 		c.encode = encodeJSON
 		return nil
