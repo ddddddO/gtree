@@ -17,22 +17,22 @@ type tree struct {
 	formatIntermedialNode branchFormat
 }
 
-func newTree(conf *config) treeer {
-	switch conf.encode {
+type branchFormat struct {
+	directly, indirectly string
+}
+
+func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat) treeer {
+	switch encode {
 	case encodeJSON:
 		return &jsonTree{
 			&tree{},
 		}
 	default:
 		return &tree{
-			formatLastNode:        conf.formatLastNode,
-			formatIntermedialNode: conf.formatIntermedialNode,
+			formatLastNode:        formatLastNode,
+			formatIntermedialNode: formatIntermedialNode,
 		}
 	}
-}
-
-type branchFormat struct {
-	directly, indirectly string
 }
 
 // Execute outputs a tree to w with r as Markdown format input.
@@ -55,8 +55,8 @@ func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	var (
 		stack            *stack
-		generateNodeFunc = decideGenerateFunc(conf)
-		tree             = newTree(conf)
+		generateNodeFunc = decideGenerateFunc(conf.isTwoSpaces, conf.isFourSpaces)
+		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode)
 	)
 
 	for scanner.Scan() {

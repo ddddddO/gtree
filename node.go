@@ -70,14 +70,14 @@ func (n *Node) validate() error {
 
 type generateFunc func(row string) *Node
 
-func decideGenerateFunc(conf *config) generateFunc {
-	if conf.isTwoSpaces {
-		return generateFuncIfTwoSpaces
+func decideGenerateFunc(twoSpaces, fourSpaces bool) generateFunc {
+	if twoSpaces {
+		return generateFuncTwoSpaces
 	}
-	if conf.isFourSpaces {
-		return generateFuncIfFourSpaces
+	if fourSpaces {
+		return generateFuncFourSpaces
 	}
-	return generateFuncIfTab
+	return generateFuncTab
 }
 
 // https://ja.wikipedia.org/wiki/ASCII
@@ -96,7 +96,7 @@ var (
 	nodeIdxMu sync.Mutex
 )
 
-func generateFuncIfTab(row string) *Node {
+func generateFuncTab(row string) *Node {
 	nodeIdxMu.Lock()
 	defer nodeIdxMu.Unlock()
 
@@ -141,7 +141,7 @@ func generateFuncIfTab(row string) *Node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func generateFuncIfTwoSpaces(row string) *Node {
+func generateFuncTwoSpaces(row string) *Node {
 	nodeIdxMu.Lock()
 	defer nodeIdxMu.Unlock()
 
@@ -182,7 +182,7 @@ func generateFuncIfTwoSpaces(row string) *Node {
 	return newNode(text, hierarchy, nodeIdx)
 }
 
-func generateFuncIfFourSpaces(row string) *Node {
+func generateFuncFourSpaces(row string) *Node {
 	nodeIdxMu.Lock()
 	defer nodeIdxMu.Unlock()
 

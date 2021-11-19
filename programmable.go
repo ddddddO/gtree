@@ -30,7 +30,7 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...OptFn) error {
 		return err
 	}
 
-	tree := newTree(conf)
+	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode)
 	tree.addRoot(root)
 	return tree.grow().expand(w)
 }
