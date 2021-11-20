@@ -24,6 +24,7 @@ func main() {
 		twoSpaces, fourSpaces bool
 		watching              bool
 		outJSON               bool
+		outYAML               bool
 	)
 	flag.BoolVar(&showVersion, "v", false, "current gtree version")
 	flag.StringVar(&mdFilepath, "f", "", "markdown file path")
@@ -31,6 +32,7 @@ func main() {
 	flag.BoolVar(&fourSpaces, "fs", false, "for indent four spaces")
 	flag.BoolVar(&watching, "w", false, "watching input file")
 	flag.BoolVar(&outJSON, "j", false, "output json format")
+	flag.BoolVar(&outYAML, "y", false, "output yaml format")
 	flag.Parse()
 
 	if showVersion {
@@ -38,12 +40,16 @@ func main() {
 		return
 	}
 	if twoSpaces && fourSpaces {
-		fmt.Errorf("%s", `choose either "ts" or "fs".`)
+		fmt.Printf("%s\n", `choose either "ts" or "fs".`)
+		os.Exit(1)
+	}
+	if outJSON && outYAML {
+		fmt.Printf("%s\n", `choose either "j" or "y".`)
 		os.Exit(1)
 	}
 
 	if mdFilepath == "" || mdFilepath == "-" {
-		if err := execute(os.Stdout, os.Stdin, twoSpaces, fourSpaces, outJSON); err != nil {
+		if err := execute(os.Stdout, os.Stdin, twoSpaces, fourSpaces, outJSON, outYAML); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -64,7 +70,7 @@ func main() {
 		}
 		defer file.Close()
 
-		if err := execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON); err != nil {
+		if err := execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON, outYAML); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -91,17 +97,20 @@ func main() {
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
 
-				_ = execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON)
+				_ = execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON, outYAML)
 			}
 		}()
 	}
 }
 
-func execute(out io.Writer, in io.Reader, twoSpaces, fourSpaces, outJSON bool) error {
+func execute(out io.Writer, in io.Reader, twoSpaces, fourSpaces, outJSON, outYAML bool) error {
 	var options []gtree.OptFn
 
 	if outJSON {
 		options = append(options, gtree.EncodeJSON())
+	}
+	if outYAML {
+		options = append(options, gtree.EncodeYAML())
 	}
 	if twoSpaces {
 		options = append(options, gtree.IndentTwoSpaces())

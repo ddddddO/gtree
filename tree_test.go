@@ -483,6 +483,7 @@ a
 				err: nil,
 			},
 		},
+		// json
 		{
 			name: "case 26(tab spaces & multi root & output json)",
 			in: in{
@@ -555,6 +556,152 @@ a
 			out: out{
 				output: strings.TrimPrefix(`
 {"value":"a","children":[{"value":"i","children":[{"value":"u","children":[{"value":"k","children":null},{"value":"kk","children":null}]},{"value":"t","children":null}]},{"value":"e","children":[{"value":"o","children":null}]},{"value":"g","children":null}]}
+`, "\n"),
+				err: nil,
+			},
+		},
+		// yaml
+		{
+			name: "case 26(tab spaces & multi root & output yaml)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g`)),
+				optFns: []OptFn{EncodeYAML()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+value: a
+children:
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
+      children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
+---
+value: a
+children:
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
+      children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 27(indent 2spaces & output json)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+  - i
+    - u
+      - k
+      - kk
+    - t
+  - e
+    - o
+  - g`)),
+				optFns: []OptFn{IndentTwoSpaces(), EncodeYAML()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+value: a
+children:
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
+      children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 28(indent 4spaces & output json)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+    - i
+        - u
+            - k
+            - kk
+        - t
+    - e
+        - o
+    - g`)),
+				optFns: []OptFn{IndentFourSpaces(), EncodeYAML()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+value: a
+children:
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
+      children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
 `, "\n"),
 				err: nil,
 			},

@@ -27,6 +27,10 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat) 
 		return &jsonTree{
 			&tree{},
 		}
+	case encodeYAML:
+		return &yamlTree{
+			&tree{},
+		}
 	default:
 		return &tree{
 			formatLastNode:        formatLastNode,

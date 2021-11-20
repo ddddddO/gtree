@@ -11,6 +11,7 @@ type encode int
 const (
 	encodeDefault encode = iota
 	encodeJSON
+	encodeYAML
 )
 
 type config struct {
@@ -88,6 +89,14 @@ func BranchFormatLastNode(directly, indirectly string) OptFn {
 func EncodeJSON() OptFn {
 	return func(c *config) error {
 		c.encode = encodeJSON
+		return nil
+	}
+}
+
+// EncodeYAML returns function for output yaml format.
+func EncodeYAML() OptFn {
+	return func(c *config) error {
+		c.encode = encodeYAML
 		return nil
 	}
 }
