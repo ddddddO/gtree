@@ -214,4 +214,8 @@ func main() {
 
 [link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L198)
 
+- You can also output TOML.
+
+[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L262)
+
 ---

@@ -12,6 +12,7 @@ const (
 	encodeDefault encode = iota
 	encodeJSON
 	encodeYAML
+	encodeTOML
 )
 
 type config struct {
@@ -97,6 +98,14 @@ func EncodeJSON() OptFn {
 func EncodeYAML() OptFn {
 	return func(c *config) error {
 		c.encode = encodeYAML
+		return nil
+	}
+}
+
+// EncodeTOML returns function for output toml format.
+func EncodeTOML() OptFn {
+	return func(c *config) error {
+		c.encode = encodeTOML
 		return nil
 	}
 }

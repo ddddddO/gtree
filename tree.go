@@ -31,6 +31,10 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat) 
 		return &yamlTree{
 			&tree{},
 		}
+	case encodeTOML:
+		return &tomlTree{
+			&tree{},
+		}
 	default:
 		return &tree{
 			formatLastNode:        formatLastNode,
