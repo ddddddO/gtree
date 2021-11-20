@@ -9,12 +9,12 @@ import (
 
 // Node is main struct for gtree.
 type Node struct {
-	Text      string `json:"value" yaml:"value"`
+	Text      string `json:"value" yaml:"value" toml:"value"`
 	hierarchy int
 	index     int
 	branch    string
 	parent    *Node
-	Children  []*Node `json:"children" yaml:"children"`
+	Children  []*Node `json:"children" yaml:"children" toml:"children"`
 }
 
 func newNode(text string, hierarchy, index int) *Node {

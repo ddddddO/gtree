@@ -562,7 +562,7 @@ a
 		},
 		// yaml
 		{
-			name: "case 26(tab spaces & multi root & output yaml)",
+			name: "case 29(tab spaces & multi root & output yaml)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -629,7 +629,7 @@ children:
 			},
 		},
 		{
-			name: "case 27(indent 2spaces & output json)",
+			name: "case 30(indent 2spaces & output json)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -668,7 +668,7 @@ children:
 			},
 		},
 		{
-			name: "case 28(indent 4spaces & output json)",
+			name: "case 31(indent 4spaces & output json)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -702,6 +702,183 @@ children:
     children: []
 - value: g
   children: []
+`, "\n"),
+				err: nil,
+			},
+		},
+		// toml
+		{
+			name: "case 32(tab spaces & multi root & output toml)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g`)),
+				optFns: []OptFn{EncodeTOML()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+value = 'a'
+[[children]]
+value = 'i'
+[[children.children]]
+value = 'u'
+[[children.children.children]]
+value = 'k'
+children = []
+[[children.children.children]]
+value = 'kk'
+children = []
+
+[[children.children]]
+value = 't'
+children = []
+
+[[children]]
+value = 'e'
+[[children.children]]
+value = 'o'
+children = []
+
+[[children]]
+value = 'g'
+children = []
+
+value = 'a'
+[[children]]
+value = 'i'
+[[children.children]]
+value = 'u'
+[[children.children.children]]
+value = 'k'
+children = []
+[[children.children.children]]
+value = 'kk'
+children = []
+
+[[children.children]]
+value = 't'
+children = []
+
+[[children]]
+value = 'e'
+[[children.children]]
+value = 'o'
+children = []
+
+[[children]]
+value = 'g'
+children = []
+
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 33(indent 2spaces & output toml)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+  - i
+    - u
+      - k
+      - kk
+    - t
+  - e
+    - o
+  - g`)),
+				optFns: []OptFn{IndentTwoSpaces(), EncodeTOML()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+value = 'a'
+[[children]]
+value = 'i'
+[[children.children]]
+value = 'u'
+[[children.children.children]]
+value = 'k'
+children = []
+[[children.children.children]]
+value = 'kk'
+children = []
+
+[[children.children]]
+value = 't'
+children = []
+
+[[children]]
+value = 'e'
+[[children.children]]
+value = 'o'
+children = []
+
+[[children]]
+value = 'g'
+children = []
+
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 34(indent 4spaces & output toml)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+    - i
+        - u
+            - k
+            - kk
+        - t
+    - e
+        - o
+    - g`)),
+				optFns: []OptFn{IndentFourSpaces(), EncodeTOML()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+value = 'a'
+[[children]]
+value = 'i'
+[[children.children]]
+value = 'u'
+[[children.children.children]]
+value = 'k'
+children = []
+[[children.children.children]]
+value = 'kk'
+children = []
+
+[[children.children]]
+value = 't'
+children = []
+
+[[children]]
+value = 'e'
+[[children.children]]
+value = 'o'
+children = []
+
+[[children]]
+value = 'g'
+children = []
+
 `, "\n"),
 				err: nil,
 			},

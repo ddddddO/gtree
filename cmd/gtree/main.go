@@ -25,6 +25,7 @@ func main() {
 		watching              bool
 		outJSON               bool
 		outYAML               bool
+		outTOML               bool
 	)
 	flag.BoolVar(&showVersion, "v", false, "current gtree version")
 	flag.StringVar(&mdFilepath, "f", "", "markdown file path")
@@ -33,23 +34,41 @@ func main() {
 	flag.BoolVar(&watching, "w", false, "watching input file")
 	flag.BoolVar(&outJSON, "j", false, "output json format")
 	flag.BoolVar(&outYAML, "y", false, "output yaml format")
+	flag.BoolVar(&outTOML, "t", false, "output toml format")
 	flag.Parse()
 
 	if showVersion {
 		fmt.Printf("gtree version %s / revision %s\n", Version, Revision)
 		return
 	}
+
 	if twoSpaces && fourSpaces {
 		fmt.Printf("%s\n", `choose either "ts" or "fs".`)
 		os.Exit(1)
 	}
-	if outJSON && outYAML {
-		fmt.Printf("%s\n", `choose either "j" or "y".`)
-		os.Exit(1)
+
+	{
+		// TODO: 簡素にできないか
+		if outJSON && outYAML && outTOML {
+			fmt.Printf("%s\n", `choose either "j" or "y" or "t".`)
+			os.Exit(1)
+		}
+		if outJSON && outYAML {
+			fmt.Printf("%s\n", `choose either "j" or "y".`)
+			os.Exit(1)
+		}
+		if outJSON && outTOML {
+			fmt.Printf("%s\n", `choose either "j" or "t".`)
+			os.Exit(1)
+		}
+		if outTOML && outYAML {
+			fmt.Printf("%s\n", `choose either "t" or "y".`)
+			os.Exit(1)
+		}
 	}
 
 	if mdFilepath == "" || mdFilepath == "-" {
-		if err := execute(os.Stdout, os.Stdin, twoSpaces, fourSpaces, outJSON, outYAML); err != nil {
+		if err := execute(os.Stdout, os.Stdin, twoSpaces, fourSpaces, outJSON, outYAML, outTOML); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -70,7 +89,7 @@ func main() {
 		}
 		defer file.Close()
 
-		if err := execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON, outYAML); err != nil {
+		if err := execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON, outYAML, outTOML); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -97,13 +116,13 @@ func main() {
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
 
-				_ = execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON, outYAML)
+				_ = execute(os.Stdout, file, twoSpaces, fourSpaces, outJSON, outYAML, outTOML)
 			}
 		}()
 	}
 }
 
-func execute(out io.Writer, in io.Reader, twoSpaces, fourSpaces, outJSON, outYAML bool) error {
+func execute(out io.Writer, in io.Reader, twoSpaces, fourSpaces, outJSON, outYAML, outTOML bool) error {
 	var options []gtree.OptFn
 
 	if outJSON {
@@ -111,6 +130,9 @@ func execute(out io.Writer, in io.Reader, twoSpaces, fourSpaces, outJSON, outYAM
 	}
 	if outYAML {
 		options = append(options, gtree.EncodeYAML())
+	}
+	if outTOML {
+		options = append(options, gtree.EncodeTOML())
 	}
 	if twoSpaces {
 		options = append(options, gtree.IndentTwoSpaces())

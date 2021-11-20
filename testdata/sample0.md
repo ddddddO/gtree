@@ -10,10 +10,11 @@
                 - Four spaces (required: `-fs`)
         - You can also output JSON (required: `-j`)
         - You can also output YAML (required: `-y`)
+        - You can also output TOML (required: `-t`)
     - Package(1)
         - You can customize branch format.
     - Package(2)
         - You can also generate a tree programmatically.
         - Markdown is irrelevant.
         - You can customize branch format.
-        - You can also output JSON or YAML.
+        - You can also output JSON or YAML or TOML.

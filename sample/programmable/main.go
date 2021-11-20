@@ -258,6 +258,98 @@ func main() {
 	// 		  children: []
 	// 		- value: Hominidae
 	// 		  children: []
+
+	// output toml
+	if err := gtree.ExecuteProgrammably(os.Stdout, primate, gtree.EncodeTOML()); err != nil {
+		panic(err)
+	}
+	// Output:
+	// value = 'Primate'
+	// [[children]]
+	// value = 'Strepsirrhini'
+	// [[children.children]]
+	// value = 'Lemuriformes'
+	// [[children.children.children]]
+	// value = 'Lemuroidea'
+	// [[children.children.children.children]]
+	// value = 'Cheirogaleidae'
+	// children = []
+	// [[children.children.children.children]]
+	// value = 'Indriidae'
+	// children = []
+	// [[children.children.children.children]]
+	// value = 'Lemuridae'
+	// children = []
+	// [[children.children.children.children]]
+	// value = 'Lepilemuridae'
+	// children = []
+	//
+	// [[children.children.children]]
+	// value = 'Daubentonioidea'
+	// [[children.children.children.children]]
+	// value = 'Daubentoniidae'
+	// children = []
+	//
+	//
+	// [[children.children]]
+	// value = 'Lorisiformes'
+	// [[children.children.children]]
+	// value = 'Galagidae'
+	// children = []
+	// [[children.children.children]]
+	// value = 'Lorisidae'
+	// children = []
+	//
+	//
+	// [[children]]
+	// value = 'Haplorrhini'
+	// [[children.children]]
+	// value = 'Tarsiiformes'
+	// [[children.children.children]]
+	// value = 'Tarsiidae'
+	// children = []
+	//
+	// [[children.children]]
+	// value = 'Simiiformes'
+	// [[children.children.children]]
+	// value = 'Platyrrhini'
+	// [[children.children.children.children]]
+	// value = 'Ceboidea'
+	// [[children.children.children.children.children]]
+	// value = 'Atelidae'
+	// children = []
+	// [[children.children.children.children.children]]
+	// value = 'Cebidae'
+	// children = []
+	//
+	// [[children.children.children.children]]
+	// value = 'Pithecioidea'
+	// [[children.children.children.children.children]]
+	// value = 'Pitheciidae'
+	// children = []
+	//
+	//
+	// [[children.children.children]]
+	// value = 'Catarrhini'
+	// [[children.children.children.children]]
+	// value = 'Cercopithecoidea'
+	// [[children.children.children.children.children]]
+	// value = 'Cercopithecidae'
+	// children = []
+	//
+	// [[children.children.children.children]]
+	// value = 'Hominoidea'
+	// [[children.children.children.children.children]]
+	// value = 'Hylobatidae'
+	// children = []
+	// [[children.children.children.children.children]]
+	// value = 'Hominidae'
+	// children = []
+	//
+	//
+	//
+	//
+	//
 }
 
 func preparePrimate() *gtree.Node {
