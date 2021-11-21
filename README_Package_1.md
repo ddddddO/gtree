@@ -1,7 +1,7 @@
 ## Package(1) / like CLI
 
 ### Installation
-```sh
+```console
 go get github.com/ddddddO/gtree/v6
 ```
 

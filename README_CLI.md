@@ -1,7 +1,7 @@
 ## CLI
 
 ### Installation
-```sh
+```console
 go get github.com/ddddddO/gtree/v6/cmd/gtree
 ```
 
@@ -10,7 +10,7 @@ or, download from [here](https://github.com/ddddddO/gtree/releases).
 
 ### Usage
 
-```sh
+```console
 20:25:28 > gtree -ts << EOS
 > - a
 >   - vvv
@@ -52,7 +52,7 @@ For 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
 
 - Usage other than representing a directory.
 
-```sh
+```console
 16:31:42 > cat testdata/sample2.md | gtree
 k8s_resources
 ├── (Tier3)
@@ -80,7 +80,7 @@ k8s_resources
 ---
 - Two spaces indent
 
-```sh
+```console
 01:15:25 > cat testdata/sample4.md | gtree -ts
 a
 ├── i
@@ -95,7 +95,7 @@ a
 
 - Four spaces indent
 
-```sh
+```console
 01:16:46 > cat testdata/sample5.md | gtree -fs
 a
 ├── i
@@ -110,7 +110,7 @@ a
 
 - Multiple roots
 
-```sh
+```console
 13:06:26 > cat testdata/sample6.md | gtree
 a
 ├── i
@@ -134,7 +134,7 @@ a
 
 - output JSON
 
-```sh
+```console
 22:40:31 > cat testdata/sample5.md | gtree -fs -j | jq
 {
   "value": "a",

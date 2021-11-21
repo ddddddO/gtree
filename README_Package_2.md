@@ -1,7 +1,7 @@
 ## Package(2) / generate a tree programmatically
 
 ### Installation
-```sh
+```console
 go get github.com/ddddddO/gtree/v6
 ```
 
