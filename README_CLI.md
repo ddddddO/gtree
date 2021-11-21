@@ -178,4 +178,60 @@ a
 }
 ```
 
+- output YAML
+
+```console
+13:15:59 > cat testdata/sample5.md | gtree -fs -y
+value: a
+children:
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
+      children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
+```
+
+- output TOML
+
+```console
+13:16:32 > cat testdata/sample5.md | gtree -fs -t
+value = 'a'
+[[children]]
+value = 'i'
+[[children.children]]
+value = 'u'
+[[children.children.children]]
+value = 'k'
+children = []
+[[children.children.children]]
+value = 'kk'
+children = []
+
+[[children.children]]
+value = 't'
+children = []
+
+[[children]]
+value = 'e'
+[[children.children]]
+value = 'o'
+children = []
+
+[[children]]
+value = 'g'
+children = []
+
+```
+
 </details>
