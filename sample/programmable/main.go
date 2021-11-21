@@ -205,59 +205,59 @@ func main() {
 	// - value: Strepsirrhini
 	//   children:
 	//   - value: Lemuriformes
-	// 	children:
-	// 	- value: Lemuroidea
-	// 	  children:
-	// 	  - value: Cheirogaleidae
-	// 		children: []
-	// 	  - value: Indriidae
-	// 		children: []
-	// 	  - value: Lemuridae
-	// 		children: []
-	// 	  - value: Lepilemuridae
-	// 		children: []
-	// 	- value: Daubentonioidea
-	// 	  children:
-	// 	  - value: Daubentoniidae
-	// 		children: []
+	//     children:
+	//     - value: Lemuroidea
+	//       children:
+	//       - value: Cheirogaleidae
+	//         children: []
+	//       - value: Indriidae
+	//         children: []
+	//       - value: Lemuridae
+	//         children: []
+	//       - value: Lepilemuridae
+	//         children: []
+	//     - value: Daubentonioidea
+	// 	     children:
+	//       - value: Daubentoniidae
+	//         children: []
 	//   - value: Lorisiformes
-	// 	children:
-	// 	- value: Galagidae
-	// 	  children: []
-	// 	- value: Lorisidae
-	// 	  children: []
+	//     children:
+	//     - value: Galagidae
+	//       children: []
+	//     - value: Lorisidae
+	//       children: []
 	// - value: Haplorrhini
 	//   children:
 	//   - value: Tarsiiformes
-	// 	children:
-	// 	- value: Tarsiidae
-	// 	  children: []
+	//     children:
+	//     - value: Tarsiidae
+	//       children: []
 	//   - value: Simiiformes
-	// 	children:
-	// 	- value: Platyrrhini
-	// 	  children:
-	// 	  - value: Ceboidea
-	// 		children:
-	// 		- value: Atelidae
-	// 		  children: []
-	// 		- value: Cebidae
-	// 		  children: []
-	// 	  - value: Pithecioidea
-	// 		children:
-	// 		- value: Pitheciidae
-	// 		  children: []
-	// 	- value: Catarrhini
-	// 	  children:
-	// 	  - value: Cercopithecoidea
-	// 		children:
-	// 		- value: Cercopithecidae
-	// 		  children: []
-	// 	  - value: Hominoidea
-	// 		children:
-	// 		- value: Hylobatidae
-	// 		  children: []
-	// 		- value: Hominidae
-	// 		  children: []
+	//     children:
+	//     - value: Platyrrhini
+	//       children:
+	//       - value: Ceboidea
+	//         children:
+	//         - value: Atelidae
+	//           children: []
+	//         - value: Cebidae
+	//           children: []
+	//       - value: Pithecioidea
+	//         children:
+	//         - value: Pitheciidae
+	//           children: []
+	//     - value: Catarrhini
+	//       children:
+	//       - value: Cercopithecoidea
+	//         children:
+	//         - value: Cercopithecidae
+	//           children: []
+	//       - value: Hominoidea
+	//         children:
+	//         - value: Hylobatidae
+	//           children: []
+	//         - value: Hominidae
+	//           children: []
 
 	// output toml
 	if err := gtree.ExecuteProgrammably(os.Stdout, primate, gtree.EncodeTOML()); err != nil {
