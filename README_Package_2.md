@@ -116,6 +116,19 @@ func preparePrimate() *gtree.Node {
 
 ```
 
+- You can also output JSON.
+
+[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L61)
+
+- You can also output YAML.
+
+[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L198)
+
+- You can also output TOML.
+
+[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L262)
+
+
 ---
 
 - The program below converts the result of `find` into a tree.
@@ -205,19 +218,3 @@ func main() {
 }
 
 ```
-
----
-
-- You can also output JSON.
-
-[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L61)
-
-- You can also output YAML.
-
-[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L198)
-
-- You can also output TOML.
-
-[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L262)
-
----
