@@ -2,7 +2,7 @@
 
 ### Installation
 ```console
-go get github.com/ddddddO/gtree/v6
+go get github.com/ddddddO/gtree
 ```
 
 ### Usage
@@ -14,7 +14,7 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/ddddddO/gtree/v6"
+	"github.com/ddddddO/gtree"
 )
 
 func main() {

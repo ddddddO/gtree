@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ddddddO/gtree/v6"
+	"github.com/ddddddO/gtree"
 )
 
 // cd github.com/ddddddO/gtree

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/ddddddO/gtree/v6"
+	"github.com/ddddddO/gtree"
 )
 
 func Example() {

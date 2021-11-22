@@ -1,4 +1,4 @@
-module github.com/ddddddO/gtree/v6
+module github.com/ddddddO/gtree
 
 go 1.17
 

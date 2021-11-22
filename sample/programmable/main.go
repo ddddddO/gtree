@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/ddddddO/gtree/v6"
+	"github.com/ddddddO/gtree"
 )
 
 func main() {

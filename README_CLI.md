@@ -2,7 +2,7 @@
 
 ### Installation
 ```console
-go get github.com/ddddddO/gtree/v6/cmd/gtree
+go get github.com/ddddddO/gtree/cmd/gtree
 ```
 
 or, download from [here](https://github.com/ddddddO/gtree/releases).
