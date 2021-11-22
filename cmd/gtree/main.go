@@ -42,29 +42,8 @@ func main() {
 		return
 	}
 
-	if twoSpaces && fourSpaces {
-		fmt.Printf("%s\n", `choose either "ts" or "fs".`)
+	if !isValidOptions(twoSpaces, fourSpaces, outJSON, outYAML, outTOML) {
 		os.Exit(1)
-	}
-
-	{
-		// TODO: 簡素にできないか
-		if outJSON && outYAML && outTOML {
-			fmt.Printf("%s\n", `choose either "j" or "y" or "t".`)
-			os.Exit(1)
-		}
-		if outJSON && outYAML {
-			fmt.Printf("%s\n", `choose either "j" or "y".`)
-			os.Exit(1)
-		}
-		if outJSON && outTOML {
-			fmt.Printf("%s\n", `choose either "j" or "t".`)
-			os.Exit(1)
-		}
-		if outTOML && outYAML {
-			fmt.Printf("%s\n", `choose either "t" or "y".`)
-			os.Exit(1)
-		}
 	}
 
 	if mdFilepath == "" || mdFilepath == "-" {
@@ -120,6 +99,32 @@ func main() {
 			}
 		}()
 	}
+}
+
+func isValidOptions(twoSpaces, fourSpaces, outJSON, outYAML, outTOML bool) bool {
+	if twoSpaces && fourSpaces {
+		fmt.Printf("%s\n", `choose either "ts" or "fs".`)
+		return false
+	}
+
+	if outJSON && outYAML && outTOML {
+		fmt.Printf("%s\n", `choose either "j" or "y" or "t".`)
+		return false
+	}
+	if outJSON && outYAML {
+		fmt.Printf("%s\n", `choose either "j" or "y".`)
+		return false
+	}
+	if outJSON && outTOML {
+		fmt.Printf("%s\n", `choose either "j" or "t".`)
+		return false
+	}
+	if outTOML && outYAML {
+		fmt.Printf("%s\n", `choose either "t" or "y".`)
+		return false
+	}
+
+	return true
 }
 
 func execute(out io.Writer, in io.Reader, twoSpaces, fourSpaces, outJSON, outYAML, outTOML bool) error {
