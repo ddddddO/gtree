@@ -125,20 +125,21 @@ func main() {
 func execute(out io.Writer, in io.Reader, twoSpaces, fourSpaces, outJSON, outYAML, outTOML bool) error {
 	var options []gtree.OptFn
 
-	if outJSON {
+	switch {
+	case outJSON:
 		options = append(options, gtree.EncodeJSON())
-	}
-	if outYAML {
+	case outYAML:
 		options = append(options, gtree.EncodeYAML())
-	}
-	if outTOML {
+	case outTOML:
 		options = append(options, gtree.EncodeTOML())
 	}
-	if twoSpaces {
+
+	switch {
+	case twoSpaces:
 		options = append(options, gtree.IndentTwoSpaces())
-	}
-	if fourSpaces {
+	case fourSpaces:
 		options = append(options, gtree.IndentFourSpaces())
 	}
+
 	return gtree.Execute(out, in, options...)
 }
