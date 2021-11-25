@@ -67,11 +67,69 @@ root
 `, "\n"),
 		},
 		{
-			name:   "case6(succeeded / output json format)",
+			name:   "case6(succeeded / output json)",
 			root:   prepareMultiNode(),
 			optFns: []OptFn{EncodeJSON()},
 			want: strings.TrimPrefix(`
 {"value":"root","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
+`, "\n"),
+		},
+		{
+			name:   "case7(succeeded / output yaml)",
+			root:   prepareMultiNode(),
+			optFns: []OptFn{EncodeYAML()},
+			want: strings.TrimPrefix(`
+value: root
+children:
+- value: child 1
+  children:
+  - value: child 2
+    children:
+    - value: child 3
+      children: []
+    - value: child 4
+      children:
+      - value: child 5
+        children: []
+      - value: child 6
+        children:
+        - value: child 7
+          children: []
+- value: child 8
+  children: []
+`, "\n"),
+		},
+		{
+			name:   "case8(succeeded / output toml)",
+			root:   prepareMultiNode(),
+			optFns: []OptFn{EncodeTOML()},
+			want: strings.TrimPrefix(`
+value = 'root'
+[[children]]
+value = 'child 1'
+[[children.children]]
+value = 'child 2'
+[[children.children.children]]
+value = 'child 3'
+children = []
+[[children.children.children]]
+value = 'child 4'
+[[children.children.children.children]]
+value = 'child 5'
+children = []
+[[children.children.children.children]]
+value = 'child 6'
+[[children.children.children.children.children]]
+value = 'child 7'
+children = []
+
+
+
+
+[[children]]
+value = 'child 8'
+children = []
+
 `, "\n"),
 		},
 	}
