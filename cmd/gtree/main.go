@@ -18,6 +18,12 @@ var (
 )
 
 func main() {
+	flag.Usage = func() {
+		usage := "This CLI outputs Tree.\n\nUsage of %s:\n"
+		fmt.Fprintf(flag.CommandLine.Output(), usage, os.Args[0])
+		flag.PrintDefaults()
+	}
+
 	var (
 		showVersion           bool
 		mdFilepath            string
