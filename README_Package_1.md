@@ -84,3 +84,8 @@ func main() {
 }
 
 ```
+
+- You can also output JSON/YAML/TOML.
+  - `gtree.EncodeJSON()`
+  - `gtree.EncodeTOML()`
+  - `gtree.EncodeYAML()`
