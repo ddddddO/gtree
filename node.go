@@ -70,14 +70,23 @@ func (n *Node) validate() error {
 
 type generateFunc func(row string) *Node
 
-func decideGenerateFunc(twoSpaces, fourSpaces bool) generateFunc {
-	if twoSpaces {
+type spaceType string
+
+const (
+	twoSpaces  spaceType = "TWOSPACES"
+	fourSpaces spaceType = "FOURSPACES"
+	tabSpaces  spaceType = "TAB"
+)
+
+func decideGenerateFunc(space spaceType) generateFunc {
+	switch space {
+	case twoSpaces:
 		return generateFuncTwoSpaces
-	}
-	if fourSpaces {
+	case fourSpaces:
 		return generateFuncFourSpaces
+	default:
+		return generateFuncTab
 	}
-	return generateFuncTab
 }
 
 // https://ja.wikipedia.org/wiki/ASCII

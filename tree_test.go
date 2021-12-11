@@ -439,17 +439,6 @@ a
 			},
 		},
 		{
-			name: "case 24(invalid options)",
-			in: in{
-				input:  prepareMarkdownFile(t),
-				optFns: []OptFn{IndentTwoSpaces(), IndentFourSpaces()},
-			},
-			out: out{
-				output: "",
-				err:    errInvalidOption,
-			},
-		},
-		{
 			name: "case 25(indent 2spaces and cutom branch format)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`

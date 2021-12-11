@@ -63,7 +63,7 @@ func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	var (
 		stack            *stack
-		generateNodeFunc = decideGenerateFunc(conf.isTwoSpaces, conf.isFourSpaces)
+		generateNodeFunc = decideGenerateFunc(conf.space)
 		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode)
 	)
 

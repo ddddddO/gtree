@@ -1,11 +1,5 @@
 package gtree
 
-import (
-	"github.com/pkg/errors"
-)
-
-var errInvalidOption = errors.New("invalid option")
-
 type encode int
 
 const (
@@ -16,12 +10,10 @@ const (
 )
 
 type config struct {
-	isTwoSpaces  bool
-	isFourSpaces bool
-
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
 
+	space  spaceType
 	encode encode
 }
 
@@ -35,6 +27,7 @@ func newConfig(OptFns ...OptFn) (*config, error) {
 			directly:   "├──",
 			indirectly: "│   ",
 		},
+		space:  tabSpaces,
 		encode: encodeDefault,
 	}
 	for _, opt := range OptFns {
@@ -43,9 +36,6 @@ func newConfig(OptFns ...OptFn) (*config, error) {
 		}
 	}
 
-	if c.isTwoSpaces && c.isFourSpaces {
-		return nil, errInvalidOption
-	}
 	return c, nil
 }
 
@@ -55,7 +45,7 @@ type OptFn func(*config) error
 // IndentTwoSpaces returns function for two spaces indent input.
 func IndentTwoSpaces() OptFn {
 	return func(c *config) error {
-		c.isTwoSpaces = true
+		c.space = twoSpaces
 		return nil
 	}
 }
@@ -63,7 +53,7 @@ func IndentTwoSpaces() OptFn {
 // IndentFourSpaces returns function for four spaces indent input.
 func IndentFourSpaces() OptFn {
 	return func(c *config) error {
-		c.isFourSpaces = true
+		c.space = fourSpaces
 		return nil
 	}
 }
