@@ -106,11 +106,6 @@ var (
 )
 
 func generateFuncTab(row string) *Node {
-	nodeIdxMu.Lock()
-	defer nodeIdxMu.Unlock()
-
-	nodeIdx++
-
 	var (
 		text      = ""
 		hierarchy = rootHierarchyNum
@@ -147,15 +142,15 @@ func generateFuncTab(row string) *Node {
 		hierarchy = 0
 	}
 
-	return newNode(text, hierarchy, nodeIdx)
-}
-
-func generateFuncTwoSpaces(row string) *Node {
 	nodeIdxMu.Lock()
 	defer nodeIdxMu.Unlock()
 
 	nodeIdx++
 
+	return newNode(text, hierarchy, nodeIdx)
+}
+
+func generateFuncTwoSpaces(row string) *Node {
 	var (
 		text      = ""
 		hierarchy = rootHierarchyNum
@@ -188,15 +183,15 @@ func generateFuncTwoSpaces(row string) *Node {
 		}
 	}
 
-	return newNode(text, hierarchy, nodeIdx)
-}
-
-func generateFuncFourSpaces(row string) *Node {
 	nodeIdxMu.Lock()
 	defer nodeIdxMu.Unlock()
 
 	nodeIdx++
 
+	return newNode(text, hierarchy, nodeIdx)
+}
+
+func generateFuncFourSpaces(row string) *Node {
 	var (
 		text      = ""
 		hierarchy = rootHierarchyNum
@@ -228,6 +223,11 @@ func generateFuncFourSpaces(row string) *Node {
 			isPrevChar = true
 		}
 	}
+
+	nodeIdxMu.Lock()
+	defer nodeIdxMu.Unlock()
+
+	nodeIdx++
 
 	return newNode(text, hierarchy, nodeIdx)
 }
