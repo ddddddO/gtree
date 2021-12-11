@@ -228,3 +228,7 @@ func main() {
 }
 
 ```
+
+- Convert `go list -deps ./...` to tree. (inspired by https://github.com/nikolaydubina/go-recipes#readme)
+
+[link](https://github.com/ddddddO/gtree/blob/master/sample/go-list_pipe_programmable-gtree/main.go)
