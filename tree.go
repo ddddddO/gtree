@@ -35,6 +35,10 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat) 
 		return &tomlTree{
 			&tree{},
 		}
+	case encodeMsgPack:
+		return &msgpkTree{
+			&tree{},
+		}
 	default:
 		return &tree{
 			formatLastNode:        formatLastNode,

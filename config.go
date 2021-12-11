@@ -7,6 +7,7 @@ const (
 	encodeJSON
 	encodeYAML
 	encodeTOML
+	encodeMsgPack
 )
 
 type config struct {
@@ -96,6 +97,14 @@ func EncodeYAML() OptFn {
 func EncodeTOML() OptFn {
 	return func(c *config) error {
 		c.encode = encodeTOML
+		return nil
+	}
+}
+
+// EncodeMsgPack returns function for output message pack format.
+func EncodeMsgPack() OptFn {
+	return func(c *config) error {
+		c.encode = encodeMsgPack
 		return nil
 	}
 }
