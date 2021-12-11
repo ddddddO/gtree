@@ -27,7 +27,6 @@ func main() {
 			}
 			node = node.Add(s)
 		}
-		node = root
 	}
 
 	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
