@@ -1,0 +1,272 @@
+package gtree
+
+import (
+	"bytes"
+	"strings"
+	"testing"
+)
+
+func BenchmarkExecute(b *testing.B) {
+	tests := []struct {
+		name string
+		in   in
+	}{
+		{
+			name: "xxx",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee
+	- dddd
+		- kkkkkkk
+			- lllll
+				- ffff
+				- LLL
+					- WWWWW
+						- ZZZZZ
+				- ppppp
+					- KKK
+						- 1111111
+							- AAAAAAA
+	- eee`))},
+		},
+	}
+
+	tt := tests[0]
+	t := testing.T{}
+
+	for n := 0; n < b.N; n++ {
+		out := &bytes.Buffer{}
+		err := Execute(out, tt.in.input, tt.in.optFns...)
+		if err != nil {
+			t.Fatal(err)
+		}
+	}
+}

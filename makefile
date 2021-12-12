@@ -8,3 +8,6 @@ cyclo:
 	gocyclo .
 
 all: fmt test cyclo
+
+bench:
+	go test -bench . -benchmem
