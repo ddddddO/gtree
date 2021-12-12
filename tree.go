@@ -3,6 +3,7 @@ package gtree
 import (
 	"bufio"
 	"io"
+	"sync"
 )
 
 type treeer interface {
@@ -13,6 +14,7 @@ type treeer interface {
 
 type tree struct {
 	roots                 []*Node
+	wg                    sync.WaitGroup
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
 }
@@ -37,6 +39,7 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat) 
 		}
 	default:
 		return &tree{
+			wg:                    sync.WaitGroup{},
 			formatLastNode:        formatLastNode,
 			formatIntermedialNode: formatIntermedialNode,
 		}
@@ -115,11 +118,15 @@ func (t *tree) grow() treeer {
 	for _, root := range t.roots {
 		t.determineBranch(root)
 	}
+
+	t.wg.Wait()
+
 	return t
 }
 
 func (t *tree) determineBranch(current *Node) {
-	t.assembleBranch(current)
+	t.wg.Add(1)
+	go t.assembleBranch(current)
 
 	for _, child := range current.Children {
 		t.determineBranch(child)
@@ -127,6 +134,8 @@ func (t *tree) determineBranch(current *Node) {
 }
 
 func (t *tree) assembleBranch(current *Node) {
+	defer t.wg.Done()
+
 	if current.isRoot() {
 		return
 	}
