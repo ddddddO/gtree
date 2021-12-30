@@ -10,14 +10,14 @@ import (
 // Node is main struct for gtree.
 type Node struct {
 	Text      string `json:"value" yaml:"value" toml:"value"`
-	hierarchy int
-	index     int
+	hierarchy uint
+	index     uint
 	branch    string
 	parent    *Node
 	Children  []*Node `json:"children" yaml:"children" toml:"children"`
 }
 
-func newNode(text string, hierarchy, index int) *Node {
+func newNode(text string, hierarchy, index uint) *Node {
 	return &Node{
 		Text:      text,
 		hierarchy: hierarchy,
@@ -97,11 +97,11 @@ const (
 )
 
 const (
-	rootHierarchyNum = 1
+	rootHierarchyNum = uint(1)
 )
 
 var (
-	nodeIdx   int
+	nodeIdx   uint
 	nodeIdxMu sync.Mutex
 )
 
@@ -156,7 +156,7 @@ func generateFuncTwoSpaces(row string) *Node {
 		hierarchy = rootHierarchyNum
 	)
 	var (
-		spaceCnt   = 0
+		spaceCnt   = uint(0)
 		isPrevChar = false
 	)
 
@@ -197,7 +197,7 @@ func generateFuncFourSpaces(row string) *Node {
 		hierarchy = rootHierarchyNum
 	)
 	var (
-		spaceCnt   = 0
+		spaceCnt   = uint(0)
 		isPrevChar = false
 	)
 

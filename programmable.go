@@ -36,7 +36,7 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...OptFn) error {
 }
 
 var (
-	programableNodeIdx   int
+	programableNodeIdx   uint
 	programableNodeIdxMu sync.Mutex
 )
 
