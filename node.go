@@ -142,11 +142,6 @@ func generateFuncTab(row string, idx uint) *Node {
 		hierarchy = 0
 	}
 
-	// nodeIdxMu.Lock()
-	// defer nodeIdxMu.Unlock()
-
-	// nodeIdx++
-
 	return newNode(text, hierarchy, idx)
 }
 
@@ -183,11 +178,6 @@ func generateFuncTwoSpaces(row string, idx uint) *Node {
 		}
 	}
 
-	// nodeIdxMu.Lock()
-	// defer nodeIdxMu.Unlock()
-
-	// nodeIdx++
-
 	return newNode(text, hierarchy, idx)
 }
 
@@ -223,11 +213,6 @@ func generateFuncFourSpaces(row string, idx uint) *Node {
 			isPrevChar = true
 		}
 	}
-
-	// nodeIdxMu.Lock()
-	// defer nodeIdxMu.Unlock()
-
-	// nodeIdx++
 
 	return newNode(text, hierarchy, idx)
 }
