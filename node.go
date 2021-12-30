@@ -68,7 +68,7 @@ func (n *Node) validate() error {
 	return nil
 }
 
-type generateFunc func(row string) *Node
+type generateFunc func(row string, idx uint) *Node
 
 type spaceType string
 
@@ -105,7 +105,7 @@ var (
 	nodeIdxMu sync.Mutex
 )
 
-func generateFuncTab(row string) *Node {
+func generateFuncTab(row string, idx uint) *Node {
 	var (
 		text      = ""
 		hierarchy = rootHierarchyNum
@@ -142,15 +142,15 @@ func generateFuncTab(row string) *Node {
 		hierarchy = 0
 	}
 
-	nodeIdxMu.Lock()
-	defer nodeIdxMu.Unlock()
+	// nodeIdxMu.Lock()
+	// defer nodeIdxMu.Unlock()
 
-	nodeIdx++
+	// nodeIdx++
 
-	return newNode(text, hierarchy, nodeIdx)
+	return newNode(text, hierarchy, idx)
 }
 
-func generateFuncTwoSpaces(row string) *Node {
+func generateFuncTwoSpaces(row string, idx uint) *Node {
 	var (
 		text      = ""
 		hierarchy = rootHierarchyNum
@@ -183,15 +183,15 @@ func generateFuncTwoSpaces(row string) *Node {
 		}
 	}
 
-	nodeIdxMu.Lock()
-	defer nodeIdxMu.Unlock()
+	// nodeIdxMu.Lock()
+	// defer nodeIdxMu.Unlock()
 
-	nodeIdx++
+	// nodeIdx++
 
-	return newNode(text, hierarchy, nodeIdx)
+	return newNode(text, hierarchy, idx)
 }
 
-func generateFuncFourSpaces(row string) *Node {
+func generateFuncFourSpaces(row string, idx uint) *Node {
 	var (
 		text      = ""
 		hierarchy = rootHierarchyNum
@@ -224,10 +224,10 @@ func generateFuncFourSpaces(row string) *Node {
 		}
 	}
 
-	nodeIdxMu.Lock()
-	defer nodeIdxMu.Unlock()
+	// nodeIdxMu.Lock()
+	// defer nodeIdxMu.Unlock()
 
-	nodeIdx++
+	// nodeIdx++
 
-	return newNode(text, hierarchy, nodeIdx)
+	return newNode(text, hierarchy, idx)
 }

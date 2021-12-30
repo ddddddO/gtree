@@ -63,19 +63,21 @@ func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	var (
 		stack            *stack
+		counter          = newCounter()
 		generateNodeFunc = decideGenerateFunc(conf.space)
 		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode)
 	)
 
 	for scanner.Scan() {
 		row := scanner.Text()
-		currentNode := generateNodeFunc(row)
+		currentNode := generateNodeFunc(row, counter.next())
 
 		if err := currentNode.validate(); err != nil {
 			return nil, err
 		}
 
 		if currentNode.isRoot() {
+			counter.reset()
 			tree.addRoot(currentNode)
 			stack = newStack()
 			stack.push(currentNode)
