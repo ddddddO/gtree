@@ -3,12 +3,14 @@ package gtree
 import (
 	"bufio"
 	"io"
+	"os"
 )
 
 type treeer interface {
 	addRoot(root *Node)
 	grow() treeer
 	expand(w io.Writer) error
+	generate() error
 }
 
 type tree struct {
@@ -56,6 +58,21 @@ func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 		return err
 	}
 	return tree.grow().expand(w)
+}
+
+// Generate generates directories.
+func Generate(r io.Reader, optFns ...OptFn) error {
+	conf, err := newConfig(optFns...)
+	if err != nil {
+		return err
+	}
+	seed := bufio.NewScanner(r)
+
+	tree, err := sprout(seed, conf)
+	if err != nil {
+		return err
+	}
+	return tree.grow().generate()
 }
 
 // Sprout：芽が出る
@@ -140,6 +157,7 @@ func (t *tree) assembleBranch(current *Node) {
 	for {
 		// rootまで遡った
 		if tmpParent.isRoot() {
+			t.assembleBranchFinally(current, tmpParent)
 			break
 		}
 
@@ -150,19 +168,27 @@ func (t *tree) assembleBranch(current *Node) {
 }
 
 func (t *tree) assembleBranchDirectly(current *Node) {
+	current.branch.filepath = current.Text
+
 	if current.isLastOfHierarchy() {
-		current.branch += t.formatLastNode.directly
+		current.branch.value += t.formatLastNode.directly
 	} else {
-		current.branch += t.formatIntermedialNode.directly
+		current.branch.value += t.formatIntermedialNode.directly
 	}
 }
 
 func (t *tree) assembleBranchIndirectly(current, parent *Node) {
+	current.branch.filepath = parent.Text + "/" + current.branch.filepath
+
 	if parent.isLastOfHierarchy() {
-		current.branch = t.formatLastNode.indirectly + current.branch
+		current.branch.value = t.formatLastNode.indirectly + current.branch.value
 	} else {
-		current.branch = t.formatIntermedialNode.indirectly + current.branch
+		current.branch.value = t.formatIntermedialNode.indirectly + current.branch.value
 	}
+}
+
+func (t *tree) assembleBranchFinally(current, root *Node) {
+	current.branch.filepath = "./" + root.Text + "/" + current.branch.filepath
 }
 
 func (t *tree) expand(w io.Writer) error {
@@ -188,4 +214,42 @@ func (*tree) write(w io.Writer, in string) error {
 		return err
 	}
 	return buf.Flush()
+}
+
+func (t *tree) generate() error {
+	for _, root := range t.roots {
+		if err := (*tree)(nil).generateDirectory(root); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+const permission = 0777
+
+func (*tree) generateDirectory(current *Node) error {
+	// only root node exists
+	if current.isRoot() && !current.hasChild() {
+		err := os.MkdirAll(current.branch.filepath, permission)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	for _, child := range current.Children {
+		if !child.hasChild() {
+			err := os.MkdirAll(child.branch.filepath, permission)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		err := (*tree)(nil).generateDirectory(child)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

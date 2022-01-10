@@ -12,9 +12,14 @@ type Node struct {
 	Text      string `json:"value" yaml:"value" toml:"value"`
 	hierarchy uint
 	index     uint
-	branch    string
+	branch    branch
 	parent    *Node
 	Children  []*Node `json:"children" yaml:"children" toml:"children"`
+}
+
+type branch struct {
+	value    string
+	filepath string
 }
 
 func newNode(text string, hierarchy, index uint) *Node {
@@ -50,7 +55,11 @@ func (n *Node) getBranch() string {
 	if n.isRoot() {
 		return fmt.Sprintf("%s\n", n.Text)
 	}
-	return fmt.Sprintf("%s %s\n", n.branch, n.Text)
+	return fmt.Sprintf("%s %s\n", n.branch.value, n.Text)
+}
+
+func (n *Node) hasChild() bool {
+	return len(n.Children) > 0
 }
 
 var (

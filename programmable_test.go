@@ -55,7 +55,7 @@ root
 				BranchFormatLastNode("+--", "    "),
 			},
 			want: strings.TrimPrefix(`
-root
+root1
 +-- child 1
 :   +-- child 2
 :       +-- child 3
@@ -71,7 +71,7 @@ root
 			root:   prepareMultiNode(),
 			optFns: []OptFn{EncodeJSON()},
 			want: strings.TrimPrefix(`
-{"value":"root","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
+{"value":"root1","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
 `, "\n"),
 		},
 		{
@@ -79,7 +79,7 @@ root
 			root:   prepareMultiNode(),
 			optFns: []OptFn{EncodeYAML()},
 			want: strings.TrimPrefix(`
-value: root
+value: root1
 children:
 - value: child 1
   children:
@@ -104,7 +104,7 @@ children:
 			root:   prepareMultiNode(),
 			optFns: []OptFn{EncodeTOML()},
 			want: strings.TrimPrefix(`
-value = 'root'
+value = 'root1'
 [[children]]
 value = 'child 1'
 [[children.children]]
@@ -147,7 +147,7 @@ children = []
 				t.Errorf("\ngot: \n%s\nwant: \n%s", got, tt.want)
 			}
 			if gotErr != tt.wantErr {
-				t.Errorf("\ngot: \n%v\nwant: \n%v", gotErr, tt.wantErr)
+				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
 			}
 		})
 	}
@@ -178,11 +178,51 @@ func prepareNilNode() *Node {
 }
 
 func prepareMultiNode() *Node {
-	var root *Node = NewRoot("root")
+	var root *Node = NewRoot("root1")
 	root.Add("child 1").Add("child 2").Add("child 3")
 	var child4 *Node = root.Add("child 1").Add("child 2").Add("child 4")
 	child4.Add("child 5")
 	child4.Add("child 6").Add("child 7")
 	root.Add("child 8")
 	return root
+}
+
+func TestGenerateProgrammably(t *testing.T) {
+	tests := []struct {
+		name    string
+		root    *Node
+		optFns  []OptFn
+		wantErr error
+	}{
+		{
+			name: "case1(succeeded)",
+			root: prepare(),
+		},
+		{
+			name:    "case2(not root)",
+			root:    prepareNotRoot(),
+			wantErr: ErrNotRoot,
+		},
+		{
+			name:    "case3(nil node)",
+			root:    prepareNilNode(),
+			wantErr: ErrNilNode,
+		},
+		{
+			name: "case4(succeeded)",
+			root: prepareMultiNode(),
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			gotErr := GenerateProgrammably(tt.root, tt.optFns...)
+			if gotErr != tt.wantErr {
+				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
+			}
+		})
+	}
 }

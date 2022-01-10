@@ -249,6 +249,45 @@ func execute(out io.Writer, in io.Reader, indentation indentation, outputFormat 
 }
 
 func actionGenerate(c *cli.Context) error {
-	log.Println("generate", c.Path("file"))
+	indentation, err := decideIndentation(c)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+
+	markdownPath := c.Path("file")
+	in := os.Stdin
+	if markdownPath != "" && markdownPath != "-" {
+		in, err = os.Open(markdownPath)
+		if err != nil {
+			return cli.Exit(err, 1)
+		}
+		defer in.Close()
+	}
+
+	// NOTE: この時に、無効なディレクトリ名がある判定もしたい
+	if c.Bool("dry-run") {
+		if err := execute(os.Stdout, in, indentation, outputFormatStdout); err != nil {
+			return cli.Exit(err, 1)
+		}
+		return nil
+	}
+
+	if err := generate(in, indentation); err != nil {
+		return cli.Exit(err, 1)
+	}
+
 	return nil
+}
+
+func generate(in io.Reader, indentation indentation) error {
+	var options []gtree.OptFn
+
+	switch indentation {
+	case indentationTS:
+		options = append(options, gtree.IndentTwoSpaces())
+	case indentationFS:
+		options = append(options, gtree.IndentFourSpaces())
+	}
+
+	return gtree.Generate(in, options...)
 }
