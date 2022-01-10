@@ -1,11 +1,13 @@
-## Package(2) / generate a tree programmatically
+# Package(2) / generate a tree programmatically
 
-### Installation
+## Installation
 ```console
 go get github.com/ddddddO/gtree
 ```
 
-### Usage
+## Usage
+
+## *OutputProgrammably*
 
 ```go
 package main
@@ -232,3 +234,57 @@ func main() {
 - Convert `go list -deps ./...` to tree. (inspired by https://github.com/nikolaydubina/go-recipes#readme)
 
 [link](https://github.com/ddddddO/gtree/blob/master/sample/go-list_pipe_programmable-gtree/main.go)
+
+## *MkdirProgrammably*
+
+```go
+package main
+
+import (
+	"os"
+
+	"github.com/ddddddO/gtree"
+)
+
+func main() {
+	primate := preparePrimate()
+	if err := gtree.MkdirProgrammably(primate); err != nil {
+		panic(err)
+	}
+	// Output(using Linux 'tree' command):
+	// 22:20:43 > tree Primate/
+	// Primate/
+	// ├── Haplorrhini
+	// │   ├── Simiiformes
+	// │   │   ├── Catarrhini
+	// │   │   │   ├── Cercopithecoidea
+	// │   │   │   │   └── Cercopithecidae
+	// │   │   │   └── Hominoidea
+	// │   │   │       ├── Hominidae
+	// │   │   │       └── Hylobatidae
+	// │   │   └── Platyrrhini
+	// │   │       ├── Ceboidea
+	// │   │       │   ├── Atelidae
+	// │   │       │   └── Cebidae
+	// │   │       └── Pithecioidea
+	// │   │           └── Pitheciidae
+	// │   └── Tarsiiformes
+	// │       └── Tarsiidae
+	// └── Strepsirrhini
+	// 	├── Lemuriformes
+	// 	│   ├── Daubentonioidea
+	// 	│   │   └── Daubentoniidae
+	// 	│   └── Lemuroidea
+	// 	│       ├── Cheirogaleidae
+	// 	│       ├── Indriidae
+	// 	│       ├── Lemuridae
+	// 	│       └── Lepilemuridae
+	// 	└── Lorisiformes
+	// 		├── Galagidae
+	// 		└── Lorisidae
+	//
+	// 28 directories, 0 files
+}
+```
+
+[details](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L354)

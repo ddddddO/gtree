@@ -1,11 +1,11 @@
-## Package(1) / like CLI
+# Package(1) / like CLI
 
-### Installation
+## Installation
 ```console
 go get github.com/ddddddO/gtree
 ```
 
-### Usage
+## Usage
 
 ```go
 package main
