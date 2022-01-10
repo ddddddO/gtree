@@ -23,7 +23,7 @@ func main() {
 		&cli.PathFlag{
 			Name:    "file",
 			Aliases: []string{"f"},
-			Usage:   "Input Markdown file path.",
+			Usage:   "Markdown file path.",
 		},
 		&cli.BoolFlag{
 			Name:    "two-spaces",
@@ -56,7 +56,7 @@ func main() {
 		&cli.BoolFlag{
 			Name:    "watch",
 			Aliases: []string{"w"},
-			Usage:   "Watching Markdown file.",
+			Usage:   "Watching markdown file.",
 		},
 	}
 
@@ -70,19 +70,19 @@ func main() {
 
 	app := &cli.App{
 		Name:  "gtree",
-		Usage: "This CLI outputs tree or mkdirs directories.",
+		Usage: "This CLI outputs tree or makes directories from markdown.",
 		Commands: []*cli.Command{
 			{
 				Name:    "output",
 				Aliases: []string{"o", "out"},
-				Usage:   "Output tree, stdout or yaml or toml or json. Default stdout.",
+				Usage:   "Output tree from markdown. Output format is stdout or yaml or toml or json. Default stdout.",
 				Flags:   append(commonFlags, outputFlags...),
 				Action:  actionOutput,
 			},
 			{
 				Name:    "mkdir",
 				Aliases: []string{"m"},
-				Usage:   "Make directories. It is possible to dry run.",
+				Usage:   "Make directories from markdown. It is possible to dry run.",
 				Flags:   append(commonFlags, mkdirFlags...),
 				Action:  actionMkdir,
 			},
