@@ -2,7 +2,7 @@ fmt:
 	go fmt ./...
 
 test:
-	rm -rf ./root/ ./root1/
+	rm -rf ./root/ ./root1/ ./root2/
 	go clean -testcache
 	go test ./... -race -v
 

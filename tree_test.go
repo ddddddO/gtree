@@ -12,8 +12,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-// TODO: Mkdir test追加
-
 type in struct {
 	input  io.Reader
 	optFns []OptFn
@@ -558,4 +556,39 @@ func prepareMarkdownFile(t *testing.T) *os.File {
 		t.Fatal(err)
 	}
 	return file
+}
+
+func TestMkdir(t *testing.T) {
+	tests := []struct {
+		name    string
+		in      in
+		wantErr error
+	}{
+		{
+			name: "case 1",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root2
+	- b
+	- bb
+		- lll
+	-ff`)),
+			},
+			wantErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			gotErr := Mkdir(tt.in.input, tt.in.optFns...)
+			if gotErr != nil {
+				if gotErr.Error() != tt.wantErr.Error() {
+					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
+				}
+			}
+		})
+	}
 }

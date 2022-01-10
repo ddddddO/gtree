@@ -64,7 +64,7 @@ func main() {
 		&cli.BoolFlag{
 			Name:    "dry-run",
 			Aliases: []string{"d", "dr"},
-			Usage:   "Dry run.",
+			Usage:   "Dry run.", // TODO: なにをしてくれるのかと、出力結果と生成するディレクトリは必ずしも順番が同じではないことを書く
 		},
 	}
 

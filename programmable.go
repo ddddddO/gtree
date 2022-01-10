@@ -3,6 +3,7 @@ package gtree
 
 import (
 	"io"
+	"os"
 
 	"github.com/pkg/errors"
 )
@@ -60,6 +61,10 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 	tree.addRoot(root)
 	if err := tree.grow(); err != nil {
 		return err
+	}
+
+	if conf.dryrun {
+		return tree.expand(os.Stdout)
 	}
 
 	return tree.mkdir()
