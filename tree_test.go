@@ -12,6 +12,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+// TODO: Mkdir test追加
+
 type in struct {
 	input  io.Reader
 	optFns []OptFn
@@ -22,7 +24,7 @@ type out struct {
 	err    error
 }
 
-func TestExecute(t *testing.T) {
+func TestOutput(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -389,7 +391,7 @@ a
 			// TODO: inputのパターンが3つ(tab/ts/fs)と実行時のモードが3つで、それぞれの正常系(3つ)を上でしてるから、このパターン含めると、
 			//       3*3-3=6パターンのケースが必要
 			//       そのため、case 17 ~ case 21を予約
-			name: "case 16(incorrect input format(input 4spaces indent / execute tab mode))",
+			name: "case 16(incorrect input format(input 4spaces indent / tab mode))",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -530,7 +532,7 @@ a
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.optFns...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {

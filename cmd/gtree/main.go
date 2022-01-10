@@ -60,7 +60,7 @@ func main() {
 		},
 	}
 
-	generateFlags := []cli.Flag{
+	mkdirFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:    "dry-run",
 			Aliases: []string{"d", "dr"},
@@ -70,7 +70,7 @@ func main() {
 
 	app := &cli.App{
 		Name:  "gtree",
-		Usage: "This CLI outputs tree or generates directories.",
+		Usage: "This CLI outputs tree or mkdirs directories.",
 		Commands: []*cli.Command{
 			{
 				Name:    "output",
@@ -80,11 +80,11 @@ func main() {
 				Action:  actionOutput,
 			},
 			{
-				Name:    "generate",
-				Aliases: []string{"g", "gen"},
-				Usage:   "Generate directories. It is possible to dry run.",
-				Flags:   append(commonFlags, generateFlags...),
-				Action:  actionGenerate,
+				Name:    "mkdir",
+				Aliases: []string{"m"},
+				Usage:   "Make directories. It is possible to dry run.",
+				Flags:   append(commonFlags, mkdirFlags...),
+				Action:  actionMkdir,
 			},
 			{
 				Name:    "version",
@@ -118,7 +118,7 @@ func actionOutput(c *cli.Context) error {
 
 	markdownPath := c.Path("file")
 	if markdownPath == "" || markdownPath == "-" {
-		if err := execute(os.Stdout, os.Stdin, indentation, outputFormat, notDryrun); err != nil {
+		if err := output(os.Stdout, os.Stdin, indentation, outputFormat, notDryrun); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -131,7 +131,7 @@ func actionOutput(c *cli.Context) error {
 		}
 		defer file.Close()
 
-		if err := execute(os.Stdout, file, indentation, outputFormat, notDryrun); err != nil {
+		if err := output(os.Stdout, file, indentation, outputFormat, notDryrun); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -160,7 +160,7 @@ func actionOutput(c *cli.Context) error {
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
 
-				_ = execute(os.Stdout, file, indentation, outputFormat, notDryrun)
+				_ = output(os.Stdout, file, indentation, outputFormat, notDryrun)
 			}
 		}()
 	}
@@ -228,7 +228,7 @@ func decideOutputFormat(c *cli.Context) (outputFormat, error) {
 	return outputFormat, nil
 }
 
-func execute(out io.Writer, in io.Reader, indentation indentation, outputFormat outputFormat, dryrun bool) error {
+func output(out io.Writer, in io.Reader, indentation indentation, outputFormat outputFormat, dryrun bool) error {
 	var options []gtree.OptFn
 
 	switch indentation {
@@ -251,10 +251,10 @@ func execute(out io.Writer, in io.Reader, indentation indentation, outputFormat 
 		options = append(options, gtree.WithDryRun())
 	}
 
-	return gtree.Execute(out, in, options...)
+	return gtree.Output(out, in, options...)
 }
 
-func actionGenerate(c *cli.Context) error {
+func actionMkdir(c *cli.Context) error {
 	indentation, err := decideIndentation(c)
 	if err != nil {
 		return cli.Exit(err, 1)
@@ -273,20 +273,20 @@ func actionGenerate(c *cli.Context) error {
 	// NOTE: この時に、無効なディレクトリ名がある判定もしたい
 	if c.Bool("dry-run") {
 		dryrun := true
-		if err := execute(os.Stdout, in, indentation, outputFormatStdout, dryrun); err != nil {
+		if err := output(os.Stdout, in, indentation, outputFormatStdout, dryrun); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
 	}
 
-	if err := generate(in, indentation); err != nil {
+	if err := mkdir(in, indentation); err != nil {
 		return cli.Exit(err, 1)
 	}
 
 	return nil
 }
 
-func generate(in io.Reader, indentation indentation) error {
+func mkdir(in io.Reader, indentation indentation) error {
 	var options []gtree.OptFn
 
 	switch indentation {
@@ -296,5 +296,5 @@ func generate(in io.Reader, indentation indentation) error {
 		options = append(options, gtree.IndentFourSpaces())
 	}
 
-	return gtree.Generate(in, options...)
+	return gtree.Mkdir(in, options...)
 }

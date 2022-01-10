@@ -33,7 +33,7 @@ func main() {
 						- 1111111
 							- AAAAAAA
 	- eee`))
-	if err := gtree.Execute(os.Stdout, r1); err != nil {
+	if err := gtree.Output(os.Stdout, r1); err != nil {
 		panic(err)
 	}
 	// Output:
@@ -64,7 +64,7 @@ func main() {
   - g`))
 	// When indentation is four spaces, use IndentFourSpaces func instead of IndentTwoSpaces func.
 	// and, you can customize branch format.
-	if err := gtree.Execute(os.Stdout, r2,
+	if err := gtree.Output(os.Stdout, r2,
 		gtree.IndentTwoSpaces(),
 		gtree.BranchFormatIntermedialNode("+->", ":   "),
 		gtree.BranchFormatLastNode("+->", "    "),

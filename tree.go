@@ -11,7 +11,7 @@ type treeer interface {
 	addRoot(root *Node)
 	grow() error
 	expand(w io.Writer) error
-	generate() error
+	mkdir() error
 }
 
 type tree struct {
@@ -48,8 +48,8 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, 
 	}
 }
 
-// Execute outputs a tree to w with r as Markdown format input.
-func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
+// Output outputs a tree to w with r as Markdown format input.
+func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	conf, err := newConfig(optFns...)
 	if err != nil {
 		return err
@@ -66,8 +66,8 @@ func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	return tree.expand(w)
 }
 
-// Generate generates directories.
-func Generate(r io.Reader, optFns ...OptFn) error {
+// Mkdir makes directories.
+func Mkdir(r io.Reader, optFns ...OptFn) error {
 	conf, err := newConfig(optFns...)
 	if err != nil {
 		return err
@@ -81,7 +81,7 @@ func Generate(r io.Reader, optFns ...OptFn) error {
 	if err := tree.grow(); err != nil {
 		return err
 	}
-	return tree.generate()
+	return tree.mkdir()
 }
 
 // Sprout：芽が出る
@@ -240,7 +240,7 @@ func (*tree) write(w io.Writer, in string) error {
 	return buf.Flush()
 }
 
-func (t *tree) generate() error {
+func (t *tree) mkdir() error {
 	for _, root := range t.roots {
 		if err := (*tree)(nil).generateDirectory(root); err != nil {
 			return err

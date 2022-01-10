@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestExecute_encodeYAML(t *testing.T) {
+func TestOutput_encodeYAML(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -165,7 +165,7 @@ children:
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.optFns...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {

@@ -24,7 +24,7 @@ func main() {
 	child4.Add("child 6").Add("child 7")
 	root.Add("child 8")
 	// you can customize branch format.
-	if err := gtree.ExecuteProgrammably(os.Stdout, root,
+	if err := gtree.OutputProgrammably(os.Stdout, root,
 		gtree.BranchFormatIntermedialNode("+--", ":   "),
 		gtree.BranchFormatLastNode("+--", "    "),
 	); err != nil {
@@ -43,7 +43,7 @@ func main() {
 
 	primate := preparePrimate()
 	// default branch format.
-	if err := gtree.ExecuteProgrammably(os.Stdout, primate); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate); err != nil {
 		panic(err)
 	}
 	// Output:
@@ -169,7 +169,7 @@ func main() {
 		node = root
 	}
 
-	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
 		panic(err)
 	}
 	// Output:

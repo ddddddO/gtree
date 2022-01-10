@@ -8,7 +8,7 @@ import (
 
 // TODO: dry run mode のテスト追加
 
-func TestExecuteProgrammably(t *testing.T) {
+func TestOutputProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *Node
@@ -142,7 +142,7 @@ children = []
 			t.Parallel()
 
 			buf := &bytes.Buffer{}
-			gotErr := ExecuteProgrammably(buf, tt.root, tt.optFns...)
+			gotErr := OutputProgrammably(buf, tt.root, tt.optFns...)
 			got := buf.String()
 
 			if got != tt.want {
@@ -189,7 +189,7 @@ func prepareMultiNode() *Node {
 	return root
 }
 
-func TestGenerateProgrammably(t *testing.T) {
+func TestMkdirProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *Node
@@ -221,7 +221,7 @@ func TestGenerateProgrammably(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := GenerateProgrammably(tt.root, tt.optFns...)
+			gotErr := MkdirProgrammably(tt.root, tt.optFns...)
 			if gotErr != tt.wantErr {
 				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
 			}
