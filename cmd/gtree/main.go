@@ -104,6 +104,8 @@ func main() {
 }
 
 func actionOutput(c *cli.Context) error {
+	const notDryrun = false
+
 	indentation, err := decideIndentation(c)
 	if err != nil {
 		return cli.Exit(err, 1)
@@ -116,7 +118,7 @@ func actionOutput(c *cli.Context) error {
 
 	markdownPath := c.Path("file")
 	if markdownPath == "" || markdownPath == "-" {
-		if err := execute(os.Stdout, os.Stdin, indentation, outputFormat); err != nil {
+		if err := execute(os.Stdout, os.Stdin, indentation, outputFormat, notDryrun); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -129,7 +131,7 @@ func actionOutput(c *cli.Context) error {
 		}
 		defer file.Close()
 
-		if err := execute(os.Stdout, file, indentation, outputFormat); err != nil {
+		if err := execute(os.Stdout, file, indentation, outputFormat, notDryrun); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -158,7 +160,7 @@ func actionOutput(c *cli.Context) error {
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
 
-				_ = execute(os.Stdout, file, indentation, outputFormat)
+				_ = execute(os.Stdout, file, indentation, outputFormat, notDryrun)
 			}
 		}()
 	}
@@ -226,7 +228,7 @@ func decideOutputFormat(c *cli.Context) (outputFormat, error) {
 	return outputFormat, nil
 }
 
-func execute(out io.Writer, in io.Reader, indentation indentation, outputFormat outputFormat) error {
+func execute(out io.Writer, in io.Reader, indentation indentation, outputFormat outputFormat, dryrun bool) error {
 	var options []gtree.OptFn
 
 	switch indentation {
@@ -243,6 +245,10 @@ func execute(out io.Writer, in io.Reader, indentation indentation, outputFormat 
 		options = append(options, gtree.EncodeYAML())
 	case outputFormatTOML:
 		options = append(options, gtree.EncodeTOML())
+	}
+
+	if dryrun {
+		options = append(options, gtree.WithDryRun())
 	}
 
 	return gtree.Execute(out, in, options...)
@@ -266,7 +272,8 @@ func actionGenerate(c *cli.Context) error {
 
 	// NOTE: この時に、無効なディレクトリ名がある判定もしたい
 	if c.Bool("dry-run") {
-		if err := execute(os.Stdout, in, indentation, outputFormatStdout); err != nil {
+		dryrun := true
+		if err := execute(os.Stdout, in, indentation, outputFormatStdout, dryrun); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil

@@ -31,9 +31,12 @@ func ExecuteProgrammably(w io.Writer, root *Node, optFns ...OptFn) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode)
+	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun)
 	tree.addRoot(root)
-	return tree.grow().expand(w)
+	if err := tree.grow(); err != nil {
+		return err
+	}
+	return tree.expand(w)
 }
 
 // GenerateProgrammably generates directories.
@@ -53,9 +56,13 @@ func GenerateProgrammably(root *Node, optFns ...OptFn) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode)
+	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun)
 	tree.addRoot(root)
-	return tree.grow().generate()
+	if err := tree.grow(); err != nil {
+		return err
+	}
+
+	return tree.generate()
 }
 
 var (
@@ -71,7 +78,7 @@ func NewRoot(text string) *Node {
 // If a node with the same text already exists in the same hierarchy of the tree, that node will be returned.
 func (parent *Node) Add(text string) *Node {
 	for _, child := range parent.Children {
-		if text == child.Text {
+		if text == child.Name {
 			return child
 		}
 	}

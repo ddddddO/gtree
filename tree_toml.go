@@ -10,11 +10,6 @@ type tomlTree struct {
 	*tree
 }
 
-// noop
-func (tt *tomlTree) grow() treeer {
-	return tt
-}
-
 func (tt *tomlTree) expand(w io.Writer) error {
 	enc := toml.NewEncoder(w)
 

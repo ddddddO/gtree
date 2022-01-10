@@ -15,6 +15,7 @@ type config struct {
 
 	space  spaceType
 	encode encode
+	dryrun bool
 }
 
 func newConfig(OptFns ...OptFn) (*config, error) {
@@ -96,6 +97,13 @@ func EncodeYAML() OptFn {
 func EncodeTOML() OptFn {
 	return func(c *config) error {
 		c.encode = encodeTOML
+		return nil
+	}
+}
+
+func WithDryRun() OptFn {
+	return func(c *config) error {
+		c.dryrun = true
 		return nil
 	}
 }

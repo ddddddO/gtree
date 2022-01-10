@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+// TODO: dry run mode のテスト追加
+
 func TestExecuteProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string

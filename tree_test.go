@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/pkg/errors"
 )
 
 type in struct {
@@ -472,6 +474,54 @@ a
 				err: nil,
 			},
 		},
+		{
+			name: "case 26(dry run/no error)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b`)),
+				optFns: []OptFn{
+					WithDryRun(),
+				},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+a
+└── b
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 27(dry run/invalid node name)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- /`)),
+				optFns: []OptFn{
+					WithDryRun(),
+				},
+			},
+			out: out{
+				output: "",
+				err:    errors.New("invalid node name: /"),
+			},
+		},
+		{
+			name: "case 28(dry run/invalid node name)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b/c`)),
+				optFns: []OptFn{
+					WithDryRun(),
+				},
+			},
+			out: out{
+				output: "",
+				err:    errors.New("invalid node name: b/c"),
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -486,8 +536,10 @@ a
 			if gotOutput != tt.out.output {
 				t.Errorf("\ngot: \n%s\nwant: \n%s", gotOutput, tt.out.output)
 			}
-			if gotErr != tt.out.err {
-				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
+			if gotErr != nil {
+				if gotErr.Error() != tt.out.err.Error() {
+					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
+				}
 			}
 
 			if file, ok := tt.in.input.(*os.File); ok {

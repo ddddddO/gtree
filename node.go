@@ -2,6 +2,8 @@ package gtree
 
 import (
 	"fmt"
+	"io/fs"
+	"strings"
 	"sync"
 
 	"github.com/pkg/errors"
@@ -9,7 +11,7 @@ import (
 
 // Node is main struct for gtree.
 type Node struct {
-	Text      string `json:"value" yaml:"value" toml:"value"`
+	Name      string `json:"value" yaml:"value" toml:"value"`
 	hierarchy uint
 	index     uint
 	branch    branch
@@ -18,13 +20,13 @@ type Node struct {
 }
 
 type branch struct {
-	value    string
-	filepath string
+	value string
+	path  string
 }
 
-func newNode(text string, hierarchy, index uint) *Node {
+func newNode(name string, hierarchy, index uint) *Node {
 	return &Node{
-		Text:      text,
+		Name:      name,
 		hierarchy: hierarchy,
 		index:     index,
 	}
@@ -53,9 +55,9 @@ func (n *Node) isRoot() bool {
 
 func (n *Node) getBranch() string {
 	if n.isRoot() {
-		return fmt.Sprintf("%s\n", n.Text)
+		return fmt.Sprintf("%s\n", n.Name)
 	}
-	return fmt.Sprintf("%s %s\n", n.branch.value, n.Text)
+	return fmt.Sprintf("%s %s\n", n.branch.value, n.Name)
 }
 
 func (n *Node) hasChild() bool {
@@ -68,12 +70,25 @@ var (
 )
 
 func (n *Node) validate() error {
-	if len(n.Text) == 0 {
+	if len(n.Name) == 0 {
 		return errEmptyText
 	}
 	if n.hierarchy == 0 {
 		return errIncorrectFormat
 	}
+	return nil
+}
+
+func (n *Node) validatePath() error {
+	// TODO: ディレクトリ名に含めてはまずそうなものをここで検知する
+	if strings.Contains(n.Name, "/") {
+		return errors.Errorf("invalid node name: %s", n.Name)
+	}
+
+	if !fs.ValidPath(n.branch.path) {
+		return errors.Errorf("invalid path: %s", n.branch.path)
+	}
+
 	return nil
 }
 
