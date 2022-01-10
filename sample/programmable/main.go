@@ -350,6 +350,44 @@ func main() {
 	//
 	//
 	//
+
+	// make directories.
+	if err := gtree.MkdirProgrammably(primate); err != nil {
+		panic(err)
+	}
+	// Output(using Linux 'tree' command):
+	// 22:20:43 > tree Primate/
+	// Primate/
+	// ├── Haplorrhini
+	// │   ├── Simiiformes
+	// │   │   ├── Catarrhini
+	// │   │   │   ├── Cercopithecoidea
+	// │   │   │   │   └── Cercopithecidae
+	// │   │   │   └── Hominoidea
+	// │   │   │       ├── Hominidae
+	// │   │   │       └── Hylobatidae
+	// │   │   └── Platyrrhini
+	// │   │       ├── Ceboidea
+	// │   │       │   ├── Atelidae
+	// │   │       │   └── Cebidae
+	// │   │       └── Pithecioidea
+	// │   │           └── Pitheciidae
+	// │   └── Tarsiiformes
+	// │       └── Tarsiidae
+	// └── Strepsirrhini
+	// 	├── Lemuriformes
+	// 	│   ├── Daubentonioidea
+	// 	│   │   └── Daubentoniidae
+	// 	│   └── Lemuroidea
+	// 	│       ├── Cheirogaleidae
+	// 	│       ├── Indriidae
+	// 	│       ├── Lemuridae
+	// 	│       └── Lepilemuridae
+	// 	└── Lorisiformes
+	// 		├── Galagidae
+	// 		└── Lorisidae
+	//
+	// 28 directories, 0 files
 }
 
 func preparePrimate() *gtree.Node {

@@ -84,8 +84,6 @@ func Mkdir(r io.Reader, optFns ...OptFn) error {
 	return tree.mkdir()
 }
 
-// Sprout：芽が出る
-// 全入力をrootを頂点としたツリー上のデータに変換する。
 func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	var (
 		stack            *stack
@@ -114,7 +112,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 			return nil, errNilStack
 		}
 
-		// 深さ優先探索的な？考え方
+		// depth-first search
 		stackSize := stack.size()
 		for i := 0; i < stackSize; i++ {
 			tmpNode := stack.pop()
@@ -168,10 +166,9 @@ func (t *tree) assembleBranch(current *Node) error {
 
 	t.assembleBranchDirectly(current)
 
-	// rootまで親を遡って枝を構成する
+	// go back to the root to form a branch
 	tmpParent := current.parent
 	for {
-		// rootまで遡った
 		if tmpParent.isRoot() {
 			t.assembleBranchFinally(current, tmpParent)
 
@@ -180,7 +177,6 @@ func (t *tree) assembleBranch(current *Node) error {
 					return err
 				}
 			}
-
 			break
 		}
 

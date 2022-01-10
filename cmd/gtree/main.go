@@ -21,37 +21,43 @@ var (
 func main() {
 	commonFlags := []cli.Flag{
 		&cli.PathFlag{
-			Name:    "file",
-			Aliases: []string{"f"},
-			Usage:   "Markdown file path.",
+			Name:        "file",
+			Aliases:     []string{"f"},
+			Usage:       "Markdown file path.",
+			DefaultText: "stdin",
 		},
 		&cli.BoolFlag{
-			Name:    "two-spaces",
-			Aliases: []string{"ts"},
-			Usage:   "Markdown is Two Spaces indentation.",
+			Name:        "two-spaces",
+			Aliases:     []string{"ts"},
+			Usage:       "Markdown is Two Spaces indentation.",
+			DefaultText: "tab spaces",
 		},
 		&cli.BoolFlag{
-			Name:    "four-spaces",
-			Aliases: []string{"fs"},
-			Usage:   "Markdown is Four Spaces indentation.",
+			Name:        "four-spaces",
+			Aliases:     []string{"fs"},
+			Usage:       "Markdown is Four Spaces indentation.",
+			DefaultText: "tab spaces",
 		},
 	}
 
 	outputFlags := []cli.Flag{
 		&cli.BoolFlag{
-			Name:    "json",
-			Aliases: []string{"j"},
-			Usage:   "Output JSON format.",
+			Name:        "json",
+			Aliases:     []string{"j"},
+			Usage:       "Output JSON format.",
+			DefaultText: "stdout",
 		},
 		&cli.BoolFlag{
-			Name:    "yaml",
-			Aliases: []string{"y"},
-			Usage:   "Output YAML format.",
+			Name:        "yaml",
+			Aliases:     []string{"y"},
+			Usage:       "Output YAML format.",
+			DefaultText: "stdout",
 		},
 		&cli.BoolFlag{
-			Name:    "toml",
-			Aliases: []string{"t"},
-			Usage:   "Output TOML format.",
+			Name:        "toml",
+			Aliases:     []string{"t"},
+			Usage:       "Output TOML format.",
+			DefaultText: "stdout",
 		},
 		&cli.BoolFlag{
 			Name:    "watch",
@@ -64,7 +70,7 @@ func main() {
 		&cli.BoolFlag{
 			Name:    "dry-run",
 			Aliases: []string{"d", "dr"},
-			Usage:   "Dry run.", // TODO: なにをしてくれるのかと、出力結果と生成するディレクトリは必ずしも順番が同じではないことを書く
+			Usage:   "Dry run. Detects node that is invalid for directory generation. The order of the output and made directories does not always match.",
 		},
 	}
 
@@ -270,7 +276,6 @@ func actionMkdir(c *cli.Context) error {
 		defer in.Close()
 	}
 
-	// NOTE: この時に、無効なディレクトリ名がある判定もしたい
 	if c.Bool("dry-run") {
 		dryrun := true
 		if err := output(os.Stdout, in, indentation, outputFormatStdout, dryrun); err != nil {
