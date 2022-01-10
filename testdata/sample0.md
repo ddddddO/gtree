@@ -1,7 +1,7 @@
 - ## Description
-    - Output tree from markdown.
+    - Output tree from markdown or programmatically.
         - Output format is stdout or yaml or toml or json.
         - Default stdout.
-    - Make directories from markdown.
+    - Make directories from markdown or programmatically.
         - It is possible to dry run.
     - Provide CLI and Go Package.
