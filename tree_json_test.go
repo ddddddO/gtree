@@ -34,7 +34,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{EncodeJSON()},
+				optFns: []OptFn{WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -57,7 +57,7 @@ func TestOutput_encodeJSON(t *testing.T) {
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces(), EncodeJSON()},
+				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -79,7 +79,7 @@ func TestOutput_encodeJSON(t *testing.T) {
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces(), EncodeJSON()},
+				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`

@@ -231,7 +231,7 @@ root
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces()},
+				optFns: []OptFn{WithIndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -261,7 +261,7 @@ a
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces()},
+				optFns: []OptFn{WithIndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -456,9 +456,9 @@ a
     - o
   - g`)),
 				optFns: []OptFn{
-					IndentTwoSpaces(),
-					BranchFormatIntermedialNode("+->", ":   "),
-					BranchFormatLastNode("+->", "    "),
+					WithIndentTwoSpaces(),
+					WithBranchFormatIntermedialNode("+->", ":   "),
+					WithBranchFormatLastNode("+->", "    "),
 				},
 			},
 			out: out{

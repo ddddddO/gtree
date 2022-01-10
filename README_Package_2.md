@@ -25,8 +25,8 @@ func main() {
 	root.Add("child 8")
 	// you can customize branch format.
 	if err := gtree.OutputProgrammably(os.Stdout, root,
-		gtree.BranchFormatIntermedialNode("+--", ":   "),
-		gtree.BranchFormatLastNode("+--", "    "),
+		gtree.WithBranchFormatIntermedialNode("+--", ":   "),
+		gtree.WithBranchFormatLastNode("+--", "    "),
 	); err != nil {
 		panic(err)
 	}

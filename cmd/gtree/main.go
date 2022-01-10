@@ -233,18 +233,18 @@ func output(out io.Writer, in io.Reader, indentation indentation, outputFormat o
 
 	switch indentation {
 	case indentationTS:
-		options = append(options, gtree.IndentTwoSpaces())
+		options = append(options, gtree.WithIndentTwoSpaces())
 	case indentationFS:
-		options = append(options, gtree.IndentFourSpaces())
+		options = append(options, gtree.WithIndentFourSpaces())
 	}
 
 	switch outputFormat {
 	case outputFormatJSON:
-		options = append(options, gtree.EncodeJSON())
+		options = append(options, gtree.WithEncodeJSON())
 	case outputFormatYAML:
-		options = append(options, gtree.EncodeYAML())
+		options = append(options, gtree.WithEncodeYAML())
 	case outputFormatTOML:
-		options = append(options, gtree.EncodeTOML())
+		options = append(options, gtree.WithEncodeTOML())
 	}
 
 	if dryrun {
@@ -291,9 +291,9 @@ func mkdir(in io.Reader, indentation indentation) error {
 
 	switch indentation {
 	case indentationTS:
-		options = append(options, gtree.IndentTwoSpaces())
+		options = append(options, gtree.WithIndentTwoSpaces())
 	case indentationFS:
-		options = append(options, gtree.IndentFourSpaces())
+		options = append(options, gtree.WithIndentFourSpaces())
 	}
 
 	return gtree.Mkdir(in, options...)

@@ -34,7 +34,7 @@ func TestOutput_encodeYAML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{EncodeYAML()},
+				optFns: []OptFn{WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -92,7 +92,7 @@ children:
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces(), EncodeYAML()},
+				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -131,7 +131,7 @@ children:
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces(), EncodeYAML()},
+				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`

@@ -34,7 +34,7 @@ func TestOutput_encodeTOML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{EncodeTOML()},
+				optFns: []OptFn{WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -107,7 +107,7 @@ children = []
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces(), EncodeTOML()},
+				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -154,7 +154,7 @@ children = []
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces(), EncodeTOML()},
+				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`

@@ -62,12 +62,12 @@ func main() {
   - e
     - o
   - g`))
-	// When indentation is four spaces, use IndentFourSpaces func instead of IndentTwoSpaces func.
+	// When indentation is four spaces, use WithIndentFourSpaces func instead of WithIndentTwoSpaces func.
 	// and, you can customize branch format.
 	if err := gtree.Output(os.Stdout, r2,
-		gtree.IndentTwoSpaces(),
-		gtree.BranchFormatIntermedialNode("+->", ":   "),
-		gtree.BranchFormatLastNode("+->", "    "),
+		gtree.WithIndentTwoSpaces(),
+		gtree.WithBranchFormatIntermedialNode("+->", ":   "),
+		gtree.WithBranchFormatLastNode("+->", "    "),
 	); err != nil {
 		panic(err)
 	}
@@ -86,6 +86,6 @@ func main() {
 ```
 
 - You can also output JSON/YAML/TOML.
-  - `gtree.EncodeJSON()`
-  - `gtree.EncodeTOML()`
-  - `gtree.EncodeYAML()`
+  - `gtree.WithEncodeJSON()`
+  - `gtree.WithEncodeTOML()`
+  - `gtree.WithEncodeYAML()`

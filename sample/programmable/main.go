@@ -59,7 +59,7 @@ func main() {
 	//                 └── Hominidae
 
 	// output json
-	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.EncodeJSON()); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeJSON()); err != nil {
 		panic(err)
 	}
 	// Output(using 'jq'):
@@ -196,7 +196,7 @@ func main() {
 	// }
 
 	// output yaml
-	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.EncodeYAML()); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeYAML()); err != nil {
 		panic(err)
 	}
 	// Output:
@@ -260,7 +260,7 @@ func main() {
 	//           children: []
 
 	// output toml
-	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.EncodeTOML()); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeTOML()); err != nil {
 		panic(err)
 	}
 	// Output:

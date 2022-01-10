@@ -53,8 +53,8 @@ root
 			name: "case5(succeeded / branch format)",
 			root: prepareMultiNode(),
 			optFns: []OptFn{
-				BranchFormatIntermedialNode("+--", ":   "),
-				BranchFormatLastNode("+--", "    "),
+				WithBranchFormatIntermedialNode("+--", ":   "),
+				WithBranchFormatLastNode("+--", "    "),
 			},
 			want: strings.TrimPrefix(`
 root1
@@ -71,7 +71,7 @@ root1
 		{
 			name:   "case6(succeeded / output json)",
 			root:   prepareMultiNode(),
-			optFns: []OptFn{EncodeJSON()},
+			optFns: []OptFn{WithEncodeJSON()},
 			want: strings.TrimPrefix(`
 {"value":"root1","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
 `, "\n"),
@@ -79,7 +79,7 @@ root1
 		{
 			name:   "case7(succeeded / output yaml)",
 			root:   prepareMultiNode(),
-			optFns: []OptFn{EncodeYAML()},
+			optFns: []OptFn{WithEncodeYAML()},
 			want: strings.TrimPrefix(`
 value: root1
 children:
@@ -104,7 +104,7 @@ children:
 		{
 			name:   "case8(succeeded / output toml)",
 			root:   prepareMultiNode(),
-			optFns: []OptFn{EncodeTOML()},
+			optFns: []OptFn{WithEncodeTOML()},
 			want: strings.TrimPrefix(`
 value = 'root1'
 [[children]]
