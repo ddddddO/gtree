@@ -259,7 +259,7 @@ children = []
 ### *Mkdir*
 
 ```console
-23:02:39 > sgtree mkdir --help
+23:02:39 > gtree mkdir --help
 NAME:
    gtree mkdir - Make directories from markdown. It is possible to dry run.
 
