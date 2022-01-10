@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestExecute_encodeTOML(t *testing.T) {
+func TestOutput_encodeTOML(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -34,7 +34,7 @@ func TestExecute_encodeTOML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{EncodeTOML()},
+				optFns: []OptFn{WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -107,7 +107,7 @@ children = []
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces(), EncodeTOML()},
+				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -154,7 +154,7 @@ children = []
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces(), EncodeTOML()},
+				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -196,7 +196,7 @@ children = []
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.optFns...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {

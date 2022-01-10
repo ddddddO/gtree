@@ -55,14 +55,14 @@ func main() {
 		Data: dataFourSpaces,
 	}
 
-	executors := []adapter.Executor{
+	outputer := []adapter.Outputer{
 		tab,
 		twoSpaces,
 		fourSpaces,
 	}
 
-	for _, ex := range executors {
-		if err := ex.Execute(); err != nil {
+	for _, or := range outputer {
+		if err := or.Output(); err != nil {
 			panic(err)
 		}
 	}

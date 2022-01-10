@@ -15,6 +15,7 @@ type config struct {
 
 	space  spaceType
 	encode encode
+	dryrun bool
 }
 
 func newConfig(OptFns ...OptFn) (*config, error) {
@@ -42,24 +43,24 @@ func newConfig(OptFns ...OptFn) (*config, error) {
 // OptFn is functional options pattern
 type OptFn func(*config) error
 
-// IndentTwoSpaces returns function for two spaces indent input.
-func IndentTwoSpaces() OptFn {
+// WithIndentTwoSpaces returns function for two spaces indent input.
+func WithIndentTwoSpaces() OptFn {
 	return func(c *config) error {
 		c.space = twoSpaces
 		return nil
 	}
 }
 
-// IndentFourSpaces returns function for four spaces indent input.
-func IndentFourSpaces() OptFn {
+// WithIndentFourSpaces returns function for four spaces indent input.
+func WithIndentFourSpaces() OptFn {
 	return func(c *config) error {
 		c.space = fourSpaces
 		return nil
 	}
 }
 
-// BranchFormatIntermedialNode returns function for branch format.
-func BranchFormatIntermedialNode(directly, indirectly string) OptFn {
+// WithBranchFormatIntermedialNode returns function for branch format.
+func WithBranchFormatIntermedialNode(directly, indirectly string) OptFn {
 	return func(c *config) error {
 		c.formatIntermedialNode.directly = directly
 		c.formatIntermedialNode.indirectly = indirectly
@@ -67,8 +68,8 @@ func BranchFormatIntermedialNode(directly, indirectly string) OptFn {
 	}
 }
 
-// BranchFormatLastNode returns function for branch format.
-func BranchFormatLastNode(directly, indirectly string) OptFn {
+// WithBranchFormatLastNode returns function for branch format.
+func WithBranchFormatLastNode(directly, indirectly string) OptFn {
 	return func(c *config) error {
 		c.formatLastNode.directly = directly
 		c.formatLastNode.indirectly = indirectly
@@ -76,26 +77,34 @@ func BranchFormatLastNode(directly, indirectly string) OptFn {
 	}
 }
 
-// EncodeJSON returns function for output json format.
-func EncodeJSON() OptFn {
+// WithEncodeJSON returns function for output json format.
+func WithEncodeJSON() OptFn {
 	return func(c *config) error {
 		c.encode = encodeJSON
 		return nil
 	}
 }
 
-// EncodeYAML returns function for output yaml format.
-func EncodeYAML() OptFn {
+// WithEncodeYAML returns function for output yaml format.
+func WithEncodeYAML() OptFn {
 	return func(c *config) error {
 		c.encode = encodeYAML
 		return nil
 	}
 }
 
-// EncodeTOML returns function for output toml format.
-func EncodeTOML() OptFn {
+// WithEncodeTOML returns function for output toml format.
+func WithEncodeTOML() OptFn {
 	return func(c *config) error {
 		c.encode = encodeTOML
+		return nil
+	}
+}
+
+// WithDryRun returns function for dry run. Detects node that is invalid for directory generation.
+func WithDryRun() OptFn {
+	return func(c *config) error {
+		c.dryrun = true
 		return nil
 	}
 }

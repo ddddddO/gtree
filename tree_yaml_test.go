@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestExecute_encodeYAML(t *testing.T) {
+func TestOutput_encodeYAML(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -34,7 +34,7 @@ func TestExecute_encodeYAML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{EncodeYAML()},
+				optFns: []OptFn{WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -92,7 +92,7 @@ children:
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces(), EncodeYAML()},
+				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -131,7 +131,7 @@ children:
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces(), EncodeYAML()},
+				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -165,7 +165,7 @@ children:
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.optFns...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {

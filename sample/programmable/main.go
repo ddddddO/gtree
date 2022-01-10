@@ -11,7 +11,7 @@ func main() {
 	root.Add("child 1").Add("child 2").Add("child 3")
 	root.Add("child 5")
 	root.Add("child 1").Add("child 2").Add("child 4")
-	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
 		panic(err)
 	}
 	// Output:
@@ -24,7 +24,7 @@ func main() {
 
 	primate := preparePrimate()
 	// default branch format.
-	if err := gtree.ExecuteProgrammably(os.Stdout, primate); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate); err != nil {
 		panic(err)
 	}
 	// Output:
@@ -59,7 +59,7 @@ func main() {
 	//                 └── Hominidae
 
 	// output json
-	if err := gtree.ExecuteProgrammably(os.Stdout, primate, gtree.EncodeJSON()); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeJSON()); err != nil {
 		panic(err)
 	}
 	// Output(using 'jq'):
@@ -196,7 +196,7 @@ func main() {
 	// }
 
 	// output yaml
-	if err := gtree.ExecuteProgrammably(os.Stdout, primate, gtree.EncodeYAML()); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeYAML()); err != nil {
 		panic(err)
 	}
 	// Output:
@@ -260,7 +260,7 @@ func main() {
 	//           children: []
 
 	// output toml
-	if err := gtree.ExecuteProgrammably(os.Stdout, primate, gtree.EncodeTOML()); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeTOML()); err != nil {
 		panic(err)
 	}
 	// Output:
@@ -350,6 +350,44 @@ func main() {
 	//
 	//
 	//
+
+	// make directories.
+	if err := gtree.MkdirProgrammably(primate); err != nil {
+		panic(err)
+	}
+	// Output(using Linux 'tree' command):
+	// 22:20:43 > tree Primate/
+	// Primate/
+	// ├── Haplorrhini
+	// │   ├── Simiiformes
+	// │   │   ├── Catarrhini
+	// │   │   │   ├── Cercopithecoidea
+	// │   │   │   │   └── Cercopithecidae
+	// │   │   │   └── Hominoidea
+	// │   │   │       ├── Hominidae
+	// │   │   │       └── Hylobatidae
+	// │   │   └── Platyrrhini
+	// │   │       ├── Ceboidea
+	// │   │       │   ├── Atelidae
+	// │   │       │   └── Cebidae
+	// │   │       └── Pithecioidea
+	// │   │           └── Pitheciidae
+	// │   └── Tarsiiformes
+	// │       └── Tarsiidae
+	// └── Strepsirrhini
+	// 	├── Lemuriformes
+	// 	│   ├── Daubentonioidea
+	// 	│   │   └── Daubentoniidae
+	// 	│   └── Lemuroidea
+	// 	│       ├── Cheirogaleidae
+	// 	│       ├── Indriidae
+	// 	│       ├── Lemuridae
+	// 	│       └── Lepilemuridae
+	// 	└── Lorisiformes
+	// 		├── Galagidae
+	// 		└── Lorisidae
+	//
+	// 28 directories, 0 files
 }
 
 func preparePrimate() *gtree.Node {

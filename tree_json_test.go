@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestExecute_encodeJSON(t *testing.T) {
+func TestOutput_encodeJSON(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -34,7 +34,7 @@ func TestExecute_encodeJSON(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{EncodeJSON()},
+				optFns: []OptFn{WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -57,7 +57,7 @@ func TestExecute_encodeJSON(t *testing.T) {
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces(), EncodeJSON()},
+				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -79,7 +79,7 @@ func TestExecute_encodeJSON(t *testing.T) {
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces(), EncodeJSON()},
+				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -96,7 +96,7 @@ func TestExecute_encodeJSON(t *testing.T) {
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.optFns...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {

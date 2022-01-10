@@ -15,10 +15,10 @@ type Tab struct {
 	Data io.Reader
 }
 
-// Execute is ...
-func (tab *Tab) Execute() error {
+// Output is ...
+func (tab *Tab) Output() error {
 	buf := &strings.Builder{}
-	if err := gtree.Execute(buf, tab.Data); err != nil {
+	if err := gtree.Output(buf, tab.Data); err != nil {
 		return err
 	}
 	fmt.Printf("%s\n\n", buf.String())
@@ -30,10 +30,10 @@ type TwoSpaces struct {
 	Data io.Reader
 }
 
-// Execute is ...
-func (ts *TwoSpaces) Execute() error {
+// Output is ...
+func (ts *TwoSpaces) Output() error {
 	buf := &bytes.Buffer{}
-	if err := gtree.Execute(buf, ts.Data, gtree.IndentTwoSpaces()); err != nil {
+	if err := gtree.Output(buf, ts.Data, gtree.WithIndentTwoSpaces()); err != nil {
 		return err
 	}
 	fmt.Printf("%s\n\n", buf.String())
@@ -45,7 +45,7 @@ type FourSpaces struct {
 	Data io.Reader
 }
 
-// Execute is ...
-func (fs *FourSpaces) Execute() error {
-	return gtree.Execute(os.Stdout, fs.Data, gtree.IndentFourSpaces())
+// Output is ...
+func (fs *FourSpaces) Output() error {
+	return gtree.Output(os.Stdout, fs.Data, gtree.WithIndentFourSpaces())
 }

@@ -3,25 +3,29 @@ package gtree
 import (
 	"bufio"
 	"io"
+	"os"
+	"path/filepath"
 )
 
 type treeer interface {
 	addRoot(root *Node)
-	grow() treeer
+	grow() error
 	expand(w io.Writer) error
+	mkdir() error
 }
 
 type tree struct {
 	roots                 []*Node
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
+	dryrunMode            bool
 }
 
 type branchFormat struct {
 	directly, indirectly string
 }
 
-func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat) treeer {
+func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, dryrun bool) treeer {
 	switch encode {
 	case encodeJSON:
 		return &jsonTree{
@@ -39,12 +43,13 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat) 
 		return &tree{
 			formatLastNode:        formatLastNode,
 			formatIntermedialNode: formatIntermedialNode,
+			dryrunMode:            dryrun,
 		}
 	}
 }
 
-// Execute outputs a tree to w with r as Markdown format input.
-func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
+// Output outputs a tree to w with r as Markdown format input.
+func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	conf, err := newConfig(optFns...)
 	if err != nil {
 		return err
@@ -55,17 +60,36 @@ func Execute(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	if err != nil {
 		return err
 	}
-	return tree.grow().expand(w)
+	if err := tree.grow(); err != nil {
+		return err
+	}
+	return tree.expand(w)
 }
 
-// Sprout：芽が出る
-// 全入力をrootを頂点としたツリー上のデータに変換する。
+// Mkdir makes directories.
+func Mkdir(r io.Reader, optFns ...OptFn) error {
+	conf, err := newConfig(optFns...)
+	if err != nil {
+		return err
+	}
+	seed := bufio.NewScanner(r)
+
+	tree, err := sprout(seed, conf)
+	if err != nil {
+		return err
+	}
+	if err := tree.grow(); err != nil {
+		return err
+	}
+	return tree.mkdir()
+}
+
 func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	var (
 		stack            *stack
 		counter          = newCounter()
 		generateNodeFunc = decideGenerateFunc(conf.space)
-		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode)
+		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun)
 	)
 
 	for scanner.Scan() {
@@ -88,7 +112,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 			return nil, errNilStack
 		}
 
-		// 深さ優先探索的な？考え方
+		// depth-first search
 		stackSize := stack.size()
 		for i := 0; i < stackSize; i++ {
 			tmpNode := stack.pop()
@@ -113,33 +137,46 @@ func (t *tree) addRoot(root *Node) {
 	t.roots = append(t.roots, root)
 }
 
-func (t *tree) grow() treeer {
+func (t *tree) grow() error {
 	for _, root := range t.roots {
-		t.determineBranch(root)
+		if err := t.determineBranch(root); err != nil {
+			return err
+		}
 	}
-	return t
+	return nil
 }
 
-func (t *tree) determineBranch(current *Node) {
-	t.assembleBranch(current)
+func (t *tree) determineBranch(current *Node) error {
+	if err := t.assembleBranch(current); err != nil {
+		return err
+	}
 
 	for _, child := range current.Children {
-		t.determineBranch(child)
+		if err := t.determineBranch(child); err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
-func (t *tree) assembleBranch(current *Node) {
+func (t *tree) assembleBranch(current *Node) error {
 	if current.isRoot() {
-		return
+		return nil
 	}
 
 	t.assembleBranchDirectly(current)
 
-	// rootまで親を遡って枝を構成する
+	// go back to the root to form a branch
 	tmpParent := current.parent
 	for {
-		// rootまで遡った
 		if tmpParent.isRoot() {
+			t.assembleBranchFinally(current, tmpParent)
+
+			if t.dryrunMode {
+				if err := current.validatePath(); err != nil {
+					return err
+				}
+			}
 			break
 		}
 
@@ -147,22 +184,31 @@ func (t *tree) assembleBranch(current *Node) {
 
 		tmpParent = tmpParent.parent
 	}
+	return nil
 }
 
 func (t *tree) assembleBranchDirectly(current *Node) {
+	current.branch.path = current.Name
+
 	if current.isLastOfHierarchy() {
-		current.branch += t.formatLastNode.directly
+		current.branch.value += t.formatLastNode.directly
 	} else {
-		current.branch += t.formatIntermedialNode.directly
+		current.branch.value += t.formatIntermedialNode.directly
 	}
 }
 
 func (t *tree) assembleBranchIndirectly(current, parent *Node) {
+	current.branch.path = filepath.Join(parent.Name, current.branch.path)
+
 	if parent.isLastOfHierarchy() {
-		current.branch = t.formatLastNode.indirectly + current.branch
+		current.branch.value = t.formatLastNode.indirectly + current.branch.value
 	} else {
-		current.branch = t.formatIntermedialNode.indirectly + current.branch
+		current.branch.value = t.formatIntermedialNode.indirectly + current.branch.value
 	}
+}
+
+func (t *tree) assembleBranchFinally(current, root *Node) {
+	current.branch.path = filepath.Join(root.Name, current.branch.path)
 }
 
 func (t *tree) expand(w io.Writer) error {
@@ -188,4 +234,42 @@ func (*tree) write(w io.Writer, in string) error {
 		return err
 	}
 	return buf.Flush()
+}
+
+func (t *tree) mkdir() error {
+	for _, root := range t.roots {
+		if err := (*tree)(nil).generateDirectory(root); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+const permission = 0777
+
+func (*tree) generateDirectory(current *Node) error {
+	// only root node exists
+	if current.isRoot() && !current.hasChild() {
+		err := os.MkdirAll(current.branch.path, permission)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	for _, child := range current.Children {
+		if !child.hasChild() {
+			err := os.MkdirAll(child.branch.path, permission)
+			if err != nil {
+				return err
+			}
+			continue
+		}
+
+		err := (*tree)(nil).generateDirectory(child)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

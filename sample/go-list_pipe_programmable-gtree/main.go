@@ -29,7 +29,7 @@ func main() {
 		}
 	}
 
-	if err := gtree.ExecuteProgrammably(os.Stdout, root); err != nil {
+	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
 		panic(err)
 	}
 	// Output:

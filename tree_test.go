@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/pkg/errors"
 )
 
 type in struct {
@@ -20,7 +22,7 @@ type out struct {
 	err    error
 }
 
-func TestExecute(t *testing.T) {
+func TestOutput(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -227,7 +229,7 @@ root
   - e
     - o
   - g`)),
-				optFns: []OptFn{IndentTwoSpaces()},
+				optFns: []OptFn{WithIndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -257,7 +259,7 @@ a
     - e
         - o
     - g`)),
-				optFns: []OptFn{IndentFourSpaces()},
+				optFns: []OptFn{WithIndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -387,7 +389,7 @@ a
 			// TODO: inputのパターンが3つ(tab/ts/fs)と実行時のモードが3つで、それぞれの正常系(3つ)を上でしてるから、このパターン含めると、
 			//       3*3-3=6パターンのケースが必要
 			//       そのため、case 17 ~ case 21を予約
-			name: "case 16(incorrect input format(input 4spaces indent / execute tab mode))",
+			name: "case 16(incorrect input format(input 4spaces indent / tab mode))",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -452,9 +454,9 @@ a
     - o
   - g`)),
 				optFns: []OptFn{
-					IndentTwoSpaces(),
-					BranchFormatIntermedialNode("+->", ":   "),
-					BranchFormatLastNode("+->", "    "),
+					WithIndentTwoSpaces(),
+					WithBranchFormatIntermedialNode("+->", ":   "),
+					WithBranchFormatLastNode("+->", "    "),
 				},
 			},
 			out: out{
@@ -472,6 +474,54 @@ a
 				err: nil,
 			},
 		},
+		{
+			name: "case 26(dry run/no error)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b`)),
+				optFns: []OptFn{
+					WithDryRun(),
+				},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+a
+└── b
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case 27(dry run/invalid node name)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- /`)),
+				optFns: []OptFn{
+					WithDryRun(),
+				},
+			},
+			out: out{
+				output: "",
+				err:    errors.New("invalid node name: /"),
+			},
+		},
+		{
+			name: "case 28(dry run/invalid node name)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b/c`)),
+				optFns: []OptFn{
+					WithDryRun(),
+				},
+			},
+			out: out{
+				output: "",
+				err:    errors.New("invalid node name: b/c"),
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -480,14 +530,16 @@ a
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Execute(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.optFns...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
 				t.Errorf("\ngot: \n%s\nwant: \n%s", gotOutput, tt.out.output)
 			}
-			if gotErr != tt.out.err {
-				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
+			if gotErr != nil {
+				if gotErr.Error() != tt.out.err.Error() {
+					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
+				}
 			}
 
 			if file, ok := tt.in.input.(*os.File); ok {
@@ -504,4 +556,39 @@ func prepareMarkdownFile(t *testing.T) *os.File {
 		t.Fatal(err)
 	}
 	return file
+}
+
+func TestMkdir(t *testing.T) {
+	tests := []struct {
+		name    string
+		in      in
+		wantErr error
+	}{
+		{
+			name: "case 1",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root2
+	- b
+	- bb
+		- lll
+	-ff`)),
+			},
+			wantErr: nil,
+		},
+	}
+
+	for _, tt := range tests {
+		tt := tt
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			gotErr := Mkdir(tt.in.input, tt.in.optFns...)
+			if gotErr != nil {
+				if gotErr.Error() != tt.wantErr.Error() {
+					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
+				}
+			}
+		})
+	}
 }

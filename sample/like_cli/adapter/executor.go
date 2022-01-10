@@ -1,6 +1,6 @@
 package adapter
 
-// Executor is ...
-type Executor interface {
-	Execute() error
+// Outputer is ...
+type Outputer interface {
+	Output() error
 }

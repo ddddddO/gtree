@@ -19,7 +19,7 @@ func Example() {
 	child7.Add("child 8")
 
 	buf := &bytes.Buffer{}
-	if err := gtree.ExecuteProgrammably(buf, root); err != nil {
+	if err := gtree.OutputProgrammably(buf, root); err != nil {
 		panic(err)
 	}
 

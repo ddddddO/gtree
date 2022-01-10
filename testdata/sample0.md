@@ -1,20 +1,7 @@
 - ## Description
-    - There are three ways to generate tree (CLI, Package(1), Package(2)). They are explained below.
-    - CLI and Package(1)
-        - Given a Markdown file or format, the result of linux tree command is printed.
-        - Create Markdown file by referring to the file in the `testdata/` directory.
-            - Hierarchy is represented by hyphen and indentation.
-            - Indentation should be unified by one of the following.
-                - Tab (default)
-                - Two spaces (required: `-ts`)
-                - Four spaces (required: `-fs`)
-        - You can also output JSON (required: `-j`)
-        - You can also output YAML (required: `-y`)
-        - You can also output TOML (required: `-t`)
-    - Package(1)
-        - You can customize branch format.
-    - Package(2)
-        - You can also generate a tree programmatically.
-        - Markdown is irrelevant.
-        - You can customize branch format.
-        - You can also output JSON or YAML or TOML.
+    - Output tree from markdown.
+        - Output format is stdout or yaml or toml or json.
+        - Default stdout.
+    - Make directories from markdown.
+        - It is possible to dry run.
+    - Provide CLI and Go Package.

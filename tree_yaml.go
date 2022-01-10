@@ -10,11 +10,6 @@ type yamlTree struct {
 	*tree
 }
 
-// noop
-func (yt *yamlTree) grow() treeer {
-	return yt
-}
-
 func (yt *yamlTree) expand(w io.Writer) error {
 	enc := yaml.NewEncoder(w)
 
