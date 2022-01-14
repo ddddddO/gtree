@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type treeer interface {
@@ -19,13 +20,14 @@ type tree struct {
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
 	dryrunMode            bool
+	fileExtensions        []string
 }
 
 type branchFormat struct {
 	directly, indirectly string
 }
 
-func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, dryrun bool) treeer {
+func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, dryrun bool, fileExtensions []string) treeer {
 	switch encode {
 	case encodeJSON:
 		return &jsonTree{
@@ -44,6 +46,7 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, 
 			formatLastNode:        formatLastNode,
 			formatIntermedialNode: formatIntermedialNode,
 			dryrunMode:            dryrun,
+			fileExtensions:        fileExtensions,
 		}
 	}
 }
@@ -89,7 +92,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 		stack            *stack
 		counter          = newCounter()
 		generateNodeFunc = decideGenerateFunc(conf.space)
-		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun)
+		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun, conf.fileExtensions)
 	)
 
 	for scanner.Scan() {
@@ -238,7 +241,7 @@ func (*tree) write(w io.Writer, in string) error {
 
 func (t *tree) mkdir() error {
 	for _, root := range t.roots {
-		if err := (*tree)(nil).generateDirectory(root); err != nil {
+		if err := t.generateDirectory(root); err != nil {
 			return err
 		}
 	}
@@ -247,29 +250,65 @@ func (t *tree) mkdir() error {
 
 const permission = 0777
 
-func (*tree) generateDirectory(current *Node) error {
+func (t *tree) generateDirectory(current *Node) error {
 	// only root node exists
 	if current.isRoot() && !current.hasChild() {
-		err := os.MkdirAll(current.branch.path, permission)
-		if err != nil {
-			return err
+		if t.isFile(current) {
+			dir := strings.TrimSuffix(current.branch.path, current.Name)
+			err := os.MkdirAll(dir, permission)
+			if err != nil {
+				return err
+			}
+			f, err := os.Create(current.branch.path)
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+		} else {
+			err := os.MkdirAll(current.branch.path, permission)
+			if err != nil {
+				return err
+			}
 		}
 		return nil
 	}
 
 	for _, child := range current.Children {
 		if !child.hasChild() {
-			err := os.MkdirAll(child.branch.path, permission)
-			if err != nil {
-				return err
+			if t.isFile(child) {
+				dir := strings.TrimSuffix(child.branch.path, child.Name)
+				err := os.MkdirAll(dir, permission)
+				if err != nil {
+					return err
+				}
+				f, err := os.Create(child.branch.path)
+				if err != nil {
+					return err
+				}
+				defer f.Close()
+			} else {
+				err := os.MkdirAll(child.branch.path, permission)
+				if err != nil {
+					return err
+				}
 			}
 			continue
 		}
 
-		err := (*tree)(nil).generateDirectory(child)
+		err := t.generateDirectory(child)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+// FIXME: mv Node func
+func (t *tree) isFile(current *Node) bool {
+	for _, e := range t.fileExtensions {
+		if strings.HasSuffix(current.Name, e) {
+			return true
+		}
+	}
+	return false
 }

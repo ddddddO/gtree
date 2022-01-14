@@ -13,9 +13,10 @@ type config struct {
 	formatLastNode        branchFormat
 	formatIntermedialNode branchFormat
 
-	space  spaceType
-	encode encode
-	dryrun bool
+	space          spaceType
+	encode         encode
+	dryrun         bool
+	fileExtensions []string
 }
 
 func newConfig(OptFns ...OptFn) (*config, error) {
@@ -105,6 +106,14 @@ func WithEncodeTOML() OptFn {
 func WithDryRun() OptFn {
 	return func(c *config) error {
 		c.dryrun = true
+		return nil
+	}
+}
+
+// WithFileExtension returns function for creating as a file instead of a directory.
+func WithFileExtension(extensions []string) OptFn {
+	return func(c *config) error {
+		c.fileExtensions = extensions
 		return nil
 	}
 }

@@ -388,6 +388,34 @@ func main() {
 	// 		└── Lorisidae
 	//
 	// 28 directories, 0 files
+
+	gtreeDir := gtree.NewRoot("gtree")
+	gtreeDir.Add("cmd").Add("main.go")
+	gtreeDir.Add("makefile")
+	testdataDir := gtreeDir.Add("testdata")
+	testdataDir.Add("sample1.md")
+	testdataDir.Add("sample2.md")
+	gtreeDir.Add("tree.go")
+
+	// make directories and files with specific extensions.
+	if err := gtree.MkdirProgrammably(
+		gtreeDir,
+		gtree.WithFileExtension([]string{".go", ".md", "makefile"}),
+	); err != nil {
+		panic(err)
+	}
+	// Output(using Linux 'tree' command):
+	// 21:57:09 > tree gtree/
+	// gtree/
+	// ├── cmd
+	// │   └── main.go
+	// ├── makefile
+	// ├── testdata
+	// │   ├── sample1.md
+	// │   └── sample2.md
+	// └── tree.go
+	//
+	// 2 directories, 5 files
 }
 
 func preparePrimate() *gtree.Node {

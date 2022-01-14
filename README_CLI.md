@@ -259,70 +259,85 @@ children = []
 ### *Mkdir*
 
 ```console
-23:02:39 > gtree mkdir --help
+22:19:20 > gtree mkdir --help
 NAME:
-   gtree mkdir - Make directories from markdown. It is possible to dry run.
+   main mkdir - Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.
 
 USAGE:
-   gtree mkdir [command options] [arguments...]
+   main mkdir [command options] [arguments...]
 
 OPTIONS:
-   --file value, -f value  Markdown file path. (default: stdin)
-   --two-spaces, --ts      Markdown is Two Spaces indentation. (default: tab spaces)
-   --four-spaces, --fs     Markdown is Four Spaces indentation. (default: tab spaces)
-   --dry-run, -d, --dr     Dry run. Detects node that is invalid for directory generation. The order of the output and made directories does not always match. (default: false)
-   --help, -h              show help (default: false)
+   --file value, -f value                    Markdown file path. (default: stdin)
+   --two-spaces, --ts                        Markdown is Two Spaces indentation. (default: tab spaces)
+   --four-spaces, --fs                       Markdown is Four Spaces indentation. (default: tab spaces)
+   --dry-run, -d, --dr                       Dry run. Detects node that is invalid for directory generation. The order of the output and made directories does not always match. (default: false)
+   --extension value, -e value, --ext value  Specified extension will be created as file.
+   --help, -h                                show help (default: false)
 ```
 
 ```console
-23:05:38 > cat testdata/sample2.md | gtree mkdir
-23:08:08 > tree k8s_resources/
-k8s_resources/
-├── (Tier3)
-│   └── (Tier2)
-│       └── (Tier1)
-│           └── (Tier0)
-├── (empty)
-│   ├── DaemonSet
-│   │   └── Pod
-│   │       └── container(s)
-│   └── StatefulSet
-│       └── Pod
-│           └── container(s)
-├── CronJob
-│   └── Job
-│       └── Pod
-│           └── container(s)
-└── Deployment
-    └── ReplicaSet
-        └── Pod
-            └── container(s)
+22:25:18 > gtree template
+- gtree
+        - cmd
+                - gtree
+                        - main.go
+        - testdata
+                - sample1.md
+                - sample2.md
+        - makefile
+        - tree.go
+22:26:06 > gtree template | gtree mkdir
+22:26:14 > tree gtree/
+gtree/
+├── cmd
+│   └── gtree
+│       └── main.go
+├── makefile
+├── testdata
+│   ├── sample1.md
+│   └── sample2.md
+└── tree.go
 
-19 directories, 0 files
+8 directories, 0 files
 ```
 
 #### *dry run*
 ```console
-23:04:13 > cat testdata/sample2.md | gtree mkdir --dry-run
-k8s_resources
-├── (Tier3)
-│   └── (Tier2)
-│       └── (Tier1)
-│           └── (Tier0)
-├── Deployment
-│   └── ReplicaSet
-│       └── Pod
-│           └── container(s)
-├── CronJob
-│   └── Job
-│       └── Pod
-│           └── container(s)
-├── (empty)
-│   └── DaemonSet
-│       └── Pod
-│           └── container(s)
-└── (empty)
-    └── StatefulSet
-        └── Pod
-            └── container(s)
+22:27:13 > gtree template | gtree mkdir --dry-run
+gtree
+├── cmd
+│   └── gtree
+│       └── main.go
+├── testdata
+│   ├── sample1.md
+│   └── sample2.md
+├── makefile
+└── tree.go
+```
+
+#### *make directories and files*
+```console
+22:15:59 > gtree template
+- gtree
+        - cmd
+                - gtree
+                        - main.go
+        - testdata
+                - sample1.md
+                - sample2.md
+        - makefile
+        - tree.go
+22:16:13 > gtree template | gtree mkdir -e .go -e .md -e makefile
+22:16:19 > tree gtree/
+gtree/
+├── cmd
+│   └── gtree
+│       └── main.go
+├── makefile
+├── testdata
+│   ├── sample1.md
+│   └── sample2.md
+└── tree.go
+
+3 directories, 5 files
 ```
