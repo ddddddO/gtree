@@ -261,10 +261,10 @@ children = []
 ```console
 22:19:20 > gtree mkdir --help
 NAME:
-   main mkdir - Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.
+   gtree mkdir - Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.
 
 USAGE:
-   main mkdir [command options] [arguments...]
+   gtree mkdir [command options] [arguments...]
 
 OPTIONS:
    --file value, -f value                    Markdown file path. (default: stdin)
