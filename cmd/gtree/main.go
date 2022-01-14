@@ -94,7 +94,7 @@ func main() {
 			{
 				Name:    "mkdir",
 				Aliases: []string{"m"},
-				Usage:   "Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.",
+				Usage:   "Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.",
 				Flags:   append(commonFlags, mkdirFlags...),
 				Action:  actionMkdir,
 			},
