@@ -64,6 +64,8 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 	}
 
 	if conf.dryrun {
+		// TODO: コードから呼び出すときにわざわざdry-run指定しないといけないかつ、標準出力に出力するのも変だと思う。
+		//       理想は、dry-run指定なしと標準出力なしで、node.validateName()の結果を返す
 		return tree.expand(os.Stdout)
 	}
 

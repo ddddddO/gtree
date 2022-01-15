@@ -176,7 +176,7 @@ func (t *tree) assembleBranch(current *Node) error {
 			t.assembleBranchFinally(current, tmpParent)
 
 			if t.dryrunMode {
-				if err := current.validatePath(); err != nil {
+				if err := current.validateName(); err != nil {
 					return err
 				}
 			}

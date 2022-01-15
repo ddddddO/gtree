@@ -576,6 +576,33 @@ func TestMkdir(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name: "case 2(dry-run/no error)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root2
+	- b
+	- bb
+		- lll
+	-ff`)),
+				optFns: []OptFn{WithDryRun()},
+			},
+			wantErr: nil,
+		},
+		// TODO: 今後の改修次第
+		// 		{
+		// 			name: "case 3(dry-run/invalid name)",
+		// 			in: in{
+		// 				input: strings.NewReader(strings.TrimSpace(`
+		// - root2
+		// 	- b
+		// 	- b/b
+		// 		- lll
+		// 	-ff`)),
+		// 				optFns: []OptFn{WithDryRun()},
+		// 			},
+		// 			wantErr: errors.Errorf("xxxx: %s", "xxxx"),
+		// 		},
 	}
 
 	for _, tt := range tests {
