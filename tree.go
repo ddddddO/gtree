@@ -241,32 +241,26 @@ func (*tree) write(w io.Writer, in string) error {
 
 func (t *tree) mkdir() error {
 	for _, root := range t.roots {
-		if err := t.generateDirectory(root); err != nil {
+		if err := t.makeDirectoriesAndFiles(root); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-const permission = 0777
-
-func (t *tree) generateDirectory(current *Node) error {
+func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 	// only root node exists
 	if current.isRoot() && !current.hasChild() {
-		if t.isFile(current) {
+		if t.judgeFile(current) {
 			dir := strings.TrimSuffix(current.branch.path, current.Name)
-			err := os.MkdirAll(dir, permission)
-			if err != nil {
+			if err := t.mkdirAll(dir); err != nil {
 				return err
 			}
-			f, err := os.Create(current.branch.path)
-			if err != nil {
+			if err := t.mkfileOnly(current.branch.path); err != nil {
 				return err
 			}
-			defer f.Close()
 		} else {
-			err := os.MkdirAll(current.branch.path, permission)
-			if err != nil {
+			if err := t.mkdirAll(current.branch.path); err != nil {
 				return err
 			}
 		}
@@ -275,40 +269,48 @@ func (t *tree) generateDirectory(current *Node) error {
 
 	for _, child := range current.Children {
 		if !child.hasChild() {
-			if t.isFile(child) {
+			if t.judgeFile(child) {
 				dir := strings.TrimSuffix(child.branch.path, child.Name)
-				err := os.MkdirAll(dir, permission)
-				if err != nil {
+				if err := t.mkdirAll(dir); err != nil {
 					return err
 				}
-				f, err := os.Create(child.branch.path)
-				if err != nil {
+				if err := t.mkfileOnly(child.branch.path); err != nil {
 					return err
 				}
-				defer f.Close()
 			} else {
-				err := os.MkdirAll(child.branch.path, permission)
-				if err != nil {
+				if err := t.mkdirAll(child.branch.path); err != nil {
 					return err
 				}
 			}
-			continue
-		}
-
-		err := t.generateDirectory(child)
-		if err != nil {
-			return err
+		} else {
+			err := t.makeDirectoriesAndFiles(child)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
 }
 
-// FIXME: mv Node func
-func (t *tree) isFile(current *Node) bool {
+func (t *tree) judgeFile(current *Node) bool {
 	for _, e := range t.fileExtensions {
 		if strings.HasSuffix(current.Name, e) {
 			return true
 		}
 	}
 	return false
+}
+
+const permission = 0777
+
+func (t *tree) mkdirAll(dir string) error {
+	return os.MkdirAll(dir, permission)
+}
+
+func (t *tree) mkfileOnly(path string) error {
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	return f.Close()
 }
