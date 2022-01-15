@@ -256,7 +256,7 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 			if err := t.mkdirAll(dir); err != nil {
 				return err
 			}
-			if err := t.mkfileOnly(current.branch.path); err != nil {
+			if err := t.mkfile(current.branch.path); err != nil {
 				return err
 			}
 		} else {
@@ -274,7 +274,7 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 				if err := t.mkdirAll(dir); err != nil {
 					return err
 				}
-				if err := t.mkfileOnly(child.branch.path); err != nil {
+				if err := t.mkfile(child.branch.path); err != nil {
 					return err
 				}
 			} else {
@@ -307,7 +307,7 @@ func (t *tree) mkdirAll(dir string) error {
 	return os.MkdirAll(dir, permission)
 }
 
-func (t *tree) mkfileOnly(path string) error {
+func (t *tree) mkfile(path string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
