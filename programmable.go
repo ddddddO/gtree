@@ -32,7 +32,7 @@ func OutputProgrammably(w io.Writer, root *Node, optFns ...OptFn) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun)
+	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun, conf.fileExtensions)
 	tree.addRoot(root)
 	if err := tree.grow(); err != nil {
 		return err
@@ -57,13 +57,15 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun)
+	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun, conf.fileExtensions)
 	tree.addRoot(root)
 	if err := tree.grow(); err != nil {
 		return err
 	}
 
 	if conf.dryrun {
+		// TODO: コードから呼び出すときにわざわざdry-run指定しないといけないかつ、標準出力に出力するのも変だと思う。
+		//       理想は、dry-run指定なしと標準出力なしで、node.validateName()の結果を返す
 		return tree.expand(os.Stdout)
 	}
 

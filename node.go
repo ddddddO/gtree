@@ -79,7 +79,7 @@ func (n *Node) validate() error {
 	return nil
 }
 
-func (n *Node) validatePath() error {
+func (n *Node) validateName() error {
 	// TODO: ディレクトリ名に含めてはまずそうなものをここで検知する
 	if strings.Contains(n.Name, "/") {
 		return errors.Errorf("invalid node name: %s", n.Name)

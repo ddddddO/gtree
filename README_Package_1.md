@@ -6,6 +6,7 @@ go get github.com/ddddddO/gtree
 ```
 
 ## Usage
+### *Output*
 
 ```go
 package main
@@ -89,3 +90,10 @@ func main() {
   - `gtree.WithEncodeJSON()`
   - `gtree.WithEncodeTOML()`
   - `gtree.WithEncodeYAML()`
+
+---
+
+### *Mkdir*
+
+- `gtree.Mkdir` func makes directories.
+	- You can use `gtree.WithFileExtension` func to make specified extensions as file.

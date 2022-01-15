@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/ddddddO/gtree"
@@ -72,6 +73,11 @@ func main() {
 			Aliases: []string{"d", "dr"},
 			Usage:   "Dry run. Detects node that is invalid for directory generation. The order of the output and made directories does not always match.",
 		},
+		&cli.StringSliceFlag{
+			Name:    "extension",
+			Aliases: []string{"e", "ext"},
+			Usage:   "Specified extension will be created as file.",
+		},
 	}
 
 	app := &cli.App{
@@ -81,16 +87,23 @@ func main() {
 			{
 				Name:    "output",
 				Aliases: []string{"o", "out"},
-				Usage:   "Output tree from markdown. Output format is stdout or yaml or toml or json. Default stdout.",
+				Usage:   "Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is stdout or yaml or toml or json. Default stdout.",
 				Flags:   append(commonFlags, outputFlags...),
 				Action:  actionOutput,
 			},
 			{
 				Name:    "mkdir",
 				Aliases: []string{"m"},
-				Usage:   "Make directories from markdown. It is possible to dry run.",
+				Usage:   "Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.",
 				Flags:   append(commonFlags, mkdirFlags...),
 				Action:  actionMkdir,
+			},
+			{
+				Name:    "template",
+				Aliases: []string{"t", "tmpl"},
+				Usage:   "Output markdown template.",
+				// Flags: NOTE: prepare various templates.
+				Action: actionTemplate,
 			},
 			{
 				Name:    "version",
@@ -124,7 +137,7 @@ func actionOutput(c *cli.Context) error {
 
 	markdownPath := c.Path("file")
 	if markdownPath == "" || markdownPath == "-" {
-		if err := output(os.Stdout, os.Stdin, indentation, outputFormat, notDryrun); err != nil {
+		if err := output(os.Stdout, os.Stdin, indentation, outputFormat, notDryrun, nil); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -137,7 +150,7 @@ func actionOutput(c *cli.Context) error {
 		}
 		defer file.Close()
 
-		if err := output(os.Stdout, file, indentation, outputFormat, notDryrun); err != nil {
+		if err := output(os.Stdout, file, indentation, outputFormat, notDryrun, nil); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -166,7 +179,7 @@ func actionOutput(c *cli.Context) error {
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
 
-				_ = output(os.Stdout, file, indentation, outputFormat, notDryrun)
+				_ = output(os.Stdout, file, indentation, outputFormat, notDryrun, nil)
 			}
 		}()
 	}
@@ -234,7 +247,7 @@ func decideOutputFormat(c *cli.Context) (outputFormat, error) {
 	return outputFormat, nil
 }
 
-func output(out io.Writer, in io.Reader, indentation indentation, outputFormat outputFormat, dryrun bool) error {
+func output(out io.Writer, in io.Reader, indentation indentation, outputFormat outputFormat, dryrun bool, extensions []string) error {
 	var options []gtree.OptFn
 
 	switch indentation {
@@ -257,6 +270,8 @@ func output(out io.Writer, in io.Reader, indentation indentation, outputFormat o
 		options = append(options, gtree.WithDryRun())
 	}
 
+	options = append(options, gtree.WithFileExtension(extensions))
+
 	return gtree.Output(out, in, options...)
 }
 
@@ -276,22 +291,23 @@ func actionMkdir(c *cli.Context) error {
 		defer in.Close()
 	}
 
+	extensions := c.StringSlice("extension")
 	if c.Bool("dry-run") {
 		dryrun := true
-		if err := output(os.Stdout, in, indentation, outputFormatStdout, dryrun); err != nil {
+		if err := output(os.Stdout, in, indentation, outputFormatStdout, dryrun, extensions); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
 	}
 
-	if err := mkdir(in, indentation); err != nil {
+	if err := mkdir(in, indentation, extensions); err != nil {
 		return cli.Exit(err, 1)
 	}
 
 	return nil
 }
 
-func mkdir(in io.Reader, indentation indentation) error {
+func mkdir(in io.Reader, indentation indentation, extensions []string) error {
 	var options []gtree.OptFn
 
 	switch indentation {
@@ -301,5 +317,24 @@ func mkdir(in io.Reader, indentation indentation) error {
 		options = append(options, gtree.WithIndentFourSpaces())
 	}
 
+	options = append(options, gtree.WithFileExtension(extensions))
+
 	return gtree.Mkdir(in, options...)
+}
+
+var template = strings.TrimLeft(`
+- gtree
+	- cmd
+		- gtree
+			- main.go
+	- testdata
+		- sample1.md
+		- sample2.md
+	- makefile
+	- tree.go
+`, "\n")
+
+func actionTemplate(c *cli.Context) error {
+	fmt.Print(template)
+	return nil
 }
