@@ -1,30 +1,21 @@
 package main
 
 import (
+	"github.com/ddddddO/gtree"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 )
 
-type indentation uint
-
-const (
-	indentationUndefined indentation = iota
-	indentationTab
-	indentationTS
-	indentationFS
-)
-
-func decideIndentation(c *cli.Context) (indentation, error) {
+func decideIndentation(c *cli.Context) (gtree.OptFn, error) {
 	if c.Bool("two-spaces") && c.Bool("four-spaces") {
-		return indentationUndefined, errors.New(`choose either "two-spaces(ts)" or "four-spaces(fs)".`)
+		return nil, errors.New(`choose either "two-spaces(ts)" or "four-spaces(fs)".`)
 	}
 
-	indentation := indentationTab
 	if c.Bool("two-spaces") {
-		indentation = indentationTS
+		return gtree.WithIndentTwoSpaces(), nil
 	}
 	if c.Bool("four-spaces") {
-		indentation = indentationFS
+		return gtree.WithIndentFourSpaces(), nil
 	}
-	return indentation, nil
+	return nil, nil
 }

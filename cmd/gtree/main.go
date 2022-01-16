@@ -203,7 +203,7 @@ func actionMkdir(c *cli.Context) error {
 	extensions := c.StringSlice("extension")
 	if c.Bool("dry-run") {
 		dryrun := true
-		if err := output(os.Stdout, in, indentation, outputFormatStdout, dryrun, extensions); err != nil {
+		if err := output(os.Stdout, in, indentation, nil, dryrun, extensions); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil

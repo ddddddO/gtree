@@ -17,9 +17,9 @@ or, download binary from [here](https://github.com/ddddddO/gtree/releases).
 ## Usage
 ### *Output*
 ```console
-22:50:19 > gtree output --help
+19:43:41 > gtree output --help
 NAME:
-   gtree output - Output tree from markdown. Output format is stdout or yaml or toml or json. Default stdout.
+   gtree output - Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is stdout or yaml or toml or json. Default stdout.
 
 USAGE:
    gtree output [command options] [arguments...]
@@ -33,7 +33,29 @@ OPTIONS:
    --toml, -t              Output TOML format. (default: stdout)
    --watch, -w             Watching markdown file. (default: false)
    --help, -h              show help (default: false)
+```
 
+```console
+19:45:03 > gtree template
+- gtree
+        - cmd
+                - gtree
+                        - main.go
+        - testdata
+                - sample1.md
+                - sample2.md
+        - makefile
+        - tree.go
+19:47:08 > gtree template | gtree output
+gtree
+├── cmd
+│   └── gtree
+│       └── main.go
+├── testdata
+│   ├── sample1.md
+│   └── sample2.md
+├── makefile
+└── tree.go
 ```
 
 ```console

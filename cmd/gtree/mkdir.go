@@ -6,16 +6,11 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-func mkdir(in io.Reader, indentation indentation, extensions []string) error {
+func mkdir(in io.Reader, indentation gtree.OptFn, extensions []string) error {
 	var options []gtree.OptFn
-
-	switch indentation {
-	case indentationTS:
-		options = append(options, gtree.WithIndentTwoSpaces())
-	case indentationFS:
-		options = append(options, gtree.WithIndentFourSpaces())
+	if indentation != nil {
+		options = append(options, indentation)
 	}
-
 	options = append(options, gtree.WithFileExtension(extensions))
 
 	return gtree.Mkdir(in, options...)
