@@ -218,10 +218,10 @@ func (*tree) assembleBranchFinally(current, root *Node) {
 func (t *tree) expand(w io.Writer) error {
 	branches := ""
 	for _, root := range t.roots {
-		branches += (*tree)(nil).expandBranch(root, "")
+		branches += t.expandBranch(root, "")
 	}
 
-	return (*tree)(nil).write(w, branches)
+	return t.write(w, branches)
 }
 
 func (*tree) expandBranch(current *Node, out string) string {
