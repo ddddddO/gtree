@@ -76,9 +76,6 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 		if err := tree.grow(); err != nil {
 			return err
 		}
-		if err := tree.expand(io.Discard); err != nil {
-			return err
-		}
 	}
 
 	return tree.mkdir()
