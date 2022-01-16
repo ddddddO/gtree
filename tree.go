@@ -11,6 +11,7 @@ import (
 type treeer interface {
 	addRoot(root *Node)
 	grow() error
+	setDryRun(bool) // tree初期化のタイミングではなく、tree生成後に差し込む為に追加
 	expand(w io.Writer) error
 	mkdir() error
 }
@@ -313,4 +314,8 @@ func (t *tree) mkfile(path string) error {
 		return err
 	}
 	return f.Close()
+}
+
+func (t *tree) setDryRun(dryrun bool) {
+	t.dryrunMode = dryrun
 }

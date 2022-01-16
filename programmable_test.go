@@ -240,6 +240,11 @@ func TestMkdirProgrammably(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name:    "case7(not dry run/invalid node name)",
+			root:    prepareInvalidNodeName(),
+			wantErr: errors.Errorf("invalid node name: %s", "chi/ld 4"),
+		},
 	}
 
 	for _, tt := range tests {

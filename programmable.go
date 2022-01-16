@@ -59,14 +59,26 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 
 	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun, conf.fileExtensions)
 	tree.addRoot(root)
-	if err := tree.grow(); err != nil {
-		return err
-	}
 
+	// NOTE: リファクタの余地はありそう
 	if conf.dryrun {
-		// TODO: コードから呼び出すときにわざわざdry-run指定しないといけないかつ、標準出力に出力するのも変だと思う。
-		//       理想は、dry-run指定なしと標準出力なしで、node.validateName()の結果を返す
+		// when detect invalid node name, return error. process end.
+		// when detected no invalid node name, output tree. process end.
+		if err := tree.grow(); err != nil {
+			return err
+		}
 		return tree.expand(os.Stdout)
+	} else {
+		// 微妙?
+		tree.setDryRun(true)
+		// when detect invalid node name, return error. process end.
+		// when detected no invalid node name, no output tree. process continue.
+		if err := tree.grow(); err != nil {
+			return err
+		}
+		if err := tree.expand(io.Discard); err != nil {
+			return err
+		}
 	}
 
 	return tree.mkdir()
