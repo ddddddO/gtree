@@ -294,7 +294,7 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 
 // FIXME: method name
 // only root node exists
-func (t *tree) judgeOnlyRootExisting(current *Node) bool {
+func (*tree) judgeOnlyRootExisting(current *Node) bool {
 	return current.isRoot() && !current.hasChild()
 }
 
