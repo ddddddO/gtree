@@ -250,8 +250,7 @@ func (t *tree) mkdir() error {
 }
 
 func (t *tree) makeDirectoriesAndFiles(current *Node) error {
-	// only root node exists
-	if current.isRoot() && !current.hasChild() {
+	if t.judgeOnlyRootExisting(current) {
 		if t.judgeFile(current) {
 			dir := strings.TrimSuffix(current.branch.path, current.Name)
 			if err := t.mkdirAll(dir); err != nil {
@@ -291,6 +290,12 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 		}
 	}
 	return nil
+}
+
+// FIXME: method name
+// only root node exists
+func (t *tree) judgeOnlyRootExisting(current *Node) bool {
+	return current.isRoot() && !current.hasChild()
 }
 
 func (t *tree) judgeFile(current *Node) bool {
