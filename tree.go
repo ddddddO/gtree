@@ -309,11 +309,11 @@ func (t *tree) judgeFile(current *Node) bool {
 
 const permission = 0777
 
-func (t *tree) mkdirAll(dir string) error {
+func (*tree) mkdirAll(dir string) error {
 	return os.MkdirAll(dir, permission)
 }
 
-func (t *tree) mkfile(path string) error {
+func (*tree) mkfile(path string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
