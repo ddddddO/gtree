@@ -211,7 +211,7 @@ func (t *tree) assembleBranchIndirectly(current, parent *Node) {
 	}
 }
 
-func (t *tree) assembleBranchFinally(current, root *Node) {
+func (*tree) assembleBranchFinally(current, root *Node) {
 	current.branch.path = filepath.Join(root.Name, current.branch.path)
 }
 
