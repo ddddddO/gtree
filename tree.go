@@ -133,7 +133,6 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
-
 	return tree, nil
 }
 
@@ -220,7 +219,6 @@ func (t *tree) expand(w io.Writer) error {
 	for _, root := range t.roots {
 		branches += t.expandBranch(root, "")
 	}
-
 	return t.write(w, branches)
 }
 

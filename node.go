@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/fs"
 	"strings"
-	"sync"
 
 	"github.com/pkg/errors"
 )
@@ -84,22 +83,20 @@ func (n *Node) validateName() error {
 	if strings.Contains(n.Name, "/") {
 		return errors.Errorf("invalid node name: %s", n.Name)
 	}
-
 	if !fs.ValidPath(n.branch.path) {
 		return errors.Errorf("invalid path: %s", n.branch.path)
 	}
-
 	return nil
 }
 
 type generateFunc func(row string, idx uint) *Node
 
-type spaceType string
+type spaceType int
 
 const (
-	twoSpaces  spaceType = "TWOSPACES"
-	fourSpaces spaceType = "FOURSPACES"
-	tabSpaces  spaceType = "TAB"
+	tabSpaces spaceType = iota
+	twoSpaces
+	fourSpaces
 )
 
 func decideGenerateFunc(space spaceType) generateFunc {
@@ -122,11 +119,6 @@ const (
 
 const (
 	rootHierarchyNum = uint(1)
-)
-
-var (
-	nodeIdx   uint
-	nodeIdxMu sync.Mutex
 )
 
 func generateFuncTab(row string, idx uint) *Node {

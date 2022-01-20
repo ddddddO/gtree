@@ -37,7 +37,6 @@ func newConfig(OptFns ...OptFn) (*config, error) {
 			return nil, err
 		}
 	}
-
 	return c, nil
 }
 
