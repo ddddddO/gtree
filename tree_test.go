@@ -29,7 +29,7 @@ func TestOutput(t *testing.T) {
 		out  out
 	}{
 		{
-			name: "case 1",
+			name: "case(succeeded/has a child)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -44,7 +44,7 @@ a
 			},
 		},
 		{
-			name: "case 2",
+			name: "case(succeeded/has a child nest)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -61,7 +61,7 @@ a
 			},
 		},
 		{
-			name: "case 3",
+			name: "case(succeeded/has children)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -77,7 +77,7 @@ a
 			},
 		},
 		{
-			name: "case 4",
+			name: "case(succeeded/has children deeply)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -99,7 +99,7 @@ a
 			},
 		},
 		{
-			name: "case 5",
+			name: "case(succeeded/has children complexly)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -127,61 +127,7 @@ a
 			},
 		},
 		{
-			name: "case 6",
-			in: in{
-				input: strings.NewReader(strings.TrimSpace(`
-- a
-	- vvv
-		- jjj
-	- ggg
-		- hhhh
-	- ggggg`))},
-			out: out{
-				output: strings.TrimPrefix(`
-a
-├── vvv
-│   └── jjj
-├── ggg
-│   └── hhhh
-└── ggggg
-`, "\n"),
-				err: nil,
-			},
-		},
-		{
-			name: "case 7",
-			in: in{
-				input: strings.NewReader(strings.TrimSpace(`
-- root
-	- child1
-	- child2
-		- chilchil
-	- dddd
-		- kkkkkkk
-			- lllll
-				- ffff
-				- ppppp
-		- oooo
-	- eee`))},
-			out: out{
-				output: strings.TrimPrefix(`
-root
-├── child1
-├── child2
-│   └── chilchil
-├── dddd
-│   ├── kkkkkkk
-│   │   └── lllll
-│   │       ├── ffff
-│   │       └── ppppp
-│   └── oooo
-└── eee
-`, "\n"),
-				err: nil,
-			},
-		},
-		{
-			name: "case 8",
+			name: "case(succeeded/very deeply)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - root
@@ -217,7 +163,7 @@ root
 			},
 		},
 		{
-			name: "case 9(indent 2spaces)",
+			name: "case(succeeded/indent 2spaces)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -247,7 +193,7 @@ a
 			},
 		},
 		{
-			name: "case 10(indent 4spaces)",
+			name: "case(succeeded/indent 4spaces)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -277,7 +223,7 @@ a
 			},
 		},
 		{
-			name: "case 11(1space & -)",
+			name: "case(succeeded/node name 1space & -)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - root dir aaa
@@ -291,7 +237,7 @@ root dir aaa
 			},
 		},
 		{
-			name: "case 12(same name)",
+			name: "case(succeeded/same node name)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - parent
@@ -313,7 +259,7 @@ parent
 			},
 		},
 		{
-			name: "case 13(byte)",
+			name: "case(succeeded/input byte)",
 			in: in{
 				input: bytes.NewBufferString(strings.TrimSpace(`
 - a
@@ -328,7 +274,7 @@ a
 			},
 		},
 		{
-			name: "case 14(multi root)",
+			name: "case(succeeded/multi root)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -374,7 +320,7 @@ a
 			},
 		},
 		{
-			name: "case 15(empty text)",
+			name: "case(empty node name)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -388,8 +334,7 @@ a
 		{
 			// TODO: inputのパターンが3つ(tab/ts/fs)と実行時のモードが3つで、それぞれの正常系(3つ)を上でしてるから、このパターン含めると、
 			//       3*3-3=6パターンのケースが必要
-			//       そのため、case 17 ~ case 21を予約
-			name: "case 16(incorrect input format(input 4spaces indent / tab mode))",
+			name: "case(incorrect input format(input 4spaces indent / tab mode))",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -401,7 +346,7 @@ a
 			},
 		},
 		{
-			name: "case 22(bufio.Scanner err)",
+			name: "case(bufio.Scanner err)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(fmt.Sprintf(`
 - a
@@ -413,7 +358,7 @@ a
 			},
 		},
 		{
-			name: "case 23(input markdown file)",
+			name: "case(succeeded/input markdown file)",
 			in: in{
 				input: prepareMarkdownFile(t)},
 			out: out{
@@ -441,7 +386,7 @@ a
 			},
 		},
 		{
-			name: "case 25(indent 2spaces and cutom branch format)",
+			name: "case(succeeded/indent 2spaces and cutom branch format)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -475,7 +420,7 @@ a
 			},
 		},
 		{
-			name: "case 26(dry run/no error)",
+			name: "case(succeeded/dry run/no error)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -493,22 +438,7 @@ a
 			},
 		},
 		{
-			name: "case 27(dry run/invalid node name)",
-			in: in{
-				input: strings.NewReader(strings.TrimSpace(`
-- a
-	- /`)),
-				optFns: []OptFn{
-					WithDryRun(),
-				},
-			},
-			out: out{
-				output: "",
-				err:    errors.New("invalid node name: /"),
-			},
-		},
-		{
-			name: "case 28(dry run/invalid node name)",
+			name: "case(dry run/invalid node name)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a

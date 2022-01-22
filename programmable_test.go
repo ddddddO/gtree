@@ -17,7 +17,7 @@ func TestOutputProgrammably(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "case1(succeeded)",
+			name: "case(succeeded)",
 			root: prepare(),
 			want: strings.TrimPrefix(`
 root
@@ -27,7 +27,7 @@ root
 			wantErr: nil,
 		},
 		{
-			name: "case2(succeeded / added same name)",
+			name: "case(succeeded / added same name)",
 			root: prepareSameNameChild(),
 			want: strings.TrimPrefix(`
 root
@@ -38,19 +38,19 @@ root
 			wantErr: nil,
 		},
 		{
-			name:    "case3(not root)",
+			name:    "case(not root)",
 			root:    prepareNotRoot(),
 			want:    "",
 			wantErr: ErrNotRoot,
 		},
 		{
-			name:    "case4(nil node)",
+			name:    "case(nil node)",
 			root:    prepareNilNode(),
 			want:    "",
 			wantErr: ErrNilNode,
 		},
 		{
-			name: "case5(succeeded / branch format)",
+			name: "case(succeeded / branch format)",
 			root: prepareMultiNode(),
 			optFns: []OptFn{
 				WithBranchFormatIntermedialNode("+--", ":   "),
@@ -69,7 +69,7 @@ root1
 `, "\n"),
 		},
 		{
-			name:   "case6(succeeded / output json)",
+			name:   "case(succeeded / output json)",
 			root:   prepareMultiNode(),
 			optFns: []OptFn{WithEncodeJSON()},
 			want: strings.TrimPrefix(`
@@ -77,7 +77,7 @@ root1
 `, "\n"),
 		},
 		{
-			name:   "case7(succeeded / output yaml)",
+			name:   "case(succeeded / output yaml)",
 			root:   prepareMultiNode(),
 			optFns: []OptFn{WithEncodeYAML()},
 			want: strings.TrimPrefix(`
@@ -102,7 +102,7 @@ children:
 `, "\n"),
 		},
 		{
-			name:   "case8(succeeded / output toml)",
+			name:   "case(succeeded / output toml)",
 			root:   prepareMultiNode(),
 			optFns: []OptFn{WithEncodeTOML()},
 			want: strings.TrimPrefix(`
@@ -207,25 +207,25 @@ func TestMkdirProgrammably(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "case1(succeeded)",
+			name: "case(succeeded)",
 			root: prepare(),
 		},
 		{
-			name:    "case2(not root)",
+			name:    "case(not root)",
 			root:    prepareNotRoot(),
 			wantErr: ErrNotRoot,
 		},
 		{
-			name:    "case3(nil node)",
+			name:    "case(nil node)",
 			root:    prepareNilNode(),
 			wantErr: ErrNilNode,
 		},
 		{
-			name: "case4(succeeded)",
+			name: "case(succeeded)",
 			root: prepareMultiNode(),
 		},
 		{
-			name: "case5(dry run/invalid node name)",
+			name: "case(dry run/invalid node name)",
 			root: prepareInvalidNodeName(),
 			optFns: []OptFn{
 				WithDryRun(),
@@ -233,7 +233,7 @@ func TestMkdirProgrammably(t *testing.T) {
 			wantErr: errors.Errorf("invalid node name: %s", "chi/ld 4"),
 		},
 		{
-			name: "case6(dry run/succeeded)",
+			name: "case(dry run/succeeded)",
 			root: prepareMultiNode(),
 			optFns: []OptFn{
 				WithDryRun(),
@@ -241,7 +241,7 @@ func TestMkdirProgrammably(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name:    "case7(not dry run/invalid node name)",
+			name:    "case(not dry run/invalid node name)",
 			root:    prepareInvalidNodeName(),
 			wantErr: errors.Errorf("invalid node name: %s", "chi/ld 4"),
 		},

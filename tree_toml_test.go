@@ -13,7 +13,7 @@ func TestOutput_encodeTOML(t *testing.T) {
 		out  out
 	}{
 		{
-			name: "case 1(tab spaces & multi root & output toml)",
+			name: "case(succeeded/tab spaces & multi root & output toml)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -95,7 +95,7 @@ children = []
 			},
 		},
 		{
-			name: "case 2(indent 2spaces & output toml)",
+			name: "case(succeeded/indent 2spaces & output toml)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -142,7 +142,7 @@ children = []
 			},
 		},
 		{
-			name: "case 3(indent 4spaces & output toml)",
+			name: "case(succeeded/indent 4spaces & output toml)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a

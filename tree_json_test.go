@@ -13,7 +13,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 		out  out
 	}{
 		{
-			name: "case 1(tab spaces & multi root & output json)",
+			name: "case(tab spaces & multi root & output json)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -45,7 +45,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 			},
 		},
 		{
-			name: "case 2(indent 2spaces & output json)",
+			name: "case(indent 2spaces & output json)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -67,7 +67,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 			},
 		},
 		{
-			name: "case 3(indent 4spaces & output json)",
+			name: "case(indent 4spaces & output json)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
