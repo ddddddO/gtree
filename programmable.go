@@ -9,6 +9,10 @@ import (
 )
 
 var (
+	idxCounter = newCounter()
+)
+
+var (
 	// ErrNilNode is returned if the argument *gtree.Node of OutputProgrammably function is nill.
 	ErrNilNode = errors.New("nil node")
 	// ErrNotRoot is returned if the argument *gtree.Node of OutputProgrammably function is not root of the tree.
@@ -60,7 +64,6 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 	tree := newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun, conf.fileExtensions)
 	tree.addRoot(root)
 
-	// NOTE: リファクタの余地はありそう
 	if conf.dryrun {
 		// when detect invalid node name, return error. process end.
 		// when detected no invalid node name, output tree. process end.
@@ -68,22 +71,17 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 			return err
 		}
 		return tree.expand(os.Stdout)
-	} else {
-		// 微妙?
-		tree.setDryRun(true)
-		// when detect invalid node name, return error. process end.
-		// when detected no invalid node name, no output tree. process continue.
-		if err := tree.grow(); err != nil {
-			return err
-		}
 	}
 
+	// 微妙?
+	tree.setDryRun(true)
+	// when detect invalid node name, return error. process end.
+	// when detected no invalid node name, no output tree. process continue.
+	if err := tree.grow(); err != nil {
+		return err
+	}
 	return tree.mkdir()
 }
-
-var (
-	idxCounter = newCounter()
-)
 
 // NewRoot creates a starting node for building tree.
 func NewRoot(text string) *Node {

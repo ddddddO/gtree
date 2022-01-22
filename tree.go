@@ -8,50 +8,6 @@ import (
 	"strings"
 )
 
-type treeer interface {
-	addRoot(root *Node)
-	setDryRun(bool) // tree初期化のタイミングではなく、tree生成後に差し込む為に追加
-	grow() error
-	expand(w io.Writer) error
-	mkdir() error
-}
-
-type tree struct {
-	roots                 []*Node
-	formatLastNode        branchFormat
-	formatIntermedialNode branchFormat
-	dryrunMode            bool
-	fileExtensions        []string
-}
-
-type branchFormat struct {
-	directly, indirectly string
-}
-
-func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, dryrun bool, fileExtensions []string) treeer {
-	switch encode {
-	case encodeJSON:
-		return &jsonTree{
-			&tree{},
-		}
-	case encodeYAML:
-		return &yamlTree{
-			&tree{},
-		}
-	case encodeTOML:
-		return &tomlTree{
-			&tree{},
-		}
-	default:
-		return &tree{
-			formatLastNode:        formatLastNode,
-			formatIntermedialNode: formatIntermedialNode,
-			dryrunMode:            dryrun,
-			fileExtensions:        fileExtensions,
-		}
-	}
-}
-
 // Output outputs a tree to w with r as Markdown format input.
 func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	conf, err := newConfig(optFns...)
@@ -121,7 +77,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 		for i := 0; i < stackSize; i++ {
 			tmpNode := stack.pop()
 
-			if currentNode.isDirectlyUnderParent(tmpNode) {
+			if currentNode.isDirectlyUnderNode(tmpNode) {
 				tmpNode.addChild(currentNode)
 				currentNode.setParent(tmpNode)
 				stack.push(tmpNode).push(currentNode)
@@ -134,6 +90,50 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 		return nil, err
 	}
 	return tree, nil
+}
+
+type treeer interface {
+	addRoot(root *Node)
+	setDryRun(bool) // tree初期化のタイミングではなく、tree生成後に差し込む為に追加
+	grow() error
+	expand(w io.Writer) error
+	mkdir() error
+}
+
+type tree struct {
+	roots                 []*Node
+	formatLastNode        branchFormat
+	formatIntermedialNode branchFormat
+	dryrunMode            bool
+	fileExtensions        []string
+}
+
+type branchFormat struct {
+	directly, indirectly string
+}
+
+func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, dryrun bool, fileExtensions []string) treeer {
+	switch encode {
+	case encodeJSON:
+		return &jsonTree{
+			&tree{},
+		}
+	case encodeYAML:
+		return &yamlTree{
+			&tree{},
+		}
+	case encodeTOML:
+		return &tomlTree{
+			&tree{},
+		}
+	default:
+		return &tree{
+			formatLastNode:        formatLastNode,
+			formatIntermedialNode: formatIntermedialNode,
+			dryrunMode:            dryrun,
+			fileExtensions:        fileExtensions,
+		}
+	}
 }
 
 func (t *tree) addRoot(root *Node) {
@@ -176,7 +176,7 @@ func (t *tree) assembleBranch(current *Node) error {
 			t.assembleBranchFinally(current, tmpParent)
 
 			if t.dryrunMode {
-				if err := current.validateName(); err != nil {
+				if err := current.validateBranch(); err != nil {
 					return err
 				}
 			}

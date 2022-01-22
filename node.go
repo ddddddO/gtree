@@ -39,8 +39,8 @@ func (n *Node) addChild(child *Node) {
 	n.Children = append(n.Children, child)
 }
 
-func (n *Node) isDirectlyUnderParent(parent *Node) bool {
-	return n.hierarchy == parent.hierarchy+1
+func (n *Node) isDirectlyUnderNode(node *Node) bool {
+	return n.hierarchy == node.hierarchy+1
 }
 
 func (n *Node) isLastOfHierarchy() bool {
@@ -78,7 +78,7 @@ func (n *Node) validate() error {
 	return nil
 }
 
-func (n *Node) validateName() error {
+func (n *Node) validateBranch() error {
 	// TODO: ディレクトリ名に含めてはまずそうなものをここで検知する
 	if strings.Contains(n.Name, "/") {
 		return errors.Errorf("invalid node name: %s", n.Name)
