@@ -154,31 +154,30 @@ func actionOutput(c *cli.Context) error {
 	}
 
 	// watching markdown file
-	ticker := time.NewTicker(1 * time.Second)
+	ticker := time.NewTicker(500 * time.Millisecond)
 	var preFileModTime time.Time
 	for range ticker.C {
-		func() {
+		err := func() error {
 			file, err := os.Open(markdownPath)
-			// FIXME: ?
 			if err != nil {
-				fmt.Errorf("%+v", err)
-				os.Exit(1)
+				return err
 			}
 			defer file.Close()
 
 			fileInfo, err := file.Stat()
-			// FIXME: ?
 			if err != nil {
-				fmt.Errorf("%+v", err)
-				os.Exit(1)
+				return err
 			}
 
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
-
 				_ = output(os.Stdout, file, indentation, outputFormat, notDryrun, nil)
 			}
+			return nil
 		}()
+		if err != nil {
+			return cli.Exit(err, 1)
+		}
 	}
 
 	return nil
