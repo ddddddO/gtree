@@ -78,33 +78,7 @@ gtree
 └── tree.go
 ```
 
-```console
-20:25:28 > gtree output -ts << EOS
-> - a
->   - vvv
->     - jjj
->   - kggg
->     - kkdd
->     - tggg
->   - edddd
->     - orrr
->   - gggg
-> EOS
-a
-├── vvv
-│   └── jjj
-├── kggg
-│   ├── kkdd
-│   └── tggg
-├── edddd
-│   └── orrr
-└── gggg
-```
-
-
-### OR
-
-When Markdown data is indented as a tab.
+when Markdown is indented as a tab.
 
 ```
 ├── gtree output -f testdata/sample1.md
@@ -112,7 +86,7 @@ When Markdown data is indented as a tab.
 └── cat testdata/sample1.md | gtree output
 ```
 
-For 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
+for 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
 
 
 <details>
@@ -364,17 +338,15 @@ gtree
 └── tree.go
 ```
 
-##### when included invalid name.
-
-Any invalid file or directory name will result in an error. Does not create a file or directory.
+any invalid file or directory name will result in an error. does not create a file or directory.
 
 ```console
 23:20:04 > gtree mkdir --dry-run --ts <<EOS
-> - root
->   - aa
->   - bb
->     - b/b
-> EOS
+- root
+  - aa
+  - bb
+    - b/b
+EOS
 invalid node name: b/b
 ```
 
