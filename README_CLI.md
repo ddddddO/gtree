@@ -325,6 +325,8 @@ gtree/
 ```
 
 #### *dry run*
+does not create a file or directory.
+
 ```console
 22:27:13 > gtree template | gtree mkdir --dry-run
 gtree
@@ -338,7 +340,7 @@ gtree
 └── tree.go
 ```
 
-any invalid file or directory name will result in an error. does not create a file or directory.
+any invalid file or directory name will result in an error.
 
 ```console
 23:20:04 > gtree mkdir --dry-run --ts <<EOS
