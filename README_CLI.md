@@ -364,6 +364,30 @@ gtree
 └── tree.go
 ```
 
+##### when included invalid name.
+
+Any invalid file or directory name will result in an error. Does not create a file or directory.
+
+```console
+23:20:04 > gtree mkdir --dry-run --ts <<EOS
+> - root
+>   - aa
+>   - bb
+>     - b/b
+> EOS
+invalid node name: b/b
+```
+
+```console
+23:27:27 > gtree mkdir --dry-run --ts <<EOS
+- /root
+  - aa
+  - bb
+    - bb
+EOS
+invalid path: /root/aa
+```
+
 #### *make directories and files*
 ```console
 22:15:59 > gtree template
