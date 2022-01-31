@@ -23,7 +23,7 @@ func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	if err := tree.grow(); err != nil {
 		return err
 	}
-	return tree.expand(w)
+	return tree.spread(w)
 }
 
 // Mkdir makes directories.
@@ -96,7 +96,7 @@ type treeer interface {
 	addRoot(root *Node)
 	setDryRun(bool) // tree初期化のタイミングではなく、tree生成後に差し込む為に追加
 	grow() error
-	expand(w io.Writer) error
+	spread(w io.Writer) error
 	mkdir() error
 }
 
@@ -214,18 +214,18 @@ func (*tree) assembleBranchFinally(current, root *Node) {
 	current.branch.path = filepath.Join(root.Name, current.branch.path)
 }
 
-func (t *tree) expand(w io.Writer) error {
+func (t *tree) spread(w io.Writer) error {
 	branches := ""
 	for _, root := range t.roots {
-		branches += t.expandBranch(root, "")
+		branches += t.spreadBranch(root, "")
 	}
 	return t.write(w, branches)
 }
 
-func (*tree) expandBranch(current *Node, out string) string {
+func (*tree) spreadBranch(current *Node, out string) string {
 	out += current.getBranch()
 	for _, child := range current.Children {
-		out = (*tree)(nil).expandBranch(child, out)
+		out = (*tree)(nil).spreadBranch(child, out)
 	}
 	return out
 }

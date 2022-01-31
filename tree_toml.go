@@ -10,7 +10,7 @@ type tomlTree struct {
 	*tree
 }
 
-func (tt *tomlTree) expand(w io.Writer) error {
+func (tt *tomlTree) spread(w io.Writer) error {
 	enc := toml.NewEncoder(w)
 
 	for _, root := range tt.roots {

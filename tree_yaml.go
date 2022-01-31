@@ -10,7 +10,7 @@ type yamlTree struct {
 	*tree
 }
 
-func (yt *yamlTree) expand(w io.Writer) error {
+func (yt *yamlTree) spread(w io.Writer) error {
 	enc := yaml.NewEncoder(w)
 
 	for _, root := range yt.roots {

@@ -41,7 +41,7 @@ func OutputProgrammably(w io.Writer, root *Node, optFns ...OptFn) error {
 	if err := tree.grow(); err != nil {
 		return err
 	}
-	return tree.expand(w)
+	return tree.spread(w)
 }
 
 // MkdirProgrammably makes directories.
@@ -70,7 +70,7 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 		if err := tree.grow(); err != nil {
 			return err
 		}
-		return tree.expand(os.Stdout)
+		return tree.spread(os.Stdout)
 	}
 
 	// 微妙?

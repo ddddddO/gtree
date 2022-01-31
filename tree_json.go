@@ -9,7 +9,7 @@ type jsonTree struct {
 	*tree
 }
 
-func (jt *jsonTree) expand(w io.Writer) error {
+func (jt *jsonTree) spread(w io.Writer) error {
 	enc := json.NewEncoder(w)
 
 	for _, root := range jt.roots {
