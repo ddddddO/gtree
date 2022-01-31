@@ -49,7 +49,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 		stack            *stack
 		counter          = newCounter()
 		generateNodeFunc = decideGenerateFunc(conf.space)
-		tree             = newTree(conf.encode, conf.formatLastNode, conf.formatIntermedialNode, conf.dryrun, conf.fileExtensions)
+		tree             = newTree(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun, conf.fileExtensions)
 	)
 
 	for scanner.Scan() {
@@ -102,8 +102,8 @@ type treeer interface {
 
 type tree struct {
 	roots                 []*Node
-	formatLastNode        branchFormat
-	formatIntermedialNode branchFormat
+	lastNodeFormat        branchFormat
+	intermedialNodeFormat branchFormat
 	dryrunMode            bool
 	fileExtensions        []string
 }
@@ -112,7 +112,7 @@ type branchFormat struct {
 	directly, indirectly string
 }
 
-func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, dryrun bool, fileExtensions []string) treeer {
+func newTree(encode encode, lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, fileExtensions []string) treeer {
 	switch encode {
 	case encodeJSON:
 		return &jsonTree{
@@ -128,8 +128,8 @@ func newTree(encode encode, formatLastNode, formatIntermedialNode branchFormat, 
 		}
 	default:
 		return &tree{
-			formatLastNode:        formatLastNode,
-			formatIntermedialNode: formatIntermedialNode,
+			lastNodeFormat:        lastNodeFormat,
+			intermedialNodeFormat: intermedialNodeFormat,
 			dryrunMode:            dryrun,
 			fileExtensions:        fileExtensions,
 		}
@@ -142,20 +142,20 @@ func (t *tree) addRoot(root *Node) {
 
 func (t *tree) grow() error {
 	for _, root := range t.roots {
-		if err := t.determineBranch(root); err != nil {
+		if err := t.assemble(root); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (t *tree) determineBranch(current *Node) error {
+func (t *tree) assemble(current *Node) error {
 	if err := t.assembleBranch(current); err != nil {
 		return err
 	}
 
 	for _, child := range current.Children {
-		if err := t.determineBranch(child); err != nil {
+		if err := t.assemble(child); err != nil {
 			return err
 		}
 	}
@@ -194,9 +194,9 @@ func (t *tree) assembleBranchDirectly(current *Node) {
 	current.branch.path = current.Name
 
 	if current.isLastOfHierarchy() {
-		current.branch.value += t.formatLastNode.directly
+		current.branch.value += t.lastNodeFormat.directly
 	} else {
-		current.branch.value += t.formatIntermedialNode.directly
+		current.branch.value += t.intermedialNodeFormat.directly
 	}
 }
 
@@ -204,9 +204,9 @@ func (t *tree) assembleBranchIndirectly(current, parent *Node) {
 	current.branch.path = filepath.Join(parent.Name, current.branch.path)
 
 	if parent.isLastOfHierarchy() {
-		current.branch.value = t.formatLastNode.indirectly + current.branch.value
+		current.branch.value = t.lastNodeFormat.indirectly + current.branch.value
 	} else {
-		current.branch.value = t.formatIntermedialNode.indirectly + current.branch.value
+		current.branch.value = t.intermedialNodeFormat.indirectly + current.branch.value
 	}
 }
 
@@ -290,8 +290,6 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 	return nil
 }
 
-// FIXME: method name
-// only root node exists
 func (*tree) judgeOnlyRootExisting(current *Node) bool {
 	return current.isRoot() && !current.hasChild()
 }
