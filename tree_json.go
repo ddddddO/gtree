@@ -9,6 +9,11 @@ type jsonTree struct {
 	*tree
 }
 
+// noop
+func (jt *jsonTree) grow() error {
+	return nil
+}
+
 func (jt *jsonTree) spread(w io.Writer) error {
 	enc := json.NewEncoder(w)
 
