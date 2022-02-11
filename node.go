@@ -59,6 +59,13 @@ func (n *Node) getBranch() string {
 	return fmt.Sprintf("%s %s\n", n.branch.value, n.Name)
 }
 
+func (n *Node) getPath() string {
+	if n.isRoot() {
+		return n.Name
+	}
+	return n.branch.path
+}
+
 func (n *Node) hasChild() bool {
 	return len(n.Children) > 0
 }

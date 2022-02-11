@@ -250,17 +250,17 @@ func (t *tree) mkdir() error {
 func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 	if t.judgeOnlyRootExisting(current) {
 		if t.judgeFile(current) {
-			dir := strings.TrimSuffix(current.branch.path, current.Name)
+			dir := strings.TrimSuffix(current.getPath(), current.Name)
 			if err := t.mkdirAll(dir); err != nil {
 				return err
 			}
-			if err := t.mkfile(current.branch.path); err != nil {
+			if err := t.mkfile(current.getPath()); err != nil {
 				return err
 			}
 			return nil
 		}
 
-		if err := t.mkdirAll(current.branch.path); err != nil {
+		if err := t.mkdirAll(current.getPath()); err != nil {
 			return err
 		}
 		return nil
@@ -275,17 +275,17 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 		}
 
 		if t.judgeFile(child) {
-			dir := strings.TrimSuffix(child.branch.path, child.Name)
+			dir := strings.TrimSuffix(child.getPath(), child.Name)
 			if err := t.mkdirAll(dir); err != nil {
 				return err
 			}
-			if err := t.mkfile(child.branch.path); err != nil {
+			if err := t.mkfile(child.getPath()); err != nil {
 				return err
 			}
 			continue
 		}
 
-		if err := t.mkdirAll(child.branch.path); err != nil {
+		if err := t.mkdirAll(child.getPath()); err != nil {
 			return err
 		}
 	}

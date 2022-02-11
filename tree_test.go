@@ -545,6 +545,23 @@ func TestMkdir(t *testing.T) {
 			},
 			wantErr: errors.New("invalid path: /root2/b"),
 		},
+		{
+			name: "case(succeeded/only root)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root3`)),
+			},
+			wantErr: nil,
+		},
+		{
+			name: "case(succeeded/only multi roots)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root4
+- root5`)),
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {
