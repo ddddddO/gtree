@@ -257,10 +257,11 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 			if err := t.mkfile(current.branch.path); err != nil {
 				return err
 			}
-		} else {
-			if err := t.mkdirAll(current.branch.path); err != nil {
-				return err
-			}
+			return nil
+		}
+
+		if err := t.mkdirAll(current.branch.path); err != nil {
+			return err
 		}
 		return nil
 	}
@@ -275,16 +276,18 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 				if err := t.mkfile(child.branch.path); err != nil {
 					return err
 				}
-			} else {
-				if err := t.mkdirAll(child.branch.path); err != nil {
-					return err
-				}
+				return nil
 			}
-		} else {
-			err := t.makeDirectoriesAndFiles(child)
-			if err != nil {
+
+			if err := t.mkdirAll(child.branch.path); err != nil {
 				return err
 			}
+			return nil
+		}
+
+		err := t.makeDirectoriesAndFiles(child)
+		if err != nil {
+			return err
 		}
 	}
 	return nil
