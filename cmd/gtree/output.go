@@ -34,7 +34,7 @@ func decideOutputFormat(c *cli.Context) (gtree.OptFn, error) {
 }
 
 func output(out io.Writer, in io.Reader, indentation gtree.OptFn, outputFormat gtree.OptFn, dryrun bool, extensions []string) error {
-	var options []gtree.OptFn
+	options := []gtree.OptFn{gtree.WithFileExtension(extensions)}
 	if indentation != nil {
 		options = append(options, indentation)
 	}
@@ -44,7 +44,6 @@ func output(out io.Writer, in io.Reader, indentation gtree.OptFn, outputFormat g
 	if dryrun {
 		options = append(options, gtree.WithDryRun())
 	}
-	options = append(options, gtree.WithFileExtension(extensions))
 
 	return gtree.Output(out, in, options...)
 }
