@@ -562,6 +562,31 @@ func TestMkdir(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name: "case(succeeded/make directories and files)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root6
+	- b.go
+	- bb
+		- lll
+	-makefile`)),
+				optFns: []OptFn{WithFileExtension([]string{".go", "makefile"})},
+			},
+			wantErr: nil,
+		},
+		{
+			name: "case(succeeded/make directories and files/even if the extension is specified, it must be created as a directory)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root7
+	- b.go
+	- bb.go
+		- lll`)),
+				optFns: []OptFn{WithFileExtension([]string{".go"})},
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {

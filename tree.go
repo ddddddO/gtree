@@ -248,17 +248,19 @@ func (t *tree) mkdir() error {
 }
 
 func (t *tree) makeDirectoriesAndFiles(current *Node) error {
-	if t.judgeFile(current) {
-		dir := strings.TrimSuffix(current.getPath(), current.Name)
-		if err := t.mkdirAll(dir); err != nil {
-			return err
-		}
-		if err := t.mkfile(current.getPath()); err != nil {
-			return err
-		}
-	} else {
-		if err := t.mkdirAll(current.getPath()); err != nil {
-			return err
+	if !current.hasChild() {
+		if t.judgeFile(current) {
+			dir := strings.TrimSuffix(current.getPath(), current.Name)
+			if err := t.mkdirAll(dir); err != nil {
+				return err
+			}
+			if err := t.mkfile(current.getPath()); err != nil {
+				return err
+			}
+		} else {
+			if err := t.mkdirAll(current.getPath()); err != nil {
+				return err
+			}
 		}
 	}
 
