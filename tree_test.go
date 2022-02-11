@@ -495,7 +495,7 @@ func TestMkdir(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "case 1",
+			name: "case(succeeded)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - root2
@@ -507,7 +507,7 @@ func TestMkdir(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "case 2(dry-run/no error)",
+			name: "case(dry-run/no error)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - root2
@@ -519,20 +519,32 @@ func TestMkdir(t *testing.T) {
 			},
 			wantErr: nil,
 		},
-		// TODO: 今後の改修次第
-		// 		{
-		// 			name: "case 3(dry-run/invalid name)",
-		// 			in: in{
-		// 				input: strings.NewReader(strings.TrimSpace(`
-		// - root2
-		// 	- b
-		// 	- b/b
-		// 		- lll
-		// 	-ff`)),
-		// 				optFns: []OptFn{WithDryRun()},
-		// 			},
-		// 			wantErr: errors.Errorf("xxxx: %s", "xxxx"),
-		// 		},
+		{
+			name: "case(dry-run/invalid node name)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root2
+	- b
+	- b/b
+		- lll
+	-ff`)),
+				optFns: []OptFn{WithDryRun()},
+			},
+			wantErr: errors.New("invalid node name: b/b"),
+		},
+		{
+			name: "case(dry-run/invalid path)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- /root2
+	- b
+	- bb
+		- lll
+	-ff`)),
+				optFns: []OptFn{WithDryRun()},
+			},
+			wantErr: errors.New("invalid path: /root2/b"),
+		},
 	}
 
 	for _, tt := range tests {
