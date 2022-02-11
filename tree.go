@@ -267,26 +267,25 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 	}
 
 	for _, child := range current.Children {
-		if !child.hasChild() {
-			if t.judgeFile(child) {
-				dir := strings.TrimSuffix(child.branch.path, child.Name)
-				if err := t.mkdirAll(dir); err != nil {
-					return err
-				}
-				if err := t.mkfile(child.branch.path); err != nil {
-					return err
-				}
-				return nil
-			}
-
-			if err := t.mkdirAll(child.branch.path); err != nil {
+		if child.hasChild() {
+			if err := t.makeDirectoriesAndFiles(child); err != nil {
 				return err
 			}
-			return nil
+			continue
 		}
 
-		err := t.makeDirectoriesAndFiles(child)
-		if err != nil {
+		if t.judgeFile(child) {
+			dir := strings.TrimSuffix(child.branch.path, child.Name)
+			if err := t.mkdirAll(dir); err != nil {
+				return err
+			}
+			if err := t.mkfile(child.branch.path); err != nil {
+				return err
+			}
+			continue
+		}
+
+		if err := t.mkdirAll(child.branch.path); err != nil {
 			return err
 		}
 	}
