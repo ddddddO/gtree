@@ -8,7 +8,7 @@ test: rmtestdir
 	go clean -testcache
 	go test ./... -race -v
 
-cyclo:
+cyclo: rmtestdir
 	gocyclo .
 
 all: fmt test cyclo
