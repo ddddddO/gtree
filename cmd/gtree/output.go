@@ -8,29 +8,12 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func decideOutputFormat(c *cli.Context) (gtree.OptFn, error) {
-	if c.Bool("json") && c.Bool("yaml") && c.Bool("toml") {
-		return nil, errors.New(`choose either "json(j)" or "yaml(y)" or "toml(t)".`)
-	}
-	if c.Bool("json") && c.Bool("yaml") {
-		return nil, errors.New(`choose either "json(j)" or "yaml(y)".`)
-	}
-	if c.Bool("json") && c.Bool("toml") {
-		return nil, errors.New(`choose either "json(j)" or "toml(t)".`)
-	}
-	if c.Bool("toml") && c.Bool("yaml") {
-		return nil, errors.New(`choose either "toml(t)" or "yaml(y)".`)
-	}
+func outputDryrun(out io.Writer, in io.Reader, indentation gtree.OptFn, extensions []string) error {
+	return output(out, in, indentation, nil, true, extensions)
+}
 
-	switch {
-	case c.Bool("json"):
-		return gtree.WithEncodeJSON(), nil
-	case c.Bool("yaml"):
-		return gtree.WithEncodeYAML(), nil
-	case c.Bool("toml"):
-		return gtree.WithEncodeTOML(), nil
-	}
-	return nil, nil
+func outputNotDryrun(out io.Writer, in io.Reader, indentation, outputFormat gtree.OptFn) error {
+	return output(out, in, indentation, outputFormat, false, nil)
 }
 
 func output(out io.Writer, in io.Reader, indentation gtree.OptFn, outputFormat gtree.OptFn, dryrun bool, extensions []string) error {
@@ -46,4 +29,36 @@ func output(out io.Writer, in io.Reader, indentation gtree.OptFn, outputFormat g
 	}
 
 	return gtree.Output(out, in, options...)
+}
+
+func decideOutputFormat(c *cli.Context) (gtree.OptFn, error) {
+	if err := validateOutputFormat(c); err != nil {
+		return nil, err
+	}
+
+	switch {
+	case c.Bool("json"):
+		return gtree.WithEncodeJSON(), nil
+	case c.Bool("yaml"):
+		return gtree.WithEncodeYAML(), nil
+	case c.Bool("toml"):
+		return gtree.WithEncodeTOML(), nil
+	}
+	return nil, nil
+}
+
+func validateOutputFormat(c *cli.Context) error {
+	if c.Bool("json") && c.Bool("yaml") && c.Bool("toml") {
+		return errors.New(`choose either "json(j)" or "yaml(y)" or "toml(t)".`)
+	}
+	if c.Bool("json") && c.Bool("yaml") {
+		return errors.New(`choose either "json(j)" or "yaml(y)".`)
+	}
+	if c.Bool("json") && c.Bool("toml") {
+		return errors.New(`choose either "json(j)" or "toml(t)".`)
+	}
+	if c.Bool("toml") && c.Bool("yaml") {
+		return errors.New(`choose either "toml(t)" or "yaml(y)".`)
+	}
+	return nil
 }

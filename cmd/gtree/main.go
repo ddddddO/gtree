@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ddddddO/gtree"
 	"github.com/urfave/cli/v2"
 )
 
@@ -120,8 +121,6 @@ func main() {
 }
 
 func actionOutput(c *cli.Context) error {
-	const notDryrun = false
-
 	indentation, err := decideIndentation(c)
 	if err != nil {
 		return cli.Exit(err, 1)
@@ -134,7 +133,7 @@ func actionOutput(c *cli.Context) error {
 
 	markdownPath := c.Path("file")
 	if markdownPath == "" || markdownPath == "-" {
-		if err := output(os.Stdout, os.Stdin, indentation, outputFormat, notDryrun, nil); err != nil {
+		if err := outputNotDryrun(os.Stdout, os.Stdin, indentation, outputFormat); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -147,13 +146,20 @@ func actionOutput(c *cli.Context) error {
 		}
 		defer file.Close()
 
-		if err := output(os.Stdout, file, indentation, outputFormat, notDryrun, nil); err != nil {
+		if err := outputNotDryrun(os.Stdout, file, indentation, outputFormat); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
 	}
 
-	// watching markdown file
+	if err := watchMarkdownAndOutput(markdownPath, indentation, outputFormat); err != nil {
+		return cli.Exit(err, 1)
+	}
+
+	return nil
+}
+
+func watchMarkdownAndOutput(markdownPath string, indentation gtree.OptFn, outputFormat gtree.OptFn) error {
 	ticker := time.NewTicker(500 * time.Millisecond)
 	var preFileModTime time.Time
 	for range ticker.C {
@@ -171,15 +177,15 @@ func actionOutput(c *cli.Context) error {
 
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
-				_ = output(os.Stdout, file, indentation, outputFormat, notDryrun, nil)
+				_ = outputNotDryrun(os.Stdout, file, indentation, outputFormat)
+				fmt.Println()
 			}
 			return nil
 		}()
 		if err != nil {
-			return cli.Exit(err, 1)
+			return err
 		}
 	}
-
 	return nil
 }
 
@@ -201,8 +207,7 @@ func actionMkdir(c *cli.Context) error {
 
 	extensions := c.StringSlice("extension")
 	if c.Bool("dry-run") {
-		dryrun := true
-		if err := output(os.Stdout, in, indentation, nil, dryrun, extensions); err != nil {
+		if err := outputDryrun(os.Stdout, in, indentation, extensions); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil

@@ -1,8 +1,8 @@
-fmt: rmtestdir
-	go fmt ./...
-
 rmtestdir:
 	rm -rf ./root/ ./root1/ ./root2/ ./root3/ ./root4/ ./root5/ ./root6/ ./root7/ Primate/
+
+fmt: rmtestdir
+	go fmt ./...
 
 test: rmtestdir
 	go clean -testcache
