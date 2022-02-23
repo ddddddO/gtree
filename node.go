@@ -87,7 +87,7 @@ func (n *Node) validate() error {
 
 func (n *Node) validatePath() error {
 	invalidChars := "/" // TODO: ディレクトリ名に含めてはまずそうなものをここに追加する
-	if strings.Contains(n.Name, invalidChars) {
+	if strings.ContainsAny(n.Name, invalidChars) {
 		return errors.Errorf("invalid node name: %s", n.Name)
 	}
 	if !fs.ValidPath(n.branch.path) {
