@@ -53,9 +53,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	)
 
 	for scanner.Scan() {
-		row := scanner.Text()
-		currentNode := generateNodeFunc(row, counter.next())
-
+		currentNode := generateNodeFunc(scanner.Text(), counter.next())
 		if err := currentNode.validate(); err != nil {
 			return nil, err
 		}
@@ -72,24 +70,27 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 			return nil, errNilStack
 		}
 
-		// depth-first search
-		stackSize := stack.size()
-		for i := 0; i < stackSize; i++ {
-			tmpNode := stack.pop()
-
-			if currentNode.isDirectlyUnderNode(tmpNode) {
-				tmpNode.addChild(currentNode)
-				currentNode.setParent(tmpNode)
-				stack.push(tmpNode).push(currentNode)
-				break
-			}
-		}
+		dfs(stack, currentNode)
 	}
 
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 	return tree, nil
+}
+
+// depth-first search
+func dfs(stack *stack, current *Node) {
+	size := stack.size()
+	for i := 0; i < size; i++ {
+		tmp := stack.pop()
+		if current.isDirectlyUnderNode(tmp) {
+			tmp.addChild(current)
+			current.setParent(tmp)
+			stack.push(tmp).push(current)
+			return
+		}
+	}
 }
 
 type treeer interface {
@@ -112,7 +113,12 @@ type branchFormat struct {
 	directly, indirectly string
 }
 
-func newTree(encode encode, lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, fileExtensions []string) treeer {
+func newTree(
+	encode encode,
+	lastNodeFormat, intermedialNodeFormat branchFormat,
+	dryrun bool,
+	fileExtensions []string,
+) treeer {
 	switch encode {
 	case encodeJSON:
 		return &jsonTree{
@@ -176,7 +182,7 @@ func (t *tree) assembleBranch(current *Node) error {
 			t.assembleBranchFinally(current, tmpParent)
 
 			if t.dryrunMode {
-				if err := current.validateBranch(); err != nil {
+				if err := current.validatePath(); err != nil {
 					return err
 				}
 			}
