@@ -6,4 +6,4 @@ updates:
       # interval: "weekly"
       interval: "daily"
       timezone: "Asia/Tokyo"
-      time: "20:35"
+      time: "20:40"
