@@ -70,27 +70,13 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 			return nil, errNilStack
 		}
 
-		dfs(stack, currentNode)
+		stack.dfs(currentNode)
 	}
 
 	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 	return tree, nil
-}
-
-// depth-first search
-func dfs(stack *stack, current *Node) {
-	size := stack.size()
-	for i := 0; i < size; i++ {
-		tmp := stack.pop()
-		if current.isDirectlyUnderNode(tmp) {
-			tmp.addChild(current)
-			current.setParent(tmp)
-			stack.push(tmp).push(current)
-			return
-		}
-	}
 }
 
 type treeer interface {
