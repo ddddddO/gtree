@@ -241,7 +241,7 @@ func (t *tree) mkdir() error {
 
 func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 	if !current.hasChild() {
-		if t.judgeFile(current) {
+		if t.needsMkfile(current) {
 			dir := strings.TrimSuffix(current.getPath(), current.Name)
 			if err := t.mkdirAll(dir); err != nil {
 				return err
@@ -264,7 +264,7 @@ func (t *tree) makeDirectoriesAndFiles(current *Node) error {
 	return nil
 }
 
-func (t *tree) judgeFile(current *Node) bool {
+func (t *tree) needsMkfile(current *Node) bool {
 	for _, e := range t.fileExtensions {
 		if strings.HasSuffix(current.Name, e) {
 			return true
