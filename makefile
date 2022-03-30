@@ -1,14 +1,14 @@
-rmtestdir:
+sweep:
 	rm -rf ./root/ ./root1/ ./root2/ ./root3/ ./root4/ ./root5/ ./root6/ ./root7/ Primate/
 
-fmt: rmtestdir
+fmt: sweep
 	go fmt ./...
 
-test: rmtestdir
+test: sweep
 	go clean -testcache
 	go test ./... -race -v
 
-cyclo: rmtestdir
+cyclo: sweep
 	gocyclo .
 
 all: fmt test cyclo
