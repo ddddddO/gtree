@@ -241,8 +241,6 @@ func main() {
 package main
 
 import (
-	"os"
-
 	"github.com/ddddddO/gtree"
 )
 
@@ -297,8 +295,6 @@ func main() {
 package main
 
 import (
-	"os"
-
 	"github.com/ddddddO/gtree"
 )
 
