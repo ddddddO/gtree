@@ -45,7 +45,7 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	var (
 		stack            *stack
 		counter          = newCounter()
-		generateNodeFunc = decideGenerateFunc(conf.space)
+		generateNodeFunc = conf.space.decideGenerateFunc()
 
 		g    = newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
 		s    = newSpreader(conf.encode)
@@ -97,10 +97,6 @@ func newTree(
 		spreader: spreader,
 		mkdirer:  mkdirer,
 	}
-}
-
-type branchFormat struct {
-	directly, indirectly string
 }
 
 func (t *tree) addRoot(root *Node) {

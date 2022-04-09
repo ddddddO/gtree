@@ -106,8 +106,8 @@ const (
 	fourSpaces
 )
 
-func decideGenerateFunc(space spaceType) generateFunc {
-	switch space {
+func (st spaceType) decideGenerateFunc() generateFunc {
+	switch st {
 	case twoSpaces:
 		return generateFuncTwoSpaces
 	case fourSpaces:

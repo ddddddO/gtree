@@ -31,21 +31,15 @@ func (dm *defaultMkdirer) mkdir(roots []*Node) error {
 
 func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
 	if !current.hasChild() {
-		if dm.needsMkfile(current) {
+		if dm.needsMkfile(current.Name) {
 			dir := strings.TrimSuffix(current.getPath(), current.Name)
 			if err := dm.mkdirAll(dir); err != nil {
 				return err
 			}
-			if err := dm.mkfile(current.getPath()); err != nil {
-				return err
-			}
-			return nil
+			return dm.mkfile(current.getPath())
 		}
 
-		if err := dm.mkdirAll(current.getPath()); err != nil {
-			return err
-		}
-		return nil
+		return dm.mkdirAll(current.getPath())
 	}
 
 	for _, child := range current.Children {
@@ -56,9 +50,9 @@ func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
 	return nil
 }
 
-func (dm *defaultMkdirer) needsMkfile(current *Node) bool {
+func (dm *defaultMkdirer) needsMkfile(name string) bool {
 	for _, e := range dm.fileExtensions {
-		if strings.HasSuffix(current.Name, e) {
+		if strings.HasSuffix(name, e) {
 			return true
 		}
 	}

@@ -26,6 +26,10 @@ func newGrower(
 	}
 }
 
+type branchFormat struct {
+	directly, indirectly string
+}
+
 type defaultGrower struct {
 	lastNodeFormat        branchFormat
 	intermedialNodeFormat branchFormat
@@ -116,5 +120,4 @@ func (ng *noopGrower) grow(_ []*Node) error {
 	return nil
 }
 
-func (ng *noopGrower) setDryRun(_ bool) {
-}
+func (ng *noopGrower) setDryRun(_ bool) {}

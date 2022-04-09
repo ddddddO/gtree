@@ -26,6 +26,15 @@ func newSpreader(encode encode) spreader {
 	}
 }
 
+type encode int
+
+const (
+	encodeDefault encode = iota
+	encodeJSON
+	encodeYAML
+	encodeTOML
+)
+
 type defaultSpreader struct{}
 
 func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {

@@ -1,14 +1,5 @@
 package gtree
 
-type encode int
-
-const (
-	encodeDefault encode = iota
-	encodeJSON
-	encodeYAML
-	encodeTOML
-)
-
 type config struct {
 	lastNodeFormat        branchFormat
 	intermedialNodeFormat branchFormat
