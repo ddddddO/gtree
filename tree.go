@@ -70,11 +70,6 @@ func newTree(
 	}
 }
 
-// TODO: メソッド名見直す
-func (t *tree) enableValidation() {
-	t.grower.setDryRun(true)
-}
-
 func (t *tree) grow() error {
 	return t.grower.grow(t.roots)
 }

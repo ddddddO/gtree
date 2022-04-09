@@ -70,13 +70,18 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 		return tree.spread(os.Stdout)
 	}
 
-	tree.enableValidation()
 	// when detect invalid node name, return error. process end.
 	// when detected no invalid node name, no output tree. process continue.
+	tree.enableValidation()
 	if err := tree.grow(); err != nil {
 		return err
 	}
 	return tree.mkdir()
+}
+
+// TODO: メソッド名見直す
+func (t *tree) enableValidation() {
+	t.grower.enableValidation()
 }
 
 // NewRoot creates a starting node for building tree.

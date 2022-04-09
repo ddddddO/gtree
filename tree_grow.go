@@ -7,13 +7,13 @@ import (
 // 関心事は各ノードの枝を組み立てること
 type grower interface {
 	grow([]*Node) error
-	setDryRun(bool) // TODO: どうにかしたい
+	enableValidation()
 }
 
 func newGrower(
 	encode encode,
 	lastNodeFormat, intermedialNodeFormat branchFormat,
-	dryrunMode bool,
+	enabledValidation bool,
 ) grower {
 	if encode != encodeDefault {
 		return &noopGrower{}
@@ -21,7 +21,7 @@ func newGrower(
 	return &defaultGrower{
 		lastNodeFormat:        lastNodeFormat,
 		intermedialNodeFormat: intermedialNodeFormat,
-		dryrunMode:            dryrunMode,
+		enabledValidation:     enabledValidation,
 	}
 }
 
@@ -32,7 +32,7 @@ type branchFormat struct {
 type defaultGrower struct {
 	lastNodeFormat        branchFormat
 	intermedialNodeFormat branchFormat
-	dryrunMode            bool
+	enabledValidation     bool
 }
 
 func (dg *defaultGrower) grow(roots []*Node) error {
@@ -70,7 +70,7 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 		if tmpParent.isRoot() {
 			dg.assembleBranchFinally(current, tmpParent)
 
-			if dg.dryrunMode {
+			if dg.enabledValidation {
 				if err := current.validatePath(); err != nil {
 					return err
 				}
@@ -109,12 +109,12 @@ func (*defaultGrower) assembleBranchFinally(current, root *Node) {
 	current.branch.path = filepath.Join(root.Name, current.branch.path)
 }
 
-func (dg *defaultGrower) setDryRun(dryrun bool) {
-	dg.dryrunMode = dryrun
+func (dg *defaultGrower) enableValidation() {
+	dg.enabledValidation = true
 }
 
 type noopGrower struct{}
 
 func (*noopGrower) grow(_ []*Node) error { return nil }
 
-func (*noopGrower) setDryRun(_ bool) {}
+func (*noopGrower) enableValidation() {}
