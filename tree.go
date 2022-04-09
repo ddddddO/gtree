@@ -1,7 +1,6 @@
 package gtree
 
 import (
-	"bufio"
 	"io"
 )
 
@@ -11,14 +10,12 @@ func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	if err != nil {
 		return err
 	}
-	seed := bufio.NewScanner(r)
-
-	rs, err := sprout(seed, conf)
+	rs, err := generateRoots(r, conf.space)
 	if err != nil {
 		return err
 	}
-	tree := initializeTree(conf, rs)
 
+	tree := initializeTree(conf, rs)
 	if err := tree.grow(); err != nil {
 		return err
 	}
@@ -31,14 +28,12 @@ func Mkdir(r io.Reader, optFns ...OptFn) error {
 	if err != nil {
 		return err
 	}
-	seed := bufio.NewScanner(r)
-
-	rs, err := sprout(seed, conf)
+	rs, err := generateRoots(r, conf.space)
 	if err != nil {
 		return err
 	}
-	tree := initializeTree(conf, rs)
 
+	tree := initializeTree(conf, rs)
 	if err := tree.grow(); err != nil {
 		return err
 	}

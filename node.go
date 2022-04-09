@@ -3,6 +3,7 @@ package gtree
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"io/fs"
 	"strings"
 
@@ -22,41 +23,6 @@ type Node struct {
 type branch struct {
 	value string
 	path  string
-}
-
-func sprout(scanner *bufio.Scanner, conf *config) ([]*Node, error) {
-	var (
-		stack            *stack
-		counter          = newCounter()
-		generateNodeFunc = conf.space.decideGenerateFunc()
-		roots            []*Node
-	)
-
-	for scanner.Scan() {
-		currentNode := generateNodeFunc(scanner.Text(), counter.next())
-		if err := currentNode.validate(); err != nil {
-			return nil, err
-		}
-
-		if currentNode.isRoot() {
-			counter.reset()
-			roots = append(roots, currentNode)
-			stack = newStack()
-			stack.push(currentNode)
-			continue
-		}
-
-		if stack == nil {
-			return nil, errNilStack
-		}
-
-		stack.dfs(currentNode)
-	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, err
-	}
-	return roots, nil
 }
 
 func newNode(name string, hierarchy, index uint) *Node {
@@ -104,6 +70,42 @@ func (n *Node) getPath() string {
 
 func (n *Node) hasChild() bool {
 	return len(n.Children) > 0
+}
+
+func generateRoots(r io.Reader, space spaceType) ([]*Node, error) {
+	var (
+		scanner          = bufio.NewScanner(r)
+		stack            *stack
+		counter          = newCounter()
+		generateNodeFunc = space.decideGenerateFunc()
+		roots            []*Node
+	)
+
+	for scanner.Scan() {
+		currentNode := generateNodeFunc(scanner.Text(), counter.next())
+		if err := currentNode.validate(); err != nil {
+			return nil, err
+		}
+
+		if currentNode.isRoot() {
+			counter.reset()
+			roots = append(roots, currentNode)
+			stack = newStack()
+			stack.push(currentNode)
+			continue
+		}
+
+		if stack == nil {
+			return nil, errNilStack
+		}
+
+		stack.dfs(currentNode)
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+	return roots, nil
 }
 
 var (
