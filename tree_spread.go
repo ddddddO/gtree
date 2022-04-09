@@ -9,6 +9,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+// 関心事はtreeを出力すること
 type spreader interface {
 	spread(io.Writer, []*Node) error
 }

@@ -4,6 +4,7 @@ import (
 	"path/filepath"
 )
 
+// 関心事は各ノードの枝を組み立てること
 type grower interface {
 	grow([]*Node) error
 	setDryRun(bool) // TODO: どうにかしたい
