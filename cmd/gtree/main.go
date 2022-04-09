@@ -133,9 +133,11 @@ func actionOutput(c *cli.Context) error {
 		return cli.Exit(err, 1)
 	}
 
+	options := []gtree.Option{indentation, outputFormat}
+
 	markdownPath := c.Path("file")
 	if markdownPath == "" || markdownPath == "-" {
-		if err := outputNotDryrun(os.Stdout, os.Stdin, indentation, outputFormat); err != nil {
+		if err := outputNotDryrun(os.Stdout, os.Stdin, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -148,21 +150,22 @@ func actionOutput(c *cli.Context) error {
 		}
 		defer file.Close()
 
-		if err := outputNotDryrun(os.Stdout, file, indentation, outputFormat); err != nil {
+		if err := outputNotDryrun(os.Stdout, file, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
 	}
 
-	if err := watchMarkdownAndOutput(markdownPath, indentation, outputFormat); err != nil {
+	if err := watchMarkdownAndOutput(markdownPath, options); err != nil {
 		return cli.Exit(err, 1)
 	}
 
 	return nil
 }
 
-func watchMarkdownAndOutput(markdownPath string, indentation gtree.Option, outputFormat gtree.Option) error {
+func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
 	ticker := time.NewTicker(500 * time.Millisecond)
+	defer ticker.Stop()
 	var preFileModTime time.Time
 	for range ticker.C {
 		err := func() error {
@@ -179,7 +182,7 @@ func watchMarkdownAndOutput(markdownPath string, indentation gtree.Option, outpu
 
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
-				_ = outputNotDryrun(os.Stdout, file, indentation, outputFormat)
+				_ = outputNotDryrun(os.Stdout, file, options)
 				fmt.Println()
 			}
 			return nil
@@ -209,14 +212,16 @@ func actionMkdir(c *cli.Context) error {
 	}
 
 	extensions := c.StringSlice("extension")
+	options := []gtree.Option{indentation, gtree.WithFileExtensions(extensions)}
+
 	if c.Bool("dry-run") {
-		if err := outputDryrun(os.Stdout, in, indentation, extensions); err != nil {
+		if err := outputDryrun(os.Stdout, in, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
 	}
 
-	if err := mkdir(in, indentation, extensions); err != nil {
+	if err := mkdir(in, options); err != nil {
 		return cli.Exit(err, 1)
 	}
 

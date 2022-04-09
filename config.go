@@ -24,6 +24,10 @@ func newConfig(options ...Option) (*config, error) {
 		encode: encodeDefault,
 	}
 	for _, opt := range options {
+		if opt == nil {
+			continue
+		}
+
 		if err := opt(c); err != nil {
 			return nil, err
 		}

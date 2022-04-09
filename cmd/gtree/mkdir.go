@@ -6,11 +6,6 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-func mkdir(in io.Reader, indentation gtree.Option, extensions []string) error {
-	options := []gtree.Option{gtree.WithFileExtensions(extensions)}
-	if indentation != nil {
-		options = append(options, indentation)
-	}
-
+func mkdir(in io.Reader, options []gtree.Option) error {
 	return gtree.Mkdir(in, options...)
 }

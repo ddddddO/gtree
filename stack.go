@@ -12,20 +12,6 @@ func newStack() *stack {
 	return &stack{}
 }
 
-// depth-first search
-func (s *stack) dfs(current *Node) {
-	size := s.size()
-	for i := 0; i < size; i++ {
-		tmp := s.pop()
-		if current.isDirectlyUnderNode(tmp) {
-			tmp.addChild(current)
-			current.setParent(tmp)
-			s.push(tmp).push(current)
-			return
-		}
-	}
-}
-
 func (s *stack) push(n *Node) *stack {
 	s.nodes = append(s.nodes, n)
 	return s
@@ -40,4 +26,18 @@ func (s *stack) pop() *Node {
 
 func (s *stack) size() int {
 	return len(s.nodes)
+}
+
+// depth-first search
+func (s *stack) dfs(current *Node) {
+	size := s.size()
+	for i := 0; i < size; i++ {
+		tmp := s.pop()
+		if current.isDirectlyUnderNode(tmp) {
+			tmp.addChild(current)
+			current.setParent(tmp)
+			s.push(tmp).push(current)
+			return
+		}
+	}
 }
