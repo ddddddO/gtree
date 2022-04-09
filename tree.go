@@ -13,10 +13,15 @@ func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	}
 	seed := bufio.NewScanner(r)
 
-	tree, err := sprout(seed, conf)
+	rs, err := sprout(seed, conf)
 	if err != nil {
 		return err
 	}
+	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+	s := newSpreader(conf.encode)
+	m := newMkdirer(conf.fileExtensions)
+	tree := newTree(rs, g, s, m)
+
 	if err := tree.grow(); err != nil {
 		return err
 	}
@@ -31,53 +36,19 @@ func Mkdir(r io.Reader, optFns ...OptFn) error {
 	}
 	seed := bufio.NewScanner(r)
 
-	tree, err := sprout(seed, conf)
+	rs, err := sprout(seed, conf)
 	if err != nil {
 		return err
 	}
+	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+	s := newSpreader(conf.encode)
+	m := newMkdirer(conf.fileExtensions)
+	tree := newTree(rs, g, s, m)
+
 	if err := tree.grow(); err != nil {
 		return err
 	}
 	return tree.mkdir()
-}
-
-func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
-	var (
-		stack            *stack
-		counter          = newCounter()
-		generateNodeFunc = conf.space.decideGenerateFunc()
-
-		g    = newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
-		s    = newSpreader(conf.encode)
-		m    = newMkdirer(conf.fileExtensions)
-		tree = newTree(g, s, m)
-	)
-
-	for scanner.Scan() {
-		currentNode := generateNodeFunc(scanner.Text(), counter.next())
-		if err := currentNode.validate(); err != nil {
-			return nil, err
-		}
-
-		if currentNode.isRoot() {
-			counter.reset()
-			tree.addRoot(currentNode)
-			stack = newStack()
-			stack.push(currentNode)
-			continue
-		}
-
-		if stack == nil {
-			return nil, errNilStack
-		}
-
-		stack.dfs(currentNode)
-	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, err
-	}
-	return tree, nil
 }
 
 type tree struct {
@@ -88,19 +59,17 @@ type tree struct {
 }
 
 func newTree(
+	roots []*Node,
 	grower grower,
 	spreader spreader,
 	mkdirer mkdirer,
 ) *tree {
 	return &tree{
+		roots:    roots,
 		grower:   grower,
 		spreader: spreader,
 		mkdirer:  mkdirer,
 	}
-}
-
-func (t *tree) addRoot(root *Node) {
-	t.roots = append(t.roots, root)
 }
 
 // TODO: メソッド名見直す
