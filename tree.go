@@ -5,8 +5,8 @@ import (
 )
 
 // Output outputs a tree to w with r as Markdown format input.
-func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
-	conf, err := newConfig(optFns...)
+func Output(w io.Writer, r io.Reader, options ...Option) error {
+	conf, err := newConfig(options...)
 	if err != nil {
 		return err
 	}
@@ -23,8 +23,8 @@ func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 }
 
 // Mkdir makes directories.
-func Mkdir(r io.Reader, optFns ...OptFn) error {
-	conf, err := newConfig(optFns...)
+func Mkdir(r io.Reader, options ...Option) error {
+	conf, err := newConfig(options...)
 	if err != nil {
 		return err
 	}

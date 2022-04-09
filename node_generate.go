@@ -63,16 +63,16 @@ type generateFunc func(row string, idx uint) *Node
 type spaceType int
 
 const (
-	tabSpaces spaceType = iota
-	twoSpaces
-	fourSpaces
+	spacesTab spaceType = iota
+	spacesTwo
+	spacesFour
 )
 
 func (st spaceType) decideGenerateFunc() generateFunc {
 	switch st {
-	case twoSpaces:
+	case spacesTwo:
 		return generateFuncTwoSpaces
-	case fourSpaces:
+	case spacesFour:
 		return generateFuncFourSpaces
 	default:
 		return generateFuncTab

@@ -4,7 +4,7 @@
 
 Output tree🌳 or Make directories(files)📁 from Markdown or Programmatically. Provide CLI and Go Package.
 
-⚠It is incompatible with v1.2.4 and earlier versions⚠
+⚠It is incompatible with v1.4.3 and earlier versions⚠
 
 ```
 # Description

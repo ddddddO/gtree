@@ -13,8 +13,8 @@ import (
 )
 
 type in struct {
-	input  io.Reader
-	optFns []OptFn
+	input   io.Reader
+	options []Option
 }
 
 type out struct {
@@ -175,7 +175,7 @@ root
   - e
     - o
   - g`)),
-				optFns: []OptFn{WithIndentTwoSpaces()},
+				options: []Option{WithIndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -205,7 +205,7 @@ a
     - e
         - o
     - g`)),
-				optFns: []OptFn{WithIndentFourSpaces()},
+				options: []Option{WithIndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -398,7 +398,7 @@ a
   - e
     - o
   - g`)),
-				optFns: []OptFn{
+				options: []Option{
 					WithIndentTwoSpaces(),
 					WithBranchFormatIntermedialNode("+->", ":   "),
 					WithBranchFormatLastNode("+->", "    "),
@@ -425,7 +425,7 @@ a
 				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b`)),
-				optFns: []OptFn{
+				options: []Option{
 					WithDryRun(),
 				},
 			},
@@ -443,7 +443,7 @@ a
 				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b/c`)),
-				optFns: []OptFn{
+				options: []Option{
 					WithDryRun(),
 				},
 			},
@@ -460,7 +460,7 @@ a
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -515,7 +515,7 @@ func TestMkdir(t *testing.T) {
 	- bb
 		- lll
 	-ff`)),
-				optFns: []OptFn{WithDryRun()},
+				options: []Option{WithDryRun()},
 			},
 			wantErr: nil,
 		},
@@ -528,7 +528,7 @@ func TestMkdir(t *testing.T) {
 	- b/b
 		- lll
 	-ff`)),
-				optFns: []OptFn{WithDryRun()},
+				options: []Option{WithDryRun()},
 			},
 			wantErr: errors.New("invalid node name: b/b"),
 		},
@@ -541,7 +541,7 @@ func TestMkdir(t *testing.T) {
 	- bb
 		- lll
 	-ff`)),
-				optFns: []OptFn{WithDryRun()},
+				options: []Option{WithDryRun()},
 			},
 			wantErr: errors.New("invalid path: /root2/b"),
 		},
@@ -571,7 +571,7 @@ func TestMkdir(t *testing.T) {
 	- bb
 		- lll
 	-makefile`)),
-				optFns: []OptFn{WithFileExtension([]string{".go", "makefile"})},
+				options: []Option{WithFileExtensions([]string{".go", "makefile"})},
 			},
 			wantErr: nil,
 		},
@@ -583,7 +583,7 @@ func TestMkdir(t *testing.T) {
 	- b.go
 	- bb.go
 		- lll`)),
-				optFns: []OptFn{WithFileExtension([]string{".go"})},
+				options: []Option{WithFileExtensions([]string{".go"})},
 			},
 			wantErr: nil,
 		},
@@ -594,7 +594,7 @@ func TestMkdir(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := Mkdir(tt.in.input, tt.in.optFns...)
+			gotErr := Mkdir(tt.in.input, tt.in.options...)
 			if gotErr != nil {
 				if gotErr.Error() != tt.wantErr.Error() {
 					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
@@ -632,7 +632,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{WithEncodeJSON()},
+				options: []Option{WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -655,7 +655,7 @@ func TestOutput_encodeJSON(t *testing.T) {
   - e
     - o
   - g`)),
-				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeJSON()},
+				options: []Option{WithIndentTwoSpaces(), WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -677,7 +677,7 @@ func TestOutput_encodeJSON(t *testing.T) {
     - e
         - o
     - g`)),
-				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeJSON()},
+				options: []Option{WithIndentFourSpaces(), WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -694,7 +694,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -735,7 +735,7 @@ func TestOutput_encodeTOML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{WithEncodeTOML()},
+				options: []Option{WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -808,7 +808,7 @@ children = []
   - e
     - o
   - g`)),
-				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeTOML()},
+				options: []Option{WithIndentTwoSpaces(), WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -855,7 +855,7 @@ children = []
     - e
         - o
     - g`)),
-				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeTOML()},
+				options: []Option{WithIndentFourSpaces(), WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -897,7 +897,7 @@ children = []
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -938,7 +938,7 @@ func TestOutput_encodeYAML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				optFns: []OptFn{WithEncodeYAML()},
+				options: []Option{WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -996,7 +996,7 @@ children:
   - e
     - o
   - g`)),
-				optFns: []OptFn{WithIndentTwoSpaces(), WithEncodeYAML()},
+				options: []Option{WithIndentTwoSpaces(), WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1035,7 +1035,7 @@ children:
     - e
         - o
     - g`)),
-				optFns: []OptFn{WithIndentFourSpaces(), WithEncodeYAML()},
+				options: []Option{WithIndentFourSpaces(), WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1069,7 +1069,7 @@ children:
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.optFns...)
+			gotErr := Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {

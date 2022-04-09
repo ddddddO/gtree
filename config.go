@@ -10,7 +10,7 @@ type config struct {
 	fileExtensions []string
 }
 
-func newConfig(OptFns ...OptFn) (*config, error) {
+func newConfig(options ...Option) (*config, error) {
 	c := &config{
 		lastNodeFormat: branchFormat{
 			directly:   "└──",
@@ -20,10 +20,10 @@ func newConfig(OptFns ...OptFn) (*config, error) {
 			directly:   "├──",
 			indirectly: "│   ",
 		},
-		space:  tabSpaces,
+		space:  spacesTab,
 		encode: encodeDefault,
 	}
-	for _, opt := range OptFns {
+	for _, opt := range options {
 		if err := opt(c); err != nil {
 			return nil, err
 		}
@@ -31,27 +31,27 @@ func newConfig(OptFns ...OptFn) (*config, error) {
 	return c, nil
 }
 
-// OptFn is functional options pattern
-type OptFn func(*config) error
+// Option is functional options pattern
+type Option func(*config) error
 
 // WithIndentTwoSpaces returns function for two spaces indent input.
-func WithIndentTwoSpaces() OptFn {
+func WithIndentTwoSpaces() Option {
 	return func(c *config) error {
-		c.space = twoSpaces
+		c.space = spacesTwo
 		return nil
 	}
 }
 
 // WithIndentFourSpaces returns function for four spaces indent input.
-func WithIndentFourSpaces() OptFn {
+func WithIndentFourSpaces() Option {
 	return func(c *config) error {
-		c.space = fourSpaces
+		c.space = spacesFour
 		return nil
 	}
 }
 
 // WithBranchFormatIntermedialNode returns function for branch format.
-func WithBranchFormatIntermedialNode(directly, indirectly string) OptFn {
+func WithBranchFormatIntermedialNode(directly, indirectly string) Option {
 	return func(c *config) error {
 		c.intermedialNodeFormat.directly = directly
 		c.intermedialNodeFormat.indirectly = indirectly
@@ -60,7 +60,7 @@ func WithBranchFormatIntermedialNode(directly, indirectly string) OptFn {
 }
 
 // WithBranchFormatLastNode returns function for branch format.
-func WithBranchFormatLastNode(directly, indirectly string) OptFn {
+func WithBranchFormatLastNode(directly, indirectly string) Option {
 	return func(c *config) error {
 		c.lastNodeFormat.directly = directly
 		c.lastNodeFormat.indirectly = indirectly
@@ -69,7 +69,7 @@ func WithBranchFormatLastNode(directly, indirectly string) OptFn {
 }
 
 // WithEncodeJSON returns function for output json format.
-func WithEncodeJSON() OptFn {
+func WithEncodeJSON() Option {
 	return func(c *config) error {
 		c.encode = encodeJSON
 		return nil
@@ -77,7 +77,7 @@ func WithEncodeJSON() OptFn {
 }
 
 // WithEncodeYAML returns function for output yaml format.
-func WithEncodeYAML() OptFn {
+func WithEncodeYAML() Option {
 	return func(c *config) error {
 		c.encode = encodeYAML
 		return nil
@@ -85,7 +85,7 @@ func WithEncodeYAML() OptFn {
 }
 
 // WithEncodeTOML returns function for output toml format.
-func WithEncodeTOML() OptFn {
+func WithEncodeTOML() Option {
 	return func(c *config) error {
 		c.encode = encodeTOML
 		return nil
@@ -93,15 +93,15 @@ func WithEncodeTOML() OptFn {
 }
 
 // WithDryRun returns function for dry run. Detects node that is invalid for directory generation.
-func WithDryRun() OptFn {
+func WithDryRun() Option {
 	return func(c *config) error {
 		c.dryrun = true
 		return nil
 	}
 }
 
-// WithFileExtension returns function for creating as a file instead of a directory.
-func WithFileExtension(extensions []string) OptFn {
+// WithFileExtensions returns function for creating as a file instead of a directory.
+func WithFileExtensions(extensions []string) Option {
 	return func(c *config) error {
 		c.fileExtensions = extensions
 		return nil

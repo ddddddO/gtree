@@ -159,7 +159,7 @@ func actionOutput(c *cli.Context) error {
 	return nil
 }
 
-func watchMarkdownAndOutput(markdownPath string, indentation gtree.OptFn, outputFormat gtree.OptFn) error {
+func watchMarkdownAndOutput(markdownPath string, indentation gtree.Option, outputFormat gtree.Option) error {
 	ticker := time.NewTicker(500 * time.Millisecond)
 	var preFileModTime time.Time
 	for range ticker.C {

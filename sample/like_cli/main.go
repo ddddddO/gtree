@@ -36,7 +36,7 @@ func main() {
     - o
   - g`))
 
-	twoSpaces := &adapter.TwoSpaces{
+	spacesTwo := &adapter.TwoSpaces{
 		Data: dataTwoSpaces,
 	}
 
@@ -51,14 +51,14 @@ func main() {
         - o
     - g`))
 
-	fourSpaces := &adapter.FourSpaces{
+	spacesFour := &adapter.FourSpaces{
 		Data: dataFourSpaces,
 	}
 
 	outputer := []adapter.Outputer{
 		tab,
-		twoSpaces,
-		fourSpaces,
+		spacesTwo,
+		spacesFour,
 	}
 
 	for _, or := range outputer {

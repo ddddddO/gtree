@@ -12,7 +12,7 @@ func TestOutputProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *Node
-		optFns  []OptFn
+		options []Option
 		want    string
 		wantErr error
 	}{
@@ -52,7 +52,7 @@ root
 		{
 			name: "case(succeeded / branch format)",
 			root: prepareMultiNode(),
-			optFns: []OptFn{
+			options: []Option{
 				WithBranchFormatIntermedialNode("+--", ":   "),
 				WithBranchFormatLastNode("+--", "    "),
 			},
@@ -69,17 +69,17 @@ root1
 `, "\n"),
 		},
 		{
-			name:   "case(succeeded / output json)",
-			root:   prepareMultiNode(),
-			optFns: []OptFn{WithEncodeJSON()},
+			name:    "case(succeeded / output json)",
+			root:    prepareMultiNode(),
+			options: []Option{WithEncodeJSON()},
 			want: strings.TrimPrefix(`
 {"value":"root1","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
 `, "\n"),
 		},
 		{
-			name:   "case(succeeded / output yaml)",
-			root:   prepareMultiNode(),
-			optFns: []OptFn{WithEncodeYAML()},
+			name:    "case(succeeded / output yaml)",
+			root:    prepareMultiNode(),
+			options: []Option{WithEncodeYAML()},
 			want: strings.TrimPrefix(`
 value: root1
 children:
@@ -102,9 +102,9 @@ children:
 `, "\n"),
 		},
 		{
-			name:   "case(succeeded / output toml)",
-			root:   prepareMultiNode(),
-			optFns: []OptFn{WithEncodeTOML()},
+			name:    "case(succeeded / output toml)",
+			root:    prepareMultiNode(),
+			options: []Option{WithEncodeTOML()},
 			want: strings.TrimPrefix(`
 value = 'root1'
 [[children]]
@@ -142,7 +142,7 @@ children = []
 			t.Parallel()
 
 			buf := &bytes.Buffer{}
-			gotErr := OutputProgrammably(buf, tt.root, tt.optFns...)
+			gotErr := OutputProgrammably(buf, tt.root, tt.options...)
 			got := buf.String()
 
 			if got != tt.want {
@@ -203,7 +203,7 @@ func TestMkdirProgrammably(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *Node
-		optFns  []OptFn
+		options []Option
 		wantErr error
 	}{
 		{
@@ -227,7 +227,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		{
 			name: "case(dry run/invalid node name)",
 			root: prepareInvalidNodeName(),
-			optFns: []OptFn{
+			options: []Option{
 				WithDryRun(),
 			},
 			wantErr: errors.Errorf("invalid node name: %s", "chi/ld 4"),
@@ -235,7 +235,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		{
 			name: "case(dry run/succeeded)",
 			root: prepareMultiNode(),
-			optFns: []OptFn{
+			options: []Option{
 				WithDryRun(),
 			},
 			wantErr: nil,
@@ -252,7 +252,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := MkdirProgrammably(tt.root, tt.optFns...)
+			gotErr := MkdirProgrammably(tt.root, tt.options...)
 			if gotErr != nil {
 				if gotErr.Error() != tt.wantErr.Error() {
 					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)

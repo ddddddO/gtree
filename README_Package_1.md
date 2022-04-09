@@ -97,4 +97,4 @@ func main() {
 ### *Mkdir*
 
 - `gtree.Mkdir` func makes directories.
-	- You can use `gtree.WithFileExtension` func to make specified extensions as file.
+	- You can use `gtree.WithFileExtensions` func to make specified extensions as file.

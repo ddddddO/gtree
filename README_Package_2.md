@@ -310,7 +310,7 @@ func main() {
 	// make directories and files with specific extensions.
 	if err := gtree.MkdirProgrammably(
 		gtreeDir,
-		gtree.WithFileExtension([]string{".go", ".md", "makefile"}),
+		gtree.WithFileExtensions([]string{".go", ".md", "makefile"}),
 	); err != nil {
 		panic(err)
 	}

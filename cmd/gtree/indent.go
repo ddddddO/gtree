@@ -6,7 +6,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func decideIndentation(c *cli.Context) (gtree.OptFn, error) {
+func decideIndentation(c *cli.Context) (gtree.Option, error) {
 	if err := validateIndentation(c); err != nil {
 		return nil, err
 	}
