@@ -73,8 +73,7 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 		return tree.spread(os.Stdout)
 	}
 
-	// 微妙?
-	tree.setDryRun(true)
+	tree.enableValidation()
 	// when detect invalid node name, return error. process end.
 	// when detected no invalid node name, no output tree. process continue.
 	if err := tree.grow(); err != nil {
