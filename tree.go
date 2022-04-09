@@ -17,10 +17,7 @@ func Output(w io.Writer, r io.Reader, optFns ...OptFn) error {
 	if err != nil {
 		return err
 	}
-	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
-	s := newSpreader(conf.encode)
-	m := newMkdirer(conf.fileExtensions)
-	tree := newTree(rs, g, s, m)
+	tree := initializeTree(conf, rs)
 
 	if err := tree.grow(); err != nil {
 		return err
@@ -40,15 +37,19 @@ func Mkdir(r io.Reader, optFns ...OptFn) error {
 	if err != nil {
 		return err
 	}
-	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
-	s := newSpreader(conf.encode)
-	m := newMkdirer(conf.fileExtensions)
-	tree := newTree(rs, g, s, m)
+	tree := initializeTree(conf, rs)
 
 	if err := tree.grow(); err != nil {
 		return err
 	}
 	return tree.mkdir()
+}
+
+func initializeTree(conf *config, rs []*Node) *tree {
+	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+	s := newSpreader(conf.encode)
+	m := newMkdirer(conf.fileExtensions)
+	return newTree(rs, g, s, m)
 }
 
 type tree struct {
