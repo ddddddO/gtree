@@ -10,12 +10,13 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 	if err != nil {
 		return err
 	}
-	rs, err := generateRoots(r, conf.space)
+	rg := newRootGenerator(r, conf.space)
+	roots, err := rg.generate()
 	if err != nil {
 		return err
 	}
 
-	tree := initializeTree(conf, rs)
+	tree := initializeTree(conf, roots)
 	if err := tree.grow(); err != nil {
 		return err
 	}
@@ -28,12 +29,13 @@ func Mkdir(r io.Reader, options ...Option) error {
 	if err != nil {
 		return err
 	}
-	rs, err := generateRoots(r, conf.space)
+	rg := newRootGenerator(r, conf.space)
+	roots, err := rg.generate()
 	if err != nil {
 		return err
 	}
 
-	tree := initializeTree(conf, rs)
+	tree := initializeTree(conf, roots)
 	if err := tree.grow(); err != nil {
 		return err
 	}

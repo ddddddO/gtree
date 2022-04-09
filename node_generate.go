@@ -7,12 +7,24 @@ import (
 	"github.com/pkg/errors"
 )
 
-func generateRoots(r io.Reader, space spaceType) ([]*Node, error) {
+type rootGenerator struct {
+	r  io.Reader
+	st spaceType
+}
+
+func newRootGenerator(r io.Reader, st spaceType) *rootGenerator {
+	return &rootGenerator{
+		r:  r,
+		st: st,
+	}
+}
+
+func (rg *rootGenerator) generate() ([]*Node, error) {
 	var (
-		scanner          = bufio.NewScanner(r)
+		scanner          = bufio.NewScanner(rg.r)
 		stack            *stack
 		counter          = newCounter()
-		generateNodeFunc = space.decideGenerateFunc()
+		generateNodeFunc = rg.st.decideGenerateFunc()
 		roots            []*Node
 	)
 
