@@ -39,7 +39,7 @@ GLOBAL OPTIONS:
 ```console
 19:43:41 > gtree output --help
 NAME:
-   gtree output - Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is stdout or yaml or toml or json. Default stdout.
+   gtree output - Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
 
 USAGE:
    gtree output [command options] [arguments...]

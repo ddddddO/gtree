@@ -6,22 +6,34 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func decideIndentation(c *cli.Context) (gtree.Option, error) {
-	if err := validateIndentation(c); err != nil {
+type stateIndentation struct {
+	spacesTwo  bool
+	spacesFour bool
+}
+
+func newStateIndentation(c *cli.Context) *stateIndentation {
+	return &stateIndentation{
+		spacesTwo:  c.Bool("two-spaces"),
+		spacesFour: c.Bool("four-spaces"),
+	}
+}
+
+func (s *stateIndentation) decideOption() (gtree.Option, error) {
+	if err := s.validate(); err != nil {
 		return nil, err
 	}
 
-	if c.Bool("two-spaces") {
+	if s.spacesTwo {
 		return gtree.WithIndentTwoSpaces(), nil
 	}
-	if c.Bool("four-spaces") {
+	if s.spacesFour {
 		return gtree.WithIndentFourSpaces(), nil
 	}
 	return nil, nil
 }
 
-func validateIndentation(c *cli.Context) error {
-	if c.Bool("two-spaces") && c.Bool("four-spaces") {
+func (s *stateIndentation) validate() error {
+	if s.spacesTwo && s.spacesFour {
 		return errors.New(`choose either "two-spaces(ts)" or "four-spaces(fs)".`)
 	}
 	return nil

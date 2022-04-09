@@ -31,33 +31,47 @@ func output(out io.Writer, in io.Reader, indentation gtree.Option, outputFormat 
 	return gtree.Output(out, in, options...)
 }
 
-func decideOutputFormat(c *cli.Context) (gtree.Option, error) {
-	if err := validateOutputFormat(c); err != nil {
+type stateOutputFormat struct {
+	encodeJSON bool
+	encodeYAML bool
+	encodeTOML bool
+}
+
+func newStateOutputFormat(c *cli.Context) *stateOutputFormat {
+	return &stateOutputFormat{
+		encodeJSON: c.Bool("json"),
+		encodeYAML: c.Bool("yaml"),
+		encodeTOML: c.Bool("toml"),
+	}
+}
+
+func (s *stateOutputFormat) decideOption() (gtree.Option, error) {
+	if err := s.validate(); err != nil {
 		return nil, err
 	}
 
 	switch {
-	case c.Bool("json"):
+	case s.encodeJSON:
 		return gtree.WithEncodeJSON(), nil
-	case c.Bool("yaml"):
+	case s.encodeYAML:
 		return gtree.WithEncodeYAML(), nil
-	case c.Bool("toml"):
+	case s.encodeTOML:
 		return gtree.WithEncodeTOML(), nil
 	}
 	return nil, nil
 }
 
-func validateOutputFormat(c *cli.Context) error {
-	if c.Bool("json") && c.Bool("yaml") && c.Bool("toml") {
+func (s *stateOutputFormat) validate() error {
+	if s.encodeJSON && s.encodeYAML && s.encodeTOML {
 		return errors.New(`choose either "json(j)" or "yaml(y)" or "toml(t)".`)
 	}
-	if c.Bool("json") && c.Bool("yaml") {
+	if s.encodeJSON && s.encodeYAML {
 		return errors.New(`choose either "json(j)" or "yaml(y)".`)
 	}
-	if c.Bool("json") && c.Bool("toml") {
+	if s.encodeJSON && s.encodeTOML {
 		return errors.New(`choose either "json(j)" or "toml(t)".`)
 	}
-	if c.Bool("toml") && c.Bool("yaml") {
+	if s.encodeTOML && s.encodeYAML {
 		return errors.New(`choose either "toml(t)" or "yaml(y)".`)
 	}
 	return nil

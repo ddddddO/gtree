@@ -85,7 +85,7 @@ func main() {
 			{
 				Name:    "output",
 				Aliases: []string{"o", "out"},
-				Usage:   "Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is stdout or yaml or toml or json. Default stdout.",
+				Usage:   "Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.",
 				Flags:   append(commonFlags, outputFlags...),
 				Action:  actionOutput,
 			},
@@ -121,12 +121,14 @@ func main() {
 }
 
 func actionOutput(c *cli.Context) error {
-	indentation, err := decideIndentation(c)
+	stateIndentation := newStateIndentation(c)
+	indentation, err := stateIndentation.decideOption()
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
 
-	outputFormat, err := decideOutputFormat(c)
+	stateOutputFormat := newStateOutputFormat(c)
+	outputFormat, err := stateOutputFormat.decideOption()
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
@@ -190,7 +192,8 @@ func watchMarkdownAndOutput(markdownPath string, indentation gtree.Option, outpu
 }
 
 func actionMkdir(c *cli.Context) error {
-	indentation, err := decideIndentation(c)
+	stateIndentation := newStateIndentation(c)
+	indentation, err := stateIndentation.decideOption()
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
