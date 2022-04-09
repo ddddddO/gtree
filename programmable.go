@@ -36,8 +36,12 @@ func OutputProgrammably(w io.Writer, root *Node, optFns ...OptFn) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun, conf.fileExtensions)
+	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+	s := newSpreader(conf.encode)
+	m := newMkdirer(conf.fileExtensions)
+	tree := newTree(g, s, m)
 	tree.addRoot(root)
+
 	if err := tree.grow(); err != nil {
 		return err
 	}
@@ -61,7 +65,10 @@ func MkdirProgrammably(root *Node, optFns ...OptFn) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun, conf.fileExtensions)
+	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+	s := newSpreader(conf.encode)
+	m := newMkdirer(conf.fileExtensions)
+	tree := newTree(g, s, m)
 	tree.addRoot(root)
 
 	if conf.dryrun {

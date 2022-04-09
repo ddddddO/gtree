@@ -6,7 +6,7 @@ import (
 
 type grower interface {
 	grow([]*Node) error
-	setDryRun(bool)
+	setDryRun(bool) // TODO: どうにかしたい
 }
 
 func newGrower(
@@ -106,7 +106,6 @@ func (*defaultGrower) assembleBranchFinally(current, root *Node) {
 	current.branch.path = filepath.Join(root.Name, current.branch.path)
 }
 
-// TODO: どうにかしたい
 func (dg *defaultGrower) setDryRun(dryrun bool) {
 	dg.dryrunMode = dryrun
 }

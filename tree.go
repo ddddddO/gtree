@@ -46,7 +46,11 @@ func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 		stack            *stack
 		counter          = newCounter()
 		generateNodeFunc = decideGenerateFunc(conf.space)
-		tree             = newTree(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun, conf.fileExtensions)
+
+		g    = newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+		s    = newSpreader(conf.encode)
+		m    = newMkdirer(conf.fileExtensions)
+		tree = newTree(g, s, m)
 	)
 
 	for scanner.Scan() {
@@ -84,15 +88,14 @@ type tree struct {
 }
 
 func newTree(
-	encode encode,
-	lastNodeFormat, intermedialNodeFormat branchFormat,
-	dryrun bool,
-	fileExtensions []string,
+	grower grower,
+	spreader spreader,
+	mkdirer mkdirer,
 ) *tree {
 	return &tree{
-		grower:   newGrower(encode, lastNodeFormat, intermedialNodeFormat, dryrun),
-		spreader: newSpreader(encode),
-		mkdirer:  newMkdirer(fileExtensions),
+		grower:   grower,
+		spreader: spreader,
+		mkdirer:  mkdirer,
 	}
 }
 
@@ -104,13 +107,13 @@ func (t *tree) addRoot(root *Node) {
 	t.roots = append(t.roots, root)
 }
 
-func (t *tree) grow() error {
-	return t.grower.grow(t.roots)
-}
-
 // TODO: メソッド名見直す
 func (t *tree) enableValidation() {
 	t.grower.setDryRun(true)
+}
+
+func (t *tree) grow() error {
+	return t.grower.grow(t.roots)
 }
 
 func (t *tree) spread(w io.Writer) error {

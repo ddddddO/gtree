@@ -39,11 +39,13 @@ func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
 			if err := dm.mkfile(current.getPath()); err != nil {
 				return err
 			}
-		} else {
-			if err := dm.mkdirAll(current.getPath()); err != nil {
-				return err
-			}
+			return nil
 		}
+
+		if err := dm.mkdirAll(current.getPath()); err != nil {
+			return err
+		}
+		return nil
 	}
 
 	for _, child := range current.Children {
