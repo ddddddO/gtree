@@ -25,7 +25,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 COMMANDS:
-   output, o, out     Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is stdout or yaml or toml or json. Default stdout.
+   output, o, out     Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
    mkdir, m           Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.
    template, t, tmpl  Output markdown template.
    version, v         Output gtree version.

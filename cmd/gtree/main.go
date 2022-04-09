@@ -44,19 +44,19 @@ func main() {
 			Name:        "json",
 			Aliases:     []string{"j"},
 			Usage:       "Output JSON format.",
-			DefaultText: "stdout",
+			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:        "yaml",
 			Aliases:     []string{"y"},
 			Usage:       "Output YAML format.",
-			DefaultText: "stdout",
+			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:        "toml",
 			Aliases:     []string{"t"},
 			Usage:       "Output TOML format.",
-			DefaultText: "stdout",
+			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:    "watch",
