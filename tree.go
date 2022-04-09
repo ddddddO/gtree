@@ -3,9 +3,6 @@ package gtree
 import (
 	"bufio"
 	"io"
-	"os"
-	"path/filepath"
-	"strings"
 )
 
 // Output outputs a tree to w with r as Markdown format input.
@@ -44,12 +41,16 @@ func Mkdir(r io.Reader, optFns ...OptFn) error {
 	return tree.mkdir()
 }
 
-func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
+func sprout(scanner *bufio.Scanner, conf *config) (*tree, error) {
 	var (
 		stack            *stack
 		counter          = newCounter()
 		generateNodeFunc = decideGenerateFunc(conf.space)
-		tree             = newTree(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun, conf.fileExtensions)
+
+		g    = newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+		s    = newSpreader(conf.encode)
+		m    = newMkdirer(conf.fileExtensions)
+		tree = newTree(g, s, m)
 	)
 
 	for scanner.Scan() {
@@ -79,214 +80,46 @@ func sprout(scanner *bufio.Scanner, conf *config) (treeer, error) {
 	return tree, nil
 }
 
-type treeer interface {
-	addRoot(root *Node)
-	setDryRun(bool) // tree初期化のタイミングではなく、tree生成後に差し込む為に追加
-	grow() error
-	spread(w io.Writer) error
-	mkdir() error
+type tree struct {
+	roots    []*Node
+	grower   grower
+	spreader spreader
+	mkdirer  mkdirer
 }
 
-type tree struct {
-	roots                 []*Node
-	lastNodeFormat        branchFormat
-	intermedialNodeFormat branchFormat
-	dryrunMode            bool
-	fileExtensions        []string
+func newTree(
+	grower grower,
+	spreader spreader,
+	mkdirer mkdirer,
+) *tree {
+	return &tree{
+		grower:   grower,
+		spreader: spreader,
+		mkdirer:  mkdirer,
+	}
 }
 
 type branchFormat struct {
 	directly, indirectly string
 }
 
-func newTree(
-	encode encode,
-	lastNodeFormat, intermedialNodeFormat branchFormat,
-	dryrun bool,
-	fileExtensions []string,
-) treeer {
-	switch encode {
-	case encodeJSON:
-		return &jsonTree{
-			&tree{},
-		}
-	case encodeYAML:
-		return &yamlTree{
-			&tree{},
-		}
-	case encodeTOML:
-		return &tomlTree{
-			&tree{},
-		}
-	default:
-		return &tree{
-			lastNodeFormat:        lastNodeFormat,
-			intermedialNodeFormat: intermedialNodeFormat,
-			dryrunMode:            dryrun,
-			fileExtensions:        fileExtensions,
-		}
-	}
-}
-
 func (t *tree) addRoot(root *Node) {
 	t.roots = append(t.roots, root)
 }
 
+// TODO: メソッド名見直す
+func (t *tree) enableValidation() {
+	t.grower.setDryRun(true)
+}
+
 func (t *tree) grow() error {
-	for _, root := range t.roots {
-		if err := t.assemble(root); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (t *tree) assemble(current *Node) error {
-	if err := t.assembleBranch(current); err != nil {
-		return err
-	}
-
-	for _, child := range current.Children {
-		if err := t.assemble(child); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (t *tree) assembleBranch(current *Node) error {
-	if current.isRoot() {
-		return nil
-	}
-
-	t.assembleBranchDirectly(current)
-
-	// go back to the root to form a branch
-	tmpParent := current.parent
-	for {
-		if tmpParent.isRoot() {
-			t.assembleBranchFinally(current, tmpParent)
-
-			if t.dryrunMode {
-				if err := current.validatePath(); err != nil {
-					return err
-				}
-			}
-			break
-		}
-
-		t.assembleBranchIndirectly(current, tmpParent)
-
-		tmpParent = tmpParent.parent
-	}
-	return nil
-}
-
-func (t *tree) assembleBranchDirectly(current *Node) {
-	current.branch.path = current.Name
-
-	if current.isLastOfHierarchy() {
-		current.branch.value += t.lastNodeFormat.directly
-	} else {
-		current.branch.value += t.intermedialNodeFormat.directly
-	}
-}
-
-func (t *tree) assembleBranchIndirectly(current, parent *Node) {
-	current.branch.path = filepath.Join(parent.Name, current.branch.path)
-
-	if parent.isLastOfHierarchy() {
-		current.branch.value = t.lastNodeFormat.indirectly + current.branch.value
-	} else {
-		current.branch.value = t.intermedialNodeFormat.indirectly + current.branch.value
-	}
-}
-
-func (*tree) assembleBranchFinally(current, root *Node) {
-	current.branch.path = filepath.Join(root.Name, current.branch.path)
+	return t.grower.grow(t.roots)
 }
 
 func (t *tree) spread(w io.Writer) error {
-	branches := ""
-	for _, root := range t.roots {
-		branches += t.spreadBranch(root, "")
-	}
-	return t.write(w, branches)
-}
-
-func (*tree) spreadBranch(current *Node, out string) string {
-	out += current.getBranch()
-	for _, child := range current.Children {
-		out = (*tree)(nil).spreadBranch(child, out)
-	}
-	return out
-}
-
-func (*tree) write(w io.Writer, in string) error {
-	buf := bufio.NewWriter(w)
-	if _, err := buf.WriteString(in); err != nil {
-		return err
-	}
-	return buf.Flush()
+	return t.spreader.spread(w, t.roots)
 }
 
 func (t *tree) mkdir() error {
-	for _, root := range t.roots {
-		if err := t.makeDirectoriesAndFiles(root); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (t *tree) makeDirectoriesAndFiles(current *Node) error {
-	if !current.hasChild() {
-		if t.needsMkfile(current) {
-			dir := strings.TrimSuffix(current.getPath(), current.Name)
-			if err := t.mkdirAll(dir); err != nil {
-				return err
-			}
-			if err := t.mkfile(current.getPath()); err != nil {
-				return err
-			}
-		} else {
-			if err := t.mkdirAll(current.getPath()); err != nil {
-				return err
-			}
-		}
-	}
-
-	for _, child := range current.Children {
-		if err := t.makeDirectoriesAndFiles(child); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (t *tree) needsMkfile(current *Node) bool {
-	for _, e := range t.fileExtensions {
-		if strings.HasSuffix(current.Name, e) {
-			return true
-		}
-	}
-	return false
-}
-
-const permission = 0777
-
-func (*tree) mkdirAll(dir string) error {
-	return os.MkdirAll(dir, permission)
-}
-
-func (*tree) mkfile(path string) error {
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	return f.Close()
-}
-
-func (t *tree) setDryRun(dryrun bool) {
-	t.dryrunMode = dryrun
+	return t.mkdirer.mkdir(t.roots)
 }
