@@ -15,16 +15,18 @@ type spreader interface {
 }
 
 func newSpreader(encode encode) spreader {
-	switch encode {
-	case encodeJSON:
-		return &jsonSpreader{}
-	case encodeTOML:
-		return &tomlSpreader{}
-	case encodeYAML:
-		return &yamlSpreader{}
-	default:
-		return &defaultSpreader{}
+	if s, ok := spreaders[encode]; ok {
+		return s
 	}
+	return &defaultSpreader{}
+}
+
+// NOTE: 微妙。分岐は無くせるし追加は楽そうだが、グローバルに持ってしまってる。
+var spreaders = map[encode]spreader{
+	encodeDefault: &defaultSpreader{},
+	encodeJSON:    &jsonSpreader{},
+	encodeTOML:    &tomlSpreader{},
+	encodeYAML:    &yamlSpreader{},
 }
 
 type encode int
