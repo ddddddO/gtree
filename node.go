@@ -39,7 +39,7 @@ func (n *Node) addChild(child *Node) {
 	n.Children = append(n.Children, child)
 }
 
-func (n *Node) isDirectlyUnderNode(node *Node) bool {
+func (n *Node) isDirectlyUnder(node *Node) bool {
 	return n.hierarchy == node.hierarchy+1
 }
 

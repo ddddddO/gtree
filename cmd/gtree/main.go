@@ -136,7 +136,7 @@ func actionOutput(c *cli.Context) error {
 	options := []gtree.Option{indentation, outputFormat}
 
 	markdownPath := c.Path("file")
-	if markdownPath == "" || markdownPath == "-" {
+	if isInputStdin(markdownPath) {
 		if err := outputNotDryrun(os.Stdout, os.Stdin, options); err != nil {
 			return cli.Exit(err, 1)
 		}
@@ -161,6 +161,10 @@ func actionOutput(c *cli.Context) error {
 	}
 
 	return nil
+}
+
+func isInputStdin(path string) bool {
+	return path == "" || path == "-"
 }
 
 func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
@@ -203,7 +207,7 @@ func actionMkdir(c *cli.Context) error {
 
 	markdownPath := c.Path("file")
 	in := os.Stdin
-	if markdownPath != "" && markdownPath != "-" {
+	if !isInputStdin(markdownPath) {
 		in, err = os.Open(markdownPath)
 		if err != nil {
 			return cli.Exit(err, 1)

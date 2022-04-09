@@ -15,15 +15,13 @@ func newGrower(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
 	dryrunMode bool,
 ) grower {
-	switch encode {
-	case encodeDefault:
-		return &defaultGrower{
-			lastNodeFormat:        lastNodeFormat,
-			intermedialNodeFormat: intermedialNodeFormat,
-			dryrunMode:            dryrunMode,
-		}
-	default:
+	if encode != encodeDefault {
 		return &noopGrower{}
+	}
+	return &defaultGrower{
+		lastNodeFormat:        lastNodeFormat,
+		intermedialNodeFormat: intermedialNodeFormat,
+		dryrunMode:            dryrunMode,
 	}
 }
 
@@ -117,8 +115,6 @@ func (dg *defaultGrower) setDryRun(dryrun bool) {
 
 type noopGrower struct{}
 
-func (ng *noopGrower) grow(_ []*Node) error {
-	return nil
-}
+func (*noopGrower) grow(_ []*Node) error { return nil }
 
-func (ng *noopGrower) setDryRun(_ bool) {}
+func (*noopGrower) setDryRun(_ bool) {}

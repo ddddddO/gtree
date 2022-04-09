@@ -39,7 +39,6 @@ func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
 			}
 			return dm.mkfile(current.getPath())
 		}
-
 		return dm.mkdirAll(current.getPath())
 	}
 
