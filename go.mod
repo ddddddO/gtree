@@ -3,7 +3,7 @@ module github.com/ddddddO/gtree
 go 1.18
 
 require (
-	github.com/pelletier/go-toml/v2 v2.0.0-beta.7
+	github.com/pelletier/go-toml/v2 v2.0.0-beta.8
 	github.com/pkg/errors v0.9.1
 	github.com/urfave/cli/v2 v2.4.0
 	gopkg.in/yaml.v2 v2.4.0
