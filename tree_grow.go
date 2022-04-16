@@ -45,7 +45,7 @@ func (dg *defaultGrower) grow(roots []*Node) error {
 }
 
 func (dg *defaultGrower) assemble(current *Node) error {
-	if err := dg.assemblebrnch(current); err != nil {
+	if err := dg.assembleBranch(current); err != nil {
 		return err
 	}
 
@@ -57,18 +57,18 @@ func (dg *defaultGrower) assemble(current *Node) error {
 	return nil
 }
 
-func (dg *defaultGrower) assemblebrnch(current *Node) error {
+func (dg *defaultGrower) assembleBranch(current *Node) error {
 	if current.isRoot() {
 		return nil
 	}
 
-	dg.assemblebrnchDirectly(current)
+	dg.assembleBranchDirectly(current)
 
 	// go back to the root to form a brnch
 	tmpParent := current.parent
 	for {
 		if tmpParent.isRoot() {
-			dg.assemblebrnchFinally(current, tmpParent)
+			dg.assembleBranchFinally(current, tmpParent)
 
 			if dg.enabledValidation {
 				if err := current.validatePath(); err != nil {
@@ -78,14 +78,14 @@ func (dg *defaultGrower) assemblebrnch(current *Node) error {
 			break
 		}
 
-		dg.assemblebrnchIndirectly(current, tmpParent)
+		dg.assembleBranchIndirectly(current, tmpParent)
 
 		tmpParent = tmpParent.parent
 	}
 	return nil
 }
 
-func (dg *defaultGrower) assemblebrnchDirectly(current *Node) {
+func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
 	current.brnch.path = current.Name
 
 	if current.isLastOfHierarchy() {
@@ -95,7 +95,7 @@ func (dg *defaultGrower) assemblebrnchDirectly(current *Node) {
 	}
 }
 
-func (dg *defaultGrower) assemblebrnchIndirectly(current, parent *Node) {
+func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
 	current.brnch.path = filepath.Join(parent.Name, current.brnch.path)
 
 	if parent.isLastOfHierarchy() {
@@ -105,7 +105,7 @@ func (dg *defaultGrower) assemblebrnchIndirectly(current, parent *Node) {
 	}
 }
 
-func (*defaultGrower) assemblebrnchFinally(current, root *Node) {
+func (*defaultGrower) assembleBranchFinally(current, root *Node) {
 	current.brnch.path = filepath.Join(root.Name, current.brnch.path)
 }
 
