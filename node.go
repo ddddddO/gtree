@@ -13,7 +13,7 @@ type Node struct {
 	Name      string `json:"value" yaml:"value" toml:"value"`
 	hierarchy uint
 	index     uint
-	branch    branch
+	brnch     branch
 	parent    *Node
 	Children  []*Node `json:"children" yaml:"children" toml:"children"`
 }
@@ -52,18 +52,18 @@ func (n *Node) isRoot() bool {
 	return n.hierarchy == rootHierarchyNum
 }
 
-func (n *Node) getBranch() string {
+func (n *Node) branch() string {
 	if n.isRoot() {
 		return fmt.Sprintf("%s\n", n.Name)
 	}
-	return fmt.Sprintf("%s %s\n", n.branch.value, n.Name)
+	return fmt.Sprintf("%s %s\n", n.brnch.value, n.Name)
 }
 
-func (n *Node) getPath() string {
+func (n *Node) path() string {
 	if n.isRoot() {
 		return n.Name
 	}
-	return n.branch.path
+	return n.brnch.path
 }
 
 func (n *Node) hasChild() bool {
@@ -75,8 +75,8 @@ func (n *Node) validatePath() error {
 	if strings.ContainsAny(n.Name, invalidChars) {
 		return errors.Errorf("invalid node name: %s", n.Name)
 	}
-	if !fs.ValidPath(n.branch.path) {
-		return errors.Errorf("invalid path: %s", n.branch.path)
+	if !fs.ValidPath(n.brnch.path) {
+		return errors.Errorf("invalid path: %s", n.brnch.path)
 	}
 	return nil
 }

@@ -45,7 +45,7 @@ func (dg *defaultGrower) grow(roots []*Node) error {
 }
 
 func (dg *defaultGrower) assemble(current *Node) error {
-	if err := dg.assembleBranch(current); err != nil {
+	if err := dg.assemblebrnch(current); err != nil {
 		return err
 	}
 
@@ -57,18 +57,18 @@ func (dg *defaultGrower) assemble(current *Node) error {
 	return nil
 }
 
-func (dg *defaultGrower) assembleBranch(current *Node) error {
+func (dg *defaultGrower) assemblebrnch(current *Node) error {
 	if current.isRoot() {
 		return nil
 	}
 
-	dg.assembleBranchDirectly(current)
+	dg.assemblebrnchDirectly(current)
 
-	// go back to the root to form a branch
+	// go back to the root to form a brnch
 	tmpParent := current.parent
 	for {
 		if tmpParent.isRoot() {
-			dg.assembleBranchFinally(current, tmpParent)
+			dg.assemblebrnchFinally(current, tmpParent)
 
 			if dg.enabledValidation {
 				if err := current.validatePath(); err != nil {
@@ -78,35 +78,35 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 			break
 		}
 
-		dg.assembleBranchIndirectly(current, tmpParent)
+		dg.assemblebrnchIndirectly(current, tmpParent)
 
 		tmpParent = tmpParent.parent
 	}
 	return nil
 }
 
-func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
-	current.branch.path = current.Name
+func (dg *defaultGrower) assemblebrnchDirectly(current *Node) {
+	current.brnch.path = current.Name
 
 	if current.isLastOfHierarchy() {
-		current.branch.value += dg.lastNodeFormat.directly
+		current.brnch.value += dg.lastNodeFormat.directly
 	} else {
-		current.branch.value += dg.intermedialNodeFormat.directly
+		current.brnch.value += dg.intermedialNodeFormat.directly
 	}
 }
 
-func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
-	current.branch.path = filepath.Join(parent.Name, current.branch.path)
+func (dg *defaultGrower) assemblebrnchIndirectly(current, parent *Node) {
+	current.brnch.path = filepath.Join(parent.Name, current.brnch.path)
 
 	if parent.isLastOfHierarchy() {
-		current.branch.value = dg.lastNodeFormat.indirectly + current.branch.value
+		current.brnch.value = dg.lastNodeFormat.indirectly + current.brnch.value
 	} else {
-		current.branch.value = dg.intermedialNodeFormat.indirectly + current.branch.value
+		current.brnch.value = dg.intermedialNodeFormat.indirectly + current.brnch.value
 	}
 }
 
-func (*defaultGrower) assembleBranchFinally(current, root *Node) {
-	current.branch.path = filepath.Join(root.Name, current.branch.path)
+func (*defaultGrower) assemblebrnchFinally(current, root *Node) {
+	current.brnch.path = filepath.Join(root.Name, current.brnch.path)
 }
 
 func (dg *defaultGrower) enableValidation() {

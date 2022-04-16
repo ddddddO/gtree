@@ -33,13 +33,13 @@ func (dm *defaultMkdirer) mkdir(roots []*Node) error {
 func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
 	if !current.hasChild() {
 		if dm.needsMkfile(current.Name) {
-			dir := strings.TrimSuffix(current.getPath(), current.Name)
+			dir := strings.TrimSuffix(current.path(), current.Name)
 			if err := dm.mkdirAll(dir); err != nil {
 				return err
 			}
-			return dm.mkfile(current.getPath())
+			return dm.mkfile(current.path())
 		}
-		return dm.mkdirAll(current.getPath())
+		return dm.mkdirAll(current.path())
 	}
 
 	for _, child := range current.Children {
