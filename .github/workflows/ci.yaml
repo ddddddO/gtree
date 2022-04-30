@@ -10,8 +10,13 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.18
+      - name: install gocognito
+        run: go install github.com/nrnrk/gocognito/cmd/gocognito@latest
       - name: checkout
         uses: actions/checkout@v2
+
+      - name: compute cognitive
+        run: gocognito .
       - name: test
         run: go test ./... -race -coverprofile=coverage.out -covermode=atomic -v
       - name: upload coverage to Codecov
