@@ -11,4 +11,7 @@ test: sweep
 cyclo: sweep
 	gocyclo .
 
+cognitive: sweep
+	gocognito .
+
 all: fmt test cyclo
