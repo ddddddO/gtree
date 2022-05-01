@@ -452,6 +452,21 @@ a
 				err:    errors.New("invalid node name: b/c"),
 			},
 		},
+		{
+			name: "case(succeeded/tab on the way)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a	prev tab
+	- b	prev tab`)),
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+a	prev tab
+└── b	prev tab
+`, "\n"),
+				err: nil,
+			},
+		},
 	}
 
 	for _, tt := range tests {

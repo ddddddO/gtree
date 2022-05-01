@@ -31,7 +31,8 @@ const (
 )
 
 const (
-	rootHierarchyNum = uint(1)
+	invalidHierarchyNum uint = 0
+	rootHierarchyNum    uint = 1
 )
 
 type tabStrategy struct{}
@@ -42,8 +43,8 @@ func (*tabStrategy) generate(row string, idx uint) *Node {
 		hierarchy = rootHierarchyNum
 	)
 	var (
-		isPrevChar = false
-		isRoot     = false
+		existsPrevChar = false
+		isRoot         = false
 	)
 
 	for i, r := range row {
@@ -51,27 +52,34 @@ func (*tabStrategy) generate(row string, idx uint) *Node {
 		case hyphen:
 			if i == 0 {
 				isRoot = true
-			}
-			if isPrevChar {
-				text += string(r)
 				continue
 			}
-			isPrevChar = false
-		case space:
-			if isPrevChar {
+			if existsPrevChar {
 				text += string(r)
+				existsPrevChar = true
+				continue
+			}
+			existsPrevChar = false
+		case space:
+			if existsPrevChar {
+				text += string(r)
+				existsPrevChar = true
 				continue
 			}
 		case tab:
+			if existsPrevChar {
+				text += string(r)
+				existsPrevChar = true
+				continue
+			}
 			hierarchy++
 		default: // directry or file text char
 			text += string(r)
-			isPrevChar = true
+			existsPrevChar = true
 		}
 	}
-	if !isRoot && hierarchy == rootHierarchyNum {
-		hierarchy = 0
-	}
+
+	hierarchy = decideHierarchy(isRoot, hierarchy)
 
 	return newNode(text, hierarchy, idx)
 }
@@ -84,32 +92,41 @@ func (*twoSpacesStrategy) generate(row string, idx uint) *Node {
 		hierarchy = rootHierarchyNum
 	)
 	var (
-		spaceCnt   = uint(0)
-		isPrevChar = false
+		spaceCnt       = uint(0)
+		existsPrevChar = false
+		isRoot         = false
 	)
 
-	for _, r := range row {
+	for i, r := range row {
 		switch r {
 		case hyphen:
-			if isPrevChar {
+			if i == 0 {
+				isRoot = true
+				continue
+			}
+			if existsPrevChar {
 				text += string(r)
+				existsPrevChar = true
 				continue
 			}
 			if spaceCnt%2 == 0 {
 				hierarchy += spaceCnt / 2
 			}
-			isPrevChar = false
+			existsPrevChar = false
 		case space:
-			if isPrevChar {
+			if existsPrevChar {
 				text += string(r)
+				existsPrevChar = true
 				continue
 			}
 			spaceCnt++
 		default: // directry or file text char
 			text += string(r)
-			isPrevChar = true
+			existsPrevChar = true
 		}
 	}
+
+	hierarchy = decideHierarchy(isRoot, hierarchy)
 
 	return newNode(text, hierarchy, idx)
 }
@@ -122,32 +139,48 @@ func (*fourSpacesStrategy) generate(row string, idx uint) *Node {
 		hierarchy = rootHierarchyNum
 	)
 	var (
-		spaceCnt   = uint(0)
-		isPrevChar = false
+		spaceCnt       = uint(0)
+		existsPrevChar = false
+		isRoot         = false
 	)
 
-	for _, r := range row {
+	for i, r := range row {
 		switch r {
 		case hyphen:
-			if isPrevChar {
+			if i == 0 {
+				isRoot = true
+				continue
+			}
+			if existsPrevChar {
 				text += string(r)
+				existsPrevChar = true
 				continue
 			}
 			if spaceCnt%4 == 0 {
 				hierarchy += spaceCnt / 4
 			}
-			isPrevChar = false
+			existsPrevChar = false
 		case space:
-			if isPrevChar {
+			if existsPrevChar {
 				text += string(r)
+				existsPrevChar = true
 				continue
 			}
 			spaceCnt++
 		default: // directry or file text char
 			text += string(r)
-			isPrevChar = true
+			existsPrevChar = true
 		}
 	}
 
+	hierarchy = decideHierarchy(isRoot, hierarchy)
+
 	return newNode(text, hierarchy, idx)
+}
+
+func decideHierarchy(isRoot bool, hierarchy uint) uint {
+	if !isRoot && hierarchy == rootHierarchyNum {
+		return invalidHierarchyNum
+	}
+	return hierarchy
 }
