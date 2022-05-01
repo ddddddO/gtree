@@ -63,7 +63,8 @@ func main() {
 
 	for _, or := range outputer {
 		if err := or.Output(); err != nil {
-			panic(err)
+			fmt.Println(err)
+			return
 		}
 	}
 }

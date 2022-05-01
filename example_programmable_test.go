@@ -20,7 +20,8 @@ func Example() {
 
 	buf := &bytes.Buffer{}
 	if err := gtree.OutputProgrammably(buf, root); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 
 	fmt.Println(buf.String())

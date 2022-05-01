@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 
@@ -35,7 +36,8 @@ func main() {
 	}
 
 	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// .

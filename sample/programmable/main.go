@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/ddddddO/gtree"
@@ -12,7 +13,8 @@ func main() {
 	root.Add("child 5")
 	root.Add("child 1").Add("child 2").Add("child 4")
 	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// root
@@ -25,7 +27,8 @@ func main() {
 	primate := preparePrimate()
 	// default branch format.
 	if err := gtree.OutputProgrammably(os.Stdout, primate); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// Primate
@@ -60,7 +63,8 @@ func main() {
 
 	// output json
 	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeJSON()); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output(using 'jq'):
 	// {
@@ -197,7 +201,8 @@ func main() {
 
 	// output yaml
 	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeYAML()); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// value: Primate
@@ -261,7 +266,8 @@ func main() {
 
 	// output toml
 	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeTOML()); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// value = 'Primate'
@@ -353,7 +359,8 @@ func main() {
 
 	// make directories.
 	if err := gtree.MkdirProgrammably(primate); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output(using Linux 'tree' command):
 	// 22:20:43 > tree Primate/
@@ -402,7 +409,8 @@ func main() {
 		gtreeDir,
 		gtree.WithFileExtensions([]string{".go", ".md", "makefile"}),
 	); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output(using Linux 'tree' command):
 	// 21:57:09 > tree gtree/

@@ -13,6 +13,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"strings"
 
@@ -36,7 +37,8 @@ func main() {
 							- AAAAAAA
 	- eee`))
 	if err := gtree.Output(os.Stdout, r1); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// root
@@ -71,7 +73,8 @@ func main() {
 		gtree.WithBranchFormatIntermedialNode("+->", ":   "),
 		gtree.WithBranchFormatLastNode("+->", "    "),
 	); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// a

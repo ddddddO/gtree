@@ -13,6 +13,7 @@ go get github.com/ddddddO/gtree
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/ddddddO/gtree"
@@ -30,7 +31,8 @@ func main() {
 		gtree.WithBranchFormatIntermedialNode("+--", ":   "),
 		gtree.WithBranchFormatLastNode("+--", "    "),
 	); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// root
@@ -46,7 +48,8 @@ func main() {
 	primate := preparePrimate()
 	// default branch format.
 	if err := gtree.OutputProgrammably(os.Stdout, primate); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// Primate
@@ -139,6 +142,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 
@@ -172,7 +176,8 @@ func main() {
 	}
 
 	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output:
 	// .
@@ -241,13 +246,16 @@ func main() {
 package main
 
 import (
+	"fmt"
+
 	"github.com/ddddddO/gtree"
 )
 
 func main() {
 	primate := preparePrimate()
 	if err := gtree.MkdirProgrammably(primate); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output(using Linux 'tree' command):
 	// 22:20:43 > tree Primate/
@@ -295,6 +303,8 @@ func main() {
 package main
 
 import (
+	"fmt"
+
 	"github.com/ddddddO/gtree"
 )
 
@@ -312,7 +322,8 @@ func main() {
 		gtreeDir,
 		gtree.WithFileExtensions([]string{".go", ".md", "makefile"}),
 	); err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
 	// Output(using Linux 'tree' command):
 	// 21:57:09 > tree gtree/
