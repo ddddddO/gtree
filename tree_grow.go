@@ -60,23 +60,19 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 
 	dg.assembleBranchDirectly(current)
 
-	// go back to the root to form a brnch
+	// go back to the root to form a branch.
 	tmpParent := current.parent
-	for {
-		if !tmpParent.isRoot() {
-			dg.assembleBranchIndirectly(current, tmpParent)
-			tmpParent = tmpParent.parent
-			continue
-		}
+	for ; !tmpParent.isRoot(); tmpParent = tmpParent.parent {
+		dg.assembleBranchIndirectly(current, tmpParent)
+	}
 
-		dg.assembleBranchFinally(current, tmpParent)
-		if !dg.enabledValidation {
-			return nil
-		}
-		if err := current.validatePath(); err != nil {
-			return err
-		}
+	dg.assembleBranchFinally(current, tmpParent)
+
+	if !dg.enabledValidation {
 		return nil
+	}
+	if err := current.validatePath(); err != nil {
+		return err
 	}
 	return nil
 }
