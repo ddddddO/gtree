@@ -1,9 +1,5 @@
 package gtree
 
-import (
-	"path/filepath"
-)
-
 // 関心事は各ノードの枝を組み立てること
 type grower interface {
 	grow([]*Node) error
@@ -67,46 +63,46 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 	// go back to the root to form a brnch
 	tmpParent := current.parent
 	for {
-		if tmpParent.isRoot() {
-			dg.assembleBranchFinally(current, tmpParent)
-
-			if dg.enabledValidation {
-				if err := current.validatePath(); err != nil {
-					return err
-				}
-			}
-			break
+		if !tmpParent.isRoot() {
+			dg.assembleBranchIndirectly(current, tmpParent)
+			tmpParent = tmpParent.parent
+			continue
 		}
 
-		dg.assembleBranchIndirectly(current, tmpParent)
-
-		tmpParent = tmpParent.parent
+		dg.assembleBranchFinally(current, tmpParent)
+		if !dg.enabledValidation {
+			return nil
+		}
+		if err := current.validatePath(); err != nil {
+			return err
+		}
+		return nil
 	}
 	return nil
 }
 
 func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
-	current.brnch.path = current.Name
+	current.setPath(current.Name)
 
 	if current.isLastOfHierarchy() {
-		current.brnch.value += dg.lastNodeFormat.directly
+		current.setBranch(current.branch(), dg.lastNodeFormat.directly)
 	} else {
-		current.brnch.value += dg.intermedialNodeFormat.directly
+		current.setBranch(current.branch(), dg.intermedialNodeFormat.directly)
 	}
 }
 
 func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
-	current.brnch.path = filepath.Join(parent.Name, current.brnch.path)
+	current.setPath(parent.Name, current.path())
 
 	if parent.isLastOfHierarchy() {
-		current.brnch.value = dg.lastNodeFormat.indirectly + current.brnch.value
+		current.setBranch(dg.lastNodeFormat.indirectly, current.branch())
 	} else {
-		current.brnch.value = dg.intermedialNodeFormat.indirectly + current.brnch.value
+		current.setBranch(dg.intermedialNodeFormat.indirectly, current.branch())
 	}
 }
 
 func (*defaultGrower) assembleBranchFinally(current, root *Node) {
-	current.brnch.path = filepath.Join(root.Name, current.brnch.path)
+	current.setPath(root.path(), current.path())
 }
 
 func (dg *defaultGrower) enableValidation() {

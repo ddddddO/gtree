@@ -3,6 +3,7 @@ package gtree
 import (
 	"fmt"
 	"io/fs"
+	"path/filepath"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -52,11 +53,23 @@ func (n *Node) isRoot() bool {
 	return n.hierarchy == rootHierarchyNum
 }
 
-func (n *Node) branch() string {
+func (n *Node) prettyBranch() string {
 	if n.isRoot() {
 		return fmt.Sprintf("%s\n", n.Name)
 	}
 	return fmt.Sprintf("%s %s\n", n.brnch.value, n.Name)
+}
+
+func (n *Node) branch() string {
+	return n.brnch.value
+}
+
+func (n *Node) setBranch(branchs ...string) {
+	ret := ""
+	for _, v := range branchs {
+		ret += v
+	}
+	n.brnch.value = ret
 }
 
 func (n *Node) path() string {
@@ -64,6 +77,10 @@ func (n *Node) path() string {
 		return n.Name
 	}
 	return n.brnch.path
+}
+
+func (n *Node) setPath(paths ...string) {
+	n.brnch.path = filepath.Join(paths...)
 }
 
 func (n *Node) hasChild() bool {
@@ -75,8 +92,8 @@ func (n *Node) validatePath() error {
 	if strings.ContainsAny(n.Name, invalidChars) {
 		return errors.Errorf("invalid node name: %s", n.Name)
 	}
-	if !fs.ValidPath(n.brnch.path) {
-		return errors.Errorf("invalid path: %s", n.brnch.path)
+	if !fs.ValidPath(n.path()) {
+		return errors.Errorf("invalid path: %s", n.path())
 	}
 	return nil
 }

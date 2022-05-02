@@ -49,7 +49,7 @@ func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
 }
 
 func (*defaultSpreader) spreadBranch(current *Node, out string) string {
-	out += current.branch()
+	out += current.prettyBranch()
 	for _, child := range current.Children {
 		out = (*defaultSpreader)(nil).spreadBranch(child, out)
 	}
