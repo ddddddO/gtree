@@ -71,10 +71,7 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 	if !dg.enabledValidation {
 		return nil
 	}
-	if err := current.validatePath(); err != nil {
-		return err
-	}
-	return nil
+	return current.validatePath()
 }
 
 func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
