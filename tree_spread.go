@@ -102,11 +102,32 @@ type tomlSpreader struct{}
 func (*tomlSpreader) spread(w io.Writer, roots []*Node) error {
 	enc := toml.NewEncoder(w)
 	for _, root := range roots {
-		if err := enc.Encode(root); err != nil {
+		tRoot := (*tomlSpreader)(nil).toTomlNode(&tomlNode{Name: root.Name}, root.Children)
+		if err := enc.Encode(tRoot); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+type tomlNode struct {
+	Name     string      `toml:"value"`
+	Children []*tomlNode `toml:"children"`
+}
+
+func (*tomlSpreader) toTomlNode(tParent *tomlNode, children []*Node) *tomlNode {
+	if len(children) == 0 {
+		return nil
+	}
+
+	tChildren := make([]*tomlNode, len(children))
+	for i := range children {
+		tChildren[i] = &tomlNode{Name: children[i].Name}
+		(*tomlSpreader)(nil).toTomlNode(tChildren[i], children[i].Children)
+	}
+	tParent.Children = tChildren
+
+	return tParent
 }
 
 type yamlSpreader struct{}
