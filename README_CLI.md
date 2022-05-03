@@ -2,17 +2,13 @@
 
 ## Installation
 
-go version is 1.16 or higher
+go version requires 1.18 or later.
+
 ```console
 go install github.com/ddddddO/gtree/cmd/gtree@latest
 ```
 
-go version is 1.15 or less
-```console
-go get github.com/ddddddO/gtree/cmd/gtree
-```
-
-or, download binary from [here](https://github.com/ddddddO/gtree/releases).
+**or, download binary from [here](https://github.com/ddddddO/gtree/releases).**
 
 ## Usage
 

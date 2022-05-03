@@ -1,6 +1,9 @@
 # Package(1) / like CLI
 
 ## Installation
+
+go version requires 1.18 or later.
+
 ```console
 go get github.com/ddddddO/gtree
 ```
