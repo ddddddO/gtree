@@ -1,5 +1,9 @@
 package gtree
 
+import (
+	"strings"
+)
+
 type spaceType int
 
 const (
@@ -38,37 +42,18 @@ const (
 type tabStrategy struct{}
 
 func (*tabStrategy) generate(row string, idx uint) *Node {
-	var (
-		hierarchy     = rootHierarchyNum
-		startText     = 2
-		containHyphen = false
-	)
-
-BREAK:
-	for _, r := range row {
-		switch r {
-		case hyphen:
-			containHyphen = true
-			break BREAK
-		case tab:
-			hierarchy++
-			startText++
-		default: // directry or file text char
-			hierarchy = invalidHierarchyNum
-			break BREAK
-		}
+	before, after, found := strings.Cut(row, "-")
+	if !found {
+		return newNode("", invalidHierarchyNum, idx)
 	}
 
-	text := ""
-	if !containHyphen {
-		return newNode(text, invalidHierarchyNum, idx)
+	tabCount := strings.Count(before, "	")
+	if tabCount != len(before) {
+		return newNode("", invalidHierarchyNum, idx)
 	}
-	if hierarchy == invalidHierarchyNum {
-		return newNode(text, hierarchy, idx)
-	}
-	if startText < len(row) {
-		text = row[startText:len(row)]
-	}
+
+	hierarchy := uint(tabCount) + rootHierarchyNum
+	text := strings.TrimPrefix(after, " ")
 	return newNode(text, hierarchy, idx)
 }
 
