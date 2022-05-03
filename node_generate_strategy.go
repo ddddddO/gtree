@@ -60,47 +60,21 @@ func (*tabStrategy) generate(row string, idx uint) *Node {
 type twoSpacesStrategy struct{}
 
 func (*twoSpacesStrategy) generate(row string, idx uint) *Node {
-	var (
-		text      = ""
-		hierarchy = rootHierarchyNum
-	)
-	var (
-		spaceCnt       = uint(0)
-		existsPrevChar = false
-		isRoot         = false
-	)
-
-	for i, r := range row {
-		switch r {
-		case hyphen:
-			if i == 0 {
-				isRoot = true
-				continue
-			}
-			if existsPrevChar {
-				text += string(r)
-				existsPrevChar = true
-				continue
-			}
-			if spaceCnt%2 == 0 {
-				hierarchy += spaceCnt / 2
-			}
-			existsPrevChar = false
-		case space:
-			if existsPrevChar {
-				text += string(r)
-				existsPrevChar = true
-				continue
-			}
-			spaceCnt++
-		default: // directry or file text char
-			text += string(r)
-			existsPrevChar = true
-		}
+	before, after, found := strings.Cut(row, "-")
+	if !found {
+		return newNode("", invalidHierarchyNum, idx)
 	}
 
-	hierarchy = decideHierarchy(isRoot, hierarchy)
+	spaceCount := strings.Count(before, " ")
+	if spaceCount != len(before) {
+		return newNode("", invalidHierarchyNum, idx)
+	}
+	if spaceCount%2 != 0 {
+		return newNode("", invalidHierarchyNum, idx)
+	}
 
+	hierarchy := uint(spaceCount/2) + rootHierarchyNum
+	text := strings.TrimPrefix(after, " ")
 	return newNode(text, hierarchy, idx)
 }
 
