@@ -33,8 +33,8 @@ func TestTabStrategy_Generate(t *testing.T) {
 			t.Parallel()
 
 			node := (*tabStrategy)(nil).generate(tt.row, fixedIndex)
-			if node.Name != tt.want.Name {
-				t.Errorf("\ngot: \n%s\nwant: \n%s", node.Name, tt.want.Name)
+			if node.name != tt.want.Name {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", node.name, tt.want.Name)
 			}
 			if node.hierarchy != tt.want.hierarchy {
 				t.Errorf("\ngot: \n%d\nwant: \n%d", node.hierarchy, tt.want.hierarchy)
@@ -65,8 +65,8 @@ func TestTwoSpacesStrategy_Generate(t *testing.T) {
 			t.Parallel()
 
 			node := (*twoSpacesStrategy)(nil).generate(tt.row, fixedIndex)
-			if node.Name != tt.want.Name {
-				t.Errorf("\ngot: \n%s\nwant: \n%s", node.Name, tt.want.Name)
+			if node.name != tt.want.Name {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", node.name, tt.want.Name)
 			}
 			if node.hierarchy != tt.want.hierarchy {
 				t.Errorf("\ngot: \n%d\nwant: \n%d", node.hierarchy, tt.want.hierarchy)
@@ -98,8 +98,8 @@ func TestFourSpacesStrategy_Generate(t *testing.T) {
 			t.Parallel()
 
 			node := (*fourSpacesStrategy)(nil).generate(tt.row, fixedIndex)
-			if node.Name != tt.want.Name {
-				t.Errorf("\ngot: \n%s\nwant: \n%s", node.Name, tt.want.Name)
+			if node.name != tt.want.Name {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", node.name, tt.want.Name)
 			}
 			if node.hierarchy != tt.want.hierarchy {
 				t.Errorf("\ngot: \n%d\nwant: \n%d", node.hierarchy, tt.want.hierarchy)

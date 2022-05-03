@@ -63,7 +63,7 @@ func (n *Node) validate() error {
 	if n.hierarchy == 0 {
 		return errIncorrectFormat
 	}
-	if len(n.Name) == 0 {
+	if len(n.name) == 0 {
 		return errEmptyText
 	}
 	return nil
