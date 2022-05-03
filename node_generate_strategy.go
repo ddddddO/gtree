@@ -29,9 +29,10 @@ func newStrategy(st spaceType) nodeGenerateStrategy {
 
 // https://ja.wikipedia.org/wiki/ASCII
 const (
-	hyphen = 45
-	space  = 32
-	tab    = 9
+	empty  = ""
+	hyphen = "-"
+	space  = " "
+	tab    = "	"
 )
 
 const (
@@ -42,59 +43,59 @@ const (
 type tabStrategy struct{}
 
 func (*tabStrategy) generate(row string, idx uint) *Node {
-	before, after, found := strings.Cut(row, "-")
+	before, after, found := strings.Cut(row, hyphen)
 	if !found {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 
-	tabCount := strings.Count(before, "	")
+	tabCount := strings.Count(before, tab)
 	if tabCount != len(before) {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 
 	hierarchy := uint(tabCount) + rootHierarchyNum
-	text := strings.TrimPrefix(after, " ")
+	text := strings.TrimPrefix(after, space)
 	return newNode(text, hierarchy, idx)
 }
 
 type twoSpacesStrategy struct{}
 
 func (*twoSpacesStrategy) generate(row string, idx uint) *Node {
-	before, after, found := strings.Cut(row, "-")
+	before, after, found := strings.Cut(row, hyphen)
 	if !found {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 
-	spaceCount := strings.Count(before, " ")
+	spaceCount := strings.Count(before, space)
 	if spaceCount != len(before) {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 	if spaceCount%2 != 0 {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 
 	hierarchy := uint(spaceCount/2) + rootHierarchyNum
-	text := strings.TrimPrefix(after, " ")
+	text := strings.TrimPrefix(after, space)
 	return newNode(text, hierarchy, idx)
 }
 
 type fourSpacesStrategy struct{}
 
 func (*fourSpacesStrategy) generate(row string, idx uint) *Node {
-	before, after, found := strings.Cut(row, "-")
+	before, after, found := strings.Cut(row, hyphen)
 	if !found {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 
-	spaceCount := strings.Count(before, " ")
+	spaceCount := strings.Count(before, space)
 	if spaceCount != len(before) {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 	if spaceCount%4 != 0 {
-		return newNode("", invalidHierarchyNum, idx)
+		return newNode(empty, invalidHierarchyNum, idx)
 	}
 
 	hierarchy := uint(spaceCount/4) + rootHierarchyNum
-	text := strings.TrimPrefix(after, " ")
+	text := strings.TrimPrefix(after, space)
 	return newNode(text, hierarchy, idx)
 }
