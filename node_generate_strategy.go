@@ -27,7 +27,6 @@ func newStrategy(st spaceType) nodeGenerateStrategy {
 	}
 }
 
-// https://ja.wikipedia.org/wiki/ASCII
 const (
 	empty  = ""
 	hyphen = "-"
