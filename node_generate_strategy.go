@@ -81,53 +81,20 @@ func (*twoSpacesStrategy) generate(row string, idx uint) *Node {
 type fourSpacesStrategy struct{}
 
 func (*fourSpacesStrategy) generate(row string, idx uint) *Node {
-	var (
-		text      = ""
-		hierarchy = rootHierarchyNum
-	)
-	var (
-		spaceCnt       = uint(0)
-		existsPrevChar = false
-		isRoot         = false
-	)
-
-	for i, r := range row {
-		switch r {
-		case hyphen:
-			if i == 0 {
-				isRoot = true
-				continue
-			}
-			if existsPrevChar {
-				text += string(r)
-				existsPrevChar = true
-				continue
-			}
-			if spaceCnt%4 == 0 {
-				hierarchy += spaceCnt / 4
-			}
-			existsPrevChar = false
-		case space:
-			if existsPrevChar {
-				text += string(r)
-				existsPrevChar = true
-				continue
-			}
-			spaceCnt++
-		default: // directry or file text char
-			text += string(r)
-			existsPrevChar = true
-		}
+	before, after, found := strings.Cut(row, "-")
+	if !found {
+		return newNode("", invalidHierarchyNum, idx)
 	}
 
-	hierarchy = decideHierarchy(isRoot, hierarchy)
+	spaceCount := strings.Count(before, " ")
+	if spaceCount != len(before) {
+		return newNode("", invalidHierarchyNum, idx)
+	}
+	if spaceCount%4 != 0 {
+		return newNode("", invalidHierarchyNum, idx)
+	}
 
+	hierarchy := uint(spaceCount/4) + rootHierarchyNum
+	text := strings.TrimPrefix(after, " ")
 	return newNode(text, hierarchy, idx)
-}
-
-func decideHierarchy(isRoot bool, hierarchy uint) uint {
-	if !isRoot && hierarchy == rootHierarchyNum {
-		return invalidHierarchyNum
-	}
-	return hierarchy
 }
