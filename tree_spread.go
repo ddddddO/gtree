@@ -50,7 +50,7 @@ func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
 
 func (*defaultSpreader) spreadBranch(current *Node, out string) string {
 	out += current.prettyBranch()
-	for _, child := range current.Children {
+	for _, child := range current.children {
 		out = (*defaultSpreader)(nil).spreadBranch(child, out)
 	}
 	return out
@@ -69,11 +69,32 @@ type jsonSpreader struct{}
 func (*jsonSpreader) spread(w io.Writer, roots []*Node) error {
 	enc := json.NewEncoder(w)
 	for _, root := range roots {
-		if err := enc.Encode(root); err != nil {
+		jRoot := (*jsonSpreader)(nil).toJSONNode(&jsonNode{Name: root.name}, root.children)
+		if err := enc.Encode(jRoot); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+type jsonNode struct {
+	Name     string      `json:"value"`
+	Children []*jsonNode `json:"children"`
+}
+
+func (*jsonSpreader) toJSONNode(jParent *jsonNode, children []*Node) *jsonNode {
+	if len(children) == 0 {
+		return nil
+	}
+
+	jChildren := make([]*jsonNode, len(children))
+	for i := range children {
+		jChildren[i] = &jsonNode{Name: children[i].name}
+		(*jsonSpreader)(nil).toJSONNode(jChildren[i], children[i].children)
+	}
+	jParent.Children = jChildren
+
+	return jParent
 }
 
 type tomlSpreader struct{}
@@ -81,11 +102,32 @@ type tomlSpreader struct{}
 func (*tomlSpreader) spread(w io.Writer, roots []*Node) error {
 	enc := toml.NewEncoder(w)
 	for _, root := range roots {
-		if err := enc.Encode(root); err != nil {
+		tRoot := (*tomlSpreader)(nil).toTOMLNode(&tomlNode{Name: root.name}, root.children)
+		if err := enc.Encode(tRoot); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+type tomlNode struct {
+	Name     string      `toml:"value"`
+	Children []*tomlNode `toml:"children"`
+}
+
+func (*tomlSpreader) toTOMLNode(tParent *tomlNode, children []*Node) *tomlNode {
+	if len(children) == 0 {
+		return nil
+	}
+
+	tChildren := make([]*tomlNode, len(children))
+	for i := range children {
+		tChildren[i] = &tomlNode{Name: children[i].name}
+		(*tomlSpreader)(nil).toTOMLNode(tChildren[i], children[i].children)
+	}
+	tParent.Children = tChildren
+
+	return tParent
 }
 
 type yamlSpreader struct{}
@@ -93,9 +135,30 @@ type yamlSpreader struct{}
 func (*yamlSpreader) spread(w io.Writer, roots []*Node) error {
 	enc := yaml.NewEncoder(w)
 	for _, root := range roots {
-		if err := enc.Encode(root); err != nil {
+		yRoot := (*yamlSpreader)(nil).toYAMLNode(&yamlNode{Name: root.name}, root.children)
+		if err := enc.Encode(yRoot); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+type yamlNode struct {
+	Name     string      `yaml:"value"`
+	Children []*yamlNode `yaml:"children"`
+}
+
+func (*yamlSpreader) toYAMLNode(yParent *yamlNode, children []*Node) *yamlNode {
+	if len(children) == 0 {
+		return nil
+	}
+
+	yChildren := make([]*yamlNode, len(children))
+	for i := range children {
+		yChildren[i] = &yamlNode{Name: children[i].name}
+		(*yamlSpreader)(nil).toYAMLNode(yChildren[i], children[i].children)
+	}
+	yParent.Children = yChildren
+
+	return yParent
 }

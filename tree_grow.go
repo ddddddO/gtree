@@ -45,7 +45,7 @@ func (dg *defaultGrower) assemble(current *Node) error {
 		return err
 	}
 
-	for _, child := range current.Children {
+	for _, child := range current.children {
 		if err := dg.assemble(child); err != nil {
 			return err
 		}
@@ -75,7 +75,7 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 }
 
 func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
-	current.setPath(current.Name)
+	current.setPath(current.name)
 
 	if current.isLastOfHierarchy() {
 		current.setBranch(current.branch(), dg.lastNodeFormat.directly)
@@ -85,7 +85,7 @@ func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
 }
 
 func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
-	current.setPath(parent.Name, current.path())
+	current.setPath(parent.name, current.path())
 
 	if parent.isLastOfHierarchy() {
 		current.setBranch(dg.lastNodeFormat.indirectly, current.branch())

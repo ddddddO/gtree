@@ -11,12 +11,12 @@ import (
 
 // Node is main struct for gtree.
 type Node struct {
-	Name      string `json:"value" yaml:"value" toml:"value"`
+	name      string
 	hierarchy uint
 	index     uint
 	brnch     branch
 	parent    *Node
-	Children  []*Node `json:"children" yaml:"children" toml:"children"`
+	children  []*Node
 }
 
 type branch struct {
@@ -26,7 +26,7 @@ type branch struct {
 
 func newNode(name string, hierarchy, index uint) *Node {
 	return &Node{
-		Name:      name,
+		name:      name,
 		hierarchy: hierarchy,
 		index:     index,
 	}
@@ -37,7 +37,7 @@ func (n *Node) setParent(parent *Node) {
 }
 
 func (n *Node) addChild(child *Node) {
-	n.Children = append(n.Children, child)
+	n.children = append(n.children, child)
 }
 
 func (n *Node) isDirectlyUnder(node *Node) bool {
@@ -45,8 +45,8 @@ func (n *Node) isDirectlyUnder(node *Node) bool {
 }
 
 func (n *Node) isLastOfHierarchy() bool {
-	lastIdx := len(n.parent.Children) - 1
-	return n.index == n.parent.Children[lastIdx].index
+	lastIdx := len(n.parent.children) - 1
+	return n.index == n.parent.children[lastIdx].index
 }
 
 func (n *Node) isRoot() bool {
@@ -55,9 +55,9 @@ func (n *Node) isRoot() bool {
 
 func (n *Node) prettyBranch() string {
 	if n.isRoot() {
-		return fmt.Sprintf("%s\n", n.Name)
+		return fmt.Sprintf("%s\n", n.name)
 	}
-	return fmt.Sprintf("%s %s\n", n.brnch.value, n.Name)
+	return fmt.Sprintf("%s %s\n", n.brnch.value, n.name)
 }
 
 func (n *Node) branch() string {
@@ -74,7 +74,7 @@ func (n *Node) setBranch(branchs ...string) {
 
 func (n *Node) path() string {
 	if n.isRoot() {
-		return n.Name
+		return n.name
 	}
 	return n.brnch.path
 }
@@ -84,13 +84,13 @@ func (n *Node) setPath(paths ...string) {
 }
 
 func (n *Node) hasChild() bool {
-	return len(n.Children) > 0
+	return len(n.children) > 0
 }
 
 func (n *Node) validatePath() error {
 	invalidChars := "/" // TODO: ディレクトリ名に含めてはまずそうなものをここに追加する
-	if strings.ContainsAny(n.Name, invalidChars) {
-		return errors.Errorf("invalid node name: %s", n.Name)
+	if strings.ContainsAny(n.name, invalidChars) {
+		return errors.Errorf("invalid node name: %s", n.name)
 	}
 	if !fs.ValidPath(n.path()) {
 		return errors.Errorf("invalid path: %s", n.path())

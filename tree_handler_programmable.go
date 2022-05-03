@@ -103,8 +103,8 @@ func (parent *Node) Add(text string) *Node {
 }
 
 func (parent *Node) findChildByText(text string) *Node {
-	for _, child := range parent.Children {
-		if text == child.Name {
+	for _, child := range parent.children {
+		if text == child.name {
 			return child
 		}
 	}
