@@ -39,48 +39,36 @@ type tabStrategy struct{}
 
 func (*tabStrategy) generate(row string, idx uint) *Node {
 	var (
-		text      = ""
-		hierarchy = rootHierarchyNum
-	)
-	var (
-		existsPrevChar = false
-		isRoot         = false
+		hierarchy     = rootHierarchyNum
+		startText     = 2
+		containHyphen = false
 	)
 
-	for i, r := range row {
+BREAK:
+	for _, r := range row {
 		switch r {
 		case hyphen:
-			if i == 0 {
-				isRoot = true
-				continue
-			}
-			if existsPrevChar {
-				text += string(r)
-				existsPrevChar = true
-				continue
-			}
-			existsPrevChar = false
-		case space:
-			if existsPrevChar {
-				text += string(r)
-				existsPrevChar = true
-				continue
-			}
+			containHyphen = true
+			break BREAK
 		case tab:
-			if existsPrevChar {
-				text += string(r)
-				existsPrevChar = true
-				continue
-			}
 			hierarchy++
+			startText++
 		default: // directry or file text char
-			text += string(r)
-			existsPrevChar = true
+			hierarchy = invalidHierarchyNum
+			break BREAK
 		}
 	}
 
-	hierarchy = decideHierarchy(isRoot, hierarchy)
-
+	text := ""
+	if !containHyphen {
+		return newNode(text, invalidHierarchyNum, idx)
+	}
+	if hierarchy == invalidHierarchyNum {
+		return newNode(text, hierarchy, idx)
+	}
+	if startText < len(row) {
+		text = row[startText:len(row)]
+	}
 	return newNode(text, hierarchy, idx)
 }
 

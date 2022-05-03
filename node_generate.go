@@ -60,11 +60,11 @@ var (
 )
 
 func (n *Node) validate() error {
-	if len(n.Name) == 0 {
-		return errEmptyText
-	}
 	if n.hierarchy == 0 {
 		return errIncorrectFormat
+	}
+	if len(n.Name) == 0 {
+		return errEmptyText
 	}
 	return nil
 }
