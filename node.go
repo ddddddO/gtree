@@ -11,12 +11,12 @@ import (
 
 // Node is main struct for gtree.
 type Node struct {
-	Name      string `yaml:"value" toml:"value"`
+	Name      string
 	hierarchy uint
 	index     uint
 	brnch     branch
 	parent    *Node
-	Children  []*Node `yaml:"children" toml:"children"`
+	Children  []*Node
 }
 
 type branch struct {

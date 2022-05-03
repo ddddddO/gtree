@@ -135,9 +135,30 @@ type yamlSpreader struct{}
 func (*yamlSpreader) spread(w io.Writer, roots []*Node) error {
 	enc := yaml.NewEncoder(w)
 	for _, root := range roots {
-		if err := enc.Encode(root); err != nil {
+		yRoot := (*yamlSpreader)(nil).toYamlNode(&yamlNode{Name: root.Name}, root.Children)
+		if err := enc.Encode(yRoot); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+type yamlNode struct {
+	Name     string      `yaml:"value"`
+	Children []*yamlNode `yaml:"children"`
+}
+
+func (*yamlSpreader) toYamlNode(yParent *yamlNode, children []*Node) *yamlNode {
+	if len(children) == 0 {
+		return nil
+	}
+
+	yChildren := make([]*yamlNode, len(children))
+	for i := range children {
+		yChildren[i] = &yamlNode{Name: children[i].Name}
+		(*yamlSpreader)(nil).toYamlNode(yChildren[i], children[i].Children)
+	}
+	yParent.Children = yChildren
+
+	return yParent
 }
