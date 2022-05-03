@@ -68,10 +68,10 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 
 	dg.assembleBranchFinally(current, tmpParent)
 
-	if !dg.enabledValidation {
-		return nil
+	if dg.enabledValidation {
+		return current.validatePath()
 	}
-	return current.validatePath()
+	return nil
 }
 
 func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
