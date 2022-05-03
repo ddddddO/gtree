@@ -69,11 +69,32 @@ type jsonSpreader struct{}
 func (*jsonSpreader) spread(w io.Writer, roots []*Node) error {
 	enc := json.NewEncoder(w)
 	for _, root := range roots {
-		if err := enc.Encode(root); err != nil {
+		jRoot := (*jsonSpreader)(nil).toJsonNode(&jsonNode{Name: root.Name}, root.Children)
+		if err := enc.Encode(jRoot); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+type jsonNode struct {
+	Name     string      `json:"value"`
+	Children []*jsonNode `json:"children"`
+}
+
+func (*jsonSpreader) toJsonNode(jParent *jsonNode, children []*Node) *jsonNode {
+	if len(children) == 0 {
+		return nil
+	}
+
+	jChildren := make([]*jsonNode, len(children))
+	for i := range children {
+		jChildren[i] = &jsonNode{Name: children[i].Name}
+		(*jsonSpreader)(nil).toJsonNode(jChildren[i], children[i].Children)
+	}
+	jParent.Children = jChildren
+
+	return jParent
 }
 
 type tomlSpreader struct{}
