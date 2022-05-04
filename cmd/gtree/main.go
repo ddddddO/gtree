@@ -137,7 +137,7 @@ func actionOutput(c *cli.Context) error {
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
-		if err := outputNotDryrun(os.Stdout, os.Stdin, options); err != nil {
+		if err := output(os.Stdout, os.Stdin, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -150,7 +150,7 @@ func actionOutput(c *cli.Context) error {
 		}
 		defer file.Close()
 
-		if err := outputNotDryrun(os.Stdout, file, options); err != nil {
+		if err := output(os.Stdout, file, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -186,7 +186,7 @@ func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
 
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
-				_ = outputNotDryrun(os.Stdout, file, options)
+				_ = output(os.Stdout, file, options)
 				fmt.Println()
 			}
 			return nil
@@ -219,7 +219,7 @@ func actionMkdir(c *cli.Context) error {
 	options := []gtree.Option{indentation, gtree.WithFileExtensions(extensions)}
 
 	if c.Bool("dry-run") {
-		if err := outputDryrun(os.Stdout, in, options); err != nil {
+		if err := outputWithValidation(os.Stdout, in, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil

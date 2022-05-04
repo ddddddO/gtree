@@ -8,12 +8,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-func outputDryrun(out io.Writer, in io.Reader, options []gtree.Option) error {
+func outputWithValidation(out io.Writer, in io.Reader, options []gtree.Option) error {
 	options = append(options, gtree.WithDryRun())
-	return output(out, in, options)
-}
-
-func outputNotDryrun(out io.Writer, in io.Reader, options []gtree.Option) error {
 	return output(out, in, options)
 }
 
