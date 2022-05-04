@@ -2,9 +2,8 @@ package gtree
 
 import (
 	"bufio"
+	"errors"
 	"io"
-
-	"github.com/pkg/errors"
 )
 
 type rootGenerator struct {

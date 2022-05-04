@@ -1,10 +1,10 @@
 package main
 
 import (
+	"errors"
 	"io"
 
 	"github.com/ddddddO/gtree"
-	"github.com/pkg/errors"
 	"github.com/urfave/cli/v2"
 )
 

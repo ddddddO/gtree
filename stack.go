@@ -1,6 +1,6 @@
 package gtree
 
-import "github.com/pkg/errors"
+import "errors"
 
 var errNilStack = errors.New("nil stack")
 

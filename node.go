@@ -5,8 +5,6 @@ import (
 	"io/fs"
 	"path/filepath"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // Node is main struct for gtree.
@@ -90,10 +88,10 @@ func (n *Node) hasChild() bool {
 func (n *Node) validatePath() error {
 	invalidChars := "/" // TODO: ディレクトリ名に含めてはまずそうなものをここに追加する
 	if strings.ContainsAny(n.name, invalidChars) {
-		return errors.Errorf("invalid node name: %s", n.name)
+		return fmt.Errorf("invalid node name: %s", n.name)
 	}
 	if !fs.ValidPath(n.path()) {
-		return errors.Errorf("invalid path: %s", n.path())
+		return fmt.Errorf("invalid path: %s", n.path())
 	}
 	return nil
 }

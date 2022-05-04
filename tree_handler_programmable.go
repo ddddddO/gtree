@@ -2,10 +2,9 @@
 package gtree
 
 import (
+	"errors"
 	"io"
 	"os"
-
-	"github.com/pkg/errors"
 )
 
 var (

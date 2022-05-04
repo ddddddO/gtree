@@ -2,10 +2,9 @@ package gtree
 
 import (
 	"bytes"
+	"fmt"
 	"strings"
 	"testing"
-
-	"github.com/pkg/errors"
 )
 
 func TestOutputProgrammably(t *testing.T) {
@@ -230,7 +229,7 @@ func TestMkdirProgrammably(t *testing.T) {
 			options: []Option{
 				WithDryRun(),
 			},
-			wantErr: errors.Errorf("invalid node name: %s", "chi/ld 4"),
+			wantErr: fmt.Errorf("invalid node name: %s", "chi/ld 4"),
 		},
 		{
 			name: "case(dry run/succeeded)",
@@ -243,7 +242,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		{
 			name:    "case(not dry run/invalid node name)",
 			root:    prepareInvalidNodeName(),
-			wantErr: errors.Errorf("invalid node name: %s", "chi/ld 4"),
+			wantErr: fmt.Errorf("invalid node name: %s", "chi/ld 4"),
 		},
 	}
 
