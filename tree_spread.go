@@ -29,6 +29,8 @@ func newSpreader(encode encode, dryrun bool, extentions []string) spreader {
 	if dryrun {
 		return &colorizeSpreader{
 			fileExtensions: extentions,
+			colorFile:      color.New(color.Bold, color.FgHiCyan),
+			colorDir:       color.New(color.FgGreen),
 		}
 	}
 	return &defaultSpreader{}
@@ -71,6 +73,8 @@ func (*defaultSpreader) write(w io.Writer, in string) error {
 
 type colorizeSpreader struct {
 	fileExtensions []string
+	colorFile      *color.Color
+	colorDir       *color.Color
 }
 
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
@@ -93,16 +97,11 @@ func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
 	return out
 }
 
-var (
-	green = color.New(color.FgGreen)
-	cyan  = color.New(color.Bold, color.FgHiCyan)
-)
-
 func (cs *colorizeSpreader) colorize(current *Node) {
 	if cs.needsColorizeFile(current.name) {
-		current.name = cyan.Sprintf(current.name)
+		current.name = cs.colorFile.Sprintf(current.name)
 	} else {
-		current.name = green.Sprintf(current.name)
+		current.name = cs.colorDir.Sprintf(current.name)
 	}
 }
 
