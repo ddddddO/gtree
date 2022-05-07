@@ -336,6 +336,10 @@ gtree
 └── tree.go
 ```
 
+colored output
+![](cli_mkdir_dryrun.png)
+
+
 any invalid file or directory name will result in an error.
 
 ```console
