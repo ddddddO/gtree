@@ -336,7 +336,7 @@ gtree
 └── tree.go
 ```
 
-colored output
+colored output<br>
 ![](cli_mkdir_dryrun.png)
 
 
