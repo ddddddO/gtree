@@ -98,16 +98,20 @@ func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
 }
 
 func (cs *colorizeSpreader) colorize(current *Node) {
-	if cs.needsColorizeFile(current.name) {
+	if cs.needsColorizeFile(current) {
 		current.name = cs.colorFile.Sprintf(current.name)
 	} else {
 		current.name = cs.colorDir.Sprintf(current.name)
 	}
 }
 
-func (cs *colorizeSpreader) needsColorizeFile(name string) bool {
+func (cs *colorizeSpreader) needsColorizeFile(current *Node) bool {
+	if current.hasChild() {
+		return false
+	}
+
 	for _, e := range cs.fileExtensions {
-		if strings.HasSuffix(name, e) {
+		if strings.HasSuffix(current.name, e) {
 			return true
 		}
 	}
