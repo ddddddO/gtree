@@ -6,7 +6,7 @@ import (
 
 func initializeTree(conf *config, rs []*Node) *tree {
 	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
-	s := newSpreader(conf.encode)
+	s := newSpreader(conf.encode, conf.dryrun, conf.fileExtensions)
 	m := newMkdirer(conf.fileExtensions)
 	return newTree(rs, g, s, m)
 }

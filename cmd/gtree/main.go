@@ -219,7 +219,7 @@ func actionMkdir(c *cli.Context) error {
 	options := []gtree.Option{indentation, gtree.WithFileExtensions(extensions)}
 
 	if c.Bool("dry-run") {
-		if err := outputWithValidation(os.Stdout, in, options); err != nil {
+		if err := outputWithValidation(in, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
