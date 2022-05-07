@@ -3,8 +3,11 @@ package gtree
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"io"
+	"strings"
 
+	color "github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
 	"gopkg.in/yaml.v2"
 )
@@ -14,19 +17,21 @@ type spreader interface {
 	spread(io.Writer, []*Node) error
 }
 
-func newSpreader(encode encode) spreader {
-	if s, ok := spreaders[encode]; ok {
-		return s
+func newSpreader(encode encode, dryrun bool, extentions []string) spreader {
+	switch encode {
+	case encodeJSON:
+		return &jsonSpreader{}
+	case encodeYAML:
+		return &yamlSpreader{}
+	case encodeTOML:
+		return &tomlSpreader{}
+	}
+	if dryrun {
+		return &colorizeSpreader{
+			fileExtensions: extentions,
+		}
 	}
 	return &defaultSpreader{}
-}
-
-// NOTE: 微妙。分岐は無くせるし追加は楽そうだが、グローバルに持ってしまってる。
-var spreaders = map[encode]spreader{
-	encodeDefault: &defaultSpreader{},
-	encodeJSON:    &jsonSpreader{},
-	encodeTOML:    &tomlSpreader{},
-	encodeYAML:    &yamlSpreader{},
 }
 
 type encode int
@@ -62,6 +67,52 @@ func (*defaultSpreader) write(w io.Writer, in string) error {
 		return err
 	}
 	return buf.Flush()
+}
+
+type colorizeSpreader struct {
+	fileExtensions []string
+}
+
+func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
+	branches := ""
+	for _, root := range roots {
+		branches += cs.spreadBranch(root, "")
+	}
+
+	co := bufio.NewWriter(w)
+	fmt.Fprint(co, branches)
+	return co.Flush()
+}
+
+func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
+	cs.colorize(current)
+	out += current.prettyBranch()
+	for _, child := range current.children {
+		out = cs.spreadBranch(child, out)
+	}
+	return out
+}
+
+var (
+	green = color.New(color.FgGreen)
+	cyan  = color.New(color.Bold, color.FgHiCyan)
+)
+
+func (cs *colorizeSpreader) colorize(current *Node) {
+	if cs.needsColorizeFile(current.name) {
+		current.name = cyan.Sprintf(current.name)
+	} else {
+		current.name = green.Sprintf(current.name)
+	}
+}
+
+func (cs *colorizeSpreader) needsColorizeFile(name string) bool {
+	for _, e := range cs.fileExtensions {
+		if strings.HasSuffix(name, e) {
+			return true
+		}
+	}
+	return false
 }
 
 type jsonSpreader struct{}

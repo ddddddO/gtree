@@ -5,12 +5,13 @@ import (
 	"io"
 
 	"github.com/ddddddO/gtree"
+	color "github.com/fatih/color"
 	"github.com/urfave/cli/v2"
 )
 
-func outputWithValidation(out io.Writer, in io.Reader, options []gtree.Option) error {
+func outputWithValidation(in io.Reader, options []gtree.Option) error {
 	options = append(options, gtree.WithDryRun())
-	return output(out, in, options)
+	return output(color.Output, in, options)
 }
 
 func output(out io.Writer, in io.Reader, options []gtree.Option) error {
