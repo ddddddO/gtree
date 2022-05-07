@@ -17,7 +17,7 @@ type spreader interface {
 	spread(io.Writer, []*Node) error
 }
 
-func newSpreader(encode encode, dryrun bool, extentions []string) spreader {
+func newSpreader(encode encode, dryrun bool, extensions []string) spreader {
 	switch encode {
 	case encodeJSON:
 		return &jsonSpreader{}
@@ -28,7 +28,7 @@ func newSpreader(encode encode, dryrun bool, extentions []string) spreader {
 	}
 	if dryrun {
 		return &colorizeSpreader{
-			fileExtensions: extentions,
+			fileExtensions: extensions,
 			colorFile:      color.New(color.Bold, color.FgHiCyan),
 			colorDir:       color.New(color.FgGreen),
 		}
