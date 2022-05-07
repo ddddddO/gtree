@@ -320,11 +320,38 @@ gtree/
 8 directories, 0 files
 ```
 
+#### *make directories and files*
+```console
+22:15:59 > gtree template
+- gtree
+        - cmd
+                - gtree
+                        - main.go
+        - testdata
+                - sample1.md
+                - sample2.md
+        - makefile
+        - tree.go
+22:16:13 > gtree template | gtree mkdir -e .go -e .md -e makefile
+22:16:19 > tree gtree/
+gtree/
+├── cmd
+│   └── gtree
+│       └── main.go
+├── makefile
+├── testdata
+│   ├── sample1.md
+│   └── sample2.md
+└── tree.go
+
+3 directories, 5 files
+```
+
 #### *dry run*
 does not create a file or directory.
 
 ```console
-22:27:13 > gtree template | gtree mkdir --dry-run
+22:27:13 > gtree template | gtree mkdir --dry-run -e .go -e .md -e makefile
 gtree
 ├── cmd
 │   └── gtree
@@ -360,31 +387,4 @@ invalid node name: b/b
     - bb
 EOS
 invalid path: /root/aa
-```
-
-#### *make directories and files*
-```console
-22:15:59 > gtree template
-- gtree
-        - cmd
-                - gtree
-                        - main.go
-        - testdata
-                - sample1.md
-                - sample2.md
-        - makefile
-        - tree.go
-22:16:13 > gtree template | gtree mkdir -e .go -e .md -e makefile
-22:16:19 > tree gtree/
-gtree/
-├── cmd
-│   └── gtree
-│       └── main.go
-├── makefile
-├── testdata
-│   ├── sample1.md
-│   └── sample2.md
-└── tree.go
-
-3 directories, 5 files
 ```
