@@ -4,7 +4,8 @@ package gtree
 import (
 	"errors"
 	"io"
-	"os"
+
+	color "github.com/fatih/color"
 )
 
 var (
@@ -66,7 +67,7 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 		if err := tree.grow(); err != nil {
 			return err
 		}
-		return tree.spread(os.Stdout)
+		return tree.spread(color.Output)
 	}
 
 	// when detect invalid node name, return error. process end.

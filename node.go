@@ -58,6 +58,11 @@ func (n *Node) prettyBranch() string {
 	return fmt.Sprintf("%s %s\n", n.brnch.value, n.name)
 }
 
+func (n *Node) clean() {
+	n.brnch.value = ""
+	n.brnch.path = ""
+}
+
 func (n *Node) branch() string {
 	return n.brnch.value
 }
