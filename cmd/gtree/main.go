@@ -137,7 +137,7 @@ func actionOutput(c *cli.Context) error {
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
-		if err := output(os.Stdout, os.Stdin, options); err != nil {
+		if err := outputDefault(os.Stdin, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -150,7 +150,7 @@ func actionOutput(c *cli.Context) error {
 		}
 		defer file.Close()
 
-		if err := output(os.Stdout, file, options); err != nil {
+		if err := outputDefault(file, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -186,7 +186,7 @@ func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
 
 			if fileInfo.ModTime() != preFileModTime {
 				preFileModTime = fileInfo.ModTime()
-				_ = output(os.Stdout, file, options)
+				_ = outputDefault(file, options)
 				fmt.Println()
 			}
 			return nil

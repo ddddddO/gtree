@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"io"
+	"os"
 
 	"github.com/ddddddO/gtree"
 	color "github.com/fatih/color"
@@ -12,6 +13,10 @@ import (
 func outputWithValidation(in io.Reader, options []gtree.Option) error {
 	options = append(options, gtree.WithDryRun())
 	return output(color.Output, in, options)
+}
+
+func outputDefault(in io.Reader, options []gtree.Option) error {
+	return output(os.Stdout, in, options)
 }
 
 func output(out io.Writer, in io.Reader, options []gtree.Option) error {
