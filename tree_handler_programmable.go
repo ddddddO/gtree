@@ -13,9 +13,9 @@ var (
 )
 
 var (
-	// ErrNilNode is returned if the argument *gtree.Node of OutputProgrammably function is nill.
+	// ErrNilNode is returned if the argument *gtree.Node of OutputProgrammably / MkdirProgrammably function is nill.
 	ErrNilNode = errors.New("nil node")
-	// ErrNotRoot is returned if the argument *gtree.Node of OutputProgrammably function is not root of the tree.
+	// ErrNotRoot is returned if the argument *gtree.Node of OutputProgrammably / MkdirProgrammably function is not root of the tree.
 	ErrNotRoot = errors.New("not root node")
 )
 
