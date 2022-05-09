@@ -3,7 +3,6 @@ package gtree
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"io"
 
 	color "github.com/fatih/color"
@@ -25,14 +24,17 @@ func newSpreader(encode encode, dryrun bool, fileExtensions []string) spreader {
 	case encodeTOML:
 		return &tomlSpreader{}
 	}
+
+	ds := &defaultSpreader{}
 	if dryrun {
 		return &colorizeSpreader{
-			fileConsiderer: newFileConsiderer(fileExtensions),
-			colorFile:      color.New(color.Bold, color.FgHiCyan),
-			colorDir:       color.New(color.FgGreen),
+			defaultSpreader: ds,
+			fileConsiderer:  newFileConsiderer(fileExtensions),
+			colorFile:       color.New(color.Bold, color.FgHiCyan),
+			colorDir:        color.New(color.FgGreen),
 		}
 	}
-	return &defaultSpreader{}
+	return ds
 }
 
 type encode int
@@ -71,9 +73,10 @@ func (*defaultSpreader) write(w io.Writer, in string) error {
 }
 
 type colorizeSpreader struct {
-	fileConsiderer *fileConsiderer
-	colorFile      *color.Color
-	colorDir       *color.Color
+	*defaultSpreader // NOTE: xxx
+	fileConsiderer   *fileConsiderer
+	colorFile        *color.Color
+	colorDir         *color.Color
 }
 
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
@@ -81,10 +84,7 @@ func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
 	for _, root := range roots {
 		branches += cs.spreadBranch(root, "")
 	}
-
-	co := bufio.NewWriter(w)
-	fmt.Fprint(co, branches)
-	return co.Flush()
+	return cs.write(w, branches)
 }
 
 func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
