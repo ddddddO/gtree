@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"strings"
 
 	color "github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
@@ -17,7 +16,7 @@ type spreader interface {
 	spread(io.Writer, []*Node) error
 }
 
-func newSpreader(encode encode, dryrun bool, extensions []string) spreader {
+func newSpreader(encode encode, dryrun bool, fileExtensions []string) spreader {
 	switch encode {
 	case encodeJSON:
 		return &jsonSpreader{}
@@ -28,7 +27,7 @@ func newSpreader(encode encode, dryrun bool, extensions []string) spreader {
 	}
 	if dryrun {
 		return &colorizeSpreader{
-			fileExtensions: extensions,
+			fileConsiderer: newFileConsiderer(fileExtensions),
 			colorFile:      color.New(color.Bold, color.FgHiCyan),
 			colorDir:       color.New(color.FgGreen),
 		}
@@ -72,7 +71,7 @@ func (*defaultSpreader) write(w io.Writer, in string) error {
 }
 
 type colorizeSpreader struct {
-	fileExtensions []string
+	fileConsiderer *fileConsiderer
 	colorFile      *color.Color
 	colorDir       *color.Color
 }
@@ -98,24 +97,11 @@ func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
 }
 
 func (cs *colorizeSpreader) colorize(current *Node) {
-	if cs.needsColorizeFile(current) {
+	if cs.fileConsiderer.isFile(current) {
 		current.name = cs.colorFile.Sprintf(current.name)
 	} else {
 		current.name = cs.colorDir.Sprintf(current.name)
 	}
-}
-
-func (cs *colorizeSpreader) needsColorizeFile(current *Node) bool {
-	if current.hasChild() {
-		return false
-	}
-
-	for _, e := range cs.fileExtensions {
-		if strings.HasSuffix(current.name, e) {
-			return true
-		}
-	}
-	return false
 }
 
 type jsonSpreader struct{}

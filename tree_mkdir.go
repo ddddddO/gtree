@@ -13,12 +13,12 @@ type mkdirer interface {
 
 func newMkdirer(fileExtensions []string) mkdirer {
 	return &defaultMkdirer{
-		fileExtensions: fileExtensions,
+		fileConsiderer: newFileConsiderer(fileExtensions),
 	}
 }
 
 type defaultMkdirer struct {
-	fileExtensions []string
+	fileConsiderer *fileConsiderer
 }
 
 func (dm *defaultMkdirer) mkdir(roots []*Node) error {
@@ -31,14 +31,15 @@ func (dm *defaultMkdirer) mkdir(roots []*Node) error {
 }
 
 func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
-	if !current.hasChild() {
-		if dm.needsMkfile(current.name) {
-			dir := strings.TrimSuffix(current.path(), current.name)
-			if err := dm.mkdirAll(dir); err != nil {
-				return err
-			}
-			return dm.mkfile(current.path())
+	if dm.fileConsiderer.isFile(current) {
+		dir := strings.TrimSuffix(current.path(), current.name)
+		if err := dm.mkdirAll(dir); err != nil {
+			return err
 		}
+		return dm.mkfile(current.path())
+	}
+
+	if !current.hasChild() {
 		return dm.mkdirAll(current.path())
 	}
 
@@ -48,15 +49,6 @@ func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
 		}
 	}
 	return nil
-}
-
-func (dm *defaultMkdirer) needsMkfile(name string) bool {
-	for _, e := range dm.fileExtensions {
-		if strings.HasSuffix(name, e) {
-			return true
-		}
-	}
-	return false
 }
 
 const permission = 0777
