@@ -123,7 +123,7 @@ type jsonNode struct {
 }
 
 func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
-	if len(parent.children) == 0 {
+	if !parent.hasChild() {
 		return nil
 	}
 	if jParent == nil {
@@ -158,7 +158,7 @@ type tomlNode struct {
 }
 
 func (parent *Node) toTOMLNode(tParent *tomlNode) *tomlNode {
-	if len(parent.children) == 0 {
+	if !parent.hasChild() {
 		return nil
 	}
 	if tParent == nil {
@@ -193,7 +193,7 @@ type yamlNode struct {
 }
 
 func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
-	if len(parent.children) == 0 {
+	if !parent.hasChild() {
 		return nil
 	}
 	if yParent == nil {
