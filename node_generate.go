@@ -2,7 +2,6 @@ package gtree
 
 import (
 	"bufio"
-	"errors"
 	"io"
 )
 
@@ -27,8 +26,8 @@ func (rg *rootGenerator) generate() ([]*Node, error) {
 	)
 
 	for rg.scanner.Scan() {
-		currentNode := rg.strategy.generate(rg.scanner.Text(), rg.counter.next())
-		if err := currentNode.validate(); err != nil {
+		currentNode, err := rg.strategy.generate(rg.scanner.Text(), rg.counter.next())
+		if err != nil {
 			return nil, err
 		}
 
@@ -51,19 +50,4 @@ func (rg *rootGenerator) generate() ([]*Node, error) {
 		return nil, err
 	}
 	return roots, nil
-}
-
-var (
-	errEmptyText       = errors.New("empty text")
-	errIncorrectFormat = errors.New("incorrect input format")
-)
-
-func (n *Node) validate() error {
-	if n.hierarchy == 0 {
-		return errIncorrectFormat
-	}
-	if len(n.name) == 0 {
-		return errEmptyText
-	}
-	return nil
 }

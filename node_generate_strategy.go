@@ -1,6 +1,7 @@
 package gtree
 
 import (
+	"errors"
 	"strings"
 )
 
@@ -13,7 +14,7 @@ const (
 )
 
 type nodeGenerateStrategy interface {
-	generate(row string, idx uint) *Node
+	generate(row string, idx uint) (*Node, error)
 }
 
 func newStrategy(st spaceType) nodeGenerateStrategy {
@@ -35,66 +36,79 @@ const (
 )
 
 const (
-	invalidHierarchyNum uint = 0
-	rootHierarchyNum    uint = 1
+	rootHierarchyNum uint = 1
+)
+
+var (
+	errEmptyText       = errors.New("empty text")
+	errIncorrectFormat = errors.New("incorrect input format")
 )
 
 type tabStrategy struct{}
 
-func (*tabStrategy) generate(row string, idx uint) *Node {
+func (*tabStrategy) generate(row string, idx uint) (*Node, error) {
 	before, after, found := strings.Cut(row, hyphen)
 	if !found {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 
 	tabCount := strings.Count(before, tab)
 	if tabCount != len(before) {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 
 	hierarchy := uint(tabCount) + rootHierarchyNum
 	text := strings.TrimPrefix(after, space)
-	return newNode(text, hierarchy, idx)
+	if len(text) == 0 {
+		return nil, errEmptyText
+	}
+	return newNode(text, hierarchy, idx), nil
 }
 
 type twoSpacesStrategy struct{}
 
-func (*twoSpacesStrategy) generate(row string, idx uint) *Node {
+func (*twoSpacesStrategy) generate(row string, idx uint) (*Node, error) {
 	before, after, found := strings.Cut(row, hyphen)
 	if !found {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 
 	spaceCount := strings.Count(before, space)
 	if spaceCount != len(before) {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 	if spaceCount%2 != 0 {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 
 	hierarchy := uint(spaceCount/2) + rootHierarchyNum
 	text := strings.TrimPrefix(after, space)
-	return newNode(text, hierarchy, idx)
+	if len(text) == 0 {
+		return nil, errEmptyText
+	}
+	return newNode(text, hierarchy, idx), nil
 }
 
 type fourSpacesStrategy struct{}
 
-func (*fourSpacesStrategy) generate(row string, idx uint) *Node {
+func (*fourSpacesStrategy) generate(row string, idx uint) (*Node, error) {
 	before, after, found := strings.Cut(row, hyphen)
 	if !found {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 
 	spaceCount := strings.Count(before, space)
 	if spaceCount != len(before) {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 	if spaceCount%4 != 0 {
-		return newNode(empty, invalidHierarchyNum, idx)
+		return nil, errIncorrectFormat
 	}
 
 	hierarchy := uint(spaceCount/4) + rootHierarchyNum
 	text := strings.TrimPrefix(after, space)
-	return newNode(text, hierarchy, idx)
+	if len(text) == 0 {
+		return nil, errEmptyText
+	}
+	return newNode(text, hierarchy, idx), nil
 }
