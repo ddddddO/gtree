@@ -106,10 +106,10 @@ func (cs *colorizeSpreader) spreadBranch(current *Node) string {
 func (cs *colorizeSpreader) colorize(current *Node) {
 	if cs.fileConsiderer.isFile(current) {
 		_ = cs.counterFile.next()
-		current.name = cs.colorFile.Sprintf(current.name)
+		current.name = cs.colorFile.Sprint(current.name)
 	} else {
 		_ = cs.counterDir.next()
-		current.name = cs.colorDir.Sprintf(current.name)
+		current.name = cs.colorDir.Sprint(current.name)
 	}
 }
 
