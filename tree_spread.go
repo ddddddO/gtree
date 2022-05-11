@@ -90,7 +90,7 @@ func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
 		branches += cs.spreadBranch(root, "")
 	}
 
-	ret := branches + "\n" + cs.result()
+	ret := branches + "\n" + cs.summary()
 	return cs.write(w, ret)
 }
 
@@ -113,7 +113,7 @@ func (cs *colorizeSpreader) colorize(current *Node) {
 	}
 }
 
-func (cs *colorizeSpreader) result() string {
+func (cs *colorizeSpreader) summary() string {
 	return fmt.Sprintf("%d directories, %d files\n",
 		cs.counterDir.current(),
 		cs.counterFile.current(),
