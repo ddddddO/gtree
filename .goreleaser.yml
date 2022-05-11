@@ -28,5 +28,17 @@ archives:
     format_overrides:
       - goos: windows
         format: zip
+    files:
+      - LICENSE
+      - CREDITS
 release:
   prerelease: auto
+brews:
+  - tap:
+      owner: ddddddO
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    folder: Formula
+    homepage: 'https://github.com/ddddddO/gtree'
+    description: 'Output tree🌳 or Make directories(files)📁 from Markdown.'
+    license: "BSD-2-Clause"
