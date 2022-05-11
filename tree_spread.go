@@ -149,7 +149,7 @@ func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
 	jParent.Children = make([]*jsonNode, len(parent.children))
 	for i := range parent.children {
 		jParent.Children[i] = &jsonNode{Name: parent.children[i].name}
-		parent.children[i].toJSONNode(jParent.Children[i])
+		_ = parent.children[i].toJSONNode(jParent.Children[i])
 	}
 
 	return jParent
@@ -184,7 +184,7 @@ func (parent *Node) toTOMLNode(tParent *tomlNode) *tomlNode {
 	tParent.Children = make([]*tomlNode, len(parent.children))
 	for i := range parent.children {
 		tParent.Children[i] = &tomlNode{Name: parent.children[i].name}
-		parent.children[i].toTOMLNode(tParent.Children[i])
+		_ = parent.children[i].toTOMLNode(tParent.Children[i])
 	}
 
 	return tParent
@@ -219,7 +219,7 @@ func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
 	yParent.Children = make([]*yamlNode, len(parent.children))
 	for i := range parent.children {
 		yParent.Children[i] = &yamlNode{Name: parent.children[i].name}
-		parent.children[i].toYAMLNode(yParent.Children[i])
+		_ = parent.children[i].toYAMLNode(yParent.Children[i])
 	}
 
 	return yParent
