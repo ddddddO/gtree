@@ -8,6 +8,11 @@ go version requires 1.18 or later.
 go install github.com/ddddddO/gtree/cmd/gtree@latest
 ```
 
+or using Homebrew.
+```console
+brew install ddddddO/tap/gtree
+```
+
 **or, download binary from [here](https://github.com/ddddddO/gtree/releases).**
 
 ## Usage
