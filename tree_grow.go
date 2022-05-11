@@ -57,7 +57,7 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 	if current.isRoot() {
 		return nil
 	}
-	current.clean() // 例えば、MkdirProgrammably funcでrootノードを使いまわすと、前回func実行時に形成されたノードの枝が残ったまま追記されてしまうため。
+	current.cleanBranch() // 例えば、MkdirProgrammably funcでrootノードを使いまわすと、前回func実行時に形成されたノードの枝が残ったまま追記されてしまうため。
 
 	dg.assembleBranchDirectly(current)
 

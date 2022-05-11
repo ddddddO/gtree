@@ -38,6 +38,10 @@ func (n *Node) addChild(child *Node) {
 	n.children = append(n.children, child)
 }
 
+func (n *Node) hasChild() bool {
+	return len(n.children) > 0
+}
+
 func (n *Node) isDirectlyUnder(node *Node) bool {
 	return n.hierarchy == node.hierarchy+1
 }
@@ -51,20 +55,9 @@ func (n *Node) isRoot() bool {
 	return n.hierarchy == rootHierarchyNum
 }
 
-func (n *Node) prettyBranch() string {
-	if n.isRoot() {
-		return fmt.Sprintf("%s\n", n.name)
-	}
-	return fmt.Sprintf("%s %s\n", n.brnch.value, n.name)
-}
-
-func (n *Node) clean() {
+func (n *Node) cleanBranch() {
 	n.brnch.value = ""
 	n.brnch.path = ""
-}
-
-func (n *Node) branch() string {
-	return n.brnch.value
 }
 
 func (n *Node) setBranch(branchs ...string) {
@@ -75,19 +68,26 @@ func (n *Node) setBranch(branchs ...string) {
 	n.brnch.value = ret
 }
 
-func (n *Node) path() string {
+func (n *Node) branch() string {
+	return n.brnch.value
+}
+
+func (n *Node) prettyBranch() string {
 	if n.isRoot() {
-		return n.name
+		return fmt.Sprintf("%s\n", n.name)
 	}
-	return n.brnch.path
+	return fmt.Sprintf("%s %s\n", n.brnch.value, n.name)
 }
 
 func (n *Node) setPath(paths ...string) {
 	n.brnch.path = filepath.Join(paths...)
 }
 
-func (n *Node) hasChild() bool {
-	return len(n.children) > 0
+func (n *Node) path() string {
+	if n.isRoot() {
+		return n.name
+	}
+	return n.brnch.path
 }
 
 func (n *Node) validatePath() error {

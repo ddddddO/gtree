@@ -62,6 +62,7 @@ func (*tabStrategy) generate(row string, idx uint) (*Node, error) {
 	if len(text) == 0 {
 		return nil, errEmptyText
 	}
+
 	return newNode(text, hierarchy, idx), nil
 }
 
@@ -86,6 +87,7 @@ func (*twoSpacesStrategy) generate(row string, idx uint) (*Node, error) {
 	if len(text) == 0 {
 		return nil, errEmptyText
 	}
+
 	return newNode(text, hierarchy, idx), nil
 }
 
@@ -110,5 +112,6 @@ func (*fourSpacesStrategy) generate(row string, idx uint) (*Node, error) {
 	if len(text) == 0 {
 		return nil, errEmptyText
 	}
+
 	return newNode(text, hierarchy, idx), nil
 }
