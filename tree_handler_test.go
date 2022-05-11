@@ -432,6 +432,8 @@ a
 				output: strings.TrimPrefix(`
 a
 └── b
+
+2 directories, 0 files
 `, "\n"),
 				err: nil,
 			},

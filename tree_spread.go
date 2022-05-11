@@ -3,6 +3,7 @@ package gtree
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"io"
 
 	color "github.com/fatih/color"
@@ -32,6 +33,8 @@ func newSpreader(encode encode, dryrun bool, fileExtensions []string) spreader {
 			fileConsiderer:  newFileConsiderer(fileExtensions),
 			colorFile:       color.New(color.Bold, color.FgHiCyan),
 			colorDir:        color.New(color.FgGreen),
+			counterFile:     newCounter(),
+			counterDir:      newCounter(),
 		}
 	}
 	return ds
@@ -77,6 +80,8 @@ type colorizeSpreader struct {
 	fileConsiderer   *fileConsiderer
 	colorFile        *color.Color
 	colorDir         *color.Color
+	counterFile      *counter
+	counterDir       *counter
 }
 
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
@@ -84,7 +89,9 @@ func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
 	for _, root := range roots {
 		branches += cs.spreadBranch(root, "")
 	}
-	return cs.write(w, branches)
+
+	ret := branches + "\n" + cs.result()
+	return cs.write(w, ret)
 }
 
 func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
@@ -98,10 +105,19 @@ func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
 
 func (cs *colorizeSpreader) colorize(current *Node) {
 	if cs.fileConsiderer.isFile(current) {
+		_ = cs.counterFile.next()
 		current.name = cs.colorFile.Sprintf(current.name)
 	} else {
+		_ = cs.counterDir.next()
 		current.name = cs.colorDir.Sprintf(current.name)
 	}
+}
+
+func (cs *colorizeSpreader) result() string {
+	return fmt.Sprintf("%d directories, %d files\n",
+		cs.counterDir.current(),
+		cs.counterFile.current(),
+	)
 }
 
 type jsonSpreader struct{}

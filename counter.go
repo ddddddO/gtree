@@ -28,3 +28,10 @@ func (c *counter) reset() {
 
 	c.n = 0
 }
+
+func (c *counter) current() uint {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	return c.n
+}
