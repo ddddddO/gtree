@@ -54,17 +54,17 @@ type defaultSpreader struct{}
 func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
 	branches := ""
 	for _, root := range roots {
-		branches += ds.spreadBranch(root, "")
+		branches += ds.spreadBranch(root)
 	}
 	return ds.write(w, branches)
 }
 
-func (*defaultSpreader) spreadBranch(current *Node, out string) string {
-	out += current.prettyBranch()
+func (*defaultSpreader) spreadBranch(current *Node) string {
+	ret := current.prettyBranch()
 	for _, child := range current.children {
-		out = (*defaultSpreader)(nil).spreadBranch(child, out)
+		ret += (*defaultSpreader)(nil).spreadBranch(child)
 	}
-	return out
+	return ret
 }
 
 func (*defaultSpreader) write(w io.Writer, in string) error {
@@ -87,20 +87,20 @@ type colorizeSpreader struct {
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
 	branches := ""
 	for _, root := range roots {
-		branches += cs.spreadBranch(root, "")
+		branches += cs.spreadBranch(root)
 	}
 
 	ret := branches + "\n" + cs.summary()
 	return cs.write(w, ret)
 }
 
-func (cs *colorizeSpreader) spreadBranch(current *Node, out string) string {
+func (cs *colorizeSpreader) spreadBranch(current *Node) string {
 	cs.colorize(current)
-	out += current.prettyBranch()
+	ret := current.prettyBranch()
 	for _, child := range current.children {
-		out = cs.spreadBranch(child, out)
+		ret += cs.spreadBranch(child)
 	}
-	return out
+	return ret
 }
 
 func (cs *colorizeSpreader) colorize(current *Node) {
