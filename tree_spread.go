@@ -139,11 +139,11 @@ type jsonNode struct {
 }
 
 func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
-	if !parent.hasChild() {
-		return nil
-	}
 	if jParent == nil {
 		jParent = &jsonNode{Name: parent.name}
+	}
+	if !parent.hasChild() {
+		return jParent
 	}
 
 	jParent.Children = make([]*jsonNode, len(parent.children))
@@ -174,11 +174,11 @@ type tomlNode struct {
 }
 
 func (parent *Node) toTOMLNode(tParent *tomlNode) *tomlNode {
-	if !parent.hasChild() {
-		return nil
-	}
 	if tParent == nil {
 		tParent = &tomlNode{Name: parent.name}
+	}
+	if !parent.hasChild() {
+		return tParent
 	}
 
 	tParent.Children = make([]*tomlNode, len(parent.children))
@@ -209,11 +209,11 @@ type yamlNode struct {
 }
 
 func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
-	if !parent.hasChild() {
-		return nil
-	}
 	if yParent == nil {
 		yParent = &yamlNode{Name: parent.name}
+	}
+	if !parent.hasChild() {
+		return yParent
 	}
 
 	yParent.Children = make([]*yamlNode, len(parent.children))
