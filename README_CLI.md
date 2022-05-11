@@ -351,7 +351,7 @@ gtree/
 does not create a file or directory.
 
 ```console
-22:27:13 > gtree template | gtree mkdir --dry-run -e .go -e .md -e makefile
+12:40:49 > gtree template | gtree mkdir --dry-run -e .go -e .md -e makefile
 gtree
 ├── cmd
 │   └── gtree
@@ -361,6 +361,8 @@ gtree
 │   └── sample2.md
 ├── makefile
 └── tree.go
+
+4 directories, 5 files
 ```
 
 colored output<br>
