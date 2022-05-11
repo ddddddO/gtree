@@ -14,4 +14,7 @@ cyclo: sweep
 cognitive: sweep
 	gocognito .
 
+credit:
+	gocredits . > CREDITS
+
 all: fmt test cyclo
