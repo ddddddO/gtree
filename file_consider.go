@@ -14,7 +14,7 @@ func newFileConsiderer(extensions []string) *fileConsiderer {
 	}
 }
 
-func (fc *fileConsiderer) isFile(current *Node) bool {
+func (fc *fileConsiderer) nodeIsFile(current *Node) bool {
 	if current.hasChild() {
 		return false
 	}

@@ -79,7 +79,6 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 	return tree.mkdir()
 }
 
-// TODO: メソッド名見直す
 func (t *tree) enableValidation() {
 	t.grower.enableValidation()
 }

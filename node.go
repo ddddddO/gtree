@@ -56,8 +56,8 @@ func (n *Node) isRoot() bool {
 }
 
 func (n *Node) cleanBranch() {
-	n.brnch.value = ""
-	n.brnch.path = ""
+	n.setBranch("")
+	n.setPath("")
 }
 
 func (n *Node) setBranch(branchs ...string) {
@@ -76,7 +76,7 @@ func (n *Node) prettyBranch() string {
 	if n.isRoot() {
 		return fmt.Sprintf("%s\n", n.name)
 	}
-	return fmt.Sprintf("%s %s\n", n.brnch.value, n.name)
+	return fmt.Sprintf("%s %s\n", n.branch(), n.name)
 }
 
 func (n *Node) setPath(paths ...string) {
@@ -91,7 +91,7 @@ func (n *Node) path() string {
 }
 
 func (n *Node) validatePath() error {
-	invalidChars := "/" // TODO: ディレクトリ名に含めてはまずそうなものをここに追加する
+	invalidChars := "/" // NOTE: ディレクトリ名に含めてはまずそうなものをここに追加する
 	if strings.ContainsAny(n.name, invalidChars) {
 		return fmt.Errorf("invalid node name: %s", n.name)
 	}

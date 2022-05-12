@@ -31,7 +31,7 @@ func (dm *defaultMkdirer) mkdir(roots []*Node) error {
 }
 
 func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
-	if dm.fileConsiderer.isFile(current) {
+	if dm.fileConsiderer.nodeIsFile(current) {
 		dir := strings.TrimSuffix(current.path(), current.name)
 		if err := dm.mkdirAll(dir); err != nil {
 			return err

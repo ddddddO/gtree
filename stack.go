@@ -32,14 +32,14 @@ func (s *stack) size() int {
 func (s *stack) dfs(current *Node) {
 	size := s.size()
 	for i := 0; i < size; i++ {
-		tmp := s.pop()
-		if !current.isDirectlyUnder(tmp) {
+		parent := s.pop()
+		if !current.isDirectlyUnder(parent) {
 			continue
 		}
 
-		tmp.addChild(current)
-		current.setParent(tmp)
-		s.push(tmp).push(current)
+		parent.addChild(current)
+		current.setParent(parent)
+		s.push(parent).push(current)
 		return
 	}
 }

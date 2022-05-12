@@ -4,7 +4,6 @@ import (
 	"sync"
 )
 
-// for Node.index
 type counter struct {
 	n  uint
 	mu sync.Mutex
