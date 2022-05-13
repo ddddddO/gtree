@@ -90,7 +90,7 @@ func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
 		branches += cs.spreadBranch(root)
 	}
 
-	ret := branches + "\n" + cs.summary()
+	ret := fmt.Sprintf("%s\n%s", branches, cs.summary())
 	return cs.write(w, ret)
 }
 
