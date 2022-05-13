@@ -16,7 +16,7 @@ type spreader interface {
 	spread(io.Writer, []*Node) error
 }
 
-func newSpreader(encode encode, dryrun bool, fileExtensions []string) spreader {
+func newSpreader(encode encode) spreader {
 	switch encode {
 	case encodeJSON:
 		return &jsonSpreader{}
@@ -24,20 +24,20 @@ func newSpreader(encode encode, dryrun bool, fileExtensions []string) spreader {
 		return &yamlSpreader{}
 	case encodeTOML:
 		return &tomlSpreader{}
+	default:
+		return &defaultSpreader{}
 	}
+}
 
-	ds := &defaultSpreader{}
-	if dryrun {
-		return &colorizeSpreader{
-			defaultSpreader: ds,
-			fileConsiderer:  newFileConsiderer(fileExtensions),
-			colorFile:       color.New(color.Bold, color.FgHiCyan),
-			colorDir:        color.New(color.FgGreen),
-			counterFile:     newCounter(),
-			counterDir:      newCounter(),
-		}
+func newColorizeSpreader(fileExtensions []string) spreader {
+	return &colorizeSpreader{
+		defaultSpreader: &defaultSpreader{},
+		fileConsiderer:  newFileConsiderer(fileExtensions),
+		colorFile:       color.New(color.Bold, color.FgHiCyan),
+		colorDir:        color.New(color.FgGreen),
+		counterFile:     newCounter(),
+		counterDir:      newCounter(),
 	}
-	return ds
 }
 
 type encode int

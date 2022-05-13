@@ -4,11 +4,20 @@ import (
 	"io"
 )
 
-func initializeTree(conf *config, rs []*Node) *tree {
-	g := newGrower(conf.encode, conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
-	s := newSpreader(conf.encode, conf.dryrun, conf.fileExtensions)
+func initializeTree(conf *config, roots []*Node) *tree {
+	g := newGrower(conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
+	if conf.encode != encodeDefault {
+		g = newNoopGrower()
+	}
+
+	s := newSpreader(conf.encode)
+	if conf.dryrun {
+		s = newColorizeSpreader(conf.fileExtensions)
+	}
+
 	m := newMkdirer(conf.fileExtensions)
-	return newTree(rs, g, s, m)
+
+	return newTree(roots, g, s, m)
 }
 
 type tree struct {

@@ -7,18 +7,18 @@ type grower interface {
 }
 
 func newGrower(
-	encode encode,
 	lastNodeFormat, intermedialNodeFormat branchFormat,
 	enabledValidation bool,
 ) grower {
-	if encode != encodeDefault {
-		return &noopGrower{}
-	}
 	return &defaultGrower{
 		lastNodeFormat:        lastNodeFormat,
 		intermedialNodeFormat: intermedialNodeFormat,
 		enabledValidation:     enabledValidation,
 	}
+}
+
+func newNoopGrower() grower {
+	return &noopGrower{}
 }
 
 type branchFormat struct {
