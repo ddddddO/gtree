@@ -397,7 +397,7 @@ func main() {
 	// 28 directories, 0 files
 
 	gtreeDir := gtree.NewRoot("gtree")
-	gtreeDir.Add("cmd").Add("main.go")
+	gtreeDir.Add("cmd").Add("gtree").Add("main.go")
 	gtreeDir.Add("makefile")
 	testdataDir := gtreeDir.Add("testdata")
 	testdataDir.Add("sample1.md")
@@ -413,17 +413,18 @@ func main() {
 		return
 	}
 	// Output(using Linux 'tree' command):
-	// 21:57:09 > tree gtree/
+	// 09:44:50 > tree gtree/
 	// gtree/
 	// ├── cmd
-	// │   └── main.go
+	// │   └── gtree
+	// │       └── main.go
 	// ├── makefile
 	// ├── testdata
 	// │   ├── sample1.md
 	// │   └── sample2.md
 	// └── tree.go
 	//
-	// 2 directories, 5 files
+	// 3 directories, 5 files
 }
 
 func preparePrimate() *gtree.Node {

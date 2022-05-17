@@ -42,29 +42,40 @@ func main() {
 	// Output:
 	// .
 	// ├── .github
+	// │   ├── dependabot.yml
 	// │   └── workflows
 	// │       ├── cd.yaml
 	// │       └── ci.yaml
 	// ├── .gitignore
 	// ├── .goreleaser.yml
+	// ├── cli_mkdir_dryrun.png
 	// ├── cmd
 	// │   └── gtree
-	// │       └── main.go
+	// │       ├── indent.go
+	// │       ├── main.go
+	// │       ├── mkdir.go
+	// │       └── output.go
 	// ├── config.go
-	// ├── example_programmable_test.go
+	// ├── counter.go
+	// ├── CREDITS
+	// ├── example_tree_handler_programmable_test.go
+	// ├── file_consider.go
 	// ├── go.mod
 	// ├── go.sum
 	// ├── LICENSE
 	// ├── makefile
 	// ├── node.go
-	// ├── programmable.go
-	// ├── programmable_test.go
+	// ├── node_generate.go
+	// ├── node_generate_strategy.go
+	// ├── node_generate_strategy_test.go
 	// ├── README.md
 	// ├── README_CLI.md
 	// ├── README_Package_1.md
 	// ├── README_Package_2.md
 	// ├── sample
 	// │   ├── find_pipe_programmable-gtree
+	// │   │   └── main.go
+	// │   ├── go-list_pipe_programmable-gtree
 	// │   │   └── main.go
 	// │   ├── like_cli
 	// │   │   ├── adapter
@@ -85,11 +96,11 @@ func main() {
 	// │   └── sample6.md
 	// ├── tmp.md
 	// ├── tree.go
-	// ├── tree_json.go
-	// ├── tree_json_test.go
-	// ├── tree_test.go
-	// ├── tree_toml.go
-	// ├── tree_toml_test.go
-	// ├── tree_yaml.go
-	// └── tree_yaml_test.go
+	// ├── tree_grow.go
+	// ├── tree_handler.go
+	// ├── tree_handler_programmable.go
+	// ├── tree_handler_programmable_test.go
+	// ├── tree_handler_test.go
+	// ├── tree_mkdir.go
+	// └── tree_spread.go
 }

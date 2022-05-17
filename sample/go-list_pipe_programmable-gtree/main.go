@@ -36,13 +36,14 @@ func main() {
 	}
 	// Output:
 	// [All Dependencies]
-	// ├── unsafe
 	// ├── internal
+	// │   ├── goarch
 	// │   ├── unsafeheader
 	// │   ├── abi
 	// │   ├── cpu
 	// │   ├── bytealg
 	// │   ├── goexperiment
+	// │   ├── goos
 	// │   ├── reflectlite
 	// │   ├── race
 	// │   ├── itoa
@@ -53,11 +54,13 @@ func main() {
 	// │   │   └── execenv
 	// │   ├── poll
 	// │   └── testlog
+	// ├── unsafe
 	// ├── runtime
 	// │   └── internal
 	// │       ├── atomic
+	// │       ├── math
 	// │       ├── sys
-	// │       └── math
+	// │       └── syscall
 	// ├── errors
 	// ├── sync
 	// │   └── atomic
@@ -85,7 +88,18 @@ func main() {
 	// │   └── filepath
 	// ├── os
 	// ├── fmt
+	// ├── golang.org
+	// │   └── x
+	// │       └── sys
+	// │           ├── internal
+	// │           │   └── unsafeheader
+	// │           └── unix
 	// ├── github.com
+	// │   ├── mattn
+	// │   │   ├── go-isatty
+	// │   │   └── go-colorable
+	// │   ├── fatih
+	// │   │   └── color
 	// │   ├── pelletier
 	// │   │   └── go-toml
 	// │   │       └── v2
@@ -93,21 +107,38 @@ func main() {
 	// │   │               ├── danger
 	// │   │               ├── ast
 	// │   │               └── tracker
-	// │   ├── pkg
-	// │   │   └── errors
-	// │   └── ddddddO
-	// │       └── gtree
-	// │           ├── cmd
-	// │           │   └── gtree
-	// │           └── sample
-	// │               ├── find_pipe_programmable-gtree
-	// │               ├── go-list_pipe_programmable-gtree
-	// │               ├── like_cli
-	// │               │   └── adapter
-	// │               └── programmable
+	// │   ├── ddddddO
+	// │   │   └── gtree
+	// │   │       ├── cmd
+	// │   │       │   └── gtree
+	// │   │       └── sample
+	// │   │           ├── find_pipe_programmable-gtree
+	// │   │           ├── go-list_pipe_programmable-gtree
+	// │   │           ├── like_cli
+	// │   │           │   └── adapter
+	// │   │           └── programmable
+	// │   ├── russross
+	// │   │   └── blackfriday
+	// │   │       └── v2
+	// │   ├── cpuguy83
+	// │   │   └── go-md2man
+	// │   │       └── v2
+	// │   │           └── md2man
+	// │   └── urfave
+	// │       └── cli
+	// │           └── v2
 	// ├── regexp
 	// │   └── syntax
 	// ├── gopkg.in
 	// │   └── yaml.v2
-	// └── flag
+	// ├── context
+	// ├── flag
+	// ├── html
+	// ├── text
+	// │   ├── tabwriter
+	// │   └── template
+	// │       └── parse
+	// ├── net
+	// │   └── url
+	// └── log
 }
