@@ -17,8 +17,8 @@ func newGrower(
 	}
 }
 
-func newNoopGrower() grower {
-	return &noopGrower{}
+func newNopGrower() grower {
+	return &nopGrower{}
 }
 
 type branchFormat struct {
@@ -103,8 +103,8 @@ func (dg *defaultGrower) enableValidation() {
 	dg.enabledValidation = true
 }
 
-type noopGrower struct{}
+type nopGrower struct{}
 
-func (*noopGrower) grow(_ []*Node) error { return nil }
+func (*nopGrower) grow(_ []*Node) error { return nil }
 
-func (*noopGrower) enableValidation() {}
+func (*nopGrower) enableValidation() {}

@@ -7,7 +7,7 @@ import (
 func initializeTree(conf *config, roots []*Node) *tree {
 	g := newGrower(conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
 	if conf.encode != encodeDefault {
-		g = newNoopGrower()
+		g = newNopGrower()
 	}
 
 	s := newSpreader(conf.encode)
