@@ -36,8 +36,8 @@ func main() {
 	}
 
 	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output:
 	// .

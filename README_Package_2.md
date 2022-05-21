@@ -34,8 +34,8 @@ func main() {
 		gtree.WithBranchFormatIntermedialNode("+--", ":   "),
 		gtree.WithBranchFormatLastNode("+--", "    "),
 	); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output:
 	// root
@@ -51,8 +51,8 @@ func main() {
 	primate := preparePrimate()
 	// default branch format.
 	if err := gtree.OutputProgrammably(os.Stdout, primate); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output:
 	// Primate
@@ -179,8 +179,8 @@ func main() {
 	}
 
 	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output:
 	// .
@@ -268,8 +268,8 @@ import (
 func main() {
 	primate := preparePrimate()
 	if err := gtree.MkdirProgrammably(primate); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output(using Linux 'tree' command):
 	// 22:20:43 > tree Primate/
@@ -336,8 +336,8 @@ func main() {
 		gtreeDir,
 		gtree.WithFileExtensions([]string{".go", ".md", "makefile"}),
 	); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output(using Linux 'tree' command):
 	// 09:44:50 > tree gtree/

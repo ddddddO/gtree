@@ -40,8 +40,8 @@ func main() {
 							- AAAAAAA
 	- eee`))
 	if err := gtree.Output(os.Stdout, r1); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output:
 	// root
@@ -76,8 +76,8 @@ func main() {
 		gtree.WithBranchFormatIntermedialNode("+->", ":   "),
 		gtree.WithBranchFormatLastNode("+->", "    "),
 	); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 	// Output:
 	// a

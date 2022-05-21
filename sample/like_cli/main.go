@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/ddddddO/gtree/sample/like_cli/adapter"
@@ -63,8 +64,8 @@ func main() {
 
 	for _, or := range outputer {
 		if err := or.Output(); err != nil {
-			fmt.Println(err)
-			return
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
 		}
 	}
 }
