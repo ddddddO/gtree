@@ -1,4 +1,4 @@
-package gtree
+package gtree_test
 
 import (
 	"bufio"
@@ -9,11 +9,13 @@ import (
 	"os"
 	"strings"
 	"testing"
+
+	"github.com/ddddddO/gtree"
 )
 
 type in struct {
 	input   io.Reader
-	options []Option
+	options []gtree.Option
 }
 
 type out struct {
@@ -174,7 +176,7 @@ root
   - e
     - o
   - g`)),
-				options: []Option{WithIndentTwoSpaces()},
+				options: []gtree.Option{gtree.WithIndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -204,7 +206,7 @@ a
     - e
         - o
     - g`)),
-				options: []Option{WithIndentFourSpaces()},
+				options: []gtree.Option{gtree.WithIndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -327,7 +329,7 @@ a
 			},
 			out: out{
 				output: "",
-				err:    errEmptyText,
+				err:    gtree.ExportErrEmptyText,
 			},
 		},
 		{
@@ -341,7 +343,7 @@ a
 			},
 			out: out{
 				output: "",
-				err:    errIncorrectFormat,
+				err:    gtree.ExportErrIncorrectFormat,
 			},
 		},
 		{
@@ -397,10 +399,10 @@ a
   - e
     - o
   - g`)),
-				options: []Option{
-					WithIndentTwoSpaces(),
-					WithBranchFormatIntermedialNode("+->", ":   "),
-					WithBranchFormatLastNode("+->", "    "),
+				options: []gtree.Option{
+					gtree.WithIndentTwoSpaces(),
+					gtree.WithBranchFormatIntermedialNode("+->", ":   "),
+					gtree.WithBranchFormatLastNode("+->", "    "),
 				},
 			},
 			out: out{
@@ -424,8 +426,8 @@ a
 				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b`)),
-				options: []Option{
-					WithDryRun(),
+				options: []gtree.Option{
+					gtree.WithDryRun(),
 				},
 			},
 			out: out{
@@ -444,8 +446,8 @@ a
 				input: strings.NewReader(strings.TrimSpace(`
 - a
 	- b/c`)),
-				options: []Option{
-					WithDryRun(),
+				options: []gtree.Option{
+					gtree.WithDryRun(),
 				},
 			},
 			out: out{
@@ -476,7 +478,7 @@ a	prev tab
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -531,7 +533,7 @@ func TestMkdir(t *testing.T) {
 	- bb
 		- lll
 	-ff`)),
-				options: []Option{WithDryRun()},
+				options: []gtree.Option{gtree.WithDryRun()},
 			},
 			wantErr: nil,
 		},
@@ -544,7 +546,7 @@ func TestMkdir(t *testing.T) {
 	- b/b
 		- lll
 	-ff`)),
-				options: []Option{WithDryRun()},
+				options: []gtree.Option{gtree.WithDryRun()},
 			},
 			wantErr: errors.New("invalid node name: b/b"),
 		},
@@ -557,7 +559,7 @@ func TestMkdir(t *testing.T) {
 	- bb
 		- lll
 	-ff`)),
-				options: []Option{WithDryRun()},
+				options: []gtree.Option{gtree.WithDryRun()},
 			},
 			wantErr: errors.New("invalid path: /root2/b"),
 		},
@@ -587,7 +589,7 @@ func TestMkdir(t *testing.T) {
 	- bb
 		- lll
 	-makefile`)),
-				options: []Option{WithFileExtensions([]string{".go", "makefile"})},
+				options: []gtree.Option{gtree.WithFileExtensions([]string{".go", "makefile"})},
 			},
 			wantErr: nil,
 		},
@@ -599,7 +601,7 @@ func TestMkdir(t *testing.T) {
 	- b.go
 	- bb.go
 		- lll`)),
-				options: []Option{WithFileExtensions([]string{".go"})},
+				options: []gtree.Option{gtree.WithFileExtensions([]string{".go"})},
 			},
 			wantErr: nil,
 		},
@@ -610,7 +612,7 @@ func TestMkdir(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := Mkdir(tt.in.input, tt.in.options...)
+			gotErr := gtree.Mkdir(tt.in.input, tt.in.options...)
 			if gotErr != nil {
 				if gotErr.Error() != tt.wantErr.Error() {
 					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
@@ -648,7 +650,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				options: []Option{WithEncodeJSON()},
+				options: []gtree.Option{gtree.WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -671,7 +673,7 @@ func TestOutput_encodeJSON(t *testing.T) {
   - e
     - o
   - g`)),
-				options: []Option{WithIndentTwoSpaces(), WithEncodeJSON()},
+				options: []gtree.Option{gtree.WithIndentTwoSpaces(), gtree.WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -693,7 +695,7 @@ func TestOutput_encodeJSON(t *testing.T) {
     - e
         - o
     - g`)),
-				options: []Option{WithIndentFourSpaces(), WithEncodeJSON()},
+				options: []gtree.Option{gtree.WithIndentFourSpaces(), gtree.WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -710,7 +712,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -751,7 +753,7 @@ func TestOutput_encodeTOML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				options: []Option{WithEncodeTOML()},
+				options: []gtree.Option{gtree.WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -824,7 +826,7 @@ children = []
   - e
     - o
   - g`)),
-				options: []Option{WithIndentTwoSpaces(), WithEncodeTOML()},
+				options: []gtree.Option{gtree.WithIndentTwoSpaces(), gtree.WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -871,7 +873,7 @@ children = []
     - e
         - o
     - g`)),
-				options: []Option{WithIndentFourSpaces(), WithEncodeTOML()},
+				options: []gtree.Option{gtree.WithIndentFourSpaces(), gtree.WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -913,7 +915,7 @@ children = []
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -954,7 +956,7 @@ func TestOutput_encodeYAML(t *testing.T) {
 	- e
 		- o
 	- g`)),
-				options: []Option{WithEncodeYAML()},
+				options: []gtree.Option{gtree.WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1012,7 +1014,7 @@ children:
   - e
     - o
   - g`)),
-				options: []Option{WithIndentTwoSpaces(), WithEncodeYAML()},
+				options: []gtree.Option{gtree.WithIndentTwoSpaces(), gtree.WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1051,7 +1053,7 @@ children:
     - e
         - o
     - g`)),
-				options: []Option{WithIndentFourSpaces(), WithEncodeYAML()},
+				options: []gtree.Option{gtree.WithIndentFourSpaces(), gtree.WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1085,7 +1087,7 @@ children:
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
