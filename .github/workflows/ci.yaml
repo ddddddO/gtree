@@ -20,4 +20,4 @@ jobs:
       - name: test
         run: go test ./... -race -coverprofile=coverage.out -covermode=atomic -v
       - name: upload coverage to Codecov
-        run: bash <(curl -s https://codecov.io/bash)
+        uses: codecov/codecov-action@v2
