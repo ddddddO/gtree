@@ -3,6 +3,7 @@ package gtree_test
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"strings"
 	"testing"
 
@@ -22,10 +23,9 @@ func Example() {
 
 	buf := &bytes.Buffer{}
 	if err := gtree.OutputProgrammably(buf, root); err != nil {
-		fmt.Println(err)
-		return
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
-
 	fmt.Println(buf.String())
 	// Output:
 	// root
