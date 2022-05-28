@@ -11,14 +11,12 @@ import (
 )
 
 func Example() {
-	var root *gtree.Node
-	root = gtree.NewRoot("root")
+	var root *gtree.Node = gtree.NewRoot("root")
 	root.Add("child 1").Add("child 2")
 	root.Add("child 1").Add("child 3")
 	child4 := root.Add("child 4")
 
-	var child7 *gtree.Node
-	child7 = child4.Add("child 5").Add("child 6").Add("child 7")
+	var child7 *gtree.Node = child4.Add("child 5").Add("child 6").Add("child 7")
 	child7.Add("child 8")
 
 	buf := &bytes.Buffer{}
