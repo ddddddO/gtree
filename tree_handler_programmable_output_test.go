@@ -11,8 +11,7 @@ import (
 )
 
 func Example() {
-	var root *gtree.Node
-	root = gtree.NewRoot("root")
+	var root *gtree.Node = gtree.NewRoot("root")
 	root.Add("child 1").Add("child 2")
 	root.Add("child 1").Add("child 3")
 	child4 := root.Add("child 4")
