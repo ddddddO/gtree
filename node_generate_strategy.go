@@ -29,7 +29,6 @@ func newStrategy(st spaceType) nodeGenerateStrategy {
 }
 
 const (
-	empty  = ""
 	hyphen = "-"
 	space  = " "
 	tab    = "	"
