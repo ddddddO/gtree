@@ -10,17 +10,13 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+func output(in io.Reader, options []gtree.Option) error {
+	return gtree.Output(os.Stdout, in, options...)
+}
+
 func outputWithValidation(in io.Reader, options []gtree.Option) error {
 	options = append(options, gtree.WithDryRun())
-	return output(color.Output, in, options)
-}
-
-func outputDefault(in io.Reader, options []gtree.Option) error {
-	return output(os.Stdout, in, options)
-}
-
-func output(out io.Writer, in io.Reader, options []gtree.Option) error {
-	return gtree.Output(out, in, options...)
+	return gtree.Output(color.Output, in, options...)
 }
 
 type stateOutputFormat struct {
