@@ -8,7 +8,7 @@ import (
 
 	color "github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 // 関心事はtreeを出力すること
