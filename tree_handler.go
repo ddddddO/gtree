@@ -10,6 +10,7 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 	if err != nil {
 		return err
 	}
+
 	rg := newRootGenerator(r, conf.space)
 	roots, err := rg.generate()
 	if err != nil {
@@ -29,6 +30,7 @@ func Mkdir(r io.Reader, options ...Option) error {
 	if err != nil {
 		return err
 	}
+
 	rg := newRootGenerator(r, conf.space)
 	roots, err := rg.generate()
 	if err != nil {

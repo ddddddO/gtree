@@ -5,7 +5,7 @@ import (
 	"errors"
 	"io"
 
-	color "github.com/fatih/color"
+	"github.com/fatih/color"
 )
 
 var (
