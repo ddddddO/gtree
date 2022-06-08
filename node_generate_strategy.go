@@ -56,12 +56,12 @@ func (*tabStrategy) generate(row string, idx uint) (*Node, error) {
 		return nil, errIncorrectFormat
 	}
 
-	hierarchy := uint(tabCount) + rootHierarchyNum
 	text := strings.TrimPrefix(after, space)
 	if len(text) == 0 {
 		return nil, errEmptyText
 	}
 
+	hierarchy := uint(tabCount) + rootHierarchyNum
 	return newNode(text, hierarchy, idx), nil
 }
 
@@ -81,12 +81,12 @@ func (*twoSpacesStrategy) generate(row string, idx uint) (*Node, error) {
 		return nil, errIncorrectFormat
 	}
 
-	hierarchy := uint(spaceCount/2) + rootHierarchyNum
 	text := strings.TrimPrefix(after, space)
 	if len(text) == 0 {
 		return nil, errEmptyText
 	}
 
+	hierarchy := uint(spaceCount/2) + rootHierarchyNum
 	return newNode(text, hierarchy, idx), nil
 }
 
@@ -106,11 +106,11 @@ func (*fourSpacesStrategy) generate(row string, idx uint) (*Node, error) {
 		return nil, errIncorrectFormat
 	}
 
-	hierarchy := uint(spaceCount/4) + rootHierarchyNum
 	text := strings.TrimPrefix(after, space)
 	if len(text) == 0 {
 		return nil, errEmptyText
 	}
 
+	hierarchy := uint(spaceCount/4) + rootHierarchyNum
 	return newNode(text, hierarchy, idx), nil
 }
