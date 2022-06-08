@@ -5,8 +5,8 @@ import (
 	"strings"
 )
 
-// 関心事はファイルを生成すること
-// interfaceを使う必要はないが、他と合わせるため
+// 関心事はファイルの生成
+// interfaceを使う必要はないが、grower/spreaderと合わせたいため
 type mkdirer interface {
 	mkdir([]*Node) error
 }

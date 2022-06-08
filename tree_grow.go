@@ -1,6 +1,6 @@
 package gtree
 
-// 関心事は各ノードの枝を組み立てること
+// 関心事は各ノードの枝の形成
 type grower interface {
 	grow([]*Node) error
 	enableValidation()
