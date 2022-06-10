@@ -85,12 +85,15 @@ type colorizeSpreader struct {
 }
 
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
-	branches := ""
+	ret := ""
 	for _, root := range roots {
-		branches += cs.spreadBranch(root)
+		cs.counterFile.reset()
+		cs.counterDir.reset()
+
+		branches := cs.spreadBranch(root)
+		ret += fmt.Sprintf("%s\n%s", branches, cs.summary())
 	}
 
-	ret := fmt.Sprintf("%s\n%s", branches, cs.summary())
 	return cs.write(w, ret)
 }
 
