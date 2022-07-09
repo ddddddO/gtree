@@ -232,7 +232,7 @@ func actionMkdir(c *cli.Context) error {
 	return nil
 }
 
-var template = strings.TrimLeft(`
+const template = `
 - gtree
 	- cmd
 		- gtree
@@ -242,9 +242,9 @@ var template = strings.TrimLeft(`
 		- sample2.md
 	- makefile
 	- tree.go
-`, "\n")
+`
 
 func actionTemplate(c *cli.Context) error {
-	fmt.Print(template)
+	fmt.Print(strings.TrimLeft(template, "\n"))
 	return nil
 }
