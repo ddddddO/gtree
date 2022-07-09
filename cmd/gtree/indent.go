@@ -22,10 +22,10 @@ func newStateIndentation(c *cli.Context) *stateIndentation {
 	s := &stateIndentation{}
 
 	if c.Bool("two-spaces") {
-		s.spaces = s.spaces | spacesTwo
+		s.spaces |= spacesTwo
 	}
 	if c.Bool("four-spaces") {
-		s.spaces = s.spaces | spacesFour
+		s.spaces |= spacesFour
 	}
 
 	return s

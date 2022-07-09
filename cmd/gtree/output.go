@@ -35,13 +35,13 @@ func newStateOutputFormat(c *cli.Context) *stateOutputFormat {
 	s := &stateOutputFormat{}
 
 	if c.Bool("json") {
-		s.encode = s.encode | encodeJSON
+		s.encode |= encodeJSON
 	}
 	if c.Bool("yaml") {
-		s.encode = s.encode | encodeYAML
+		s.encode |= encodeYAML
 	}
 	if c.Bool("toml") {
-		s.encode = s.encode | encodeTOML
+		s.encode |= encodeTOML
 	}
 
 	return s
