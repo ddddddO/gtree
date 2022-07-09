@@ -7,16 +7,28 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+type spacesType uint
+
+const (
+	spacesTwo spacesType = 1 << iota
+	spacesFour
+)
+
 type stateIndentation struct {
-	spacesTwo  bool
-	spacesFour bool
+	spaces spacesType
 }
 
 func newStateIndentation(c *cli.Context) *stateIndentation {
-	return &stateIndentation{
-		spacesTwo:  c.Bool("two-spaces"),
-		spacesFour: c.Bool("four-spaces"),
+	s := &stateIndentation{}
+
+	if c.Bool("two-spaces") {
+		s.spaces = s.spaces | spacesTwo
 	}
+	if c.Bool("four-spaces") {
+		s.spaces = s.spaces | spacesFour
+	}
+
+	return s
 }
 
 func (s *stateIndentation) decideOption() (gtree.Option, error) {
@@ -24,18 +36,19 @@ func (s *stateIndentation) decideOption() (gtree.Option, error) {
 		return nil, err
 	}
 
-	if s.spacesTwo {
+	switch s.spaces {
+	case spacesTwo:
 		return gtree.WithIndentTwoSpaces(), nil
-	}
-	if s.spacesFour {
+	case spacesFour:
 		return gtree.WithIndentFourSpaces(), nil
 	}
 	return nil, nil
 }
 
 func (s *stateIndentation) validate() error {
-	if s.spacesTwo && s.spacesFour {
-		return errors.New(`choose either "two-spaces(ts)" or "four-spaces(fs)".`)
+	switch s.spaces {
+	case spacesType(0), spacesTwo, spacesFour:
+		return nil
 	}
-	return nil
+	return errors.New(`choose either "two-spaces(ts)" or "four-spaces(fs)" or blank.`)
 }
