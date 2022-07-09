@@ -19,18 +19,32 @@ func outputWithValidation(in io.Reader, options []gtree.Option) error {
 	return gtree.Output(color.Output, in, options...)
 }
 
+type encodeType uint
+
+const (
+	encodeJSON encodeType = 1 << iota
+	encodeYAML
+	encodeTOML
+)
+
 type stateOutputFormat struct {
-	encodeJSON bool
-	encodeYAML bool
-	encodeTOML bool
+	encode encodeType
 }
 
 func newStateOutputFormat(c *cli.Context) *stateOutputFormat {
-	return &stateOutputFormat{
-		encodeJSON: c.Bool("json"),
-		encodeYAML: c.Bool("yaml"),
-		encodeTOML: c.Bool("toml"),
+	s := &stateOutputFormat{}
+
+	if c.Bool("json") {
+		s.encode |= encodeJSON
 	}
+	if c.Bool("yaml") {
+		s.encode |= encodeYAML
+	}
+	if c.Bool("toml") {
+		s.encode |= encodeTOML
+	}
+
+	return s
 }
 
 func (s *stateOutputFormat) decideOption() (gtree.Option, error) {
@@ -38,29 +52,21 @@ func (s *stateOutputFormat) decideOption() (gtree.Option, error) {
 		return nil, err
 	}
 
-	switch {
-	case s.encodeJSON:
+	switch s.encode {
+	case encodeJSON:
 		return gtree.WithEncodeJSON(), nil
-	case s.encodeYAML:
+	case encodeYAML:
 		return gtree.WithEncodeYAML(), nil
-	case s.encodeTOML:
+	case encodeTOML:
 		return gtree.WithEncodeTOML(), nil
 	}
 	return nil, nil
 }
 
 func (s *stateOutputFormat) validate() error {
-	if s.encodeJSON && s.encodeYAML && s.encodeTOML {
-		return errors.New(`choose either "json(j)" or "yaml(y)" or "toml(t)".`)
+	switch s.encode {
+	case encodeType(0), encodeJSON, encodeYAML, encodeTOML:
+		return nil
 	}
-	if s.encodeJSON && s.encodeYAML {
-		return errors.New(`choose either "json(j)" or "yaml(y)".`)
-	}
-	if s.encodeJSON && s.encodeTOML {
-		return errors.New(`choose either "json(j)" or "toml(t)".`)
-	}
-	if s.encodeTOML && s.encodeYAML {
-		return errors.New(`choose either "toml(t)" or "yaml(y)".`)
-	}
-	return nil
+	return errors.New(`choose either "json(j)" or "yaml(y)" or "toml(t)" or blank.`)
 }
