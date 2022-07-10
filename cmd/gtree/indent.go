@@ -45,9 +45,11 @@ func (s *stateIndentation) decideOption() (gtree.Option, error) {
 	return nil, nil
 }
 
+const spacesTab = spacesType(0)
+
 func (s *stateIndentation) validate() error {
 	switch s.spaces {
-	case spacesType(0), spacesTwo, spacesFour:
+	case spacesTab, spacesTwo, spacesFour:
 		return nil
 	}
 	return errors.New(`choose either "two-spaces(ts)" or "four-spaces(fs)" or blank.`)

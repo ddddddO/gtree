@@ -63,9 +63,11 @@ func (s *stateOutputFormat) decideOption() (gtree.Option, error) {
 	return nil, nil
 }
 
+const encodeDefault = encodeType(0)
+
 func (s *stateOutputFormat) validate() error {
 	switch s.encode {
-	case encodeType(0), encodeJSON, encodeYAML, encodeTOML:
+	case encodeDefault, encodeJSON, encodeYAML, encodeTOML:
 		return nil
 	}
 	return errors.New(`choose either "json(j)" or "yaml(y)" or "toml(t)" or blank.`)
