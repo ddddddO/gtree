@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/ddddddO/gtree"
-	color "github.com/fatih/color"
+	"github.com/fatih/color"
 	"github.com/urfave/cli/v2"
 )
 
