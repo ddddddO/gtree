@@ -15,8 +15,8 @@ $ brew install ddddddO/tap/gtree
 
 or [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree).
 ```console
-$ docker pull ghcr.io/ddddddo/gtree:docker
-$ docker run ghcr.io/ddddddo/gtree:docker template | docker run -i ghcr.io/ddddddo/gtree:docker output
+$ docker pull ghcr.io/ddddddo/gtree:latest
+$ docker run ghcr.io/ddddddo/gtree:latest template | docker run -i ghcr.io/ddddddo/gtree:latest output
 gtree
 ├── cmd
 │   └── gtree
