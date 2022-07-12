@@ -43,6 +43,9 @@ func (n *Node) hasChild() bool {
 }
 
 func (n *Node) isDirectlyUnder(node *Node) bool {
+	if node == nil {
+		return false
+	}
 	return n.hierarchy == node.hierarchy+1
 }
 
