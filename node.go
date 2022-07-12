@@ -43,10 +43,17 @@ func (n *Node) hasChild() bool {
 }
 
 func (n *Node) isDirectlyUnder(node *Node) bool {
+	if node == nil {
+		return false
+	}
 	return n.hierarchy == node.hierarchy+1
 }
 
 func (n *Node) isLastOfHierarchy() bool {
+	if n.parent == nil {
+		return false
+	}
+
 	lastIdx := len(n.parent.children) - 1
 	return n.index == n.parent.children[lastIdx].index
 }

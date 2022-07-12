@@ -19,6 +19,10 @@ func (s *stack) push(n *Node) *stack {
 
 func (s *stack) pop() *Node {
 	lastIndex := s.size() - 1
+	if lastIndex < 0 {
+		return nil
+	}
+
 	tmp := s.nodes[lastIndex]
 	s.nodes = s.nodes[:lastIndex]
 	return tmp
