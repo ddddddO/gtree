@@ -5,12 +5,27 @@
 go version requires 1.18 or later.
 
 ```console
-go install github.com/ddddddO/gtree/cmd/gtree@latest
+$ go install github.com/ddddddO/gtree/cmd/gtree@latest
 ```
 
 or using Homebrew.
 ```console
-brew install ddddddO/tap/gtree
+$ brew install ddddddO/tap/gtree
+```
+
+or [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree).
+```console
+$ docker pull ghcr.io/ddddddo/gtree:docker
+$ docker run ghcr.io/ddddddo/gtree:docker template | docker run -i ghcr.io/ddddddo/gtree:docker output
+gtree
+├── cmd
+│   └── gtree
+│       └── main.go
+├── testdata
+│   ├── sample1.md
+│   └── sample2.md
+├── makefile
+└── tree.go
 ```
 
 **or, download binary from [here](https://github.com/ddddddO/gtree/releases).**
