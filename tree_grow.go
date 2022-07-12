@@ -108,3 +108,8 @@ type nopGrower struct{}
 func (*nopGrower) grow(_ []*Node) error { return nil }
 
 func (*nopGrower) enableValidation() {}
+
+var (
+	_ grower = &defaultGrower{}
+	_ grower = &nopGrower{}
+)

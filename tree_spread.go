@@ -226,3 +226,11 @@ func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
 
 	return yParent
 }
+
+var (
+	_ spreader = &defaultSpreader{}
+	_ spreader = &colorizeSpreader{}
+	_ spreader = &jsonSpreader{}
+	_ spreader = &yamlSpreader{}
+	_ spreader = &tomlSpreader{}
+)
