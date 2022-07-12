@@ -50,6 +50,10 @@ func (n *Node) isDirectlyUnder(node *Node) bool {
 }
 
 func (n *Node) isLastOfHierarchy() bool {
+	if n.parent == nil {
+		return false
+	}
+
 	lastIdx := len(n.parent.children) - 1
 	return n.index == n.parent.children[lastIdx].index
 }
