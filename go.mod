@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/fatih/color v1.13.0
 	github.com/pelletier/go-toml/v2 v2.0.2
-	github.com/urfave/cli/v2 v2.11.0
+	github.com/urfave/cli/v2 v2.11.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
