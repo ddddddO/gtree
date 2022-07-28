@@ -54,17 +54,16 @@ func (dg *defaultGrower) assemble(current *Node) error {
 }
 
 func (dg *defaultGrower) assembleBranch(current *Node) error {
-	if current.isRoot() {
-		return nil
-	}
-	current.cleanBranch() // 例えば、MkdirProgrammably funcでrootノードを使いまわすと、前回func実行時に形成されたノードの枝が残ったまま追記されてしまうため。
+	current.clean() // 例えば、MkdirProgrammably funcでrootノードを使いまわすと、前回func実行時に形成されたノードの枝が残ったまま追記されてしまうため。
 
 	dg.assembleBranchDirectly(current)
 
 	// go back to the root to form a branch.
 	tmpParent := current.parent
-	for ; !tmpParent.isRoot(); tmpParent = tmpParent.parent {
-		dg.assembleBranchIndirectly(current, tmpParent)
+	if tmpParent != nil {
+		for ; !tmpParent.isRoot(); tmpParent = tmpParent.parent {
+			dg.assembleBranchIndirectly(current, tmpParent)
+		}
 	}
 
 	dg.assembleBranchFinally(current, tmpParent)
@@ -76,6 +75,13 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 }
 
 func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
+	if current == nil {
+		return
+	}
+	if current.isRoot() {
+		return
+	}
+
 	current.setPath(current.name)
 
 	if current.isLastOfHierarchy() {
@@ -86,6 +92,13 @@ func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
 }
 
 func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
+	if current == nil || parent == nil {
+		return
+	}
+	if current.isRoot() {
+		return
+	}
+
 	current.setPath(parent.name, current.path())
 
 	if parent.isLastOfHierarchy() {
@@ -96,7 +109,19 @@ func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
 }
 
 func (*defaultGrower) assembleBranchFinally(current, root *Node) {
-	current.setPath(root.path(), current.path())
+	if current == nil {
+		return
+	}
+
+	if root != nil {
+		current.setPath(root.path(), current.path())
+	}
+
+	if current.isRoot() {
+		current.setBranch(current.name, "\n")
+	} else {
+		current.setBranch(current.branch(), " ", current.name, "\n")
+	}
 }
 
 func (dg *defaultGrower) enableValidation() {

@@ -52,19 +52,20 @@ func TestMkdir(t *testing.T) {
 			},
 			wantErr: errors.New("invalid node name: b/b"),
 		},
-		{
-			name: "case(dry-run/invalid path)",
-			in: in{
-				input: strings.NewReader(strings.TrimSpace(`
-- /root2
-	- b
-	- bb
-		- lll
-	-ff`)),
-				options: []gtree.Option{gtree.WithDryRun()},
-			},
-			wantErr: errors.New("invalid path: /root2/b"),
-		},
+		// NOTE: 上のパターンでエラーとして返すようになった
+		// 		{
+		// 			name: "case(dry-run/invalid path)",
+		// 			in: in{
+		// 				input: strings.NewReader(strings.TrimSpace(`
+		// - /root2
+		// 	- b
+		// 	- bb
+		// 		- lll
+		// 	-ff`)),
+		// 				options: []gtree.Option{gtree.WithDryRun()},
+		// 			},
+		// 			wantErr: errors.New("invalid path: /root2/b"),
+		// 		},
 		{
 			name: "case(succeeded/only root)",
 			in: in{

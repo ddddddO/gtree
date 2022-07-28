@@ -62,11 +62,6 @@ func (n *Node) isRoot() bool {
 	return n.hierarchy == rootHierarchyNum
 }
 
-func (n *Node) cleanBranch() {
-	n.setBranch("")
-	n.setPath("")
-}
-
 func (n *Node) setBranch(branchs ...string) {
 	ret := ""
 	for _, v := range branchs {
@@ -79,22 +74,8 @@ func (n *Node) branch() string {
 	return n.brnch.value
 }
 
-func (n *Node) prettyBranch() string {
-	if n.isRoot() {
-		return fmt.Sprintf("%s\n", n.name)
-	}
-	return fmt.Sprintf("%s %s\n", n.branch(), n.name)
-}
-
 func (n *Node) setPath(paths ...string) {
 	n.brnch.path = filepath.Join(paths...)
-}
-
-func (n *Node) path() string {
-	if n.isRoot() {
-		return n.name
-	}
-	return n.brnch.path
 }
 
 func (n *Node) validatePath() error {
@@ -106,4 +87,16 @@ func (n *Node) validatePath() error {
 		return fmt.Errorf("invalid path: %s", n.path())
 	}
 	return nil
+}
+
+func (n *Node) path() string {
+	if n.isRoot() {
+		return n.name
+	}
+	return n.brnch.path
+}
+
+func (n *Node) clean() {
+	n.setBranch("")
+	n.setPath("")
 }

@@ -60,7 +60,7 @@ func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {
-	ret := current.prettyBranch()
+	ret := current.branch()
 	for _, child := range current.children {
 		ret += (*defaultSpreader)(nil).spreadBranch(child)
 	}
@@ -98,7 +98,7 @@ func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
 
 func (cs *colorizeSpreader) spreadBranch(current *Node) string {
 	cs.colorize(current)
-	ret := current.prettyBranch()
+	ret := current.branch()
 	for _, child := range current.children {
 		ret += cs.spreadBranch(child)
 	}
