@@ -2,7 +2,7 @@
 
 ## Installation
 
-go version requires 1.18 or later.
+Go version requires 1.18 or later.
 
 ```console
 go get github.com/ddddddO/gtree
@@ -10,7 +10,7 @@ go get github.com/ddddddO/gtree
 
 ## Usage
 
-## *OutputProgrammably*
+## *OutputProgrammably* func
 
 ```go
 package main
@@ -254,7 +254,7 @@ func main() {
 
 [link](https://github.com/ddddddO/gtree/blob/master/sample/go-list_pipe_programmable-gtree/main.go)
 
-## *MkdirProgrammably*
+## *MkdirProgrammably* func
 
 ```go
 package main

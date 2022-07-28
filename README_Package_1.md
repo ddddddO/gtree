@@ -2,14 +2,14 @@
 
 ## Installation
 
-go version requires 1.18 or later.
+Go version requires 1.18 or later.
 
 ```console
 go get github.com/ddddddO/gtree
 ```
 
 ## Usage
-### *Output*
+### *Output* func
 
 ```go
 package main
@@ -100,7 +100,7 @@ func main() {
 
 ---
 
-### *Mkdir*
+### *Mkdir* func
 
 - `gtree.Mkdir` func makes directories.
 	- You can use `gtree.WithFileExtensions` func to make specified extensions as file.
