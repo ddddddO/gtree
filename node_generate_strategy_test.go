@@ -20,13 +20,13 @@ func TestTabStrategy_Generate(t *testing.T) {
 		row  string
 		want *want
 	}{
-		"root/hierarchy=1": {"- aaa bb", &want{name: "aaa bb", hierarchy: 1, index: fixedIndex, err: nil}},
-		"child/hierarchy=2": {"	- aaa bb", &want{name: "aaa bb", hierarchy: 2, index: fixedIndex, err: nil}},
+		"root/hierarchy=1":                 {"- aaa bb", &want{name: "aaa bb", hierarchy: 1, index: fixedIndex, err: nil}},
+		"child/hierarchy=2":                {"	- aaa bb", &want{name: "aaa bb", hierarchy: 2, index: fixedIndex, err: nil}},
 		"child/hierarchy=2/tab on the way": {"	- aaa	bb", &want{name: "aaa	bb", hierarchy: 2, index: fixedIndex, err: nil}},
 		"invalid/hierarchy=0/prefix space": {" - aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/prefix chars": {"xx- aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/no hyphen":    {"xx aaa bb", &want{err: errIncorrectFormat}},
-		"invalid/hierarchy=0/tab only": {"			", &want{err: errIncorrectFormat}},
+		"invalid/hierarchy=0/tab only":     {"			", &want{err: errIncorrectFormat}},
 	}
 
 	for name, tt := range tests {
