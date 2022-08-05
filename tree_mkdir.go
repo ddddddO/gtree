@@ -65,4 +65,4 @@ func (*defaultMkdirer) mkfile(path string) error {
 	return f.Close()
 }
 
-var _ mkdirer = &defaultMkdirer{}
+var _ mkdirer = (*defaultMkdirer)(nil)

@@ -135,6 +135,6 @@ func (*nopGrower) grow(_ []*Node) error { return nil }
 func (*nopGrower) enableValidation() {}
 
 var (
-	_ grower = &defaultGrower{}
-	_ grower = &nopGrower{}
+	_ grower = (*defaultGrower)(nil)
+	_ grower = (*nopGrower)(nil)
 )

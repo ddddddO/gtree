@@ -228,9 +228,9 @@ func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
 }
 
 var (
-	_ spreader = &defaultSpreader{}
-	_ spreader = &colorizeSpreader{}
-	_ spreader = &jsonSpreader{}
-	_ spreader = &yamlSpreader{}
-	_ spreader = &tomlSpreader{}
+	_ spreader = (*defaultSpreader)(nil)
+	_ spreader = (*colorizeSpreader)(nil)
+	_ spreader = (*jsonSpreader)(nil)
+	_ spreader = (*yamlSpreader)(nil)
+	_ spreader = (*tomlSpreader)(nil)
 )
