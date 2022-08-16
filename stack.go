@@ -1,35 +1,37 @@
 package gtree
 
-import "errors"
+import (
+	"container/list"
+	"errors"
+)
 
 var errNilStack = errors.New("nil stack")
 
 type stack struct {
-	nodes []*Node
+	nodes *list.List
 }
 
 func newStack() *stack {
-	return &stack{}
+	return &stack{nodes: list.New()}
 }
 
 func (s *stack) push(n *Node) *stack {
-	s.nodes = append(s.nodes, n)
+	s.nodes.PushBack(n)
 	return s
 }
 
 func (s *stack) pop() *Node {
-	lastIndex := s.size() - 1
-	if lastIndex < 0 {
+	tmp := s.nodes.Back()
+	if tmp == nil {
 		return nil
 	}
 
-	tmp := s.nodes[lastIndex]
-	s.nodes = s.nodes[:lastIndex]
-	return tmp
+	n := s.nodes.Remove(tmp)
+	return n.(*Node)
 }
 
 func (s *stack) size() int {
-	return len(s.nodes)
+	return s.nodes.Len()
 }
 
 // depth-first search
