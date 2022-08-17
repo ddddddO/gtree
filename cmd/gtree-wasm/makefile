@@ -4,5 +4,5 @@ serve:
 build:
 	GOOS=js GOARCH=wasm go build -o main.wasm main.go
 
-deploy:
-	cp index.html main.wasm wasm_exec.js ../../../ddddddO.github.io/
+deploy: build
+	cp index.html main.wasm wasm_exec.js ../../docs
