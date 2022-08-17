@@ -19,9 +19,9 @@ func gtree(this js.Value, args []js.Value) interface{} {
 	options := []gt.Option{gt.WithIndentTwoSpaces()}
 
 	err := gt.Output(w, r, options...)
-	// TODO: error handling. 画面側にエラー内容を出力したい。
 	if err != nil {
-		panic(err)
+		js.Global().Call("alert", err.Error())
+		return nil
 	}
 
 	pre := document.Call("createElement", "pre")
