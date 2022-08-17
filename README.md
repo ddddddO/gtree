@@ -443,3 +443,4 @@ invalid path: /root/aa
 - [Markdown形式の入力からtreeを出力するCLI](https://zenn.dev/ddddddo/articles/ad97623a004496)
 - [Goでtreeを表現する](https://zenn.dev/ddddddo/articles/8cd85c68763f2e)
 - [Markdown形式の入力からファイル/ディレクトリを生成するCLI/Goパッケージ](https://zenn.dev/ddddddo/articles/460d12e8c07763)
+- [感想](http://www.dododo.site/posts/useful-tools/#gtree)
