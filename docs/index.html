@@ -33,7 +33,8 @@
         });
     </script>
 
-    <textarea id="in" style="width:100%;height:200px" spellcheck="false">- gtree
+    <div>
+      <textarea id="in" style="width:100%;height:150px" spellcheck="false">- gtree
   - cmd
     - gtree
       - main.go
@@ -42,7 +43,22 @@
     - sample2.md
   - makefile
   - tree.go</textarea></br></br>
-    <button onClick="gtree();" id="gtree" disabled>Tree!</button>
+
+      <div>
+        Branch 1 (optional)</br>
+        <input type="text" id="branch1Directly" value="└──">
+        <input type="text" id="branch1Indirectly" value="    ">
+      </div>
+
+      <div>
+        Branch 2 (optional)</br>
+        <input type="text" id="branch2Directly" value="├──">
+        <input type="text" id="branch2Indirectly" value="│   ">
+      </div>
+      </br>
+
+      <button onClick="gtree();" id="gtree" disabled>Tree!</button>
+    </div>
 </body>
  
 </html>
