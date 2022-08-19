@@ -14,5 +14,5 @@ tinybuild:
 	tinygo build -o main.wasm -target wasm -tags wasm main.go
 
 deploy: tinybuild
-	cp index.html wasm_exec.js sitemap.xml ../../docs
+	cp index.html wasm_exec.js robots.txt sitemap.xml ../../docs
 	mv main.wasm ../../docs
