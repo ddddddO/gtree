@@ -3,4 +3,3 @@
 - https://zenn.dev/tomi/articles/2020-11-10-go-web11
 
 - https://www.bedroomcomputing.com/2020/04/2020-0408-googleconsole/
-  - [sitemapの生成](http://www.sitemapxml.jp/)
