@@ -9,7 +9,7 @@ lint: sweep
 
 test: sweep
 	go clean -testcache
-	go test ./... -race -v
+	go test . -race -v
 
 cyclo: sweep
 	gocyclo .
