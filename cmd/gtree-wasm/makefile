@@ -1,5 +1,5 @@
 serve:
-	go run server.go
+	python3 -m http.server 8080
 
 # build:
 # 	GOOS=js GOARCH=wasm go build -o main.wasm main.go
