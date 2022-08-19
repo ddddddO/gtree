@@ -3,4 +3,4 @@
 - https://zenn.dev/tomi/articles/2020-11-10-go-web11
 
 - https://www.bedroomcomputing.com/2020/04/2020-0408-googleconsole/
-  - site mapの作成と設定以外を実施
+  - [sitemapの生成](http://www.sitemapxml.jp/)
