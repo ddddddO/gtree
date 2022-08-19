@@ -11,3 +11,5 @@ require (
 	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/ddddddO/gtree => ../../../gtree

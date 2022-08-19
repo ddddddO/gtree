@@ -1,4 +1,4 @@
-//go:build !wasm
+//go:build wasm
 
 package gtree
 
@@ -9,8 +9,6 @@ import (
 	"io"
 
 	"github.com/fatih/color"
-	toml "github.com/pelletier/go-toml/v2"
-	"gopkg.in/yaml.v3"
 )
 
 // 関心事はtreeの出力
@@ -22,10 +20,6 @@ func newSpreader(encode encode) spreader {
 	switch encode {
 	case encodeJSON:
 		return &jsonSpreader{}
-	case encodeYAML:
-		return &yamlSpreader{}
-	case encodeTOML:
-		return &tomlSpreader{}
 	default:
 		return &defaultSpreader{}
 	}
@@ -159,80 +153,8 @@ func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
 	return jParent
 }
 
-type tomlSpreader struct{}
-
-func (*tomlSpreader) spread(w io.Writer, roots []*Node) error {
-	enc := toml.NewEncoder(w)
-	for _, root := range roots {
-		tRoot := root.toTOMLNode(nil)
-		if err := enc.Encode(tRoot); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-type tomlNode struct {
-	Name     string      `toml:"value"`
-	Children []*tomlNode `toml:"children"`
-}
-
-func (parent *Node) toTOMLNode(tParent *tomlNode) *tomlNode {
-	if tParent == nil {
-		tParent = &tomlNode{Name: parent.name}
-	}
-	if !parent.hasChild() {
-		return tParent
-	}
-
-	tParent.Children = make([]*tomlNode, len(parent.children))
-	for i := range parent.children {
-		tParent.Children[i] = &tomlNode{Name: parent.children[i].name}
-		_ = parent.children[i].toTOMLNode(tParent.Children[i])
-	}
-
-	return tParent
-}
-
-type yamlSpreader struct{}
-
-func (*yamlSpreader) spread(w io.Writer, roots []*Node) error {
-	enc := yaml.NewEncoder(w)
-	for _, root := range roots {
-		yRoot := root.toYAMLNode(nil)
-		if err := enc.Encode(yRoot); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-type yamlNode struct {
-	Name     string      `yaml:"value"`
-	Children []*yamlNode `yaml:"children"`
-}
-
-func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
-	if yParent == nil {
-		yParent = &yamlNode{Name: parent.name}
-	}
-	if !parent.hasChild() {
-		return yParent
-	}
-
-	yParent.Children = make([]*yamlNode, len(parent.children))
-	for i := range parent.children {
-		yParent.Children[i] = &yamlNode{Name: parent.children[i].name}
-		_ = parent.children[i].toYAMLNode(yParent.Children[i])
-	}
-
-	return yParent
-}
-
 var (
 	_ spreader = (*defaultSpreader)(nil)
 	_ spreader = (*colorizeSpreader)(nil)
 	_ spreader = (*jsonSpreader)(nil)
-	_ spreader = (*yamlSpreader)(nil)
-	_ spreader = (*tomlSpreader)(nil)
 )
