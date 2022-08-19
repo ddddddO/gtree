@@ -136,31 +136,34 @@ children:
 			options: []gtree.Option{gtree.WithEncodeTOML()},
 			want: strings.TrimPrefix(`
 value = 'root1'
+
 [[children]]
 value = 'child 1'
+
 [[children.children]]
 value = 'child 2'
+
 [[children.children.children]]
 value = 'child 3'
 children = []
+
 [[children.children.children]]
 value = 'child 4'
+
 [[children.children.children.children]]
 value = 'child 5'
 children = []
+
 [[children.children.children.children]]
 value = 'child 6'
+
 [[children.children.children.children.children]]
 value = 'child 7'
 children = []
 
-
-
-
 [[children]]
 value = 'child 8'
 children = []
-
 `, "\n"),
 		},
 	}

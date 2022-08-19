@@ -642,13 +642,17 @@ func TestOutput_encodeTOML(t *testing.T) {
 			out: out{
 				output: strings.TrimPrefix(`
 value = 'a'
+
 [[children]]
 value = 'i'
+
 [[children.children]]
 value = 'u'
+
 [[children.children.children]]
 value = 'k'
 children = []
+
 [[children.children.children]]
 value = 'kk'
 children = []
@@ -659,6 +663,7 @@ children = []
 
 [[children]]
 value = 'e'
+
 [[children.children]]
 value = 'o'
 children = []
@@ -666,15 +671,18 @@ children = []
 [[children]]
 value = 'g'
 children = []
-
 value = 'a'
+
 [[children]]
 value = 'i'
+
 [[children.children]]
 value = 'u'
+
 [[children.children.children]]
 value = 'k'
 children = []
+
 [[children.children.children]]
 value = 'kk'
 children = []
@@ -685,6 +693,7 @@ children = []
 
 [[children]]
 value = 'e'
+
 [[children.children]]
 value = 'o'
 children = []
@@ -692,7 +701,6 @@ children = []
 [[children]]
 value = 'g'
 children = []
-
 `, "\n"),
 				err: nil,
 			},
@@ -715,13 +723,17 @@ children = []
 			out: out{
 				output: strings.TrimPrefix(`
 value = 'a'
+
 [[children]]
 value = 'i'
+
 [[children.children]]
 value = 'u'
+
 [[children.children.children]]
 value = 'k'
 children = []
+
 [[children.children.children]]
 value = 'kk'
 children = []
@@ -732,6 +744,7 @@ children = []
 
 [[children]]
 value = 'e'
+
 [[children.children]]
 value = 'o'
 children = []
@@ -739,7 +752,6 @@ children = []
 [[children]]
 value = 'g'
 children = []
-
 `, "\n"),
 				err: nil,
 			},
@@ -762,13 +774,17 @@ children = []
 			out: out{
 				output: strings.TrimPrefix(`
 value = 'a'
+
 [[children]]
 value = 'i'
+
 [[children.children]]
 value = 'u'
+
 [[children.children.children]]
 value = 'k'
 children = []
+
 [[children.children.children]]
 value = 'kk'
 children = []
@@ -779,6 +795,7 @@ children = []
 
 [[children]]
 value = 'e'
+
 [[children.children]]
 value = 'o'
 children = []
@@ -786,7 +803,6 @@ children = []
 [[children]]
 value = 'g'
 children = []
-
 `, "\n"),
 				err: nil,
 			},
