@@ -32,6 +32,11 @@ func gtree(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 
+	prePre := document.Call("getElementById", "treeView")
+	if !prePre.IsNull() {
+		document.Get("body").Call("removeChild", prePre)
+	}
+
 	pre := document.Call("createElement", "pre")
 	pre.Set("id", "treeView")
 	pre.Set("innerHTML", w.String())
