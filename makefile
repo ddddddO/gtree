@@ -4,7 +4,7 @@ sweep:
 fmt: sweep
 	go fmt ./...
 
-lint:
+lint: sweep
 	golangci-lint run
 
 test: sweep

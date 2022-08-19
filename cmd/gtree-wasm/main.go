@@ -2,7 +2,7 @@ package main
 
 import (
 	"strings"
-	"syscall/js"
+	"syscall/js" // nolint
 
 	gt "github.com/ddddddO/gtree"
 )
