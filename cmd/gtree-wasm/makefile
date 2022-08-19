@@ -1,8 +1,8 @@
 serve:
 	go run server.go
 
-build:
-	GOOS=js GOARCH=wasm go build -o main.wasm main.go
+# build:
+# 	GOOS=js GOARCH=wasm go build -o main.wasm main.go
 
 # NOTE:
 # go-tomlとyaml.v3を除けばtinygoでビルド可能。
