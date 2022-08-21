@@ -16,6 +16,8 @@
 
     <title>Tree Maker</title>
 
+    <script src="https://cdn.tailwindcss.com?plugins=forms,aspect-ratio"></script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-94DG34ENH8"></script>
     <script>
@@ -27,10 +29,7 @@
     </script>
 </head>
  
-<body>
-    <h1>
-      Tree Maker <a style="font-size:50%" href="https://github.com/ddddddO/gtree">GitHub</a>
-    </h1>
+<body class="bg-teal-900 text-white px-6 py-4">
     <script src="./wasm_exec.js"></script>
     <script>
         const go = new Go();
@@ -50,8 +49,13 @@
         };
     </script>
 
+
+    <h1 class="text-3xl font-bold">
+      Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree">GitHub</a>
+    </h1>
+
     <div>
-      <textarea id="in" style="width:100%;height:190px" spellcheck="false">- Primate
+      <textarea class="bg-teal-800 rounded-md mt-1 w-full h-48" id="in" spellcheck="false">- Primate
   - Strepsirrhini
     - Lemuriformes
       - Lemuroidea
@@ -81,19 +85,17 @@
           - Hylobatidae
           - Hominidae</textarea>
 
-      <button onClick="clearMarkdown();" id="clearMarkdown">Clear</button>
-      </br></br>
+      <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-2" onClick="clearMarkdown();" id="clearMarkdown">clear</button>
 
-      <div>
+      <div class="mt-4">
         Parts</br>
-        <input type="text" id="parts1" style="width:20%" value="└">
-        <input type="text" id="parts2" style="width:20%" value="├">
-        <input type="text" id="parts3" style="width:20%" value="──">
-        <input type="text" id="parts4" style="width:20%" value="│">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts1" value="└">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts2" value="├">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts3" value="──">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│">
       </div>
-      </br>
 
-      <button onClick="gtree();" id="gtree" disabled>Tree!</button>
+      <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="gtree();" id="gtree" disabled>tree!</button>
     </div>
 </body>
  
