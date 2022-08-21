@@ -9,16 +9,20 @@ import (
 
 func gtree(this js.Value, args []js.Value) interface{} {
 	document := js.Global().Get("document")
-
 	options := []gt.Option{gt.WithIndentTwoSpaces()}
 
-	branch1Directly := document.Call("getElementById", "branch1Directly").Get("value").String()
-	branch1Indirectly := document.Call("getElementById", "branch1Indirectly").Get("value").String()
-	options = append(options, gt.WithBranchFormatLastNode(branch1Directly, branch1Indirectly))
+	parts1 := document.Call("getElementById", "parts1").Get("value").String()
+	parts2 := document.Call("getElementById", "parts2").Get("value").String()
+	parts3 := document.Call("getElementById", "parts3").Get("value").String()
+	parts4 := document.Call("getElementById", "parts4").Get("value").String()
 
-	branch2Directly := document.Call("getElementById", "branch2Directly").Get("value").String()
-	branch2Indirectly := document.Call("getElementById", "branch2Indirectly").Get("value").String()
-	options = append(options, gt.WithBranchFormatIntermedialNode(branch2Directly, branch2Indirectly))
+	lastNodeBranchDirectly := parts1 + parts3
+	lastNodeBranchIndirectly := "    "
+	options = append(options, gt.WithBranchFormatLastNode(lastNodeBranchDirectly, lastNodeBranchIndirectly))
+
+	intermedialNodeBranchDirectly := parts2 + parts3
+	intermedialNodeBranchIndirectly := parts4 + "   "
+	options = append(options, gt.WithBranchFormatIntermedialNode(intermedialNodeBranchDirectly, intermedialNodeBranchIndirectly))
 
 	rawInput := document.Call("getElementById", "in").Get("value").String()
 	// console := js.Global().Get("console")

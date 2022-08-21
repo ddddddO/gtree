@@ -44,6 +44,10 @@
             go.run(instance);
             instance = WebAssembly.instantiate(mod, go.importObject);
         });
+
+        const clearMarkdown = () => {
+          document.getElementById("in").value = "";
+        };
     </script>
 
     <div>
@@ -62,18 +66,30 @@
       - Lorisidae
   - Haplorrhini
     - Tarsiiformes
-    - Simiiformes</textarea></br></br>
+      - Tarsiidae
+    - Simiiformes
+      - Platyrrhini
+        - Ceboidea
+          - Atelidae
+          - Cebidae
+        - Pithecioidea
+          - Pitheciidae
+      - Catarrhini
+        - Cercopithecoidea
+          - Cercopithecidae
+        - Hominoidea
+          - Hylobatidae
+          - Hominidae</textarea>
+
+      <button onClick="clearMarkdown();" id="clearMarkdown">Clear</button>
+      </br></br>
 
       <div>
-        Branch 1 (optional)</br>
-        <input type="text" id="branch1Directly" style="width:49%" value="└──">
-        <input type="text" id="branch1Indirectly" style="width:49%" value="    ">
-      </div>
-
-      <div>
-        Branch 2 (optional)</br>
-        <input type="text" id="branch2Directly" style="width:49%" value="├──">
-        <input type="text" id="branch2Indirectly" style="width:49%" value="│   ">
+        Parts</br>
+        <input type="text" id="parts1" style="width:20%" value="└">
+        <input type="text" id="parts2" style="width:20%" value="├">
+        <input type="text" id="parts3" style="width:20%" value="──">
+        <input type="text" id="parts4" style="width:20%" value="│">
       </div>
       </br>
 
