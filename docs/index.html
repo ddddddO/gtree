@@ -52,6 +52,15 @@
         const clearMarkdown = () => {
           document.getElementById("in").value = "";
         };
+
+        const copyToClipboard = () => {
+          const tree = document.getElementById("treeView");
+          if (tree === null) {
+            return;
+          }
+          const clipboard = window.navigator.clipboard;
+          clipboard.writeText(tree.innerHTML);
+        };
     </script>
 
 
@@ -100,7 +109,10 @@
         <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│">
       </div>
 
-      <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="gtree();" id="gtree" disabled>tree!</button>
+      <div>
+        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="gtree();" id="gtree" disabled>tree!</button>
+        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
+      </div>
     </div>
 </body>
  
