@@ -63,7 +63,6 @@
         };
     </script>
 
-
     <h1 class="text-3xl font-bold">
       Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree">GitHub</a>
     </h1>
@@ -112,8 +111,57 @@
       <div>
         <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="gtree();" id="gtree" disabled>tree!</button>
         <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
+        <div id="toast"></div>
       </div>
     </div>
+
+    <!-- referred to https://codepen.io/kandai/pen/qBEbgQv -->
+    <style>
+      #toast {
+        max-width: 75px;
+        padding: 3px;
+        border-radius: 5%;
+        position:absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #toast.is-success {
+        background-color: rgb(20 184 166);
+      }
+      #toast.is-show {
+        animation: anime 1.5s ease 1 normal;
+      }
+
+      @keyframes anime {
+        from { transform: translateY(-10%); }
+        to { transform: translateY(30%); }
+      }
+    </style>
+
+    <script>
+      const toast = document.getElementById("toast");
+      let isVisible = false;
+
+      const showToast = (status, message) => {
+          if (isVisible) return false
+
+          toast.innerHTML = message
+          toast.classList.add('is-' + status)
+          toast.classList.add('is-show')
+          isVisible = true
+      };
+
+      toast.addEventListener("animationend", () => {
+          toast.innerHTML = "";
+          toast.className = "init";
+          isVisible = false;
+      });
+
+      document.getElementById("copy").addEventListener("click", (ev) => {
+        showToast("success", "Copied!")
+      });
+    </script>
 </body>
  
 </html>
