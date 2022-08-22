@@ -7,26 +7,36 @@ import (
 	gt "github.com/ddddddO/gtree"
 )
 
+func main() {
+	c := make(chan struct{}, 0)
+	println("gtree WebAssembly Initialized")
+	registerCallbacks()
+	<-c
+}
+
+func registerCallbacks() {
+	js.Global().Set("gtree", js.FuncOf(gtree))
+}
+
 func gtree(this js.Value, args []js.Value) interface{} {
 	document := js.Global().Get("document")
-	options := []gt.Option{gt.WithIndentTwoSpaces()}
+	getElementByIdFunc := getElementById(document)
 
-	parts1 := document.Call("getElementById", "parts1").Get("value").String()
-	parts2 := document.Call("getElementById", "parts2").Get("value").String()
-	parts3 := document.Call("getElementById", "parts3").Get("value").String()
-	parts4 := document.Call("getElementById", "parts4").Get("value").String()
+	parts1 := getElementByIdFunc("parts1").Get("value").String()
+	parts2 := getElementByIdFunc("parts2").Get("value").String()
+	parts3 := getElementByIdFunc("parts3").Get("value").String()
+	parts4 := getElementByIdFunc("parts4").Get("value").String()
 
 	lastNodeBranchDirectly := parts1 + parts3
 	lastNodeBranchIndirectly := "    "
+	options := []gt.Option{gt.WithIndentTwoSpaces()}
 	options = append(options, gt.WithBranchFormatLastNode(lastNodeBranchDirectly, lastNodeBranchIndirectly))
 
 	intermedialNodeBranchDirectly := parts2 + parts3
 	intermedialNodeBranchIndirectly := parts4 + "   "
 	options = append(options, gt.WithBranchFormatIntermedialNode(intermedialNodeBranchDirectly, intermedialNodeBranchIndirectly))
 
-	rawInput := document.Call("getElementById", "in").Get("value").String()
-	// console := js.Global().Get("console")
-	// console.Call("log", rawInput)
+	rawInput := getElementByIdFunc("in").Get("value").String()
 
 	w := &strings.Builder{}
 	r := strings.NewReader(rawInput)
@@ -36,7 +46,7 @@ func gtree(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 
-	prePre := document.Call("getElementById", "treeView")
+	prePre := getElementByIdFunc("treeView")
 	if !prePre.IsNull() {
 		document.Get("body").Call("removeChild", prePre)
 	}
@@ -45,16 +55,12 @@ func gtree(this js.Value, args []js.Value) interface{} {
 	pre.Set("id", "treeView")
 	pre.Set("innerHTML", w.String())
 	document.Get("body").Call("appendChild", pre)
+
 	return nil
 }
 
-func registerCallbacks() {
-	js.Global().Set("gtree", js.FuncOf(gtree))
-}
-
-func main() {
-	c := make(chan struct{}, 0)
-	println("gtree WebAssembly Initialized")
-	registerCallbacks()
-	<-c
+func getElementById(document js.Value) func(id string) js.Value {
+	return func(id string) js.Value {
+		return document.Call("getElementById", id)
+	}
 }
