@@ -5,3 +5,4 @@
 - https://www.bedroomcomputing.com/2020/04/2020-0408-googleconsole/
 - https://tailwindcss.com/docs/installation
   - 「Tailwind CLI」のdescriptionを実施した
+- https://laboradian.com/create-offline-site-using-sw/
