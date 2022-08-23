@@ -51,6 +51,12 @@
 
         const clearMarkdown = () => {
           document.getElementById("in").value = "";
+          gtag('event', 'clear button', {'event_category': 'clear button','event_label': 'button click'});
+        };
+
+        const generateTree = () => {
+          gtree();
+          gtag('event', 'tree button', {'event_category': 'tree button','event_label': 'button click'});
         };
 
         const copyToClipboard = () => {
@@ -60,11 +66,13 @@
           }
           const clipboard = window.navigator.clipboard;
           clipboard.writeText(tree.innerHTML);
+
+          gtag('event', 'copy button', {'event_category': 'copy button','event_label': 'button click'});
         };
     </script>
 
     <h1 class="text-3xl font-bold">
-      Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree">GitHub</a>
+      Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree" onclick="gtag('event', 'to github link', {'event_category': 'github link','event_label': 'link access'});">GitHub</a>
     </h1>
 
     <div>
@@ -109,7 +117,7 @@
       </div>
 
       <div>
-        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="gtree();" id="gtree" disabled>tree!</button>
+        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="generateTree();" id="gtree" disabled>tree!</button>
         <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
         <div id="toast"></div>
       </div>
