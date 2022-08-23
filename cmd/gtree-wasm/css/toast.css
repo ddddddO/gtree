@@ -1,0 +1,24 @@
+/* referred to https://codepen.io/kandai/pen/qBEbgQv */
+
+#toast {
+  max-width: 75px;
+  padding: 3px;
+  border-radius: 5%;
+  position:absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#toast.is-success {
+  background-color: rgb(20 184 166);
+}
+
+#toast.is-show {
+  animation: anime 1.5s ease 1 normal;
+}
+
+@keyframes anime {
+  from { transform: translateY(-10%); }
+  to { transform: translateY(30%); }
+}

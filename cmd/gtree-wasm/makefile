@@ -1,3 +1,6 @@
+editcss:
+	npx tailwindcss -i ./css/tailwind_base.css -o ./css/main.css --watch
+
 serve:
 	python3 -m http.server 8080
 
@@ -14,5 +17,7 @@ tinybuild:
 	tinygo build -o main.wasm -target wasm -tags wasm main.go
 
 deploy: tinybuild
-	cp index.html wasm_exec.js robots.txt sitemap.xml ../../docs
+	cp css/main.css css/toast.css ../../docs/css
+	cp -r js/ ../../docs/
+	cp index.html service_worker.js robots.txt sitemap.xml ../../docs
 	mv main.wasm ../../docs
