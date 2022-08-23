@@ -1,3 +1,6 @@
+editcss:
+	npx tailwindcss -i ./css/tailwind_base.css -o ./css/main.css --watch
+
 serve:
 	python3 -m http.server 8080
 

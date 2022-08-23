@@ -1,1 +1,2 @@
 *.wasm
+node_modules
