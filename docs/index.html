@@ -21,56 +21,13 @@
 
     <title>Tree Maker</title>
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,aspect-ratio"></script>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-94DG34ENH8"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-94DG34ENH8');
-    </script>
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/toast.css" rel="stylesheet">
+    <script type="text/javascript" src="/js/wasm_exec.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
 </head>
  
 <body class="bg-teal-900 text-white px-6 py-4">
-    <script src="./wasm_exec.js"></script>
-    <script>
-        const go = new Go();
-        let mod, instance;
-        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-            mod = result.module;
-            instance = result.instance;
-            document.getElementById("gtree").disabled = false;
-
-            console.clear();
-            go.run(instance);
-            instance = WebAssembly.instantiate(mod, go.importObject);
-        });
-
-        const clearMarkdown = () => {
-          document.getElementById("in").value = "";
-          gtag('event', 'clear button', {'event_category': 'clear button','event_label': 'button click'});
-        };
-
-        const generateTree = () => {
-          gtree();
-          gtag('event', 'tree button', {'event_category': 'tree button','event_label': 'button click'});
-        };
-
-        const copyToClipboard = () => {
-          const tree = document.getElementById("treeView");
-          if (tree === null) {
-            return;
-          }
-          const clipboard = window.navigator.clipboard;
-          clipboard.writeText(tree.innerHTML);
-
-          gtag('event', 'copy button', {'event_category': 'copy button','event_label': 'button click'});
-        };
-    </script>
-
     <h1 class="text-3xl font-bold">
       Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree" onclick="gtag('event', 'to github link', {'event_category': 'github link','event_label': 'link access'});">GitHub</a>
     </h1>
@@ -123,52 +80,17 @@
       </div>
     </div>
 
-    <!-- referred to https://codepen.io/kandai/pen/qBEbgQv -->
-    <style>
-      #toast {
-        max-width: 75px;
-        padding: 3px;
-        border-radius: 5%;
-        position:absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      #toast.is-success {
-        background-color: rgb(20 184 166);
-      }
-      #toast.is-show {
-        animation: anime 1.5s ease 1 normal;
-      }
-
-      @keyframes anime {
-        from { transform: translateY(-10%); }
-        to { transform: translateY(30%); }
-      }
-    </style>
+    <script type="text/javascript" src="/js/toast.js"></script>
 
     <script>
-      const toast = document.getElementById("toast");
-      let isVisible = false;
-
-      const showToast = (status, message) => {
-          if (isVisible) return false
-
-          toast.innerHTML = message
-          toast.classList.add('is-' + status)
-          toast.classList.add('is-show')
-          isVisible = true
-      };
-
-      toast.addEventListener("animationend", () => {
-          toast.innerHTML = "";
-          toast.className = "init";
-          isVisible = false;
-      });
-
-      document.getElementById("copy").addEventListener("click", (ev) => {
-        showToast("success", "Copied!")
-      });
+      // register service_worker.js
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service_worker.js').then(function(registration) {
+          console.log('succeeded: ', registration.scope);
+        }).catch(function(err) {
+          console.log('failed: ', err);
+        });
+      }
     </script>
 </body>
  
