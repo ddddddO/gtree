@@ -4,6 +4,9 @@ editcss:
 serve:
 	python3 -m http.server 8080
 
+confirm:
+	./confirm.sh
+
 # build:
 # 	GOOS=js GOARCH=wasm go build -o main.wasm main.go
 
@@ -16,7 +19,7 @@ serve:
 tinybuild:
 	tinygo build -o main.wasm -target wasm -tags wasm main.go
 
-deploy: tinybuild
+deploy: confirm tinybuild
 	cp main.css toast.css ../../docs
 	cp main.js toast.js wasm_exec.js ../../docs
 	cp index.html service_worker.js robots.txt sitemap.xml ../../docs
