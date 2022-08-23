@@ -53,7 +53,7 @@ gtree
 ├── testdata
 │   ├── sample1.md
 │   └── sample2.md
-├── makefile
+├── Makefile
 └── tree.go
 ```
 
@@ -71,7 +71,7 @@ USAGE:
 
 COMMANDS:
    output, o, out     Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
-   mkdir, m           Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.
+   mkdir, m           Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
    template, t, tmpl  Output markdown template.
    version, v         Output gtree version.
    help, h            Shows a list of commands or help for one command
@@ -109,7 +109,7 @@ OPTIONS:
         - testdata
                 - sample1.md
                 - sample2.md
-        - makefile
+        - Makefile
         - tree.go
 19:47:08 > gtree template | gtree output
 gtree
@@ -119,7 +119,7 @@ gtree
 ├── testdata
 │   ├── sample1.md
 │   └── sample2.md
-├── makefile
+├── Makefile
 └── tree.go
 ```
 
@@ -329,7 +329,7 @@ children = []
 ```console
 22:19:20 > gtree mkdir --help
 NAME:
-   gtree mkdir - Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.
+   gtree mkdir - Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
 
 USAGE:
    gtree mkdir [command options] [arguments...]
@@ -352,7 +352,7 @@ OPTIONS:
         - testdata
                 - sample1.md
                 - sample2.md
-        - makefile
+        - Makefile
         - tree.go
 22:26:06 > gtree template | gtree mkdir
 22:26:14 > tree gtree/
@@ -360,7 +360,7 @@ gtree/
 ├── cmd
 │   └── gtree
 │       └── main.go
-├── makefile
+├── Makefile
 ├── testdata
 │   ├── sample1.md
 │   └── sample2.md
@@ -379,15 +379,15 @@ gtree/
         - testdata
                 - sample1.md
                 - sample2.md
-        - makefile
+        - Makefile
         - tree.go
-22:16:13 > gtree template | gtree mkdir -e .go -e .md -e makefile
+22:16:13 > gtree template | gtree mkdir -e .go -e .md -e Makefile
 22:16:19 > tree gtree/
 gtree/
 ├── cmd
 │   └── gtree
 │       └── main.go
-├── makefile
+├── Makefile
 ├── testdata
 │   ├── sample1.md
 │   └── sample2.md
@@ -400,7 +400,7 @@ gtree/
 Does not create a file and directory.
 
 ```console
-12:40:49 > gtree template | gtree mkdir --dry-run -e .go -e .md -e makefile
+12:40:49 > gtree template | gtree mkdir --dry-run -e .go -e .md -e Makefile
 gtree
 ├── cmd
 │   └── gtree
@@ -408,7 +408,7 @@ gtree
 ├── testdata
 │   ├── sample1.md
 │   └── sample2.md
-├── makefile
+├── Makefile
 └── tree.go
 
 4 directories, 5 files

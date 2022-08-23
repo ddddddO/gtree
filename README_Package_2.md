@@ -206,7 +206,7 @@ func main() {
 	// ├── go.mod
 	// ├── go.sum
 	// ├── LICENSE
-	// ├── makefile
+	// ├── Makefile
 	// ├── node.go
 	// ├── node_generate.go
 	// ├── node_generate_strategy.go
@@ -325,7 +325,7 @@ import (
 func main() {
 	gtreeDir := gtree.NewRoot("gtree")
 	gtreeDir.Add("cmd").Add("main.go")
-	gtreeDir.Add("makefile")
+	gtreeDir.Add("Makefile")
 	testdataDir := gtreeDir.Add("testdata")
 	testdataDir.Add("sample1.md")
 	testdataDir.Add("sample2.md")
@@ -334,7 +334,7 @@ func main() {
 	// make directories and files with specific extensions.
 	if err := gtree.MkdirProgrammably(
 		gtreeDir,
-		gtree.WithFileExtensions([]string{".go", ".md", "makefile"}),
+		gtree.WithFileExtensions([]string{".go", ".md", "Makefile"}),
 	); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -345,7 +345,7 @@ func main() {
 	// ├── cmd
 	// │   └── gtree
 	// │       └── main.go
-	// ├── makefile
+	// ├── Makefile
 	// ├── testdata
 	// │   ├── sample1.md
 	// │   └── sample2.md

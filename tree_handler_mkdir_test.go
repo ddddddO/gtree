@@ -91,8 +91,8 @@ func TestMkdir(t *testing.T) {
 	- b.go
 	- bb
 		- lll
-	-makefile`)),
-				options: []gtree.Option{gtree.WithFileExtensions([]string{".go", "makefile"})},
+	-Makefile`)),
+				options: []gtree.Option{gtree.WithFileExtensions([]string{".go", "Makefile"})},
 			},
 			wantErr: nil,
 		},

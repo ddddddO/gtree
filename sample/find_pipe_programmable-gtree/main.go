@@ -63,7 +63,7 @@ func main() {
 	// ├── go.mod
 	// ├── go.sum
 	// ├── LICENSE
-	// ├── makefile
+	// ├── Makefile
 	// ├── node.go
 	// ├── node_generate.go
 	// ├── node_generate_strategy.go
