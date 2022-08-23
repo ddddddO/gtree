@@ -8,11 +8,11 @@ const CACHE_NAME = `${registration.scope}!${CACHE_VERSION}`;
 const urlsToCache = [
   '.',
   'main.wasm',
-  'css/main.css',
-  'css/toast.css',
-  'js/main.js',
-  'js/toast.js',
-  'js/wasm_exec.js',
+  'main.css',
+  'toast.css',
+  'main.js',
+  'toast.js',
+  'wasm_exec.js',
 ];
 
 self.addEventListener('install', (event) => {
