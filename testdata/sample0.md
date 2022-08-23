@@ -6,4 +6,4 @@
         - It is possible to dry run.
         - You can use `-e` flag to make specified extensions as file.
     - Output a markdown template that can be used with either `output` subcommand or `mkdir` subcommand.
-    - Provide CLI and Go Package.
+    - Provide CLI, Go Packages and Web page.

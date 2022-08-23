@@ -16,10 +16,20 @@ Output tree🌳 or Make directories(files)📁 from Markdown or Programmatically
 │   ├── It is possible to dry run.
 │   └── You can use `-e` flag to make specified extensions as file.
 ├── Output a markdown template that can be used with either `output` subcommand or `mkdir` subcommand.
-└── Provide CLI and Go Package.
+└── Provide CLI, Go Packages and Web.
 ```
 
 (outputted by `cat testdata/sample0.md | gtree output --fs`)
+
+## Web
+
+https://ddddddo.github.io/gtree/
+
+This page calls a function that outputs tree. This function is a Go package compiled as WebAssembly.<br>
+You can change the branches like in the image below.<br>
+Also, once loaded, you can enjoy offline!<br>
+
+![](web.png)
 
 ## Package(1) / like CLI
 [read me!](https://github.com/ddddddO/gtree/blob/master/README_Package_1.md#package1--like-cli)
