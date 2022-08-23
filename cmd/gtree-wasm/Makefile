@@ -20,7 +20,10 @@ tinybuild:
 	tinygo build -o main.wasm -target wasm -tags wasm main.go
 
 deploy: confirm tinybuild
-	cp main.css toast.css ../../docs
-	cp main.js toast.js wasm_exec.js ../../docs
+	cleancss main.css ../../docs/main.css
+	cleancss toast.css ../../docs/toast.css
+	uglifyjs main.js --compress drop_console=true -o ../../docs/main.js
+	uglifyjs toast.js --compress drop_console=true -o ../../docs/toast.js
+	uglifyjs wasm_exec.js --compress drop_console=true -o ../../docs/wasm_exec.js
 	cp index.html service_worker.js robots.txt sitemap.xml ../../docs
 	mv main.wasm ../../docs
