@@ -3,6 +3,7 @@ package main
 import (
 	"strings"
 	"syscall/js" // nolint
+	"text/template"
 
 	gt "github.com/ddddddO/gtree"
 )
@@ -53,7 +54,7 @@ func gtree(this js.Value, args []js.Value) interface{} {
 
 	pre := document.Call("createElement", "pre")
 	pre.Set("id", "treeView")
-	pre.Set("innerHTML", w.String())
+	pre.Set("innerHTML", template.HTMLEscapeString(w.String()))
 	document.Get("body").Call("appendChild", pre)
 
 	return nil
