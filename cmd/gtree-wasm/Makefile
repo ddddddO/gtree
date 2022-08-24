@@ -20,8 +20,8 @@ tinybuild:
 	tinygo build -o main.wasm -target wasm -tags wasm main.go
 
 deploy: confirm tinybuild
-	cleancss main.css ../../docs/main.css
-	cleancss toast.css ../../docs/toast.css
+	cleancss -o ../../docs/main.css main.css
+	cleancss -o ../../docs/toast.css toast.css
 	uglifyjs main.js --compress drop_console=true -o ../../docs/main.js
 	uglifyjs toast.js --compress drop_console=true -o ../../docs/toast.js
 	uglifyjs wasm_exec.js --compress drop_console=true -o ../../docs/wasm_exec.js
