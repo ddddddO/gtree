@@ -1,39 +1,40 @@
+<!DOCTYPE html>
 <html>
  
 <head prefix="og: https://ogp.me/ns#">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Output tree from Markdown. 手作業で枝を組み立てるのは面倒、楽にツリー(treeコマンド(linux / Windows)結果のようなテキスト)を作りたい時に役に立ちます。また、このページは https://github.com/ddddddO/gtree のライブラリを Wasm 化して呼び出しています。このリポジトリには、当該ライブラリの他に、別機能・別用途のCLIツールとライブラリを提供しています。"/>
-    <!-- テーマカラー -->
-    <meta name="theme-color" content="#134e4a">
-    <!-- テーマカラー　モード指定 -->
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#134e4a">
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#134e4a">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Output tree from Markdown. 手作業で枝を組み立てるのは面倒、楽にツリー(treeコマンド(linux / Windows)結果のようなテキスト)を作りたい時に役に立ちます。また、このページは https://github.com/ddddddO/gtree のライブラリを Wasm 化して呼び出しています。このリポジトリには、当該ライブラリの他に、別機能・別用途のCLIツールとライブラリを提供しています。"/>
+  <!-- テーマカラー -->
+  <meta name="theme-color" content="#134e4a">
+  <!-- テーマカラー　モード指定 -->
+  <meta name="theme-color" content="#134e4a" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#134e4a" media="(prefers-color-scheme: dark)">
 
-    <meta property="og:url" content="https://ddddddo.github.io/gtree/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Tree Maker" />
-    <meta property="og:description" content="Output tree from Markdown. 手作業で枝を組み立てるのは面倒、楽にツリー(treeコマンド(linux / Windows)結果のようなテキスト)を作りたい時に役に立ちます。また、このページは https://github.com/ddddddO/gtree のライブラリを Wasm 化して呼び出しています。このリポジトリには、当該ライブラリの他に、別機能・別用途のCLIツールとライブラリを提供しています。" />
-    <meta property="og:site_name" content="Tree Maker" />
+  <meta property="og:url" content="https://ddddddo.github.io/gtree/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Tree Maker" />
+  <meta property="og:description" content="Output tree from Markdown. 手作業で枝を組み立てるのは面倒、楽にツリー(treeコマンド(linux / Windows)結果のようなテキスト)を作りたい時に役に立ちます。また、このページは https://github.com/ddddddO/gtree のライブラリを Wasm 化して呼び出しています。このリポジトリには、当該ライブラリの他に、別機能・別用途のCLIツールとライブラリを提供しています。" />
+  <meta property="og:site_name" content="Tree Maker" />
 
-    <!-- favicon.svg -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌴</text></svg>">
+  <!-- favicon.svg -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌴</text></svg>">
 
-    <title>Tree Maker</title>
+  <title>Tree Maker</title>
 
-    <link href="main.css" rel="stylesheet">
-    <link href="toast.css" rel="stylesheet">
-    <script type="text/javascript" src="wasm_exec.js"></script>
-    <script type="text/javascript" src="main.js"></script>
+  <link href="main.css" rel="stylesheet">
+  <link href="toast.css" rel="stylesheet">
+  <script src="wasm_exec.js"></script>
+  <script src="main.js"></script>
 </head>
  
 <body class="bg-teal-900 text-white px-6 py-4">
-    <h1 class="text-3xl font-bold">
-      Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree" onclick="gtag('event', 'to github link', {'event_category': 'github link','event_label': 'link access'});">GitHub</a>
-    </h1>
+  <h1 class="text-3xl font-bold">
+    Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree" onclick="gtag('event', 'to github link', {'event_category': 'github link','event_label': 'link access'});">GitHub</a>
+  </h1>
 
-    <div>
-      <textarea class="bg-teal-800 rounded-md mt-1 w-full h-64" id="in" spellcheck="false">- Primate
+  <div>
+    <textarea class="bg-teal-800 rounded-md mt-1 w-full h-64" id="in" spellcheck="false">- Primate
   - Strepsirrhini
     - Lemuriformes
       - Lemuroidea
@@ -63,35 +64,35 @@
           - Hylobatidae
           - Hominidae</textarea>
 
-      <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-2" onClick="clearMarkdown();" id="clearMarkdown">clear</button>
+    <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-2" onClick="clearMarkdown();" id="clearMarkdown">clear</button>
 
-      <div class="mt-4">
-        Parts</br>
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts1" value="└">
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts2" value="├">
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts3" value="──">
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│">
-      </div>
-
-      <div>
-        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="generateTree();" id="gtree" disabled>tree!</button>
-        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
-        <div id="toast"></div>
-      </div>
+    <div class="mt-4">
+      Parts<br>
+      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts1" value="└">
+      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts2" value="├">
+      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts3" value="──">
+      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│">
     </div>
 
-    <script type="text/javascript" src="toast.js"></script>
+    <div>
+      <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="generateTree();" id="gtree" disabled>tree!</button>
+      <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
+      <div id="toast"></div>
+    </div>
+  </div>
 
-    <script>
-      // register service_worker.js
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./service_worker.js').then(function(registration) {
-          console.log('succeeded: ', registration.scope);
-        }).catch(function(err) {
-          console.log('failed: ', err);
-        });
-      }
-    </script>
+  <script src="toast.js"></script>
+
+  <script>
+    // register service_worker.js
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./service_worker.js').then(function(registration) {
+        console.log('succeeded: ', registration.scope);
+      }).catch(function(err) {
+        console.log('failed: ', err);
+      });
+    }
+  </script>
 </body>
- 
+
 </html>
