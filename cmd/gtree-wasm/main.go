@@ -1,9 +1,9 @@
 package main
 
 import (
+	"html/template"
 	"strings"
 	"syscall/js" // nolint
-	"text/template"
 
 	gt "github.com/ddddddO/gtree"
 )
