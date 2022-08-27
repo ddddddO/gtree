@@ -21,12 +21,12 @@ func registerCallbacks() {
 
 func gtree(this js.Value, args []js.Value) interface{} {
 	document := js.Global().Get("document")
-	getElementByIdFunc := getElementById(document)
+	getElementByID := getElementByIDFunc(document)
 
-	parts1 := getElementByIdFunc("parts1").Get("value").String()
-	parts2 := getElementByIdFunc("parts2").Get("value").String()
-	parts3 := getElementByIdFunc("parts3").Get("value").String()
-	parts4 := getElementByIdFunc("parts4").Get("value").String()
+	parts1 := getElementByID("parts1").Get("value").String()
+	parts2 := getElementByID("parts2").Get("value").String()
+	parts3 := getElementByID("parts3").Get("value").String()
+	parts4 := getElementByID("parts4").Get("value").String()
 
 	lastNodeBranchDirectly := parts1 + parts3
 	lastNodeBranchIndirectly := "    "
@@ -37,7 +37,7 @@ func gtree(this js.Value, args []js.Value) interface{} {
 	intermedialNodeBranchIndirectly := parts4 + "   "
 	options = append(options, gt.WithBranchFormatIntermedialNode(intermedialNodeBranchDirectly, intermedialNodeBranchIndirectly))
 
-	rawInput := getElementByIdFunc("in").Get("value").String()
+	rawInput := getElementByID("in").Get("value").String()
 
 	w := &strings.Builder{}
 	r := strings.NewReader(rawInput)
@@ -47,20 +47,24 @@ func gtree(this js.Value, args []js.Value) interface{} {
 		return nil
 	}
 
-	prePre := getElementByIdFunc("treeView")
+	div := getElementByID("result")
+	prePre := getElementByID("treeView")
 	if !prePre.IsNull() {
-		document.Get("body").Call("removeChild", prePre)
+		div.Call("removeChild", prePre)
 	}
 
 	pre := document.Call("createElement", "pre")
 	pre.Set("id", "treeView")
 	pre.Set("innerHTML", template.HTMLEscapeString(w.String()))
-	document.Get("body").Call("appendChild", pre)
+	div.Call("appendChild", pre)
+
+	mainContainer := getElementByID("main")
+	mainContainer.Call("appendChild", div)
 
 	return nil
 }
 
-func getElementById(document js.Value) func(id string) js.Value {
+func getElementByIDFunc(document js.Value) func(id string) js.Value {
 	return func(id string) js.Value {
 		return document.Call("getElementById", id)
 	}

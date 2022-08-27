@@ -33,8 +33,9 @@
     Tree Maker <a class="underline text-sm" href="https://github.com/ddddddO/gtree" onclick="gtag('event', 'to github link', {'event_category': 'github link','event_label': 'link access'});">GitHub</a>
   </h1>
 
-  <div>
-    <textarea class="bg-teal-800 rounded-md mt-1 w-full h-64" id="in" spellcheck="false">- Output tree from Markdown.
+  <div id="main" class="md:flex flex-row">
+    <div class="basis-6/12">
+      <textarea class="bg-teal-800 rounded-md mt-1 w-full h-64" id="in" spellcheck="false">- Output tree from Markdown.
   - 手作業で枝を組み立てるのは面倒、
     - 楽にツリー(treeコマンド(Linux/Windows)結果のようなテキスト)
       - を作りたい時に役に立ちます。
@@ -69,21 +70,26 @@
           - Hylobatidae
           - Hominidae</textarea>
 
-    <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-2" onClick="clearMarkdown();" id="clearMarkdown">clear</button>
+      <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-2" onClick="clearMarkdown();" id="clearMarkdown">clear</button>
 
-    <div class="mt-4">
-      Parts<br>
-      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts1" value="└">
-      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts2" value="├">
-      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts3" value="──">
-      <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│">
+      <div class="mt-4">
+        Parts<br>
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts1" value="└">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts2" value="├">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts3" value="──">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│">
+      </div>
+
+      <div>
+        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="generateTree();" id="gtree" disabled>tree!</button>
+        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
+        <div id="toast"></div>
+      </div>
     </div>
 
-    <div>
-      <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="generateTree();" id="gtree" disabled>tree!</button>
-      <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-4 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
-      <div id="toast"></div>
-    </div>
+    <div class="basis-1/12"></div>
+
+    <div id="result" class="basis-5/12"></div>
   </div>
 
   <script src="toast.js"></script>
