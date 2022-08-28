@@ -43,23 +43,23 @@ func gtree(this js.Value, args []js.Value) interface{} {
 	r := strings.NewReader(rawInput)
 	err := gt.Output(w, r, options...)
 	if err != nil {
-		js.Global().Call("alert", err.Error())
+		alert(err.Error())
 		return nil
 	}
 
 	div := getElementByID("result")
 	prePre := getElementByID("treeView")
 	if !prePre.IsNull() {
-		div.Call("removeChild", prePre)
+		removeChildFunc(div)(prePre)
 	}
 
-	pre := document.Call("createElement", "pre")
+	pre := createElementFunc(document)("pre")
 	pre.Set("id", "treeView")
 	pre.Set("innerHTML", template.HTMLEscapeString(w.String()))
-	div.Call("appendChild", pre)
+	appendChildFunc(div)(pre)
 
 	mainContainer := getElementByID("main")
-	mainContainer.Call("appendChild", div)
+	appendChildFunc(mainContainer)(div)
 
 	return nil
 }
@@ -68,4 +68,26 @@ func getElementByIDFunc(document js.Value) func(id string) js.Value {
 	return func(id string) js.Value {
 		return document.Call("getElementById", id)
 	}
+}
+
+func createElementFunc(document js.Value) func(element string) js.Value {
+	return func(element string) js.Value {
+		return document.Call("createElement", element)
+	}
+}
+
+func removeChildFunc(element js.Value) func(target js.Value) {
+	return func(target js.Value) {
+		element.Call("removeChild", target)
+	}
+}
+
+func appendChildFunc(element js.Value) func(target js.Value) {
+	return func(target js.Value) {
+		element.Call("appendChild", target)
+	}
+}
+
+func alert(msg string) {
+	js.Global().Call("alert", msg)
 }
