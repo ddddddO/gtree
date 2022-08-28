@@ -5,7 +5,7 @@
 Go version requires 1.18 or later.
 
 ```console
-go get github.com/ddddddO/gtree
+$ go get github.com/ddddddO/gtree
 ```
 
 ## Usage

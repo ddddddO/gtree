@@ -72,7 +72,7 @@ gtree
 ### Usage
 
 ```console
-23:47:15 > gtree --help
+$ gtree --help
 NAME:
    gtree - This CLI outputs tree or makes directories from markdown.
 
@@ -92,7 +92,7 @@ GLOBAL OPTIONS:
 
 #### *Output* subcommand
 ```console
-19:43:41 > gtree output --help
+$ gtree output --help
 NAME:
    gtree output - Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
 
@@ -111,7 +111,7 @@ OPTIONS:
 ```
 
 ```console
-19:45:03 > gtree template
+$ gtree template
 - gtree
         - cmd
                 - gtree
@@ -121,7 +121,7 @@ OPTIONS:
                 - sample2.md
         - Makefile
         - tree.go
-19:47:08 > gtree template | gtree output
+$ gtree template | gtree output
 gtree
 ├── cmd
 │   └── gtree
@@ -150,7 +150,7 @@ For 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
 - Usage other than representing a directory.
 
 ```console
-16:31:42 > cat testdata/sample2.md | gtree output
+$ cat testdata/sample2.md | gtree output
 k8s_resources
 ├── (Tier3)
 │   └── (Tier2)
@@ -178,7 +178,7 @@ k8s_resources
 - Two spaces indent
 
 ```console
-01:15:25 > cat testdata/sample4.md | gtree output -ts
+$ cat testdata/sample4.md | gtree output -ts
 a
 ├── i
 │   ├── u
@@ -193,7 +193,7 @@ a
 - Four spaces indent
 
 ```console
-01:16:46 > cat testdata/sample5.md | gtree output -fs
+$ cat testdata/sample5.md | gtree output -fs
 a
 ├── i
 │   ├── u
@@ -208,7 +208,7 @@ a
 - Multiple roots
 
 ```console
-13:06:26 > cat testdata/sample6.md | gtree output
+$ cat testdata/sample6.md | gtree output
 a
 ├── i
 │   ├── u
@@ -232,7 +232,7 @@ a
 - Output JSON
 
 ```console
-22:40:31 > cat testdata/sample5.md | gtree output -fs -j | jq
+$ cat testdata/sample5.md | gtree output -fs -j | jq
 {
   "value": "a",
   "children": [
@@ -278,7 +278,7 @@ a
 - Output YAML
 
 ```console
-13:15:59 > cat testdata/sample5.md | gtree output -fs -y
+$ cat testdata/sample5.md | gtree output -fs -y
 value: a
 children:
 - value: i
@@ -302,7 +302,7 @@ children:
 - Output TOML
 
 ```console
-13:16:32 > cat testdata/sample5.md | gtree output -fs -t
+$ cat testdata/sample5.md | gtree output -fs -t
 value = 'a'
 [[children]]
 value = 'i'
@@ -337,7 +337,7 @@ children = []
 #### *Mkdir* subcommand
 
 ```console
-22:19:20 > gtree mkdir --help
+$ gtree mkdir --help
 NAME:
    gtree mkdir - Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
 
@@ -354,7 +354,7 @@ OPTIONS:
 ```
 
 ```console
-22:25:18 > gtree template
+$ gtree template
 - gtree
         - cmd
                 - gtree
@@ -364,8 +364,8 @@ OPTIONS:
                 - sample2.md
         - Makefile
         - tree.go
-22:26:06 > gtree template | gtree mkdir
-22:26:14 > tree gtree/
+$ gtree template | gtree mkdir
+$ tree gtree/
 gtree/
 ├── cmd
 │   └── gtree
@@ -381,7 +381,7 @@ gtree/
 
 ##### *make directories and files*
 ```console
-22:15:59 > gtree template
+$ gtree template
 - gtree
         - cmd
                 - gtree
@@ -391,8 +391,8 @@ gtree/
                 - sample2.md
         - Makefile
         - tree.go
-22:16:13 > gtree template | gtree mkdir -e .go -e .md -e Makefile
-22:16:19 > tree gtree/
+$ gtree template | gtree mkdir -e .go -e .md -e Makefile
+$ tree gtree/
 gtree/
 ├── cmd
 │   └── gtree
@@ -410,7 +410,7 @@ gtree/
 Does not create a file and directory.
 
 ```console
-12:40:49 > gtree template | gtree mkdir --dry-run -e .go -e .md -e Makefile
+$ gtree template | gtree mkdir --dry-run -e .go -e .md -e Makefile
 gtree
 ├── cmd
 │   └── gtree
@@ -431,7 +431,7 @@ gtree
 Any invalid file or directory name will result in an error.
 
 ```console
-23:20:04 > gtree mkdir --dry-run --ts <<EOS
+$ gtree mkdir --dry-run --ts <<EOS
 - root
   - aa
   - bb
@@ -441,7 +441,7 @@ invalid node name: b/b
 ```
 
 ```console
-23:27:27 > gtree mkdir --dry-run --ts <<EOS
+$ gtree mkdir --dry-run --ts <<EOS
 - /root
   - aa
   - bb
