@@ -10,7 +10,7 @@ type config struct {
 	fileExtensions []string
 }
 
-func newConfig(options ...Option) (*config, error) {
+func newConfig(options []Option) (*config, error) {
 	c := &config{
 		lastNodeFormat: branchFormat{
 			directly:   "└──",

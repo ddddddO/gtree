@@ -29,7 +29,7 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 		return ErrNotRoot
 	}
 
-	conf, err := newConfig(options...)
+	conf, err := newConfig(options)
 	if err != nil {
 		return err
 	}
@@ -53,7 +53,7 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 		return ErrNotRoot
 	}
 
-	conf, err := newConfig(options...)
+	conf, err := newConfig(options)
 	if err != nil {
 		return err
 	}
