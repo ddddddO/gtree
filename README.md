@@ -457,3 +457,7 @@ invalid path: /root/aa
 - [Goでtreeを表現する](https://zenn.dev/ddddddo/articles/8cd85c68763f2e)
 - [Markdown形式の入力からファイル/ディレクトリを生成するCLI/Goパッケージ](https://zenn.dev/ddddddo/articles/460d12e8c07763)
 - [感想](http://www.dododo.site/posts/useful-tools/#gtree)
+
+
+## Star History
+[![Star History Chart](https://api.star-history.com/svg?repos=ddddddO/gtree&type=Date)](https://star-history.com/#ddddddO/gtree&Date)
