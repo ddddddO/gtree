@@ -112,7 +112,8 @@ func (cs *colorizeSpreader) colorize(current *Node) {
 }
 
 func (cs *colorizeSpreader) summary() string {
-	return fmt.Sprintf("%d directories, %d files\n",
+	return fmt.Sprintf(
+		"%d directories, %d files\n",
 		cs.counterDir.current(),
 		cs.counterFile.current(),
 	)
