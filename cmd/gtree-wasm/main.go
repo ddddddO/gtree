@@ -30,26 +30,25 @@ func gtree(this js.Value, args []js.Value) interface{} {
 
 	lastNodeBranchDirectly := parts1 + parts3
 	lastNodeBranchIndirectly := "    "
-	options := []gt.Option{gt.WithIndentTwoSpaces()}
-	options = append(options, gt.WithBranchFormatLastNode(lastNodeBranchDirectly, lastNodeBranchIndirectly))
 
 	intermedialNodeBranchDirectly := parts2 + parts3
 	intermedialNodeBranchIndirectly := parts4 + "   "
-	options = append(options, gt.WithBranchFormatIntermedialNode(intermedialNodeBranchDirectly, intermedialNodeBranchIndirectly))
 
 	rawInput := getElementByID("in").Get("value").String()
-
-	w := &strings.Builder{}
 	r := strings.NewReader(rawInput)
-	err := gt.Output(w, r, options...)
-	if err != nil {
+	w := &strings.Builder{}
+	options := []gt.Option{
+		gt.WithIndentTwoSpaces(),
+		gt.WithBranchFormatLastNode(lastNodeBranchDirectly, lastNodeBranchIndirectly),
+		gt.WithBranchFormatIntermedialNode(intermedialNodeBranchDirectly, intermedialNodeBranchIndirectly),
+	}
+	if err := gt.Output(w, r, options...); err != nil {
 		alert(err.Error())
 		return nil
 	}
 
 	div := getElementByID("result")
-	prePre := getElementByID("treeView")
-	if !prePre.IsNull() {
+	if prePre := getElementByID("treeView"); !prePre.IsNull() {
 		removeChildFunc(div)(prePre)
 	}
 
