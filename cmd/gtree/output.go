@@ -31,7 +31,7 @@ type stateOutputFormat struct {
 	encode encodeType
 }
 
-func newStateOutputFormat(c *cli.Context) *stateOutputFormat {
+func optionOutput(c *cli.Context) (gtree.Option, error) {
 	s := &stateOutputFormat{}
 
 	if c.Bool("json") {
@@ -44,7 +44,7 @@ func newStateOutputFormat(c *cli.Context) *stateOutputFormat {
 		s.encode |= encodeTOML
 	}
 
-	return s
+	return s.decideOption()
 }
 
 func (s *stateOutputFormat) decideOption() (gtree.Option, error) {

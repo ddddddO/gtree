@@ -121,19 +121,15 @@ func main() {
 }
 
 func actionOutput(c *cli.Context) error {
-	stateIndentation := newStateIndentation(c)
-	indentation, err := stateIndentation.decideOption()
+	oi, err := optionIndentation(c)
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
-
-	stateOutputFormat := newStateOutputFormat(c)
-	outputFormat, err := stateOutputFormat.decideOption()
+	oo, err := optionOutput(c)
 	if err != nil {
 		return cli.Exit(err, 1)
 	}
-
-	options := []gtree.Option{indentation, outputFormat}
+	options := []gtree.Option{oi, oo}
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
@@ -144,13 +140,13 @@ func actionOutput(c *cli.Context) error {
 	}
 
 	if !c.Bool("watch") {
-		file, err := os.Open(markdownPath)
+		f, err := os.Open(markdownPath)
 		if err != nil {
 			return cli.Exit(err, 1)
 		}
-		defer file.Close()
+		defer f.Close()
 
-		if err := output(file, options); err != nil {
+		if err := output(f, options); err != nil {
 			return cli.Exit(err, 1)
 		}
 		return nil
@@ -167,26 +163,28 @@ func isInputStdin(path string) bool {
 	return path == "" || path == "-"
 }
 
+const intervalms = 500 * time.Millisecond
+
 func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
-	ticker := time.NewTicker(500 * time.Millisecond)
+	ticker := time.NewTicker(intervalms)
 	defer ticker.Stop()
 	var preFileModTime time.Time
 	for range ticker.C {
 		err := func() error {
-			file, err := os.Open(markdownPath)
+			f, err := os.Open(markdownPath)
 			if err != nil {
 				return err
 			}
-			defer file.Close()
+			defer f.Close()
 
-			fileInfo, err := file.Stat()
+			fi, err := f.Stat()
 			if err != nil {
 				return err
 			}
 
-			if fileInfo.ModTime() != preFileModTime {
-				preFileModTime = fileInfo.ModTime()
-				_ = output(file, options)
+			if fi.ModTime() != preFileModTime {
+				preFileModTime = fi.ModTime()
+				_ = output(f, options)
 				fmt.Println()
 			}
 			return nil
@@ -199,14 +197,9 @@ func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
 }
 
 func actionMkdir(c *cli.Context) error {
-	stateIndentation := newStateIndentation(c)
-	indentation, err := stateIndentation.decideOption()
-	if err != nil {
-		return cli.Exit(err, 1)
-	}
-
 	markdownPath := c.Path("file")
 	in := os.Stdin
+	var err error
 	if !isInputStdin(markdownPath) {
 		in, err = os.Open(markdownPath)
 		if err != nil {
@@ -215,8 +208,12 @@ func actionMkdir(c *cli.Context) error {
 		defer in.Close()
 	}
 
-	extensions := c.StringSlice("extension")
-	options := []gtree.Option{indentation, gtree.WithFileExtensions(extensions)}
+	oi, err := optionIndentation(c)
+	if err != nil {
+		return cli.Exit(err, 1)
+	}
+	oe := gtree.WithFileExtensions(c.StringSlice("extension"))
+	options := []gtree.Option{oi, oe}
 
 	if c.Bool("dry-run") {
 		if err := outputWithValidation(in, options); err != nil {

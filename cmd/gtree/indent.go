@@ -18,9 +18,8 @@ type stateIndentation struct {
 	spaces spacesType
 }
 
-func newStateIndentation(c *cli.Context) *stateIndentation {
+func optionIndentation(c *cli.Context) (gtree.Option, error) {
 	s := &stateIndentation{}
-
 	if c.Bool("two-spaces") {
 		s.spaces |= spacesTwo
 	}
@@ -28,7 +27,7 @@ func newStateIndentation(c *cli.Context) *stateIndentation {
 		s.spaces |= spacesFour
 	}
 
-	return s
+	return s.decideOption()
 }
 
 func (s *stateIndentation) decideOption() (gtree.Option, error) {
