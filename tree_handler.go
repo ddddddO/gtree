@@ -17,7 +17,7 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 		return err
 	}
 
-	tree := initializeTree(conf, roots)
+	tree := newTree(conf, roots)
 	if err := tree.grow(); err != nil {
 		return err
 	}
@@ -37,7 +37,7 @@ func Mkdir(r io.Reader, options ...Option) error {
 		return err
 	}
 
-	tree := initializeTree(conf, roots)
+	tree := newTree(conf, roots)
 	if err := tree.grow(); err != nil {
 		return err
 	}

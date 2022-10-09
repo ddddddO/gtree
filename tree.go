@@ -4,7 +4,7 @@ import (
 	"io"
 )
 
-func initializeTree(conf *config, roots []*Node) *tree {
+func newTree(conf *config, roots []*Node) *tree {
 	g := newGrower(conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
 	if conf.encode != encodeDefault {
 		g = newNopGrower()
@@ -17,7 +17,12 @@ func initializeTree(conf *config, roots []*Node) *tree {
 
 	m := newMkdirer(conf.fileExtensions)
 
-	return newTree(roots, g, s, m)
+	return &tree{
+		roots:    roots,
+		grower:   g,
+		spreader: s,
+		mkdirer:  m,
+	}
 }
 
 type tree struct {
@@ -25,20 +30,6 @@ type tree struct {
 	grower   grower
 	spreader spreader
 	mkdirer  mkdirer
-}
-
-func newTree(
-	roots []*Node,
-	grower grower,
-	spreader spreader,
-	mkdirer mkdirer,
-) *tree {
-	return &tree{
-		roots:    roots,
-		grower:   grower,
-		spreader: spreader,
-		mkdirer:  mkdirer,
-	}
 }
 
 func (t *tree) grow() error {

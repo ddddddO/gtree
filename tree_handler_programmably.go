@@ -36,7 +36,7 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	tree := initializeTree(conf, []*Node{root})
+	tree := newTree(conf, []*Node{root})
 	if err := tree.grow(); err != nil {
 		return err
 	}
@@ -60,13 +60,12 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	tree := initializeTree(conf, []*Node{root})
+	tree := newTree(conf, []*Node{root})
 	tree.enableValidation()
 	// when detect invalid node name, return error. process end.
 	if err := tree.grow(); err != nil {
 		return err
 	}
-
 	if conf.dryrun {
 		// when detected no invalid node name, output tree.
 		return tree.spread(color.Output)
