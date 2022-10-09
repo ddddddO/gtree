@@ -5,7 +5,8 @@ import (
 )
 
 type tree struct {
-	roots    []*Node
+	roots []*Node
+
 	grower   grower
 	spreader spreader
 	mkdirer  mkdirer
@@ -29,23 +30,40 @@ type mkdirer interface {
 }
 
 func newTree(conf *config, roots []*Node) *tree {
-	g := newGrower(conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
-	if conf.encode != encodeDefault {
-		g = newNopGrower()
+	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) grower {
+		if encode != encodeDefault {
+			return newNopGrower()
+		}
+		return newGrower(lastNodeFormat, intermedialNodeFormat, dryrun)
 	}
 
-	s := newSpreader(conf.encode)
-	if conf.dryrun {
-		s = newColorizeSpreader(conf.fileExtensions)
+	spreaderFactory := func(encode encode, dryrun bool, fileExtensions []string) spreader {
+		if dryrun {
+			return newColorizeSpreader(fileExtensions)
+		}
+		return newSpreader(encode)
 	}
 
-	m := newMkdirer(conf.fileExtensions)
+	mkdirerFactory := func(fileExtensions []string) mkdirer {
+		return newMkdirer(fileExtensions)
+	}
 
 	return &tree{
-		roots:    roots,
-		grower:   g,
-		spreader: s,
-		mkdirer:  m,
+		roots: roots,
+		grower: growerFactory(
+			conf.lastNodeFormat,
+			conf.intermedialNodeFormat,
+			conf.dryrun,
+			conf.encode,
+		),
+		spreader: spreaderFactory(
+			conf.encode,
+			conf.dryrun,
+			conf.fileExtensions,
+		),
+		mkdirer: mkdirerFactory(
+			conf.fileExtensions,
+		),
 	}
 }
 
