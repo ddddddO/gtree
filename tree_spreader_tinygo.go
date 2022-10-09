@@ -11,11 +11,6 @@ import (
 	"github.com/fatih/color"
 )
 
-// 関心事はtreeの出力
-type spreader interface {
-	spread(io.Writer, []*Node) error
-}
-
 func newSpreader(encode encode) spreader {
 	switch encode {
 	case encodeJSON:
@@ -28,11 +23,13 @@ func newSpreader(encode encode) spreader {
 func newColorizeSpreader(fileExtensions []string) spreader {
 	return &colorizeSpreader{
 		defaultSpreader: &defaultSpreader{},
-		fileConsiderer:  newFileConsiderer(fileExtensions),
-		colorFile:       color.New(color.Bold, color.FgHiCyan),
-		colorDir:        color.New(color.FgGreen),
-		counterFile:     newCounter(),
-		counterDir:      newCounter(),
+
+		fileConsiderer: newFileConsiderer(fileExtensions),
+		fileColor:      color.New(color.Bold, color.FgHiCyan),
+		fileCounter:    newCounter(),
+
+		dirColor:   color.New(color.FgGreen),
+		dirCounter: newCounter(),
 	}
 }
 
@@ -73,22 +70,22 @@ func (*defaultSpreader) write(w io.Writer, in string) error {
 
 type colorizeSpreader struct {
 	*defaultSpreader // NOTE: xxx
-	fileConsiderer   *fileConsiderer
-	colorFile        *color.Color
-	colorDir         *color.Color
-	counterFile      *counter
-	counterDir       *counter
+
+	fileConsiderer *fileConsiderer
+	fileColor      *color.Color
+	fileCounter    *counter
+
+	dirColor   *color.Color
+	dirCounter *counter
 }
 
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
 	ret := ""
 	for _, root := range roots {
-		cs.counterFile.reset()
-		cs.counterDir.reset()
-
+		cs.fileCounter.reset()
+		cs.dirCounter.reset()
 		ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
 	}
-
 	return cs.write(w, ret)
 }
 
@@ -103,19 +100,19 @@ func (cs *colorizeSpreader) spreadBranch(current *Node) string {
 
 func (cs *colorizeSpreader) colorize(current *Node) {
 	if cs.fileConsiderer.isFile(current) {
-		_ = cs.counterFile.next()
-		current.name = cs.colorFile.Sprint(current.name)
+		_ = cs.fileCounter.next()
+		current.name = cs.fileColor.Sprint(current.name)
 	} else {
-		_ = cs.counterDir.next()
-		current.name = cs.colorDir.Sprint(current.name)
+		_ = cs.dirCounter.next()
+		current.name = cs.dirColor.Sprint(current.name)
 	}
 }
 
 func (cs *colorizeSpreader) summary() string {
 	return fmt.Sprintf(
 		"%d directories, %d files\n",
-		cs.counterDir.current(),
-		cs.counterFile.current(),
+		cs.dirCounter.current(),
+		cs.fileCounter.current(),
 	)
 }
 
