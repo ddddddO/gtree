@@ -4,6 +4,30 @@ import (
 	"io"
 )
 
+type tree struct {
+	roots    []*Node
+	grower   grower
+	spreader spreader
+	mkdirer  mkdirer
+}
+
+// 関心事は各ノードの枝の形成
+type grower interface {
+	grow([]*Node) error
+	enableValidation()
+}
+
+// 関心事はtreeの出力
+type spreader interface {
+	spread(io.Writer, []*Node) error
+}
+
+// 関心事はファイルの生成
+// interfaceを使う必要はないが、grower/spreaderと合わせたいため
+type mkdirer interface {
+	mkdir([]*Node) error
+}
+
 func newTree(conf *config, roots []*Node) *tree {
 	g := newGrower(conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
 	if conf.encode != encodeDefault {
@@ -23,13 +47,6 @@ func newTree(conf *config, roots []*Node) *tree {
 		spreader: s,
 		mkdirer:  m,
 	}
-}
-
-type tree struct {
-	roots    []*Node
-	grower   grower
-	spreader spreader
-	mkdirer  mkdirer
 }
 
 func (t *tree) grow() error {

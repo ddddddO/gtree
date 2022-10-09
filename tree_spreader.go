@@ -13,11 +13,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// 関心事はtreeの出力
-type spreader interface {
-	spread(io.Writer, []*Node) error
-}
-
 func newSpreader(encode encode) spreader {
 	switch encode {
 	case encodeJSON:
