@@ -5,12 +5,6 @@ import (
 	"strings"
 )
 
-// 関心事はファイルの生成
-// interfaceを使う必要はないが、grower/spreaderと合わせたいため
-type mkdirer interface {
-	mkdir([]*Node) error
-}
-
 func newMkdirer(fileExtensions []string) mkdirer {
 	return &defaultMkdirer{
 		fileConsiderer: newFileConsiderer(fileExtensions),

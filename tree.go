@@ -4,40 +4,66 @@ import (
 	"io"
 )
 
-func initializeTree(conf *config, roots []*Node) *tree {
-	g := newGrower(conf.lastNodeFormat, conf.intermedialNodeFormat, conf.dryrun)
-	if conf.encode != encodeDefault {
-		g = newNopGrower()
-	}
-
-	s := newSpreader(conf.encode)
-	if conf.dryrun {
-		s = newColorizeSpreader(conf.fileExtensions)
-	}
-
-	m := newMkdirer(conf.fileExtensions)
-
-	return newTree(roots, g, s, m)
-}
-
 type tree struct {
-	roots    []*Node
+	roots []*Node
+
 	grower   grower
 	spreader spreader
 	mkdirer  mkdirer
 }
 
-func newTree(
-	roots []*Node,
-	grower grower,
-	spreader spreader,
-	mkdirer mkdirer,
-) *tree {
+// 関心事は各ノードの枝の形成
+type grower interface {
+	grow([]*Node) error
+	enableValidation()
+}
+
+// 関心事はtreeの出力
+type spreader interface {
+	spread(io.Writer, []*Node) error
+}
+
+// 関心事はファイルの生成
+// interfaceを使う必要はないが、grower/spreaderと合わせたいため
+type mkdirer interface {
+	mkdir([]*Node) error
+}
+
+func newTree(conf *config, roots []*Node) *tree {
+	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) grower {
+		if encode != encodeDefault {
+			return newNopGrower()
+		}
+		return newGrower(lastNodeFormat, intermedialNodeFormat, dryrun)
+	}
+
+	spreaderFactory := func(encode encode, dryrun bool, fileExtensions []string) spreader {
+		if dryrun {
+			return newColorizeSpreader(fileExtensions)
+		}
+		return newSpreader(encode)
+	}
+
+	mkdirerFactory := func(fileExtensions []string) mkdirer {
+		return newMkdirer(fileExtensions)
+	}
+
 	return &tree{
-		roots:    roots,
-		grower:   grower,
-		spreader: spreader,
-		mkdirer:  mkdirer,
+		roots: roots,
+		grower: growerFactory(
+			conf.lastNodeFormat,
+			conf.intermedialNodeFormat,
+			conf.dryrun,
+			conf.encode,
+		),
+		spreader: spreaderFactory(
+			conf.encode,
+			conf.dryrun,
+			conf.fileExtensions,
+		),
+		mkdirer: mkdirerFactory(
+			conf.fileExtensions,
+		),
 	}
 }
 
