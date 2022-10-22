@@ -1,0 +1,7 @@
+linters:
+  presets:
+    - complexity
+
+linters-settings:
+  gocognit:
+    min-complexity: 4

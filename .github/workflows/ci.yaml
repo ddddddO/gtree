@@ -13,15 +13,16 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
 
-      - name: install gocognito
-        run: go install github.com/nrnrk/gocognito/cmd/gocognito@latest
-      - name: compute cognitive
-        run: gocognito . || echo 'Successful'
+      # - name: install gocognito
+      #   run: go install github.com/nrnrk/gocognito/cmd/gocognito@latest
+      # - name: compute cognitive
+      #   run: gocognito . || echo 'Successful'
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
+
 
       - name: test
         run: go test . -race -coverprofile=coverage.out -covermode=atomic -v
