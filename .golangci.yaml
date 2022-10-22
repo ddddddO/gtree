@@ -6,5 +6,5 @@ linters-settings:
   gocognit:
     min-complexity: 4
 
-# output:
-#   format: "github-actions"
+output:
+  format: "tab"
