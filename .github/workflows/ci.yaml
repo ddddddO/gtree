@@ -11,7 +11,7 @@ jobs:
         with:
           go-version: 1.19
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: install gocognito
         run: go install github.com/nrnrk/gocognito/cmd/gocognito@latest
@@ -26,4 +26,4 @@ jobs:
       - name: test
         run: go test . -race -coverprofile=coverage.out -covermode=atomic -v
       - name: upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
