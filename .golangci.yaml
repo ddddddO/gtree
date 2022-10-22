@@ -5,3 +5,6 @@ linters:
 linters-settings:
   gocognit:
     min-complexity: 4
+
+output:
+  format: "tab"
