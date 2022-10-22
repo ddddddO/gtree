@@ -7,4 +7,4 @@ linters-settings:
     min-complexity: 4
 
 output:
-  format: "tab"
+  format: "github-actions"
