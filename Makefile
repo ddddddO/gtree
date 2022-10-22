@@ -14,9 +14,6 @@ test: sweep
 cyclo: sweep
 	gocyclo .
 
-cognitive: sweep
-	gocognito .
-
 credit:
 	gocredits . > CREDITS
 
