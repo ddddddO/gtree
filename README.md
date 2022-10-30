@@ -29,7 +29,7 @@ This page calls a function that outputs tree. This function is a Go package comp
 You can change the branches like in the image below.<br>
 Also, once loaded, you can enjoy offline!<br>
 
-![](web.png)
+![](web_example.gif)
 
 ## Package(1) / like CLI
 [read me!](https://github.com/ddddddO/gtree/blob/master/README_Package_1.md#package1--like-cli)
