@@ -58,6 +58,10 @@ func (n *Node) isLastOfHierarchy() bool {
 	return n.index == n.parent.children[lastIdx].index
 }
 
+const (
+	rootHierarchyNum uint = 1
+)
+
 func (n *Node) isRoot() bool {
 	return n.hierarchy == rootHierarchyNum
 }
