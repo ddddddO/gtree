@@ -6,16 +6,16 @@ import (
 )
 
 type rootGenerator struct {
-	counter  *counter
-	scanner  *bufio.Scanner
-	strategy nodeGenerateStrategy
+	counter       *counter
+	scanner       *bufio.Scanner
+	nodeGenerator *nodeGenerator
 }
 
 func newRootGenerator(r io.Reader, st spaceType) *rootGenerator {
 	return &rootGenerator{
-		counter:  newCounter(),
-		scanner:  bufio.NewScanner(r),
-		strategy: newStrategy(st),
+		counter:       newCounter(),
+		scanner:       bufio.NewScanner(r),
+		nodeGenerator: newNodeGenerator(st),
 	}
 }
 
@@ -26,7 +26,7 @@ func (rg *rootGenerator) generate() ([]*Node, error) {
 	)
 
 	for rg.scanner.Scan() {
-		currentNode, err := rg.strategy.generate(rg.scanner.Text(), rg.counter.next())
+		currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
 		if err != nil {
 			return nil, err
 		}

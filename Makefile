@@ -9,7 +9,8 @@ lint: sweep
 
 test: sweep
 	go clean -testcache
-	go test . -race -v
+	go test . -race -v -count=1
+	go test ./markdown/... -race -v -count=1
 
 cyclo: sweep
 	gocyclo .

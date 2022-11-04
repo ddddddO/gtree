@@ -15,7 +15,7 @@ type want struct {
 
 const fixedIndex uint = 1
 
-func TestTabStrategy_Generate(t *testing.T) {
+func TestGenerateTab(t *testing.T) {
 	tests := map[string]struct {
 		row  string
 		want *want
@@ -29,12 +29,13 @@ func TestTabStrategy_Generate(t *testing.T) {
 		"invalid/hierarchy=0/tab only":     {"			", &want{err: errIncorrectFormat}},
 	}
 
+	nodeGenerator := newNodeGenerator(spacesTab)
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			node, err := (*tabStrategy)(nil).generate(tt.row, fixedIndex)
+			node, err := nodeGenerator.generate(tt.row, fixedIndex)
 			if tt.want.err != nil {
 				if err != tt.want.err {
 					t.Errorf("\ngot: \n%v\nwant: \n%v", err, tt.want.err)
@@ -55,7 +56,7 @@ func TestTabStrategy_Generate(t *testing.T) {
 	}
 }
 
-func TestTwoSpacesStrategy_Generate(t *testing.T) {
+func TestGenerateTwoSpaces(t *testing.T) {
 	tests := map[string]struct {
 		row  string
 		want *want
@@ -68,12 +69,13 @@ func TestTwoSpacesStrategy_Generate(t *testing.T) {
 		"invalid/hierarchy=0/space only":       {"  ", &want{err: errIncorrectFormat}},
 	}
 
+	nodeGenerator := newNodeGenerator(spacesTwo)
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			node, err := (*twoSpacesStrategy)(nil).generate(tt.row, fixedIndex)
+			node, err := nodeGenerator.generate(tt.row, fixedIndex)
 			if tt.want.err != nil {
 				if err != tt.want.err {
 					t.Errorf("\ngot: \n%v\nwant: \n%v", err, tt.want.err)
@@ -94,7 +96,7 @@ func TestTwoSpacesStrategy_Generate(t *testing.T) {
 	}
 }
 
-func TestFourSpacesStrategy_Generate(t *testing.T) {
+func TestGenerateFourSpaces(t *testing.T) {
 	tests := map[string]struct {
 		row  string
 		want *want
@@ -108,12 +110,13 @@ func TestFourSpacesStrategy_Generate(t *testing.T) {
 		"invalid/hierarchy=0/space only":       {"    ", &want{err: errIncorrectFormat}},
 	}
 
+	nodeGenerator := newNodeGenerator(spacesFour)
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			node, err := (*fourSpacesStrategy)(nil).generate(tt.row, fixedIndex)
+			node, err := nodeGenerator.generate(tt.row, fixedIndex)
 			if tt.want.err != nil {
 				if err != tt.want.err {
 					t.Errorf("\ngot: \n%v\nwant: \n%v", err, tt.want.err)

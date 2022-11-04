@@ -2,7 +2,8 @@ package gtree
 
 import (
 	"errors"
-	"strings"
+
+	md "github.com/ddddddO/gtree/markdown"
 )
 
 type spaceType int
@@ -13,104 +14,49 @@ const (
 	spacesFour
 )
 
-type nodeGenerateStrategy interface {
-	generate(row string, idx uint) (*Node, error)
+type nodeGenerator struct {
+	parser *md.Parser
 }
 
-func newStrategy(st spaceType) nodeGenerateStrategy {
+func newNodeGenerator(st spaceType) *nodeGenerator {
+	var p *md.Parser
 	switch st {
 	case spacesTwo:
-		return &twoSpacesStrategy{}
+		p = md.NewParser(2)
 	case spacesFour:
-		return &fourSpacesStrategy{}
+		p = md.NewParser(4)
 	default:
-		return &tabStrategy{}
+		p = md.NewParser(1)
+	}
+	return &nodeGenerator{
+		parser: p,
 	}
 }
-
-const (
-	hyphen = "-"
-	space  = " "
-	tab    = "\t"
-)
-
-const (
-	rootHierarchyNum uint = 1
-)
 
 var (
 	errEmptyText       = errors.New("empty text")
 	errIncorrectFormat = errors.New("incorrect input format")
 )
 
-type tabStrategy struct{}
-
-func (*tabStrategy) generate(row string, idx uint) (*Node, error) {
-	before, after, found := strings.Cut(row, hyphen)
-	if !found {
-		return nil, errIncorrectFormat
+func (ng *nodeGenerator) generate(row string, idx uint) (*Node, error) {
+	markdown, err := ng.parser.Parse(row)
+	if err != nil {
+		return nil, handleErr(err)
 	}
 
-	tabCount := strings.Count(before, tab)
-	if tabCount != len(before) {
-		return nil, errIncorrectFormat
-	}
-
-	text := strings.TrimPrefix(after, space)
-	if len(text) == 0 {
-		return nil, errEmptyText
-	}
-
-	hierarchy := uint(tabCount) + rootHierarchyNum
-	return newNode(text, hierarchy, idx), nil
+	return newNode(
+		markdown.Text(),
+		markdown.Hierarchy(),
+		idx,
+	), nil
 }
 
-type twoSpacesStrategy struct{}
-
-func (*twoSpacesStrategy) generate(row string, idx uint) (*Node, error) {
-	before, after, found := strings.Cut(row, hyphen)
-	if !found {
-		return nil, errIncorrectFormat
+func handleErr(err error) error {
+	switch err {
+	case md.ErrEmptyText:
+		return errEmptyText
+	case md.ErrIncorrectFormat, md.ErrBlankLine:
+		return errIncorrectFormat
 	}
-
-	spaceCount := strings.Count(before, space)
-	if spaceCount != len(before) {
-		return nil, errIncorrectFormat
-	}
-	if spaceCount%2 != 0 {
-		return nil, errIncorrectFormat
-	}
-
-	text := strings.TrimPrefix(after, space)
-	if len(text) == 0 {
-		return nil, errEmptyText
-	}
-
-	hierarchy := uint(spaceCount/2) + rootHierarchyNum
-	return newNode(text, hierarchy, idx), nil
-}
-
-type fourSpacesStrategy struct{}
-
-func (*fourSpacesStrategy) generate(row string, idx uint) (*Node, error) {
-	before, after, found := strings.Cut(row, hyphen)
-	if !found {
-		return nil, errIncorrectFormat
-	}
-
-	spaceCount := strings.Count(before, space)
-	if spaceCount != len(before) {
-		return nil, errIncorrectFormat
-	}
-	if spaceCount%4 != 0 {
-		return nil, errIncorrectFormat
-	}
-
-	text := strings.TrimPrefix(after, space)
-	if len(text) == 0 {
-		return nil, errEmptyText
-	}
-
-	hierarchy := uint(spaceCount/4) + rootHierarchyNum
-	return newNode(text, hierarchy, idx), nil
+	return err
 }

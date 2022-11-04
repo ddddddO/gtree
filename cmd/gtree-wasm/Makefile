@@ -2,7 +2,7 @@ editcss:
 	npx tailwindcss -i ./tailwind_base.css -o ./main.css --watch
 
 serve:
-	python3 -m http.server 8080
+	cd ../../docs && python3 -m http.server 8080
 
 confirm:
 	./confirm.sh
