@@ -111,7 +111,7 @@ func (p *Parser) separateRow(row string) (int, string, error) {
 			err = ErrIncorrectFormat
 			continue
 		}
-		if e := p.validSpaces(spaceCount); e != nil {
+		if e := p.validateSpaces(spaceCount); e != nil {
 			err = e
 			continue
 		}
@@ -122,7 +122,7 @@ func (p *Parser) separateRow(row string) (int, string, error) {
 	return 0, "", err
 }
 
-func (p *Parser) validSpaces(spaceCount int) error {
+func (p *Parser) validateSpaces(spaceCount int) error {
 	if p.isTab() {
 		return nil
 	}

@@ -41,7 +41,7 @@ var (
 func (ng *nodeGenerator) generate(row string, idx uint) (*Node, error) {
 	markdown, err := ng.parser.Parse(row)
 	if err != nil {
-		return nil, handleErr(err)
+		return nil, ng.handleErr(err)
 	}
 
 	return newNode(
@@ -51,7 +51,7 @@ func (ng *nodeGenerator) generate(row string, idx uint) (*Node, error) {
 	), nil
 }
 
-func handleErr(err error) error {
+func (*nodeGenerator) handleErr(err error) error {
 	switch err {
 	case md.ErrEmptyText:
 		return errEmptyText
