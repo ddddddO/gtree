@@ -46,8 +46,5 @@ func (rg *rootGenerator) generate() ([]*Node, error) {
 		stack.dfs(currentNode)
 	}
 
-	if err := rg.scanner.Err(); err != nil {
-		return nil, err
-	}
-	return roots, nil
+	return roots, rg.scanner.Err()
 }
