@@ -1,53 +1,62 @@
 package gtree
 
 import (
-	"bufio"
-	"io"
+	"errors"
+
+	md "github.com/ddddddO/gtree/markdown"
 )
 
-type rootGenerator struct {
-	counter       *counter
-	scanner       *bufio.Scanner
-	nodeGenerator *nodeGenerator
+type spaceType int
+
+const (
+	spacesTab spaceType = iota
+	spacesTwo
+	spacesFour
+)
+
+type nodeGenerator struct {
+	parser *md.Parser
 }
 
-func newRootGenerator(r io.Reader, st spaceType) *rootGenerator {
-	return &rootGenerator{
-		counter:       newCounter(),
-		scanner:       bufio.NewScanner(r),
-		nodeGenerator: newNodeGenerator(st),
+func newNodeGenerator(st spaceType) *nodeGenerator {
+	var p *md.Parser
+	switch st {
+	case spacesTwo:
+		p = md.NewParser(2)
+	case spacesFour:
+		p = md.NewParser(4)
+	default:
+		p = md.NewParser(1)
+	}
+	return &nodeGenerator{
+		parser: p,
 	}
 }
 
-func (rg *rootGenerator) generate() ([]*Node, error) {
-	var (
-		stack *stack
-		roots []*Node
-	)
+var (
+	errEmptyText       = errors.New("empty text")
+	errIncorrectFormat = errors.New("incorrect input format")
+)
 
-	for rg.scanner.Scan() {
-		currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
-		if err != nil {
-			return nil, err
-		}
-
-		if currentNode.isRoot() {
-			rg.counter.reset()
-			roots = append(roots, currentNode)
-			stack = newStack()
-			stack.push(currentNode)
-			continue
-		}
-
-		if stack == nil {
-			return nil, errNilStack
-		}
-
-		stack.dfs(currentNode)
+func (ng *nodeGenerator) generate(row string, idx uint) (*Node, error) {
+	markdown, err := ng.parser.Parse(row)
+	if err != nil {
+		return nil, handleErr(err)
 	}
 
-	if err := rg.scanner.Err(); err != nil {
-		return nil, err
+	return newNode(
+		markdown.Text(),
+		markdown.Hierarchy(),
+		idx,
+	), nil
+}
+
+func handleErr(err error) error {
+	switch err {
+	case md.ErrEmptyText:
+		return errEmptyText
+	case md.ErrIncorrectFormat, md.ErrBlankLine:
+		return errIncorrectFormat
 	}
-	return roots, nil
+	return err
 }

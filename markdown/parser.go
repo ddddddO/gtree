@@ -51,7 +51,7 @@ var (
 // TODO: 要リファクタ
 func (p *Parser) Parse(row string) (*Markdown, error) {
 	// 空行か否か
-	if p.isEmpty(row) {
+	if p.isBlank(row) {
 		return nil, ErrBlankLine
 	}
 
@@ -74,25 +74,6 @@ func (p *Parser) Parse(row string) (*Markdown, error) {
 		}, nil
 	}
 
-	// #のセクション内
-	if p.isSharpRoot {
-		spaceCount, afterText, err := p.separateRow(row)
-		if err != nil {
-			return nil, err
-		}
-
-		text := strings.TrimPrefix(afterText, space)
-		if len(text) == 0 {
-			return nil, ErrEmptyText
-		}
-
-		hierarchy := p.calculateHierarchy(spaceCount)
-		return &Markdown{
-			hierarchy: hierarchy,
-			text:      text,
-		}, nil
-	}
-
 	spaceCount, afterText, err := p.separateRow(row)
 	if err != nil {
 		return nil, err
@@ -110,9 +91,35 @@ func (p *Parser) Parse(row string) (*Markdown, error) {
 	}, nil
 }
 
-func (p *Parser) isEmpty(row string) bool {
+func (p *Parser) isBlank(row string) bool {
 	r := strings.TrimSpace(row)
 	return len(r) == 0
+}
+
+var listSymbols = []string{hyphen, asterisk, plus}
+
+func (p *Parser) separateRow(row string) (int, string, error) {
+	var err error
+	for _, symbol := range listSymbols {
+		before, after, found := strings.Cut(row, symbol)
+		if !found {
+			err = ErrIncorrectFormat
+			continue
+		}
+		spaceCount := strings.Count(before, p.sep)
+		if spaceCount != len(before) {
+			err = ErrIncorrectFormat
+			continue
+		}
+		if e := p.validSpaces(spaceCount); e != nil {
+			err = e
+			continue
+		}
+
+		return spaceCount, after, nil
+	}
+
+	return 0, "", err
 }
 
 func (p *Parser) validSpaces(spaceCount int) error {
@@ -141,30 +148,4 @@ func (p *Parser) calculateHierarchy(spaceCount int) uint {
 
 func (p *Parser) isTab() bool {
 	return p.spaces == 1
-}
-
-var listSymbols = []string{hyphen, asterisk, plus}
-
-func (p *Parser) separateRow(row string) (int, string, error) {
-	var err error
-	for _, symbol := range listSymbols {
-		before, after, found := strings.Cut(row, symbol)
-		if !found {
-			err = ErrIncorrectFormat
-			continue
-		}
-		spaceCount := strings.Count(before, p.sep)
-		if spaceCount != len(before) {
-			err = ErrIncorrectFormat
-			continue
-		}
-		if e := p.validSpaces(spaceCount); e != nil {
-			err = e
-			continue
-		}
-
-		return spaceCount, after, nil
-	}
-
-	return 0, "", err
 }
