@@ -2,6 +2,8 @@
 FROM golang:1.19-alpine AS builder
 WORKDIR /github.com/ddddddO/gtree
 COPY go.* *.go ./
+WORKDIR /github.com/ddddddO/gtree/markdown
+COPY markdown/*.go ./
 WORKDIR /github.com/ddddddO/gtree/cmd/gtree
 COPY cmd/gtree/*.go ./
 RUN go build -o gtree .
