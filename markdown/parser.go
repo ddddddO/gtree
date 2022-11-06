@@ -91,7 +91,7 @@ func (p *Parser) Parse(row string) (*Markdown, error) {
 	}, nil
 }
 
-func (p *Parser) isBlank(row string) bool {
+func (*Parser) isBlank(row string) bool {
 	r := strings.TrimSpace(row)
 	return len(r) == 0
 }
