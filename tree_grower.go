@@ -69,10 +69,7 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 }
 
 func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
-	if current == nil {
-		return
-	}
-	if current.isRoot() {
+	if current == nil || current.isRoot() {
 		return
 	}
 
@@ -86,10 +83,7 @@ func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
 }
 
 func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
-	if current == nil || parent == nil {
-		return
-	}
-	if current.isRoot() {
+	if current == nil || parent == nil || current.isRoot() {
 		return
 	}
 

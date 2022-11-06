@@ -170,7 +170,7 @@ func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
 	defer ticker.Stop()
 	var preFileModTime time.Time
 	for range ticker.C {
-		err := func() error {
+		if err := func() error {
 			f, err := os.Open(markdownPath)
 			if err != nil {
 				return err
@@ -188,8 +188,7 @@ func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
 				fmt.Println()
 			}
 			return nil
-		}()
-		if err != nil {
+		}(); err != nil {
 			return err
 		}
 	}
