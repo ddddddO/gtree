@@ -30,6 +30,9 @@ func (rg *rootGenerator) generate() ([]*Node, error) {
 		if err != nil {
 			return nil, err
 		}
+		if currentNode == nil {
+			continue
+		}
 
 		if currentNode.isRoot() {
 			rg.counter.reset()

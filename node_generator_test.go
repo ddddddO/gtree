@@ -26,7 +26,7 @@ func TestGenerateTab(t *testing.T) {
 		"invalid/hierarchy=0/prefix space": {" - aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/prefix chars": {"xx- aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/no hyphen":    {"xx aaa bb", &want{err: errIncorrectFormat}},
-		"invalid/hierarchy=0/tab only":     {"			", &want{err: errIncorrectFormat}},
+		"invalid/hierarchy=0/tab only":     {"			", nil},
 	}
 
 	nodeGenerator := newNodeGenerator(spacesTab)
@@ -36,6 +36,9 @@ func TestGenerateTab(t *testing.T) {
 			t.Parallel()
 
 			node, err := nodeGenerator.generate(tt.row, fixedIndex)
+			if node == nil && err == nil {
+				return
+			}
 			if tt.want.err != nil {
 				if err != tt.want.err {
 					t.Errorf("\ngot: \n%v\nwant: \n%v", err, tt.want.err)
@@ -66,7 +69,7 @@ func TestGenerateTwoSpaces(t *testing.T) {
 		"invalid/hierarchy=0/prefix odd space": {" - aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/prefix chars":     {"xx- aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/no hyphen":        {"xx aaa bb", &want{err: errIncorrectFormat}},
-		"invalid/hierarchy=0/space only":       {"  ", &want{err: errIncorrectFormat}},
+		"invalid/hierarchy=0/space only":       {"  ", nil},
 	}
 
 	nodeGenerator := newNodeGenerator(spacesTwo)
@@ -76,6 +79,9 @@ func TestGenerateTwoSpaces(t *testing.T) {
 			t.Parallel()
 
 			node, err := nodeGenerator.generate(tt.row, fixedIndex)
+			if node == nil && err == nil {
+				return
+			}
 			if tt.want.err != nil {
 				if err != tt.want.err {
 					t.Errorf("\ngot: \n%v\nwant: \n%v", err, tt.want.err)
@@ -107,7 +113,7 @@ func TestGenerateFourSpaces(t *testing.T) {
 		"invalid/hierarchy=0/prefix odd space": {" - aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/prefix chars":     {"xx- aaa bb", &want{err: errIncorrectFormat}},
 		"invalid/hierarchy=0/no hyphen":        {"xx aaa bb", &want{err: errIncorrectFormat}},
-		"invalid/hierarchy=0/space only":       {"    ", &want{err: errIncorrectFormat}},
+		"invalid/hierarchy=0/space only":       {"    ", nil},
 	}
 
 	nodeGenerator := newNodeGenerator(spacesFour)
@@ -117,6 +123,9 @@ func TestGenerateFourSpaces(t *testing.T) {
 			t.Parallel()
 
 			node, err := nodeGenerator.generate(tt.row, fixedIndex)
+			if node == nil && err == nil {
+				return
+			}
 			if tt.want.err != nil {
 				if err != tt.want.err {
 					t.Errorf("\ngot: \n%v\nwant: \n%v", err, tt.want.err)
