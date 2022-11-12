@@ -55,8 +55,10 @@ func (*nodeGenerator) handleErr(err error) error {
 	switch err {
 	case md.ErrEmptyText:
 		return errEmptyText
-	case md.ErrIncorrectFormat, md.ErrBlankLine:
+	case md.ErrIncorrectFormat:
 		return errIncorrectFormat
+	case md.ErrBlankLine:
+		return nil
 	}
 	return err
 }
