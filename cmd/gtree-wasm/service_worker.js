@@ -1,7 +1,7 @@
 // copied by https://laboradian.com/create-offline-site-using-sw/
 
 // TODO: ファイル変更したらCACHE_VERSIONを変えてデプロイすること
-const CACHE_VERSION = 'v1.1.1';
+const CACHE_VERSION = 'v1.1.2';
 const CACHE_NAME = `${registration.scope}!${CACHE_VERSION}`;
 
 // キャッシュするファイルをセットする

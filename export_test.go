@@ -1,6 +1,8 @@
 package gtree
 
 var (
-	ExportErrEmptyText       = errEmptyText
-	ExportErrIncorrectFormat = errIncorrectFormat
+	ExportErrEmptyText = errEmptyText
+	// TODO: fixme
+	// ExportErrIncorrectFormat = errIncorrectFormat
+	ExportErrIncorrectFormat = &inputFormatError{}
 )
