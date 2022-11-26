@@ -31,6 +31,8 @@ Also, once loaded, you can enjoy offline!<br>
 
 ![](web_example.gif)
 
+[source code](cmd/gtree-wasm/)
+
 ## Package(1) / like CLI
 [read me!](https://github.com/ddddddO/gtree/blob/master/README_Package_1.md#package1--like-cli)
 
