@@ -9,6 +9,9 @@ $ go get github.com/ddddddO/gtree
 ```
 
 ## Usage
+
+- The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
+
 ### *Output* func
 
 ```go

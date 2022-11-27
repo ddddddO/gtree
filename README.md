@@ -25,7 +25,9 @@ Output tree🌳 or Make directories(files)📁 from Markdown or Programmatically
 
 https://ddddddo.github.io/gtree/
 
+This page is that converts from Markdown to tree!<br>
 This page calls a function that outputs tree. This function is a Go package compiled as WebAssembly.<br>
+The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.<br>
 You can change the branches like in the image below.<br>
 Also, once loaded, you can enjoy offline!<br>
 
@@ -91,6 +93,8 @@ COMMANDS:
 GLOBAL OPTIONS:
    --help, -h  show help (default: false)
 ```
+
+- The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
 #### *Output* subcommand
 ```console
