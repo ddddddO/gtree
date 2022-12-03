@@ -1,8 +1,8 @@
 package gtree
 
 type config struct {
-	lastNodeFormat        branchFormat
-	intermedialNodeFormat branchFormat
+	lastNodeFormat        *branchFormat
+	intermedialNodeFormat *branchFormat
 
 	space          spaceType
 	encode         encode
@@ -12,11 +12,11 @@ type config struct {
 
 func newConfig(options []Option) (*config, error) {
 	c := &config{
-		lastNodeFormat: branchFormat{
+		lastNodeFormat: &branchFormat{
 			directly:   "└──",
 			indirectly: "    ",
 		},
-		intermedialNodeFormat: branchFormat{
+		intermedialNodeFormat: &branchFormat{
 			directly:   "├──",
 			indirectly: "│   ",
 		},
