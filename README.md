@@ -45,18 +45,24 @@ Also, once loaded, you can enjoy offline!<br>
 ## CLI
 ### Installation
 
-Go version requires 1.18 or later.
+using Go (requires 1.18 or later).
 
 ```console
 $ go install github.com/ddddddO/gtree/cmd/gtree@latest
 ```
 
-or using Homebrew.
+using Homebrew.
 ```console
 $ brew install ddddddO/tap/gtree
 ```
 
-or [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree).
+using Scoop.
+```console
+$ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
+$ scoop install ddddddO/gtree
+```
+
+using [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree).
 ```console
 $ docker pull ghcr.io/ddddddo/gtree:latest
 $ docker run ghcr.io/ddddddo/gtree:latest template | docker run -i ghcr.io/ddddddo/gtree:latest output

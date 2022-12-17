@@ -42,3 +42,12 @@ brews:
     homepage: 'https://github.com/ddddddO/gtree'
     description: 'Output tree🌳 or Make directories(files)📁 from Markdown.'
     license: "BSD-2-Clause"
+scoop:
+  bucket:
+    owner: ddddddO
+    name: scoop-bucket
+    token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+  url_template: "https://github.com/ddddddO/gtree/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+  homepage: "https://github.com/ddddddO/gtree"
+  description: "Output tree🌳 or Make directories(files)📁 from Markdown."
+  license: "BSD-2-Clause"
