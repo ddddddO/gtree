@@ -26,4 +26,3 @@ const copyToClipboard = () => {
   const clipboard = window.navigator.clipboard;
   clipboard.writeText(tree.innerHTML);
 };
-
