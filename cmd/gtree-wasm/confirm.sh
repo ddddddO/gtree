@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo -n "service_worker.js の CACHE_VERSION 変数を更新しましたか? [y/N]: "
+echo -n "service_worker.js の CACHE_VERSION 変数の変更/ 新規作成したjsファイルを urlsToCache に追加しましたか? [y/N]: "
 read ANS
 
 case $ANS in

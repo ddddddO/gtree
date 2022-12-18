@@ -1,0 +1,1 @@
+const tabKey=9,spaces="  ",onTabKey=e=>{var position,left,currStr;e.keyCode==tabKey&&(e.preventDefault(),e=e.target,currStr=String(e.value),position=e.selectionStart,left=currStr.substring(0,position),currStr=currStr.substring(position,currStr.length),e.value=left+spaces+currStr,e.selectionEnd=position+spaces.length)};document.getElementById("in").onkeydown=e=>onTabKey(e);
