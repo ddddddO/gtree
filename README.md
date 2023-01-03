@@ -45,27 +45,24 @@ Also, once loaded, you can enjoy offline!<br>
 ## CLI
 ### Installation
 
-#### Go (requires 1.18 or later)
+using Go (requires 1.18 or later).
 
 ```console
 $ go install github.com/ddddddO/gtree/cmd/gtree@latest
 ```
 
-#### Homebrew
-
+using Homebrew.
 ```console
 $ brew install ddddddO/tap/gtree
 ```
 
-#### Scoop
-
+using Scoop.
 ```console
 $ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
 $ scoop install ddddddO/gtree
 ```
 
-#### [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree)
-
+using [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree).
 ```console
 $ docker pull ghcr.io/ddddddo/gtree:latest
 $ docker run ghcr.io/ddddddo/gtree:latest template | docker run -i ghcr.io/ddddddo/gtree:latest output
@@ -80,9 +77,7 @@ gtree
 └── tree.go
 ```
 
-#### etc
-
-**download binary from [here](https://github.com/ddddddO/gtree/releases).**
+**or, download binary from [here](https://github.com/ddddddO/gtree/releases).**
 
 ### Usage
 
