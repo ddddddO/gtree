@@ -2,6 +2,7 @@ package gtree_test
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/ddddddO/gtree"
@@ -53,6 +54,11 @@ func TestMkdirProgrammably(t *testing.T) {
 			root:    prepareInvalidNodeName(),
 			wantErr: fmt.Errorf("invalid node name: %s", "chi/ld 4"),
 		},
+		{
+			name:    "case(root already exists)",
+			root:    prepareExistRoot(t),
+			wantErr: gtree.ErrExistPath,
+		},
 	}
 
 	for _, tt := range tests {
@@ -68,4 +74,16 @@ func TestMkdirProgrammably(t *testing.T) {
 			}
 		})
 	}
+}
+
+func prepareExistRoot(t *testing.T) *gtree.Node {
+	name := "gtreetest"
+
+	if err := os.MkdirAll(name, 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	root := gtree.NewRoot(name)
+	root.Add("temp")
+	return root
 }

@@ -16,12 +16,25 @@ type defaultMkdirer struct {
 }
 
 func (dm *defaultMkdirer) mkdir(roots []*Node) error {
+	if dm.isExistRoot(roots) {
+		return ErrExistPath
+	}
+
 	for _, root := range roots {
 		if err := dm.makeDirectoriesAndFiles(root); err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+func (*defaultMkdirer) isExistRoot(roots []*Node) bool {
+	for _, root := range roots {
+		if _, err := os.Stat(root.path()); !os.IsNotExist(err) {
+			return true
+		}
+	}
+	return false
 }
 
 func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
