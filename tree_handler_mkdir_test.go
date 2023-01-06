@@ -18,7 +18,7 @@ func TestMkdir(t *testing.T) {
 			name: "case(succeeded)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root2
+- root_a
 	- b
 	- bb
 		- lll
@@ -27,23 +27,23 @@ func TestMkdir(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "case(dry-run/no error)",
+			name: "case(dry-run/path exist err)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root2
+- root_b
 	- b
 	- bb
 		- lll
 	-ff`)),
 				options: []gtree.Option{gtree.WithDryRun()},
 			},
-			wantErr: nil,
+			wantErr: gtree.ErrExistPath,
 		},
 		{
 			name: "case(dry-run/invalid node name)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root2
+- root_c
 	- b
 	- b/b
 		- lll
@@ -57,7 +57,7 @@ func TestMkdir(t *testing.T) {
 		// 			name: "case(dry-run/invalid path)",
 		// 			in: in{
 		// 				input: strings.NewReader(strings.TrimSpace(`
-		// - /root2
+		// - /root_d
 		// 	- b
 		// 	- bb
 		// 		- lll
@@ -70,7 +70,7 @@ func TestMkdir(t *testing.T) {
 			name: "case(succeeded/only root)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root3`)),
+- root_e`)),
 			},
 			wantErr: nil,
 		},
@@ -78,8 +78,8 @@ func TestMkdir(t *testing.T) {
 			name: "case(succeeded/only multi roots)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root4
-- root5`)),
+- root_f
+- root_g`)),
 			},
 			wantErr: nil,
 		},
@@ -87,7 +87,7 @@ func TestMkdir(t *testing.T) {
 			name: "case(succeeded/make directories and files)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root6
+- root_h
 	- b.go
 	- bb
 		- lll
@@ -100,7 +100,7 @@ func TestMkdir(t *testing.T) {
 			name: "case(succeeded/make directories and files/even if the extension is specified, it must be created as a directory)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root7
+- root_i
 	- b.go
 	- bb.go
 		- lll`)),
