@@ -17,6 +17,13 @@ var (
 	Revision = "unset"
 )
 
+const (
+	exitCodeErrOpts = iota + 1
+	exitCodeErrOutput
+	exitCodeErrOpen
+	exitCodeErrMkdir
+)
+
 func main() {
 	commonFlags := []cli.Flag{
 		&cli.PathFlag{
@@ -123,18 +130,18 @@ func main() {
 func actionOutput(c *cli.Context) error {
 	oi, err := optionIndentation(c)
 	if err != nil {
-		return cli.Exit(err, 1)
+		return cli.Exit(err, exitCodeErrOpts)
 	}
 	oo, err := optionOutput(c)
 	if err != nil {
-		return cli.Exit(err, 1)
+		return cli.Exit(err, exitCodeErrOpts)
 	}
 	options := []gtree.Option{oi, oo}
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
 		if err := output(os.Stdin, options); err != nil {
-			return cli.Exit(err, 1)
+			return cli.Exit(err, exitCodeErrOutput)
 		}
 		return nil
 	}
@@ -142,18 +149,18 @@ func actionOutput(c *cli.Context) error {
 	if !c.Bool("watch") {
 		f, err := os.Open(markdownPath)
 		if err != nil {
-			return cli.Exit(err, 1)
+			return cli.Exit(err, exitCodeErrOpen)
 		}
 		defer f.Close()
 
 		if err := output(f, options); err != nil {
-			return cli.Exit(err, 1)
+			return cli.Exit(err, exitCodeErrOutput)
 		}
 		return nil
 	}
 
 	if err := watchMarkdownAndOutput(markdownPath, options); err != nil {
-		return cli.Exit(err, 1)
+		return cli.Exit(err, exitCodeErrOutput)
 	}
 
 	return nil
@@ -202,27 +209,27 @@ func actionMkdir(c *cli.Context) error {
 	if !isInputStdin(markdownPath) {
 		in, err = os.Open(markdownPath)
 		if err != nil {
-			return cli.Exit(err, 1)
+			return cli.Exit(err, exitCodeErrOpen)
 		}
 		defer in.Close()
 	}
 
 	oi, err := optionIndentation(c)
 	if err != nil {
-		return cli.Exit(err, 1)
+		return cli.Exit(err, exitCodeErrOpts)
 	}
 	oe := gtree.WithFileExtensions(c.StringSlice("extension"))
 	options := []gtree.Option{oi, oe}
 
 	if c.Bool("dry-run") {
 		if err := outputWithValidation(in, options); err != nil {
-			return cli.Exit(err, 1)
+			return cli.Exit(err, exitCodeErrOutput)
 		}
 		return nil
 	}
 
 	if err := mkdir(in, options); err != nil {
-		return cli.Exit(err, 1)
+		return cli.Exit(err, exitCodeErrMkdir)
 	}
 
 	return nil
