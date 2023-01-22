@@ -15,21 +15,30 @@ type defaultMkdirer struct {
 	fileConsiderer *fileConsiderer
 }
 
-func (dm *defaultMkdirer) mkdir(roots []*Node) error {
-	if dm.isExistRoot(roots) {
-		return ErrExistPath
-	}
+func (dm *defaultMkdirer) mkdir(roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
 
-	for _, root := range roots {
-		if err := dm.makeDirectoriesAndFiles(root); err != nil {
-			return err
+	go func() {
+		defer close(errc)
+
+		if dm.isExistRoot(roots) {
+			errc <- ErrExistPath
+			return
 		}
-	}
-	return nil
+
+		for root := range roots {
+			if err := dm.makeDirectoriesAndFiles(root); err != nil {
+				errc <- err
+				return
+			}
+		}
+	}()
+
+	return errc
 }
 
-func (*defaultMkdirer) isExistRoot(roots []*Node) bool {
-	for _, root := range roots {
+func (*defaultMkdirer) isExistRoot(roots <-chan *Node) bool {
+	for root := range roots {
 		if _, err := os.Stat(root.path()); !os.IsNotExist(err) {
 			return true
 		}

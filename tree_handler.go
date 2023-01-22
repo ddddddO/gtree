@@ -17,11 +17,11 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 		return err
 	}
 
-	tree := newTree(conf, roots)
-	if err := tree.grow(); err != nil {
-		return err
-	}
-	return tree.spread(w)
+	tree := newTree(conf)
+	growingStream, errcg := tree.grow(roots)
+	errcs := tree.spread(w, growingStream)
+
+	return handleErr(errcg, errcs)
 }
 
 // Mkdir makes directories.
@@ -37,9 +37,9 @@ func Mkdir(r io.Reader, options ...Option) error {
 		return err
 	}
 
-	tree := newTree(conf, roots)
-	if err := tree.grow(); err != nil {
-		return err
-	}
-	return tree.mkdir()
+	tree := newTree(conf)
+	growingStream, errcg := tree.grow(roots)
+	errcm := tree.mkdir(growingStream)
+
+	return handleErr(errcg, errcm)
 }
