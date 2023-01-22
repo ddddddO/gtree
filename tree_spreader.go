@@ -50,12 +50,23 @@ const (
 
 type defaultSpreader struct{}
 
-func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
-	branches := ""
-	for _, root := range roots {
-		branches += ds.spreadBranch(root)
-	}
-	return ds.write(w, branches)
+func (ds *defaultSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		branches := ""
+		for root := range roots {
+			branches += ds.spreadBranch(root)
+		}
+		if err := ds.write(w, branches); err != nil {
+			errc <- err
+			return
+		}
+	}()
+
+	return errc
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {
@@ -85,14 +96,25 @@ type colorizeSpreader struct {
 	dirCounter *counter
 }
 
-func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
-	ret := ""
-	for _, root := range roots {
-		cs.fileCounter.reset()
-		cs.dirCounter.reset()
-		ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
-	}
-	return cs.write(w, ret)
+func (cs *colorizeSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		ret := ""
+		for root := range roots {
+			cs.fileCounter.reset()
+			cs.dirCounter.reset()
+			ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
+		}
+		if err := cs.write(w, ret); err != nil {
+			errc <- err
+			return
+		}
+	}()
+
+	return errc
 }
 
 func (cs *colorizeSpreader) spreadBranch(current *Node) string {
@@ -124,15 +146,23 @@ func (cs *colorizeSpreader) summary() string {
 
 type jsonSpreader struct{}
 
-func (*jsonSpreader) spread(w io.Writer, roots []*Node) error {
-	enc := json.NewEncoder(w)
-	for _, root := range roots {
-		jRoot := root.toJSONNode(nil)
-		if err := enc.Encode(jRoot); err != nil {
-			return err
+func (*jsonSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		enc := json.NewEncoder(w)
+		for root := range roots {
+			jRoot := root.toJSONNode(nil)
+			if err := enc.Encode(jRoot); err != nil {
+				errc <- err
+				return
+			}
 		}
-	}
-	return nil
+	}()
+
+	return errc
 }
 
 type jsonNode struct {
@@ -159,15 +189,23 @@ func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
 
 type tomlSpreader struct{}
 
-func (*tomlSpreader) spread(w io.Writer, roots []*Node) error {
-	enc := toml.NewEncoder(w)
-	for _, root := range roots {
-		tRoot := root.toTOMLNode(nil)
-		if err := enc.Encode(tRoot); err != nil {
-			return err
+func (*tomlSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		enc := toml.NewEncoder(w)
+		for root := range roots {
+			tRoot := root.toTOMLNode(nil)
+			if err := enc.Encode(tRoot); err != nil {
+				errc <- err
+				return
+			}
 		}
-	}
-	return nil
+	}()
+
+	return errc
 }
 
 type tomlNode struct {
@@ -194,15 +232,23 @@ func (parent *Node) toTOMLNode(tParent *tomlNode) *tomlNode {
 
 type yamlSpreader struct{}
 
-func (*yamlSpreader) spread(w io.Writer, roots []*Node) error {
-	enc := yaml.NewEncoder(w)
-	for _, root := range roots {
-		yRoot := root.toYAMLNode(nil)
-		if err := enc.Encode(yRoot); err != nil {
-			return err
+func (*yamlSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		enc := yaml.NewEncoder(w)
+		for root := range roots {
+			yRoot := root.toYAMLNode(nil)
+			if err := enc.Encode(yRoot); err != nil {
+				errc <- err
+				return
+			}
 		}
-	}
-	return nil
+	}()
+
+	return errc
 }
 
 type yamlNode struct {

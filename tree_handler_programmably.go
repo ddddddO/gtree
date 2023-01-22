@@ -36,11 +36,11 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf, []*Node{root})
-	if err := tree.grow(); err != nil {
-		return err
-	}
-	return tree.spread(w)
+	tree := newTree(conf)
+	growingStream, errcg := tree.grow([]*Node{root})
+	errcs := tree.spread(w, growingStream)
+
+	return handleErr(errcg, errcs)
 }
 
 var (
@@ -65,18 +65,18 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf, []*Node{root})
+	tree := newTree(conf)
 	tree.enableValidation()
 	// when detect invalid node name, return error. process end.
-	if err := tree.grow(); err != nil {
-		return err
-	}
+	growingStream, errcg := tree.grow([]*Node{root})
 	if conf.dryrun {
 		// when detected no invalid node name, output tree.
-		return tree.spread(color.Output)
+		errcs := tree.spread(color.Output, growingStream)
+		return handleErr(errcg, errcs)
 	}
 	// when detected no invalid node name, no output tree.
-	return tree.mkdir()
+	errcm := tree.mkdir(growingStream)
+	return handleErr(errcg, errcm)
 }
 
 func (t *tree) enableValidation() {

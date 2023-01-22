@@ -25,13 +25,24 @@ type defaultGrower struct {
 	enabledValidation     bool
 }
 
-func (dg *defaultGrower) grow(roots []*Node) error {
-	for _, root := range roots {
-		if err := dg.assemble(root); err != nil {
-			return err
+func (dg *defaultGrower) grow(roots []*Node) (<-chan *Node, <-chan error) {
+	nodes := make(chan *Node)
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(nodes)
+		defer close(errc)
+
+		for _, root := range roots {
+			if err := dg.assemble(root); err != nil {
+				errc <- err
+				return
+			}
+			nodes <- root
 		}
-	}
-	return nil
+	}()
+
+	return nodes, errc
 }
 
 func (dg *defaultGrower) assemble(current *Node) error {
@@ -118,7 +129,21 @@ func (dg *defaultGrower) enableValidation() {
 
 type nopGrower struct{}
 
-func (*nopGrower) grow(_ []*Node) error { return nil }
+func (*nopGrower) grow(roots []*Node) (<-chan *Node, <-chan error) {
+	nodes := make(chan *Node)
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(nodes)
+		defer close(errc)
+
+		for _, root := range roots {
+			nodes <- root
+		}
+	}()
+
+	return nodes, errc
+}
 
 func (*nopGrower) enableValidation() {}
 
