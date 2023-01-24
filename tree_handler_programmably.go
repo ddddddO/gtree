@@ -2,6 +2,7 @@
 package gtree
 
 import (
+	"context"
 	"errors"
 	"io"
 
@@ -36,11 +37,20 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	tree := newTree(conf)
-	growingStream, errcg := tree.grow([]*Node{root})
-	errcs := tree.spread(w, growingStream)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	return handleErr(errcg, errcs)
+	rootStream := make(chan *Node)
+	go func() {
+		defer close(rootStream)
+		rootStream <- root
+	}()
+
+	tree := newTree(conf)
+	growingStream, errcg := tree.grow(ctx, rootStream)
+	errcs := tree.spread(ctx, w, growingStream)
+
+	return handlePipelineErr(errcg, errcs)
 }
 
 var (
@@ -65,18 +75,27 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	rootStream := make(chan *Node)
+	go func() {
+		defer close(rootStream)
+		rootStream <- root
+	}()
+
 	tree := newTree(conf)
 	tree.enableValidation()
 	// when detect invalid node name, return error. process end.
-	growingStream, errcg := tree.grow([]*Node{root})
+	growingStream, errcg := tree.grow(ctx, rootStream)
 	if conf.dryrun {
 		// when detected no invalid node name, output tree.
-		errcs := tree.spread(color.Output, growingStream)
-		return handleErr(errcg, errcs)
+		errcs := tree.spread(ctx, color.Output, growingStream)
+		return handlePipelineErr(errcg, errcs)
 	}
 	// when detected no invalid node name, no output tree.
-	errcm := tree.mkdir(growingStream)
-	return handleErr(errcg, errcm)
+	errcm := tree.mkdir(ctx, growingStream)
+	return handlePipelineErr(errcg, errcm)
 }
 
 func (t *tree) enableValidation() {

@@ -4,6 +4,7 @@ package gtree
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -44,12 +45,32 @@ const (
 
 type defaultSpreader struct{}
 
-func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
-	branches := ""
-	for _, root := range roots {
-		branches += ds.spreadBranch(root)
-	}
-	return ds.write(w, branches)
+func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		branches := ""
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				branches += ds.spreadBranch(root)
+			}
+		}
+		if err := ds.write(w, branches); err != nil {
+			errc <- err
+			return
+		}
+	}()
+
+	return errc
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {
@@ -79,14 +100,34 @@ type colorizeSpreader struct {
 	dirCounter *counter
 }
 
-func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
-	ret := ""
-	for _, root := range roots {
-		cs.fileCounter.reset()
-		cs.dirCounter.reset()
-		ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
-	}
-	return cs.write(w, ret)
+func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		ret := ""
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				cs.fileCounter.reset()
+				cs.dirCounter.reset()
+				ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
+			}
+		}
+		if err := cs.write(w, ret); err != nil {
+			errc <- err
+			return
+		}
+	}()
+
+	return errc
 }
 
 func (cs *colorizeSpreader) spreadBranch(current *Node) string {
@@ -118,15 +159,32 @@ func (cs *colorizeSpreader) summary() string {
 
 type jsonSpreader struct{}
 
-func (*jsonSpreader) spread(w io.Writer, roots []*Node) error {
-	enc := json.NewEncoder(w)
-	for _, root := range roots {
-		jRoot := root.toJSONNode(nil)
-		if err := enc.Encode(jRoot); err != nil {
-			return err
+func (*jsonSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		enc := json.NewEncoder(w)
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				jRoot := root.toJSONNode(nil)
+				if err := enc.Encode(jRoot); err != nil {
+					errc <- err
+					return
+				}
+			}
 		}
-	}
-	return nil
+	}()
+
+	return errc
 }
 
 type jsonNode struct {

@@ -2,6 +2,7 @@ package gtree
 
 import (
 	"bufio"
+	"context"
 	"io"
 )
 
@@ -19,35 +20,58 @@ func newRootGenerator(r io.Reader, st spaceType) *rootGenerator {
 	}
 }
 
-func (rg *rootGenerator) generate() ([]*Node, error) {
-	var (
-		stack *stack
-		roots []*Node
-	)
+func (rg *rootGenerator) generate(_ context.Context) (<-chan *Node, <-chan error) {
+	rootsc := make(chan *Node)
+	errc := make(chan error, 1)
 
-	for rg.scanner.Scan() {
-		currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
-		if err != nil {
-			return nil, err
+	go func() {
+		defer close(rootsc)
+		defer close(errc)
+
+		var (
+			nodes          *stack
+			roots          = newStack()
+			isNotFirstRoot bool
+		)
+
+		for rg.scanner.Scan() {
+			currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
+			if err != nil {
+				errc <- err
+				return
+			}
+			if currentNode == nil {
+				continue
+			}
+
+			if currentNode.isRoot() {
+				if isNotFirstRoot {
+					rootsc <- roots.pop()
+				}
+
+				rg.counter.reset()
+				roots.push(currentNode)
+				nodes = newStack()
+				nodes.push(currentNode)
+				isNotFirstRoot = true
+				continue
+			}
+
+			if nodes == nil {
+				errc <- errNilStack
+				return
+			}
+
+			nodes.dfs(currentNode)
 		}
-		if currentNode == nil {
-			continue
+
+		if err := rg.scanner.Err(); err != nil {
+			errc <- err
+			return
 		}
 
-		if currentNode.isRoot() {
-			rg.counter.reset()
-			roots = append(roots, currentNode)
-			stack = newStack()
-			stack.push(currentNode)
-			continue
-		}
+		rootsc <- roots.pop() // 最後のrootを送出
+	}()
 
-		if stack == nil {
-			return nil, errNilStack
-		}
-
-		stack.dfs(currentNode)
-	}
-
-	return roots, rg.scanner.Err()
+	return rootsc, errc
 }

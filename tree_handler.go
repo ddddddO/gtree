@@ -1,6 +1,7 @@
 package gtree
 
 import (
+	"context"
 	"io"
 )
 
@@ -11,17 +12,15 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 		return err
 	}
 
-	rg := newRootGenerator(r, conf.space)
-	roots, err := rg.generate()
-	if err != nil {
-		return err
-	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	tree := newTree(conf)
-	growingStream, errcg := tree.grow(roots)
-	errcs := tree.spread(w, growingStream)
+	rootStream, errcr := newRootGenerator(r, conf.space).generate(ctx)
+	growingStream, errcg := tree.grow(ctx, rootStream)
+	errcs := tree.spread(ctx, w, growingStream)
 
-	return handleErr(errcg, errcs)
+	return handlePipelineErr(errcr, errcg, errcs)
 }
 
 // Mkdir makes directories.
@@ -31,15 +30,13 @@ func Mkdir(r io.Reader, options ...Option) error {
 		return err
 	}
 
-	rg := newRootGenerator(r, conf.space)
-	roots, err := rg.generate()
-	if err != nil {
-		return err
-	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
 	tree := newTree(conf)
-	growingStream, errcg := tree.grow(roots)
-	errcm := tree.mkdir(growingStream)
+	rootStream, errcr := newRootGenerator(r, conf.space).generate(ctx)
+	growingStream, errcg := tree.grow(ctx, rootStream)
+	errcm := tree.mkdir(ctx, growingStream)
 
-	return handleErr(errcg, errcm)
+	return handlePipelineErr(errcr, errcg, errcm)
 }

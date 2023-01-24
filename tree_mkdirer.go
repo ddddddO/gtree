@@ -1,6 +1,7 @@
 package gtree
 
 import (
+	"context"
 	"os"
 	"strings"
 )
@@ -15,7 +16,7 @@ type defaultMkdirer struct {
 	fileConsiderer *fileConsiderer
 }
 
-func (dm *defaultMkdirer) mkdir(roots <-chan *Node) <-chan error {
+func (dm *defaultMkdirer) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -26,10 +27,19 @@ func (dm *defaultMkdirer) mkdir(roots <-chan *Node) <-chan error {
 			return
 		}
 
-		for root := range roots {
-			if err := dm.makeDirectoriesAndFiles(root); err != nil {
-				errc <- err
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
 				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				if err := dm.makeDirectoriesAndFiles(root); err != nil {
+					errc <- err
+					return
+				}
 			}
 		}
 	}()

@@ -1,5 +1,7 @@
 package gtree
 
+import "context"
+
 func newGrower(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
 	enabledValidation bool,
@@ -25,7 +27,7 @@ type defaultGrower struct {
 	enabledValidation     bool
 }
 
-func (dg *defaultGrower) grow(roots []*Node) (<-chan *Node, <-chan error) {
+func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
 	nodes := make(chan *Node)
 	errc := make(chan error, 1)
 
@@ -33,12 +35,21 @@ func (dg *defaultGrower) grow(roots []*Node) (<-chan *Node, <-chan error) {
 		defer close(nodes)
 		defer close(errc)
 
-		for _, root := range roots {
-			if err := dg.assemble(root); err != nil {
-				errc <- err
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
 				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				if err := dg.assemble(root); err != nil {
+					errc <- err
+					return
+				}
+				nodes <- root
 			}
-			nodes <- root
 		}
 	}()
 
@@ -129,7 +140,7 @@ func (dg *defaultGrower) enableValidation() {
 
 type nopGrower struct{}
 
-func (*nopGrower) grow(roots []*Node) (<-chan *Node, <-chan error) {
+func (*nopGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
 	nodes := make(chan *Node)
 	errc := make(chan error, 1)
 
@@ -137,8 +148,17 @@ func (*nopGrower) grow(roots []*Node) (<-chan *Node, <-chan error) {
 		defer close(nodes)
 		defer close(errc)
 
-		for _, root := range roots {
-			nodes <- root
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				nodes <- root
+			}
 		}
 	}()
 

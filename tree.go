@@ -15,19 +15,19 @@ type tree struct {
 
 // 関心事は各ノードの枝の形成
 type grower interface {
-	grow([]*Node) (<-chan *Node, <-chan error)
+	grow(context.Context, <-chan *Node) (<-chan *Node, <-chan error)
 	enableValidation()
 }
 
 // 関心事はtreeの出力
 type spreader interface {
-	spread(io.Writer, <-chan *Node) <-chan error
+	spread(context.Context, io.Writer, <-chan *Node) <-chan error
 }
 
 // 関心事はファイルの生成
 // interfaceを使う必要はないが、grower/spreaderと合わせたいため
 type mkdirer interface {
-	mkdir(<-chan *Node) <-chan error
+	mkdir(context.Context, <-chan *Node) <-chan error
 }
 
 func newTree(conf *config) *tree {
@@ -67,19 +67,19 @@ func newTree(conf *config) *tree {
 	}
 }
 
-func (t *tree) grow(roots []*Node) (<-chan *Node, <-chan error) {
-	return t.grower.grow(roots)
+func (t *tree) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
+	return t.grower.grow(ctx, roots)
 }
 
-func (t *tree) spread(w io.Writer, roots <-chan *Node) <-chan error {
-	return t.spreader.spread(w, roots)
+func (t *tree) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+	return t.spreader.spread(ctx, w, roots)
 }
 
-func (t *tree) mkdir(roots <-chan *Node) <-chan error {
-	return t.mkdirer.mkdir(roots)
+func (t *tree) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
+	return t.mkdirer.mkdir(ctx, roots)
 }
 
-func handleErr(echs ...<-chan error) error {
+func handlePipelineErr(echs ...<-chan error) error {
 	eg, _ := errgroup.WithContext(context.TODO())
 	for i := range echs {
 		i := i

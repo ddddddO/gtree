@@ -4,6 +4,7 @@ package gtree
 
 import (
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -50,15 +51,24 @@ const (
 
 type defaultSpreader struct{}
 
-func (ds *defaultSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
 		defer close(errc)
 
 		branches := ""
-		for root := range roots {
-			branches += ds.spreadBranch(root)
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				branches += ds.spreadBranch(root)
+			}
 		}
 		if err := ds.write(w, branches); err != nil {
 			errc <- err
@@ -96,17 +106,26 @@ type colorizeSpreader struct {
 	dirCounter *counter
 }
 
-func (cs *colorizeSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
 		defer close(errc)
 
 		ret := ""
-		for root := range roots {
-			cs.fileCounter.reset()
-			cs.dirCounter.reset()
-			ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				cs.fileCounter.reset()
+				cs.dirCounter.reset()
+				ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
+			}
 		}
 		if err := cs.write(w, ret); err != nil {
 			errc <- err
@@ -146,18 +165,27 @@ func (cs *colorizeSpreader) summary() string {
 
 type jsonSpreader struct{}
 
-func (*jsonSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+func (*jsonSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
 		defer close(errc)
 
 		enc := json.NewEncoder(w)
-		for root := range roots {
-			jRoot := root.toJSONNode(nil)
-			if err := enc.Encode(jRoot); err != nil {
-				errc <- err
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
 				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				jRoot := root.toJSONNode(nil)
+				if err := enc.Encode(jRoot); err != nil {
+					errc <- err
+					return
+				}
 			}
 		}
 	}()
@@ -189,18 +217,27 @@ func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
 
 type tomlSpreader struct{}
 
-func (*tomlSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+func (*tomlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
 		defer close(errc)
 
 		enc := toml.NewEncoder(w)
-		for root := range roots {
-			tRoot := root.toTOMLNode(nil)
-			if err := enc.Encode(tRoot); err != nil {
-				errc <- err
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
 				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				tRoot := root.toTOMLNode(nil)
+				if err := enc.Encode(tRoot); err != nil {
+					errc <- err
+					return
+				}
 			}
 		}
 	}()
@@ -232,18 +269,28 @@ func (parent *Node) toTOMLNode(tParent *tomlNode) *tomlNode {
 
 type yamlSpreader struct{}
 
-func (*yamlSpreader) spread(w io.Writer, roots <-chan *Node) <-chan error {
+func (*yamlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
 		defer close(errc)
 
 		enc := yaml.NewEncoder(w)
-		for root := range roots {
-			yRoot := root.toYAMLNode(nil)
-			if err := enc.Encode(yRoot); err != nil {
-				errc <- err
+
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
 				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				yRoot := root.toYAMLNode(nil)
+				if err := enc.Encode(yRoot); err != nil {
+					errc <- err
+					return
+				}
 			}
 		}
 	}()
