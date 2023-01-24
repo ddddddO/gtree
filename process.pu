@@ -1,0 +1,32 @@
+@startuml
+
+skinparam {
+  backgroundColor DarkCyan
+
+  InterfaceBackgroundColor HotPink
+  ArrowColor DeepSkyBlue
+  QueueBorderColor blue
+  QueueBackgroundColor DeepSkyBlue
+}
+
+interface start
+queue "Root node" as root
+queue Grow as growing
+queue Spread as spreading 
+queue Mkdir as mkdiring
+queue Error as err
+interface end
+
+start -|> root
+root -|> growing
+growing --|> spreading
+growing --|> mkdiring
+
+root --> err
+growing --> err
+spreading --> err
+mkdiring --> err
+
+err --|> end
+
+@enduml

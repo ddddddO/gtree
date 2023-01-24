@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="340px" preserveAspectRatio="none" style="width:336px;height:340px;background:#008B8B;" version="1.1" viewBox="0 0 336 340" width="336px" zoomAndPan="magnify"><defs/><g><!--MD5=[c88a36799ca4d6dff2d7449eacfc25f7]
+entity start--><g id="elem_start"><ellipse cx="20" cy="20" fill="#FF69B4" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="28" x="6" y="51.5332">start</text></g><!--MD5=[eab4eb7d0ef44c19c3b4c8ba4c3c2b5b]
+entity root--><g id="elem_root"><path d="M69,6 L145,6 C150,6 150,19.8047 150,19.8047 C150,19.8047 150,33.6094 145,33.6094 L69,33.6094 C64,33.6094 64,19.8047 64,19.8047 C64,19.8047 64,6 69,6 " fill="#00BFFF" style="stroke:#0000FF;stroke-width:0.5;"/><path d="M145,6 C140,6 140,19.8047 140,19.8047 C140,33.6094 145,33.6094 145,33.6094 " fill="none" style="stroke:#0000FF;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="66" x="69" y="25.5332">Root node</text></g><!--MD5=[573ce76f959f339e2c41bfa712801176]
+entity growing--><g id="elem_growing"><path d="M228.5,6 L271.5,6 C276.5,6 276.5,19.8047 276.5,19.8047 C276.5,19.8047 276.5,33.6094 271.5,33.6094 L228.5,33.6094 C223.5,33.6094 223.5,19.8047 223.5,19.8047 C223.5,19.8047 223.5,6 228.5,6 " fill="#00BFFF" style="stroke:#0000FF;stroke-width:0.5;"/><path d="M271.5,6 C266.5,6 266.5,19.8047 266.5,19.8047 C266.5,33.6094 271.5,33.6094 271.5,33.6094 " fill="none" style="stroke:#0000FF;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="33" x="228.5" y="25.5332">Grow</text></g><!--MD5=[4d868659fa1e7f7dac5c39ee89a660c5]
+entity spreading--><g id="elem_spreading"><path d="M146,94 L202,94 C207,94 207,107.8047 207,107.8047 C207,107.8047 207,121.6094 202,121.6094 L146,121.6094 C141,121.6094 141,107.8047 141,107.8047 C141,107.8047 141,94 146,94 " fill="#00BFFF" style="stroke:#0000FF;stroke-width:0.5;"/><path d="M202,94 C197,94 197,107.8047 197,107.8047 C197,121.6094 202,121.6094 202,121.6094 " fill="none" style="stroke:#0000FF;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="46" x="146" y="113.5332">Spread</text></g><!--MD5=[a77e05b160874e18a9e67f9cd20f0198]
+entity mkdiring--><g id="elem_mkdiring"><path d="M247,94 L291,94 C296,94 296,107.8047 296,107.8047 C296,107.8047 296,121.6094 291,121.6094 L247,121.6094 C242,121.6094 242,107.8047 242,107.8047 C242,107.8047 242,94 247,94 " fill="#00BFFF" style="stroke:#0000FF;stroke-width:0.5;"/><path d="M291,94 C286,94 286,107.8047 286,107.8047 C286,121.6094 291,121.6094 291,121.6094 " fill="none" style="stroke:#0000FF;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34" x="247" y="113.5332">Mkdir</text></g><!--MD5=[92f5fbe86901331f4c0af9e1133daa86]
+entity err--><g id="elem_err"><path d="M200,182 L242,182 C247,182 247,195.8047 247,195.8047 C247,195.8047 247,209.6094 242,209.6094 L200,209.6094 C195,209.6094 195,195.8047 195,195.8047 C195,195.8047 195,182 200,182 " fill="#00BFFF" style="stroke:#0000FF;stroke-width:0.5;"/><path d="M242,182 C237,182 237,195.8047 237,195.8047 C237,209.6094 242,209.6094 242,209.6094 " fill="none" style="stroke:#0000FF;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="200" y="201.5332">Error</text></g><!--MD5=[22efa60cf2b4332bf8574b0c93969d71]
+entity end--><g id="elem_end"><ellipse cx="221" cy="300" fill="#FF69B4" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="24" x="209" y="331.5332">end</text></g><!--MD5=[20b58e9a0d14a795e9be0eb41bb3d66e]
+link start to root--><g id="link_start_root"><path d="M29.18,20 C34.05,20 38.92,20 43.8,20 " fill="none" id="start-to-root" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="none" points="43.83,13,63.83,20,43.83,27,43.83,13" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[a00b9192ab24530c164809a4676a92ab]
+link root to growing--><g id="link_root_growing"><path d="M150.01,20 C167.8,20 185.58,20 203.36,20 " fill="none" id="root-to-growing" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="none" points="203.44,13,223.44,20,203.44,27,203.44,13" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[e98c590ff3a24a35804605b138b3e799]
+link growing to spreading--><g id="link_growing_spreading"><path d="M238.46,34.06 C228.08,45.81 212.47,63.47 199.22,78.47 " fill="none" id="growing-to-spreading" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="none" points="204.14,83.46,185.65,93.82,193.65,74.19,204.14,83.46" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[cc35d5492574f30cf0a481633c88d7da]
+link growing to mkdiring--><g id="link_growing_mkdiring"><path d="M252.89,34.06 C255.23,44.67 258.64,60.1 261.72,74.04 " fill="none" id="growing-to-mkdiring" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="none" points="268.61,72.78,266.09,93.82,254.94,75.8,268.61,72.78" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[b63cf2843cd3db3b023c74d3d076cb5a]
+link root to err--><g id="link_root_err"><path d="M106.06,34.17 C105.24,54.53 106.19,94.2 123,122 C138.78,148.1 167.75,167.91 190.11,180.26 " fill="none" id="root-to-err" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="#00BFFF" points="194.78,182.78,188.7854,174.9656,190.3878,180.3908,184.9626,181.9931,194.78,182.78" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[9c253facac82cdf396f5b153c4f9eeac]
+link growing to err--><g id="link_growing_err"><path d="M268.44,34.19 C292.29,52.99 329,88.88 313,122 C300.33,148.22 273.16,167.91 251.61,180.19 " fill="none" id="growing-to-err" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="#00BFFF" points="247.1,182.7,256.91,181.8258,251.4708,180.2718,253.0248,174.8326,247.1,182.7" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[3a72e80fc1e25c1f234ee7df3f67c66b]
+link spreading to err--><g id="link_spreading_err"><path d="M181.14,122.06 C189.21,136.84 202.4,160.97 211.38,177.4 " fill="none" id="spreading-to-err" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="#00BFFF" points="213.79,181.82,212.9785,172.0046,211.3897,177.4338,205.9606,175.8451,213.79,181.82" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[0b1732b07b702b10f9c12d385ac2c401]
+link mkdiring to err--><g id="link_mkdiring_err"><path d="M261.71,122.06 C253.46,136.84 239.99,160.97 230.82,177.4 " fill="none" id="mkdiring-to-err" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="#00BFFF" points="228.36,181.82,236.2356,175.9061,230.7943,177.4526,229.2478,172.0112,228.36,181.82" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[2b18519454eea98071e106e43a365904]
+link err to end--><g id="link_err_end"><path d="M221,210.33 C221,225.61 221,251.09 221,270.82 " fill="none" id="err-to-end" style="stroke:#00BFFF;stroke-width:1.0;"/><polygon fill="none" points="228,270.97,221,290.97,214,270.97,228,270.97" style="stroke:#00BFFF;stroke-width:1.0;"/></g><!--MD5=[6cb55f9a4e8bf90179b28d44d6ef20f6]
+@startuml
+
+skinparam {
+  backgroundColor DarkCyan
+
+  InterfaceBackgroundColor HotPink
+  ArrowColor DeepSkyBlue
+  QueueBorderColor blue
+  QueueBackgroundColor DeepSkyBlue
+}
+
+interface start
+queue "Root node" as root
+queue Grow as growing
+queue Spread as spreading 
+queue Mkdir as mkdiring
+queue Error as err
+interface end
+
+start -|> root
+root -|> growing
+growing - -|> spreading
+growing - -|> mkdiring
+
+root - -> err
+growing - -> err
+spreading - -> err
+mkdiring - -> err
+
+err - -|> end
+
+@enduml
+
+PlantUML version 1.2022.7(Tue Aug 23 02:01:30 JST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: MS932
+Language: ja
+Country: JP
+--></g></svg>
