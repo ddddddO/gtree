@@ -22,11 +22,6 @@ func (dm *defaultMkdirer) mkdir(ctx context.Context, roots <-chan *Node) <-chan 
 	go func() {
 		defer close(errc)
 
-		if dm.isExistRoot(roots) {
-			errc <- ErrExistPath
-			return
-		}
-
 	BREAK:
 		for {
 			select {
@@ -35,6 +30,10 @@ func (dm *defaultMkdirer) mkdir(ctx context.Context, roots <-chan *Node) <-chan 
 			case root, ok := <-roots:
 				if !ok {
 					break BREAK
+				}
+				if dm.isExistRoot(root) {
+					errc <- ErrExistPath
+					return
 				}
 				if err := dm.makeDirectoriesAndFiles(root); err != nil {
 					errc <- err
@@ -47,11 +46,9 @@ func (dm *defaultMkdirer) mkdir(ctx context.Context, roots <-chan *Node) <-chan 
 	return errc
 }
 
-func (*defaultMkdirer) isExistRoot(roots <-chan *Node) bool {
-	for root := range roots {
-		if _, err := os.Stat(root.path()); !os.IsNotExist(err) {
-			return true
-		}
+func (*defaultMkdirer) isExistRoot(root *Node) bool {
+	if _, err := os.Stat(root.path()); !os.IsNotExist(err) {
+		return true
 	}
 	return false
 }
