@@ -22,7 +22,8 @@ Output tree🌳 or Make directories(files)📁 from Markdown or Programmatically
 (outputted by `cat testdata/sample0.md | gtree output --fs`)
 
 ## Process
-![](./process.svg)
+
+<image src="./process.svg" width=100%>
 
 ---
 
