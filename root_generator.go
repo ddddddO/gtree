@@ -25,8 +25,10 @@ func (rg *rootGenerator) generate(_ context.Context) (<-chan *Node, <-chan error
 	errc := make(chan error, 1)
 
 	go func() {
-		defer close(rootsc)
-		defer close(errc)
+		defer func() {
+			close(rootsc)
+			close(errc)
+		}()
 
 		var (
 			nodes *stack

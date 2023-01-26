@@ -32,8 +32,10 @@ func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *
 	errc := make(chan error, 1)
 
 	go func() {
-		defer close(nodes)
-		defer close(errc)
+		defer func() {
+			close(nodes)
+			close(errc)
+		}()
 
 	BREAK:
 		for {
@@ -145,8 +147,10 @@ func (*nopGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <
 	errc := make(chan error, 1)
 
 	go func() {
-		defer close(nodes)
-		defer close(errc)
+		defer func() {
+			close(nodes)
+			close(errc)
+		}()
 
 	BREAK:
 		for {

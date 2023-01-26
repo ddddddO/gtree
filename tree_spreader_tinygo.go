@@ -118,7 +118,11 @@ func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-cha
 				}
 				cs.fileCounter.reset()
 				cs.dirCounter.reset()
-				ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
+				ret += fmt.Sprintf(
+					"%s\n%s\n",
+					cs.spreadBranch(root),
+					cs.summary(),
+				)
 			}
 		}
 		if err := cs.write(w, ret); err != nil {
@@ -151,7 +155,7 @@ func (cs *colorizeSpreader) colorize(current *Node) {
 
 func (cs *colorizeSpreader) summary() string {
 	return fmt.Sprintf(
-		"%d directories, %d files\n",
+		"%d directories, %d files",
 		cs.dirCounter.current(),
 		cs.fileCounter.current(),
 	)
