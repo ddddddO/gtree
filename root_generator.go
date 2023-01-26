@@ -29,11 +29,9 @@ func (rg *rootGenerator) generate(_ context.Context) (<-chan *Node, <-chan error
 		defer close(errc)
 
 		var (
-			nodes          *stack
-			roots          = newStack()
-			isNotFirstRoot bool
+			nodes *stack
+			roots = newStack()
 		)
-
 		for rg.scanner.Scan() {
 			currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
 			if err != nil {
@@ -45,15 +43,15 @@ func (rg *rootGenerator) generate(_ context.Context) (<-chan *Node, <-chan error
 			}
 
 			if currentNode.isRoot() {
-				if isNotFirstRoot {
+				if roots.size() > 0 {
 					rootsc <- roots.pop()
 				}
+				roots.push(currentNode)
 
 				rg.counter.reset()
-				roots.push(currentNode)
+
 				nodes = newStack()
 				nodes.push(currentNode)
-				isNotFirstRoot = true
 				continue
 			}
 
@@ -64,7 +62,6 @@ func (rg *rootGenerator) generate(_ context.Context) (<-chan *Node, <-chan error
 
 			nodes.dfs(currentNode)
 		}
-
 		if err := rg.scanner.Err(); err != nil {
 			errc <- err
 			return
