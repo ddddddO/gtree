@@ -19,7 +19,7 @@ interface end
 
 start -|> root
 root -|> growing
-growing --|> spreading
+growing --|> spreading: "  OR"
 growing --|> mkdiring
 
 root --> err
