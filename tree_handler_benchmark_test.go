@@ -43,73 +43,7 @@ func BenchmarkOutput_fiveRoots(b *testing.B) {
 	}
 }
 
-var fiveRoots = strings.TrimPrefix(`
-- a1
-	- b
-		- c
-			- d
-		- e
-			- f
-			- g
-				- h
-	- i
-		- j
-			- k
-	- l
-		- m
-- a2
-	- b
-		- c
-			- d
-		- e
-			- f
-			- g
-				- h
-	- i
-		- j
-			- k
-	- l
-		- m
-- a3
-	- b
-		- c
-			- d
-		- e
-			- f
-			- g
-				- h
-	- i
-		- j
-			- k
-	- l
-		- m
-- a4
-	- b
-		- c
-			- d
-		- e
-			- f
-			- g
-				- h
-	- i
-		- j
-			- k
-	- l
-		- m
-- a5
-	- b
-		- c
-			- d
-		- e
-			- f
-			- g
-				- h
-	- i
-		- j
-			- k
-	- l
-		- m
-`, "\n")
+var fiveRoots = strings.Repeat(singleRoot, 5)
 
 func BenchmarkOutput_hundredRoots(b *testing.B) {
 	for i := 0; i < b.N; i++ {
