@@ -124,18 +124,11 @@ func preparePrimate() *gtree.Node {
 
 ```
 
-- You can also output JSON.
+- You can also output JSON 👉 [ref](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L61)
 
-[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L61)
+- You can also output YAML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L198)
 
-- You can also output YAML.
-
-[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L198)
-
-- You can also output TOML.
-
-[link](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L262)
-
+- You can also output TOML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L262)
 
 ---
 
@@ -250,9 +243,8 @@ func main() {
 
 ```
 
-- Convert `go list -deps ./...` to tree. (inspired by https://github.com/nikolaydubina/go-recipes#readme)
-
-[link](https://github.com/ddddddO/gtree/blob/master/sample/go-list_pipe_programmable-gtree/main.go)
+- Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/sample/go-list_pipe_programmable-gtree/main.go)
+  - inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
 
 ## *MkdirProgrammably* func
 
@@ -324,7 +316,7 @@ import (
 
 func main() {
 	gtreeDir := gtree.NewRoot("gtree")
-	gtreeDir.Add("cmd").Add("main.go")
+	gtreeDir.Add("cmd").Add("gtree").Add("main.go")
 	gtreeDir.Add("Makefile")
 	testdataDir := gtreeDir.Add("testdata")
 	testdataDir.Add("sample1.md")

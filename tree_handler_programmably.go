@@ -45,11 +45,9 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 		defer close(rootStream)
 		rootStream <- root
 	}()
-
 	tree := newTree(conf)
-	growingStream, errcg := tree.grow(ctx, rootStream)
-	errcs := tree.spread(ctx, w, growingStream)
-
+	growStream, errcg := tree.grow(ctx, rootStream)
+	errcs := tree.spread(ctx, w, growStream)
 	return handlePipelineErr(errcg, errcs)
 }
 
@@ -83,18 +81,17 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 		defer close(rootStream)
 		rootStream <- root
 	}()
-
 	tree := newTree(conf)
 	tree.enableValidation()
 	// when detect invalid node name, return error. process end.
-	growingStream, errcg := tree.grow(ctx, rootStream)
+	growStream, errcg := tree.grow(ctx, rootStream)
 	if conf.dryrun {
 		// when detected no invalid node name, output tree.
-		errcs := tree.spread(ctx, color.Output, growingStream)
+		errcs := tree.spread(ctx, color.Output, growStream)
 		return handlePipelineErr(errcg, errcs)
 	}
 	// when detected no invalid node name, no output tree.
-	errcm := tree.mkdir(ctx, growingStream)
+	errcm := tree.mkdir(ctx, growStream)
 	return handlePipelineErr(errcg, errcm)
 }
 

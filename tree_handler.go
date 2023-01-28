@@ -17,9 +17,8 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 
 	tree := newTree(conf)
 	rootStream, errcr := newRootGenerator(r, conf.space).generate(ctx)
-	growingStream, errcg := tree.grow(ctx, rootStream)
-	errcs := tree.spread(ctx, w, growingStream)
-
+	growStream, errcg := tree.grow(ctx, rootStream)
+	errcs := tree.spread(ctx, w, growStream)
 	return handlePipelineErr(errcr, errcg, errcs)
 }
 
@@ -35,8 +34,7 @@ func Mkdir(r io.Reader, options ...Option) error {
 
 	tree := newTree(conf)
 	rootStream, errcr := newRootGenerator(r, conf.space).generate(ctx)
-	growingStream, errcg := tree.grow(ctx, rootStream)
-	errcm := tree.mkdir(ctx, growingStream)
-
+	growStream, errcg := tree.grow(ctx, rootStream)
+	errcm := tree.mkdir(ctx, growStream)
 	return handlePipelineErr(errcr, errcg, errcm)
 }
