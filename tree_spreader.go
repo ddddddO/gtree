@@ -57,7 +57,6 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 	go func() {
 		defer close(errc)
 
-		branches := ""
 	BREAK:
 		for {
 			select {
@@ -67,12 +66,11 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 				if !ok {
 					break BREAK
 				}
-				branches += ds.spreadBranch(root)
+				if err := ds.write(w, ds.spreadBranch(root)); err != nil {
+					errc <- err
+					return
+				}
 			}
-		}
-		if err := ds.write(w, branches); err != nil {
-			errc <- err
-			return
 		}
 	}()
 
