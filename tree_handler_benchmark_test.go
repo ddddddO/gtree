@@ -122,3 +122,27 @@ func BenchmarkOutput_hundredRoots(b *testing.B) {
 }
 
 var hundredRoots = strings.Repeat(singleRoot, 100)
+
+func BenchmarkOutput_thousandRoots(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		r := strings.NewReader(thousandRoots)
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var thousandRoots = strings.Repeat(singleRoot, 1000)
+
+func BenchmarkOutput_3000Roots(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		r := strings.NewReader(threeThousandRoots)
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var threeThousandRoots = strings.Repeat(singleRoot, 3000)
