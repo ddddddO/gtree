@@ -51,11 +51,12 @@ const (
 type defaultSpreader struct{}
 
 func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
-	branches := ""
 	for _, root := range roots {
-		branches += ds.spreadBranch(root)
+		if err := ds.write(w, ds.spreadBranch(root)); err != nil {
+			return err
+		}
 	}
-	return ds.write(w, branches)
+	return nil
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {
@@ -86,13 +87,15 @@ type colorizeSpreader struct {
 }
 
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
-	ret := ""
 	for _, root := range roots {
 		cs.fileCounter.reset()
 		cs.dirCounter.reset()
-		ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
+
+		if err := cs.write(w, fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())); err != nil {
+			return err
+		}
 	}
-	return cs.write(w, ret)
+	return nil
 }
 
 func (cs *colorizeSpreader) spreadBranch(current *Node) string {
