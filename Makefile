@@ -13,6 +13,9 @@ test: sweep
 	go test . -race -v -count=1
 	go test ./markdown/... -race -v -count=1
 
+bench: sweep
+	go test -benchmem -bench Benchmark tree_handler_benchmark_test.go
+
 cyclo: sweep
 	gocyclo .
 
