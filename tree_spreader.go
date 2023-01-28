@@ -110,7 +110,6 @@ func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-cha
 	go func() {
 		defer close(errc)
 
-		ret := ""
 	BREAK:
 		for {
 			select {
@@ -122,16 +121,17 @@ func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-cha
 				}
 				cs.fileCounter.reset()
 				cs.dirCounter.reset()
-				ret += fmt.Sprintf(
+
+				ret := fmt.Sprintf(
 					"%s\n%s\n",
 					cs.spreadBranch(root),
 					cs.summary(),
 				)
+				if err := cs.write(w, ret); err != nil {
+					errc <- err
+					return
+				}
 			}
-		}
-		if err := cs.write(w, ret); err != nil {
-			errc <- err
-			return
 		}
 	}()
 
