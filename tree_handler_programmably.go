@@ -1,4 +1,3 @@
-// Package gtree provides tree-structured output.
 package gtree
 
 import (
