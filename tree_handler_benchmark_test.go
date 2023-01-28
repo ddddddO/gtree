@@ -110,3 +110,15 @@ var fiveRoots = strings.TrimPrefix(`
 	- l
 		- m
 `, "\n")
+
+func BenchmarkOutput_hundredRoots(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		r := strings.NewReader(hundredRoots)
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var hundredRoots = strings.Repeat(singleRoot, 100)
