@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://github.com/ddddddO/gtree/blob/master/LICENSE) [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#uncategorized)<br>
 [![ci](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml) [![codecov](https://codecov.io/gh/ddddddO/gtree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gtree) [![Go Report Card](https://goreportcard.com/badge/github.com/ddddddO/gtree)](https://goreportcard.com/report/github.com/ddddddO/gtree)
 
-Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provide CLI, Go Packages and Web.
+Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provide CLI, Go library and Web.
 
 ```
 # Description
@@ -16,10 +16,17 @@ Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provi
 │   ├── It is possible to dry run.
 │   └── You can use `-e` flag to make specified extensions as file.
 ├── Output a markdown template that can be used with either `output` subcommand or `mkdir` subcommand.
-└── Provide CLI, Go Packages and Web.
+└── Provide CLI, Go library and Web.
 ```
 
-(outputted by `cat testdata/sample0.md | gtree output --fs`)
+<details>
+<summary>This description is output by</summary>
+
+```console
+$ cat testdata/sample0.md | gtree output --fs
+```
+
+</details>
 
 ## Process
 
