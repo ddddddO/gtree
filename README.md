@@ -27,7 +27,7 @@ Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provi
 
 ## Performance
 - Comparison before and after software architecture was changed.
-- In the case of 1Root, before architecture is faster in execution😅
+- In the case of 1Root, previous architecture is faster in execution😅
 - However, for multiple Roots, execution speed tends to be faster💪!
 
 <image src="./performance.svg" width=100%>
