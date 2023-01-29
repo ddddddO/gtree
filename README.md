@@ -26,6 +26,9 @@ Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provi
 <image src="./process.svg" width=100%>
 
 ## Performance
+
+> **Warning** : Depends on the environment.
+
 - Comparison before and after software architecture was changed.
 - In the case of 1Root, previous architecture is faster in execution😅
 - However, for multiple Roots, execution speed tends to be faster💪!
