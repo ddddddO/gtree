@@ -25,6 +25,46 @@ Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provi
 
 <image src="./process.svg" width=100%>
 
+## Performance
+- Comparison before and after software architecture was changed.
+- The results haven't changed performance much😅
+  - Maybe performance will be better from 1000 Roots or more...
+
+<details>
+<summary>benchmark</summary>
+
+#### Before pipelining
+```console
+$ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
+goos: linux
+goarch: amd64
+cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
+BenchmarkOutput_singleRoot-4                 100             37692 ns/op           14400 B/op        185 allocs/op
+BenchmarkOutput_fiveRoots-4                  100            215085 ns/op           40641 B/op        868 allocs/op
+BenchmarkOutput_hundredRoots-4               100           3045549 ns/op         1763384 B/op      17022 allocs/op
+BenchmarkOutput_thousandRoots-4              100          88442571 ns/op        121420247 B/op    170027 allocs/op
+BenchmarkOutput_3000Roots-4                  100         560771167 ns/op        1037088771 B/op   510030 allocs/op
+PASS
+ok      command-line-arguments  66.093s
+```
+
+#### After pipelining
+```console
+$ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
+goos: linux
+goarch: amd64
+cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
+BenchmarkOutput_singleRoot-4                 100             44271 ns/op           15819 B/op        210 allocs/op
+BenchmarkOutput_fiveRoots-4                  100            273017 ns/op           42195 B/op        894 allocs/op
+BenchmarkOutput_hundredRoots-4               100           3306639 ns/op         1767422 B/op      17139 allocs/op
+BenchmarkOutput_thousandRoots-4              100          80203898 ns/op        121446042 B/op    171056 allocs/op
+BenchmarkOutput_3000Roots-4                  100         556853067 ns/op        1037163277 B/op   513197 allocs/op
+PASS
+ok      command-line-arguments  64.843s
+```
+
+</details>
+
 ---
 
 ## Web
