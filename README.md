@@ -27,8 +27,10 @@ Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provi
 
 ## Performance
 - Comparison before and after software architecture was changed.
-- The results haven't changed performance much😅
-  - Maybe performance will be better from 1000 Roots or more...
+- In the case of 1Root, before architecture is faster in execution😅
+- However, for multiple Roots, execution speed tends to be faster💪!
+
+<image src="./performance.svg" width=100%>
 
 <details>
 <summary>benchmark</summary>
@@ -39,13 +41,13 @@ $ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test
 goos: linux
 goarch: amd64
 cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
-BenchmarkOutput_singleRoot-4                 100             37692 ns/op           14400 B/op        185 allocs/op
-BenchmarkOutput_fiveRoots-4                  100            215085 ns/op           40641 B/op        868 allocs/op
-BenchmarkOutput_hundredRoots-4               100           3045549 ns/op         1763384 B/op      17022 allocs/op
-BenchmarkOutput_thousandRoots-4              100          88442571 ns/op        121420247 B/op    170027 allocs/op
-BenchmarkOutput_3000Roots-4                  100         560771167 ns/op        1037088771 B/op   510030 allocs/op
+BenchmarkOutput_singleRoot-4                 100             44623 ns/op           14400 B/op        185 allocs/op
+BenchmarkOutput_fiveRoots-4                  100            345759 ns/op           54864 B/op        871 allocs/op
+BenchmarkOutput_hundredRoots-4               100           4692810 ns/op         1068359 B/op      17035 allocs/op
+BenchmarkOutput_thousandRoots-4              100          42120138 ns/op        10711144 B/op     170047 allocs/op
+BenchmarkOutput_3000Roots-4                  100         175037278 ns/op        31821428 B/op     510054 allocs/op
 PASS
-ok      command-line-arguments  66.093s
+ok      command-line-arguments  22.452s
 ```
 
 #### After pipelining
@@ -54,13 +56,13 @@ $ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test
 goos: linux
 goarch: amd64
 cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
-BenchmarkOutput_singleRoot-4                 100             44271 ns/op           15819 B/op        210 allocs/op
-BenchmarkOutput_fiveRoots-4                  100            273017 ns/op           42195 B/op        894 allocs/op
-BenchmarkOutput_hundredRoots-4               100           3306639 ns/op         1767422 B/op      17139 allocs/op
-BenchmarkOutput_thousandRoots-4              100          80203898 ns/op        121446042 B/op    171056 allocs/op
-BenchmarkOutput_3000Roots-4                  100         556853067 ns/op        1037163277 B/op   513197 allocs/op
+BenchmarkOutput_singleRoot-4                 100            121868 ns/op           15913 B/op        210 allocs/op
+BenchmarkOutput_fiveRoots-4                  100            289397 ns/op           56264 B/op        897 allocs/op
+BenchmarkOutput_hundredRoots-4               100           4368897 ns/op         1072523 B/op      17152 allocs/op
+BenchmarkOutput_thousandRoots-4              100          34927826 ns/op        10735297 B/op     171061 allocs/op
+BenchmarkOutput_3000Roots-4                  100          75613004 ns/op        31879670 B/op     513066 allocs/op
 PASS
-ok      command-line-arguments  64.843s
+ok      command-line-arguments  11.693s
 ```
 
 </details>
