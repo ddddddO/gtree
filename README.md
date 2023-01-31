@@ -34,7 +34,7 @@ $ cat testdata/sample0.md | gtree output --fs
 
 ## Performance
 
-> **Warning**
+> **Warning**<br>
 > Depends on the environment.
 
 - Comparison before and after software architecture was changed.
