@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.19-alpine AS builder
+FROM golang:1.20-alpine AS builder
 WORKDIR /github.com/ddddddO/gtree
 COPY go.* *.go ./
 WORKDIR /github.com/ddddddO/gtree/markdown
