@@ -28,8 +28,6 @@ func newSpreader(encode encode) spreader {
 
 func newColorizeSpreader(fileExtensions []string) spreader {
 	return &colorizeSpreader{
-		defaultSpreader: &defaultSpreader{},
-
 		fileConsiderer: newFileConsiderer(fileExtensions),
 		fileColor:      color.New(color.Bold, color.FgHiCyan),
 		fileCounter:    newCounter(),
@@ -51,12 +49,13 @@ const (
 type defaultSpreader struct{}
 
 func (ds *defaultSpreader) spread(w io.Writer, roots []*Node) error {
+	bw := bufio.NewWriter(w)
 	for _, root := range roots {
-		if err := ds.write(w, ds.spreadBranch(root)); err != nil {
+		if _, err := bw.WriteString(ds.spreadBranch(root)); err != nil {
 			return err
 		}
 	}
-	return nil
+	return bw.Flush()
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {
@@ -67,17 +66,7 @@ func (*defaultSpreader) spreadBranch(current *Node) string {
 	return ret
 }
 
-func (*defaultSpreader) write(w io.Writer, in string) error {
-	buf := bufio.NewWriter(w)
-	if _, err := buf.WriteString(in); err != nil {
-		return err
-	}
-	return buf.Flush()
-}
-
 type colorizeSpreader struct {
-	*defaultSpreader // NOTE: xxx
-
 	fileConsiderer *fileConsiderer
 	fileColor      *color.Color
 	fileCounter    *counter
@@ -87,15 +76,16 @@ type colorizeSpreader struct {
 }
 
 func (cs *colorizeSpreader) spread(w io.Writer, roots []*Node) error {
+	bw := bufio.NewWriter(w)
 	for _, root := range roots {
 		cs.fileCounter.reset()
 		cs.dirCounter.reset()
 
-		if err := cs.write(w, fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())); err != nil {
+		if _, err := bw.WriteString(fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())); err != nil {
 			return err
 		}
 	}
-	return nil
+	return bw.Flush()
 }
 
 func (cs *colorizeSpreader) spreadBranch(current *Node) string {
