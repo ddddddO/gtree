@@ -29,8 +29,6 @@ func newSpreader(encode encode) spreader {
 
 func newColorizeSpreader(fileExtensions []string) spreader {
 	return &colorizeSpreader{
-		defaultSpreader: &defaultSpreader{},
-
 		fileConsiderer: newFileConsiderer(fileExtensions),
 		fileColor:      color.New(color.Bold, color.FgHiCyan),
 		fileCounter:    newCounter(),
@@ -57,6 +55,7 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 	go func() {
 		defer close(errc)
 
+		bw := bufio.NewWriter(w)
 	BREAK:
 		for {
 			select {
@@ -66,11 +65,15 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 				if !ok {
 					break BREAK
 				}
-				if err := ds.write(w, ds.spreadBranch(root)); err != nil {
+				if _, err := bw.WriteString(ds.spreadBranch(root)); err != nil {
 					errc <- err
 					return
 				}
 			}
+		}
+		if err := bw.Flush(); err != nil {
+			errc <- err
+			return
 		}
 	}()
 
@@ -85,17 +88,7 @@ func (*defaultSpreader) spreadBranch(current *Node) string {
 	return ret
 }
 
-func (*defaultSpreader) write(w io.Writer, in string) error {
-	buf := bufio.NewWriter(w)
-	if _, err := buf.WriteString(in); err != nil {
-		return err
-	}
-	return buf.Flush()
-}
-
 type colorizeSpreader struct {
-	*defaultSpreader // NOTE: xxx
-
 	fileConsiderer *fileConsiderer
 	fileColor      *color.Color
 	fileCounter    *counter
@@ -110,6 +103,7 @@ func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-cha
 	go func() {
 		defer close(errc)
 
+		bw := bufio.NewWriter(w)
 	BREAK:
 		for {
 			select {
@@ -122,15 +116,19 @@ func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-cha
 				cs.fileCounter.reset()
 				cs.dirCounter.reset()
 
-				ret := fmt.Sprintf(
-					"%s\n%s\n",
-					cs.spreadBranch(root),
-					cs.summary(),
-				)
-				if err := cs.write(w, ret); err != nil {
+				if _, err := bw.WriteString(
+					fmt.Sprintf(
+						"%s\n%s\n",
+						cs.spreadBranch(root),
+						cs.summary()),
+				); err != nil {
 					errc <- err
 					return
 				}
+			}
+			if err := bw.Flush(); err != nil {
+				errc <- err
+				return
 			}
 		}
 	}()
@@ -183,8 +181,7 @@ func (*jsonSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node
 				if !ok {
 					break BREAK
 				}
-				jRoot := root.toJSONNode(nil)
-				if err := enc.Encode(jRoot); err != nil {
+				if err := enc.Encode(root.toJSONNode(nil)); err != nil {
 					errc <- err
 					return
 				}
@@ -235,8 +232,7 @@ func (*tomlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node
 				if !ok {
 					break BREAK
 				}
-				tRoot := root.toTOMLNode(nil)
-				if err := enc.Encode(tRoot); err != nil {
+				if err := enc.Encode(root.toTOMLNode(nil)); err != nil {
 					errc <- err
 					return
 				}
@@ -287,8 +283,7 @@ func (*yamlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node
 				if !ok {
 					break BREAK
 				}
-				yRoot := root.toYAMLNode(nil)
-				if err := enc.Encode(yRoot); err != nil {
+				if err := enc.Encode(root.toYAMLNode(nil)); err != nil {
 					errc <- err
 					return
 				}
