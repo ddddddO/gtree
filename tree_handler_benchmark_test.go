@@ -33,17 +33,29 @@ var singleRoot = strings.TrimPrefix(`
 		- m
 `, "\n")
 
-func BenchmarkOutput_fiveRoots(b *testing.B) {
+func BenchmarkOutput_tenRoots(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		w := &strings.Builder{}
-		r := strings.NewReader(fiveRoots)
+		r := strings.NewReader(tenRoots)
 		if err := gtree.Output(w, r); err != nil {
 			b.Fatal(err)
 		}
 	}
 }
 
-var fiveRoots = strings.Repeat(singleRoot, 5)
+var tenRoots = strings.Repeat(singleRoot, 10)
+
+func BenchmarkOutput_fiftyRoots(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		r := strings.NewReader(fiftyRoots)
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var fiftyRoots = strings.Repeat(singleRoot, 50)
 
 func BenchmarkOutput_hundredRoots(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -56,6 +68,18 @@ func BenchmarkOutput_hundredRoots(b *testing.B) {
 }
 
 var hundredRoots = strings.Repeat(singleRoot, 100)
+
+func BenchmarkOutput_fiveHundredsRoots(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		r := strings.NewReader(fiveHundredsRoots)
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var fiveHundredsRoots = strings.Repeat(singleRoot, 500)
 
 func BenchmarkOutput_thousandRoots(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -80,3 +104,27 @@ func BenchmarkOutput_3000Roots(b *testing.B) {
 }
 
 var threeThousandRoots = strings.Repeat(singleRoot, 3000)
+
+func BenchmarkOutput_6000Roots(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		r := strings.NewReader(sixThousandRoots)
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var sixThousandRoots = strings.Repeat(singleRoot, 6000)
+
+func BenchmarkOutput_10000Roots(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		r := strings.NewReader(tenThousandRoots)
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+var tenThousandRoots = strings.Repeat(singleRoot, 10000)
