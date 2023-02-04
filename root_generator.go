@@ -3,74 +3,85 @@ package gtree
 import (
 	"bufio"
 	"context"
-	"io"
+	"strings"
+	"sync"
 )
 
 type rootGenerator struct {
-	counter       *counter
-	scanner       *bufio.Scanner
 	nodeGenerator *nodeGenerator
 }
 
-func newRootGenerator(r io.Reader, st spaceType) *rootGenerator {
+func newRootGenerator(st spaceType) *rootGenerator {
 	return &rootGenerator{
-		counter:       newCounter(),
-		scanner:       bufio.NewScanner(r),
 		nodeGenerator: newNodeGenerator(st),
 	}
 }
 
-func (rg *rootGenerator) generate(_ context.Context) (<-chan *Node, <-chan error) {
-	rootsc := make(chan *Node)
+func (rg *rootGenerator) generate(ctx context.Context, lines <-chan string) (<-chan *Node, <-chan error) {
+	rootc := make(chan *Node)
 	errc := make(chan error, 1)
 
 	go func() {
 		defer func() {
-			close(rootsc)
+			close(rootc)
 			close(errc)
 		}()
 
-		var (
-			nodes *stack
-			roots = newStack()
-		)
-		for rg.scanner.Scan() {
-			currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
-			if err != nil {
-				errc <- err
-				return
-			}
-			if currentNode == nil {
-				continue
-			}
+		wg := &sync.WaitGroup{}
+		for i := 0; i < 10; i++ {
+			wg.Add(1)
 
-			if currentNode.isRoot() {
-				if roots.size() > 0 {
-					rootsc <- roots.pop()
+			go func(wg *sync.WaitGroup, rootc chan<- *Node, errc chan<- error) {
+				defer wg.Done()
+				for {
+					select {
+					case <-ctx.Done():
+						return
+					case ret, ok := <-lines:
+						if !ok {
+							return
+						}
+
+						var (
+							sc      = bufio.NewScanner(strings.NewReader(ret))
+							root    *Node
+							nodes   = newStack()
+							counter = newCounter()
+						)
+
+						for sc.Scan() {
+							currentNode, err := rg.nodeGenerator.generate(sc.Text(), counter.next())
+							if err != nil {
+								errc <- err
+								return
+							}
+							if currentNode == nil {
+								continue
+							}
+
+							if currentNode.isRoot() {
+								root = currentNode
+								nodes.push(currentNode)
+								continue
+							}
+
+							if nodes == nil {
+								errc <- errNilStack
+								return
+							}
+
+							nodes.dfs(currentNode)
+						}
+
+						errc <- sc.Err() // handlePipelineErrでキャッチ後、ctx.Cancel()されるため、Doneする
+						rootc <- root    // rootを送出
+					}
 				}
-				roots.push(currentNode)
-
-				rg.counter.reset()
-
-				nodes = newStack()
-				nodes.push(currentNode)
-				continue
-			}
-
-			if nodes == nil {
-				errc <- errNilStack
-				return
-			}
-
-			nodes.dfs(currentNode)
-		}
-		if err := rg.scanner.Err(); err != nil {
-			errc <- err
-			return
+			}(wg, rootc, errc)
 		}
 
-		rootsc <- roots.pop() // 最後のrootを送出
+		wg.Wait()
 	}()
 
-	return rootsc, errc
+	return rootc, errc
 }

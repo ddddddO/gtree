@@ -1,6 +1,9 @@
 package gtree
 
-import "context"
+import (
+	"context"
+	"sync"
+)
 
 func newGrower(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
@@ -37,22 +40,30 @@ func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *
 			close(errc)
 		}()
 
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
+		wg := &sync.WaitGroup{}
+		for i := 0; i < 10; i++ {
+			wg.Add(1)
+
+			go func(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, nodes chan<- *Node, errc chan<- error) {
+				defer wg.Done()
+				for {
+					select {
+					case <-ctx.Done():
+						return
+					case root, ok := <-roots:
+						if !ok {
+							return
+						}
+						if err := dg.assemble(root); err != nil {
+							errc <- err
+							return
+						}
+						nodes <- root
+					}
 				}
-				if err := dg.assemble(root); err != nil {
-					errc <- err
-					return
-				}
-				nodes <- root
-			}
+			}(ctx, wg, roots, nodes, errc)
 		}
+		wg.Wait()
 	}()
 
 	return nodes, errc

@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"sync"
 
 	"github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
@@ -53,28 +54,35 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 	errc := make(chan error, 1)
 
 	go func() {
-		defer close(errc)
+		defer func() {
+			close(errc)
+		}()
 
 		bw := bufio.NewWriter(w)
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
+		wg := &sync.WaitGroup{}
+		for i := 0; i < 10; i++ {
+			wg.Add(1)
+
+			go func(wg *sync.WaitGroup, bw *bufio.Writer, roots <-chan *Node, errc chan<- error) {
+				defer wg.Done()
+				for {
+					select {
+					case <-ctx.Done():
+						return
+					case root, ok := <-roots:
+						if !ok {
+							return
+						}
+						_, err := bw.WriteString(ds.spreadBranch(root))
+						errc <- err
+					}
 				}
-				if _, err := bw.WriteString(ds.spreadBranch(root)); err != nil {
-					errc <- err
-					return
-				}
-			}
+			}(wg, bw, roots, errc)
+
+			wg.Wait()
 		}
-		if err := bw.Flush(); err != nil {
-			errc <- err
-			return
-		}
+
+		errc <- bw.Flush()
 	}()
 
 	return errc
