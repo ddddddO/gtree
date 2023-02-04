@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"io"
+	"runtime/trace"
 )
 
 type rootGenerator struct {
@@ -20,12 +21,13 @@ func newRootGenerator(r io.Reader, st spaceType) *rootGenerator {
 	}
 }
 
-func (rg *rootGenerator) generate(_ context.Context) (<-chan *Node, <-chan error) {
+func (rg *rootGenerator) generate(ctx context.Context) (<-chan *Node, <-chan error) {
 	rootsc := make(chan *Node)
 	errc := make(chan error, 1)
 
 	go func() {
 		defer func() {
+			trace.StartRegion(ctx, "root generate").End()
 			close(rootsc)
 			close(errc)
 		}()

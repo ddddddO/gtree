@@ -1,6 +1,9 @@
 package gtree
 
-import "context"
+import (
+	"context"
+	"runtime/trace"
+)
 
 func newGrower(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
@@ -33,6 +36,7 @@ func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *
 
 	go func() {
 		defer func() {
+			trace.StartRegion(ctx, "grow").End()
 			close(nodes)
 			close(errc)
 		}()

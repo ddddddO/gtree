@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"runtime/trace"
 
 	"github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
@@ -53,7 +54,10 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 	errc := make(chan error, 1)
 
 	go func() {
-		defer close(errc)
+		defer func() {
+			trace.StartRegion(ctx, "spread").End()
+			close(errc)
+		}()
 
 		bw := bufio.NewWriter(w)
 	BREAK:

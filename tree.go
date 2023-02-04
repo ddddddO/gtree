@@ -3,6 +3,7 @@ package gtree
 import (
 	"context"
 	"io"
+	"runtime/trace"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -79,7 +80,8 @@ func (t *tree) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
 	return t.mkdirer.mkdir(ctx, roots)
 }
 
-func handlePipelineErr(echs ...<-chan error) error {
+func handlePipelineErr(ctx context.Context, echs ...<-chan error) error {
+	defer trace.StartRegion(ctx, "handle error").End()
 	eg, _ := errgroup.WithContext(context.TODO())
 	for i := range echs {
 		i := i
