@@ -16,10 +16,11 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 	defer cancel()
 
 	tree := newTree(conf)
-	rootStream, errcr := newRootGenerator(r, conf.space).generate(ctx)
+	splitStream, errcsp := split(ctx, r)
+	rootStream, errcr := newRootGenerator(conf.space).generate(ctx, splitStream)
 	growStream, errcg := tree.grow(ctx, rootStream)
 	errcs := tree.spread(ctx, w, growStream)
-	return handlePipelineErr(errcr, errcg, errcs)
+	return handlePipelineErr(errcsp, errcr, errcg, errcs)
 }
 
 // Mkdir makes directories.
@@ -33,8 +34,9 @@ func Mkdir(r io.Reader, options ...Option) error {
 	defer cancel()
 
 	tree := newTree(conf)
-	rootStream, errcr := newRootGenerator(r, conf.space).generate(ctx)
+	splitStream, errcsp := split(ctx, r)
+	rootStream, errcr := newRootGenerator(conf.space).generate(ctx, splitStream)
 	growStream, errcg := tree.grow(ctx, rootStream)
 	errcm := tree.mkdir(ctx, growStream)
-	return handlePipelineErr(errcr, errcg, errcm)
+	return handlePipelineErr(errcsp, errcr, errcg, errcm)
 }

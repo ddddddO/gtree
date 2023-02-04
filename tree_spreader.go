@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"sync"
 
 	"github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
@@ -47,37 +48,53 @@ const (
 	encodeTOML
 )
 
-type defaultSpreader struct{}
+type defaultSpreader struct {
+	mu sync.Mutex
+}
+
+const workerSpreadNum = 10
 
 func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
-		defer close(errc)
+		defer func() {
+			close(errc)
+		}()
 
 		bw := bufio.NewWriter(w)
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
-				}
-				if _, err := bw.WriteString(ds.spreadBranch(root)); err != nil {
-					errc <- err
-					return
-				}
-			}
+		wg := &sync.WaitGroup{}
+		for i := 0; i < workerSpreadNum; i++ {
+			wg.Add(1)
+			go ds.worker(ctx, wg, bw, roots, errc)
 		}
-		if err := bw.Flush(); err != nil {
-			errc <- err
-			return
-		}
+		wg.Wait()
+
+		errc <- bw.Flush()
 	}()
 
 	return errc
+}
+
+func (ds *defaultSpreader) worker(ctx context.Context, wg *sync.WaitGroup, bw *bufio.Writer, roots <-chan *Node, errc chan<- error) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case root, ok := <-roots:
+			if !ok {
+				return
+			}
+			ret := ds.spreadBranch(root)
+
+			ds.mu.Lock()
+			_, err := bw.WriteString(ret)
+			ds.mu.Unlock()
+
+			errc <- err
+		}
+	}
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {

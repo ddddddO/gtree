@@ -10,23 +10,26 @@ skinparam {
 }
 
 interface start
+queue "Split input" as split
 queue "Root node" as root
 queue Grow as growing
 queue Spread as spreading 
 queue Mkdir as mkdiring
-queue Error as err
+queue Error as err #text:red
 interface end
 
-start -|> root
+start -|> split
+split --|> root
 root -|> growing
 growing --|> spreading: "  OR"
 growing --|> mkdiring
 
-root --> err
-growing --> err
-spreading --> err
-mkdiring --> err
+split ..> err
+root ..> err
+growing ..> err
+spreading ..> err
+mkdiring ..> err
 
-err --|> end
+err -|> end
 
 @enduml
