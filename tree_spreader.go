@@ -48,7 +48,11 @@ const (
 	encodeTOML
 )
 
-type defaultSpreader struct{}
+type defaultSpreader struct {
+	mu sync.Mutex
+}
+
+const workerSpreadNum = 10
 
 func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
@@ -60,32 +64,37 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 
 		bw := bufio.NewWriter(w)
 		wg := &sync.WaitGroup{}
-		for i := 0; i < 10; i++ {
+		for i := 0; i < workerSpreadNum; i++ {
 			wg.Add(1)
-
-			go func(wg *sync.WaitGroup, bw *bufio.Writer, roots <-chan *Node, errc chan<- error) {
-				defer wg.Done()
-				for {
-					select {
-					case <-ctx.Done():
-						return
-					case root, ok := <-roots:
-						if !ok {
-							return
-						}
-						_, err := bw.WriteString(ds.spreadBranch(root))
-						errc <- err
-					}
-				}
-			}(wg, bw, roots, errc)
-
-			wg.Wait()
+			go ds.worker(ctx, wg, bw, roots, errc)
 		}
+		wg.Wait()
 
 		errc <- bw.Flush()
 	}()
 
 	return errc
+}
+
+func (ds *defaultSpreader) worker(ctx context.Context, wg *sync.WaitGroup, bw *bufio.Writer, roots <-chan *Node, errc chan<- error) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case root, ok := <-roots:
+			if !ok {
+				return
+			}
+			ret := ds.spreadBranch(root)
+
+			ds.mu.Lock()
+			_, err := bw.WriteString(ret)
+			ds.mu.Unlock()
+
+			errc <- err
+		}
+	}
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {

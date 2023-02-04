@@ -30,6 +30,8 @@ type defaultGrower struct {
 	enabledValidation     bool
 }
 
+const workerGrowNum = 10
+
 func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
 	nodes := make(chan *Node)
 	errc := make(chan error, 1)
@@ -41,32 +43,33 @@ func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *
 		}()
 
 		wg := &sync.WaitGroup{}
-		for i := 0; i < 10; i++ {
+		for i := 0; i < workerGrowNum; i++ {
 			wg.Add(1)
-
-			go func(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, nodes chan<- *Node, errc chan<- error) {
-				defer wg.Done()
-				for {
-					select {
-					case <-ctx.Done():
-						return
-					case root, ok := <-roots:
-						if !ok {
-							return
-						}
-						if err := dg.assemble(root); err != nil {
-							errc <- err
-							return
-						}
-						nodes <- root
-					}
-				}
-			}(ctx, wg, roots, nodes, errc)
+			go dg.worker(ctx, wg, roots, nodes, errc)
 		}
 		wg.Wait()
 	}()
 
 	return nodes, errc
+}
+
+func (dg *defaultGrower) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, nodes chan<- *Node, errc chan<- error) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case root, ok := <-roots:
+			if !ok {
+				return
+			}
+			if err := dg.assemble(root); err != nil {
+				errc <- err
+				return
+			}
+			nodes <- root
+		}
+	}
 }
 
 func (dg *defaultGrower) assemble(current *Node) error {
