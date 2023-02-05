@@ -1,5 +1,4 @@
 @startuml
-
 skinparam {
   backgroundColor DarkCyan
 
@@ -15,11 +14,11 @@ queue "Root node" as root
 queue Grow as growing
 queue Spread as spreading 
 queue Mkdir as mkdiring
-queue Error as err #text:red
+queue Error as err #whitesmoke
 interface end
 
 start -|> split
-split --|> root
+split -|> root
 root -|> growing
 growing --|> spreading: "  OR"
 growing --|> mkdiring
@@ -31,5 +30,4 @@ spreading ..> err
 mkdiring ..> err
 
 err -|> end
-
 @enduml
