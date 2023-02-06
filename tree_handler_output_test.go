@@ -353,7 +353,7 @@ a
 	- %s`, strings.Repeat("a", 64*1024)))),
 			},
 			out: out{
-				output: "a\n",
+				output: "",
 				err:    bufio.ErrTooLong,
 			},
 		},

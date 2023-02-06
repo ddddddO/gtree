@@ -57,17 +57,16 @@ func (rg *rootGenerator) worker(ctx context.Context, wg *sync.WaitGroup, lines <
 				nodes   = newStack()
 				counter = newCounter()
 			)
-
 			for sc.Scan() {
 				currentNode, err := rg.nodeGenerator.generate(sc.Text(), counter.next())
 				if err != nil {
 					errc <- err
 					return
 				}
+
 				if currentNode == nil {
 					continue
 				}
-
 				if currentNode.isRoot() {
 					root = currentNode
 					nodes.push(currentNode)
@@ -81,9 +80,12 @@ func (rg *rootGenerator) worker(ctx context.Context, wg *sync.WaitGroup, lines <
 
 				nodes.dfs(currentNode)
 			}
+			if err := sc.Err(); err != nil {
+				errc <- err
+				return
+			}
 
-			errc <- sc.Err() // handlePipelineErrでキャッチ後、ctx.Cancel()されるため、Doneする
-			rootc <- root    // rootを送出
+			rootc <- root
 		}
 	}
 }

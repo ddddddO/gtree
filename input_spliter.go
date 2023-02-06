@@ -19,12 +19,12 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 			close(errc)
 		}()
 
-		ret := ""
 		for {
 			select {
 			case <-ctx.Done():
 				return
 			default:
+				ret := ""
 				for sc.Scan() {
 					l := sc.Text()
 					if strings.HasPrefix(l, "-") {
@@ -38,9 +38,12 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 					}
 					ret += fmt.Sprintln(l)
 				}
+				if err := sc.Err(); err != nil {
+					errc <- err
+					return
+				}
 
 				strc <- ret // 最後のRoot送出
-				errc <- sc.Err()
 				return
 			}
 		}
