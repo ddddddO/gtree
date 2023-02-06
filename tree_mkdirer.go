@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"strings"
+	"sync"
 )
 
 func newMkdirer(fileExtensions []string) mkdirer {
@@ -16,34 +17,45 @@ type defaultMkdirer struct {
 	fileConsiderer *fileConsiderer
 }
 
+const workerMkdirNum = 10
+
 func (dm *defaultMkdirer) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
 		defer close(errc)
 
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
-				}
-				if dm.isExistRoot(root) {
-					errc <- ErrExistPath
-					return
-				}
-				if err := dm.makeDirectoriesAndFiles(root); err != nil {
-					errc <- err
-					return
-				}
-			}
+		wg := &sync.WaitGroup{}
+		for i := 0; i < workerMkdirNum; i++ {
+			wg.Add(1)
+			go dm.worker(ctx, wg, roots, errc)
 		}
+		wg.Wait()
 	}()
 
 	return errc
+}
+
+func (dm *defaultMkdirer) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, errc chan<- error) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case root, ok := <-roots:
+			if !ok {
+				return
+			}
+			if dm.isExistRoot(root) {
+				errc <- ErrExistPath
+				return
+			}
+			if err := dm.makeDirectoriesAndFiles(root); err != nil {
+				errc <- err
+				return
+			}
+		}
+	}
 }
 
 func (*defaultMkdirer) isExistRoot(root *Node) bool {
