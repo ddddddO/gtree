@@ -49,7 +49,7 @@ const (
 )
 
 type defaultSpreader struct {
-	mu sync.Mutex
+	sync.Mutex
 }
 
 const workerSpreadNum = 10
@@ -88,9 +88,9 @@ func (ds *defaultSpreader) worker(ctx context.Context, wg *sync.WaitGroup, bw *b
 			}
 			ret := ds.spreadBranch(root)
 
-			ds.mu.Lock()
+			ds.Lock()
 			_, err := bw.WriteString(ret)
-			ds.mu.Unlock()
+			ds.Unlock()
 
 			errc <- err
 		}

@@ -31,10 +31,7 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 						if !(len(ret) == 0) {
 							strc <- ret
 						}
-
 						ret = ""
-						ret += fmt.Sprintln(l)
-						continue
 					}
 					ret += fmt.Sprintln(l)
 				}
@@ -42,7 +39,6 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 					errc <- err
 					return
 				}
-
 				strc <- ret // 最後のRoot送出
 				return
 			}
