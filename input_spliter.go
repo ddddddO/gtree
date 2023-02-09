@@ -10,12 +10,12 @@ import (
 
 func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 	sc := bufio.NewScanner(r)
-	strc := make(chan string)
+	blockc := make(chan string)
 	errc := make(chan error)
 
 	go func() {
 		defer func() {
-			close(strc)
+			close(blockc)
 			close(errc)
 		}()
 
@@ -24,26 +24,26 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 			case <-ctx.Done():
 				return
 			default:
-				ret := ""
+				block := ""
 				for sc.Scan() {
 					l := sc.Text()
 					if strings.HasPrefix(l, "-") {
-						if !(len(ret) == 0) {
-							strc <- ret
+						if len(block) != 0 {
+							blockc <- block
 						}
-						ret = ""
+						block = ""
 					}
-					ret += fmt.Sprintln(l)
+					block += fmt.Sprintln(l)
 				}
 				if err := sc.Err(); err != nil {
 					errc <- err
 					return
 				}
-				strc <- ret // 最後のRoot送出
+				blockc <- block // 最後のRootブロック送出
 				return
 			}
 		}
 	}()
 
-	return strc, errc
+	return blockc, errc
 }
