@@ -3,37 +3,47 @@ skinparam {
   backgroundColor DarkCyan
 
   InterfaceBackgroundColor #CCFF33
+  ComponentStyle rectangle
   ArrowColor DeepSkyBlue
   QueueBorderColor blue
   QueueBackgroundColor DeepSkyBlue
 }
 
+
+' stages
 interface start
 
-control "Split input process" as split_proc
-control "Generate Root (10 workers)" as generate_root_worker
-control "Grow Root (10 workers)" as grow_worker
-control "Spread Root (10 workers)" as spread_worker
-control "Mkdir Root (10 workers)" as mkdir_worker
+[Launch process and workers for pipeline] as init
 
-queue "Root block" as split_q
-queue "Root node" as root_q
-queue "Growed Root node" as growing_q
-note right of growing_q
-Next process is
-Spred or Mkdir.
-end note
+frame "Pipeline" as pipeline {
+  control "Split input process" as split_proc
+  control "Generate Root (10 workers)" as generate_root_worker
+  control "Grow Root (10 workers)" as grow_worker
+  control "Spread Root (10 workers)" as spread_worker
+  control "Mkdir Root (10 workers)" as mkdir_worker
 
-queue Error as err #CC6699
+  queue "Root block" as split_q
+  queue "Root node" as root_q
+  queue "Growed Root node" as growing_q
+  note right of growing_q
+  Next process is
+  Spred or Mkdir.
+  end note
+  queue Error as err #CC6699
+}
+
 interface end
 
-start -|> split_proc
+
+' flow
+start --|> init
+init --|> pipeline
+pipeline --|> split_proc
 split_proc --|> split_q
 split_q -|> generate_root_worker
 generate_root_worker --|> root_q
 root_q -|> grow_worker
 grow_worker --|> growing_q
-
 growing_q -|> spread_worker
 growing_q --|> mkdir_worker
 
@@ -43,5 +53,5 @@ grow_worker ..> err
 spread_worker ..> err
 mkdir_worker ..> err
 
-err -|> end
+err --|> end
 @enduml
