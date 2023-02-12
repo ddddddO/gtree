@@ -11,10 +11,10 @@ skinparam {
 interface start
 
 control "Split input process" as split_proc
-control "Generate Root worker(x10)" as generate_root_worker
-control "Grow Root worker(x10)" as grow_worker
-control "Spread Root worker(x10)" as spread_worker
-control "Mkdir Root worker(x10)" as mkdir_worker
+control "Generate Root (10 workers)" as generate_root_worker
+control "Grow Root (10 workers)" as grow_worker
+control "Spread Root (10 workers)" as spread_worker
+control "Mkdir Root (10 workers)" as mkdir_worker
 
 queue "Root block" as split_q
 queue "Root node" as root_q
