@@ -11,7 +11,7 @@ skinparam {
 
 
 ' stages
-interface start
+interface "START" as start
 
 [Launch process and workers for pipeline] as init
 
@@ -21,6 +21,7 @@ frame "Pipeline" as pipeline {
   control "Grow Root (10 workers)" as grow_worker
   control "Spread Root (10 workers)" as spread_worker
   control "Mkdir Root (10 workers)" as mkdir_worker
+  control "Handle Error" as error_handler
 
   queue "Root block" as split_q
   queue "Root node" as root_q
@@ -32,11 +33,11 @@ frame "Pipeline" as pipeline {
   queue Error as err #CC6699
 }
 
-interface end
+interface "END" as end
 
 
 ' flow
-start --|> init
+start -|> init
 init --|> pipeline
 pipeline --|> split_proc
 split_proc --|> split_q
@@ -53,5 +54,6 @@ grow_worker ..> err
 spread_worker ..> err
 mkdir_worker ..> err
 
-err --|> end
+err --|> error_handler
+error_handler -|> end
 @enduml
