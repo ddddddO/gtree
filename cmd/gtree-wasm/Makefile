@@ -16,6 +16,13 @@ confirm:
 # goでビルドした.wasmがhttpレスポンス時にgzip圧縮されて約1MBだったので、tinygoビルド版では230KBくらいになると推測。かなりサイズ小さく配信できそう。
 # -> gzip圧縮で268KBだった。
 # ただ、goのwasm_exec.jsではなく、tinygo/targets/wasm_exec.js を使用する。ref: https://tinygo.org/docs/guides/webassembly/#how-it-works
+# FIXME:
+# make tinybuildで、以下エラー。上がっているものから特に機能変更はないからそのままでもいいかもしれない。
+#   17:37:15 > make tinybuild
+#   tinygo build -o main.wasm -target wasm -tags wasm main.go
+#   error: requires go version 1.16 through 1.19, got go1.20
+#   Makefile:20: ターゲット 'tinybuild' のレシピで失敗しました
+#   make: *** [tinybuild] エラー 1
 tinybuild:
 	tinygo build -o main.wasm -target wasm -tags wasm main.go
 
