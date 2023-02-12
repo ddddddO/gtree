@@ -79,6 +79,7 @@ func (t *tree) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
 	return t.mkdirer.mkdir(ctx, roots)
 }
 
+// パイプラインの全ステージで最初のエラーを返却
 func handlePipelineErr(echs ...<-chan error) error {
 	eg, _ := errgroup.WithContext(context.TODO())
 	for i := range echs {
