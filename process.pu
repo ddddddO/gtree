@@ -2,32 +2,46 @@
 skinparam {
   backgroundColor DarkCyan
 
-  InterfaceBackgroundColor HotPink
+  InterfaceBackgroundColor #CCFF33
   ArrowColor DeepSkyBlue
   QueueBorderColor blue
   QueueBackgroundColor DeepSkyBlue
 }
 
 interface start
-queue "Split input" as split
-queue "Root node" as root
-queue Grow as growing
-queue Spread as spreading 
-queue Mkdir as mkdiring
-queue Error as err #whitesmoke
+
+control "Split input process" as split_proc
+control "Generate Root worker(x10)" as generate_root_worker
+control "Grow Root worker(x10)" as grow_worker
+control "Spread Root worker(x10)" as spread_worker
+control "Mkdir Root worker(x10)" as mkdir_worker
+
+queue "Root block" as split_q
+queue "Root node" as root_q
+queue "Growed Root node" as growing_q
+note right of growing_q
+Next process is
+Spred or Mkdir.
+end note
+
+queue Error as err #CC6699
 interface end
 
-start -|> split
-split -|> root
-root -|> growing
-growing --|> spreading: "  OR"
-growing --|> mkdiring
+start -|> split_proc
+split_proc --|> split_q
+split_q -|> generate_root_worker
+generate_root_worker --|> root_q
+root_q -|> grow_worker
+grow_worker --|> growing_q
 
-split ..> err
-root ..> err
-growing ..> err
-spreading ..> err
-mkdiring ..> err
+growing_q -|> spread_worker
+growing_q --|> mkdir_worker
+
+split_proc ..> err
+generate_root_worker ..> err
+grow_worker ..> err
+spread_worker ..> err
+mkdir_worker ..> err
 
 err -|> end
 @enduml
