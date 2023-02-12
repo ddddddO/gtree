@@ -27,6 +27,8 @@ func NewParser(spaces int) *Parser {
 	}
 }
 
+const ListSymbolsLine = "#-*+" // TODO: もっといいやり方ないか
+
 const (
 	sharp = "#"
 

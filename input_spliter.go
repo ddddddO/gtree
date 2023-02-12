@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"strings"
+
+	md "github.com/ddddddO/gtree/markdown"
 )
 
 func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
@@ -27,7 +29,7 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 				block := ""
 				for sc.Scan() {
 					l := sc.Text()
-					if strings.HasPrefix(l, "-") {
+					if isRootBlockBeginning(l) {
 						if len(block) != 0 {
 							blockc <- block
 						}
@@ -46,4 +48,11 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 	}()
 
 	return blockc, errc
+}
+
+func isRootBlockBeginning(l string) bool {
+	if len(l) == 0 {
+		return false
+	}
+	return strings.ContainsRune(md.ListSymbolsLine, rune(l[0]))
 }
