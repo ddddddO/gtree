@@ -13,7 +13,7 @@ skinparam {
 ' stages
 interface "START" as start
 
-[Launch process and workers for pipeline] as init
+(Launch pipeline) as init
 
 frame "Pipeline" as pipeline {
   control "Split input process" as split_proc
