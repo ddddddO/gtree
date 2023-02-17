@@ -16,28 +16,27 @@ interface "START" as start
 (Launch pipeline) as init
 
 frame "Pipeline" as pipeline {
-  control "Split input process" as split_proc
-  control "Generate Root (10 workers)" as generate_root_worker
-  control "Grow Root (10 workers)" as grow_worker
-  control "Spread Root (10 workers)" as spread_worker
-  control "Mkdir Root (10 workers)" as mkdir_worker
-  control "Handle Error" as error_handler
+  control "Split input" as split_proc
+  control "Generate root node\n(10 workers)" as generate_root_worker
+  control "Grow root node\n(10 workers)" as grow_worker
+  control "Spread root node\n(10 workers)" as spread_worker
+  control "Mkdir root node\n(10 workers)" as mkdir_worker
+  control "Handle error queue" as error_handler #CC6699
 
   queue "Root block" as split_q
   queue "Root node" as root_q
-  queue "Growed Root node" as growing_q
+  queue "Growed root node" as growing_q
   note right of growing_q
   Next process is
   Spred or Mkdir.
   end note
-  queue Error as err #CC6699
 }
 
 interface "END" as end
 
 
 ' flow
-start -|> init
+init <|- start
 init --|> pipeline
 pipeline --|> split_proc
 split_proc --|> split_q
@@ -48,12 +47,11 @@ grow_worker --|> growing_q
 growing_q -|> spread_worker
 growing_q --|> mkdir_worker
 
-split_proc ..> err
-generate_root_worker ..> err
-grow_worker ..> err
-spread_worker ..> err
-mkdir_worker ..> err
+split_proc ..> error_handler
+generate_root_worker ..> error_handler
+grow_worker ..> error_handler
+spread_worker ..> error_handler
+mkdir_worker ..> error_handler
 
-err --|> error_handler
 error_handler -|> end
 @enduml
