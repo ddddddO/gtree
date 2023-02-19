@@ -28,69 +28,6 @@ $ cat testdata/sample0.md | gtree output --fs
 
 </details>
 
-## Process
-
-### e.g. [*gtree/tree_handler.go*](https://github.com/ddddddO/gtree/blob/master/tree_handler.go)
-
-<image src="./process.svg" width=100%>
-
-## Performance
-
-> **Warning**<br>
-> Depends on the environment.
-
-- Comparison before and after software architecture was changed.
-- In the case of few Roots, previous architecture is faster in execution😅
-- However, for multiple Roots, execution speed tends to be faster💪✨
-
-<image src="./performance.svg" width=100%>
-
-<details>
-<summary>benchmark</summary>
-
-#### Before pipelining
-```console
-$ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
-goos: linux
-goarch: amd64
-cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
-BenchmarkOutput_singleRoot-4                 100             24948 ns/op           14400 B/op        185 allocs/op
-BenchmarkOutput_tenRoots-4                   100            283504 ns/op           65320 B/op       1710 allocs/op
-BenchmarkOutput_fiftyRoots-4                 100            995910 ns/op          305658 B/op       8474 allocs/op
-BenchmarkOutput_hundredRoots-4               100           1649849 ns/op          631196 B/op      16927 allocs/op
-BenchmarkOutput_fiveHundredsRoots-4          100           7069195 ns/op         3198760 B/op      84534 allocs/op
-BenchmarkOutput_thousandRoots-4              100          15263601 ns/op         6587536 B/op     169039 allocs/op
-BenchmarkOutput_3000Roots-4                  100          47383020 ns/op        19505832 B/op     507046 allocs/op
-BenchmarkOutput_6000Roots-4                  100          96684490 ns/op        39203833 B/op    1014051 allocs/op
-BenchmarkOutput_10000Roots-4                 100         164449890 ns/op        67676933 B/op    1690056 allocs/op
-BenchmarkOutput_20000Roots-4                 100         339919674 ns/op        135144612 B/op   3380061 allocs/op
-PASS
-ok      command-line-arguments  68.124s
-```
-
-#### After pipelining
-```console
-$ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
-goos: linux
-goarch: amd64
-cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
-BenchmarkOutput_singleRoot-4                 100            130346 ns/op           24021 B/op        304 allocs/op
-BenchmarkOutput_tenRoots-4                   100            324765 ns/op          120458 B/op       2301 allocs/op
-BenchmarkOutput_fiftyRoots-4                 100            822572 ns/op          565455 B/op      11182 allocs/op
-BenchmarkOutput_hundredRoots-4               100           1489798 ns/op         1147089 B/op      22288 allocs/op
-BenchmarkOutput_fiveHundredsRoots-4          100           6546967 ns/op         5763994 B/op     111099 allocs/op
-BenchmarkOutput_thousandRoots-4              100          13072156 ns/op        11705324 B/op     222112 allocs/op
-BenchmarkOutput_3000Roots-4                  100          37430405 ns/op        34838155 B/op     666142 allocs/op
-BenchmarkOutput_6000Roots-4                  100          75890968 ns/op        69852265 B/op    1332183 allocs/op
-BenchmarkOutput_10000Roots-4                 100         125694694 ns/op        118704856 B/op   2220232 allocs/op
-BenchmarkOutput_20000Roots-4                 100         242875644 ns/op        237242818 B/op   4440315 allocs/op
-PASS
-ok      command-line-arguments  50.962s
-```
-
-</details>
-
----
 
 ## Web
 
@@ -536,6 +473,70 @@ $ gtree mkdir --dry-run --ts <<EOS
 EOS
 invalid path: /root/aa
 ```
+
+---
+
+## Process
+
+### e.g. [*gtree/tree_handler.go*](https://github.com/ddddddO/gtree/blob/master/tree_handler.go)
+
+<image src="./process.svg" width=100%>
+
+## Performance
+
+> **Warning**<br>
+> Depends on the environment.
+
+- Comparison before and after software architecture was changed.
+- In the case of few Roots, previous architecture is faster in execution😅
+- However, for multiple Roots, execution speed tends to be faster💪✨
+
+<image src="./performance.svg" width=100%>
+
+<details>
+<summary>benchmark</summary>
+
+#### Before pipelining
+```console
+$ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
+goos: linux
+goarch: amd64
+cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
+BenchmarkOutput_singleRoot-4                 100             24948 ns/op           14400 B/op        185 allocs/op
+BenchmarkOutput_tenRoots-4                   100            283504 ns/op           65320 B/op       1710 allocs/op
+BenchmarkOutput_fiftyRoots-4                 100            995910 ns/op          305658 B/op       8474 allocs/op
+BenchmarkOutput_hundredRoots-4               100           1649849 ns/op          631196 B/op      16927 allocs/op
+BenchmarkOutput_fiveHundredsRoots-4          100           7069195 ns/op         3198760 B/op      84534 allocs/op
+BenchmarkOutput_thousandRoots-4              100          15263601 ns/op         6587536 B/op     169039 allocs/op
+BenchmarkOutput_3000Roots-4                  100          47383020 ns/op        19505832 B/op     507046 allocs/op
+BenchmarkOutput_6000Roots-4                  100          96684490 ns/op        39203833 B/op    1014051 allocs/op
+BenchmarkOutput_10000Roots-4                 100         164449890 ns/op        67676933 B/op    1690056 allocs/op
+BenchmarkOutput_20000Roots-4                 100         339919674 ns/op        135144612 B/op   3380061 allocs/op
+PASS
+ok      command-line-arguments  68.124s
+```
+
+#### After pipelining
+```console
+$ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
+goos: linux
+goarch: amd64
+cpu: Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz
+BenchmarkOutput_singleRoot-4                 100            130346 ns/op           24021 B/op        304 allocs/op
+BenchmarkOutput_tenRoots-4                   100            324765 ns/op          120458 B/op       2301 allocs/op
+BenchmarkOutput_fiftyRoots-4                 100            822572 ns/op          565455 B/op      11182 allocs/op
+BenchmarkOutput_hundredRoots-4               100           1489798 ns/op         1147089 B/op      22288 allocs/op
+BenchmarkOutput_fiveHundredsRoots-4          100           6546967 ns/op         5763994 B/op     111099 allocs/op
+BenchmarkOutput_thousandRoots-4              100          13072156 ns/op        11705324 B/op     222112 allocs/op
+BenchmarkOutput_3000Roots-4                  100          37430405 ns/op        34838155 B/op     666142 allocs/op
+BenchmarkOutput_6000Roots-4                  100          75890968 ns/op        69852265 B/op    1332183 allocs/op
+BenchmarkOutput_10000Roots-4                 100         125694694 ns/op        118704856 B/op   2220232 allocs/op
+BenchmarkOutput_20000Roots-4                 100         242875644 ns/op        237242818 B/op   4440315 allocs/op
+PASS
+ok      command-line-arguments  50.962s
+```
+
+</details>
 
 ---
 
