@@ -36,7 +36,7 @@ interface "END" as end
 
 
 ' flow
-init <|- start
+start -|> init
 init --|> pipeline
 pipeline --|> split_proc
 split_proc --|> split_q
