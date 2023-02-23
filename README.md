@@ -19,8 +19,9 @@ Output tree🌳 or Make directories📁 from Markdown or Programmatically. Provi
 └── Provide CLI, Go library and Web.
 ```
 
+
 <details>
-<summary>This description is output by</summary>
+<summary>this description is output by</summary>
 
 ```console
 $ cat testdata/sample0.md | gtree output --fs
@@ -30,6 +31,9 @@ $ cat testdata/sample0.md | gtree output --fs
 
 
 ## Web
+
+<details>
+<summary>Read more !</summary>
 
 https://ddddddo.github.io/gtree/
 
@@ -43,14 +47,20 @@ Also, once loaded, you can enjoy offline!<br>
 
 [source code](cmd/gtree-wasm/)
 
+</details>
+
 ## Package(1) / like CLI
-👉 [read me!](https://github.com/ddddddO/gtree/blob/master/README_Package_1.md#package1--like-cli)
+▶ [Read more !](https://github.com/ddddddO/gtree/blob/master/README_Package_1.md#package1--like-cli)
 
 
 ## Package(2) / generate a tree programmatically
-👉 [read me!](https://github.com/ddddddO/gtree/blob/master/README_Package_2.md#package2--generate-a-tree-programmatically)
+▶ [Read more !](https://github.com/ddddddO/gtree/blob/master/README_Package_2.md#package2--generate-a-tree-programmatically)
 
 ## CLI
+
+<details>
+<summary>Read more !</summary>
+
 ### Installation
 
 #### Go (requires 1.18 or later)
@@ -474,15 +484,23 @@ EOS
 invalid path: /root/aa
 ```
 
----
+</details>
 
 ## Process
+
+<details>
+<summary>Read more !</summary>
 
 ### e.g. [*gtree/tree_handler.go*](https://github.com/ddddddO/gtree/blob/master/tree_handler.go)
 
 <image src="./process.svg" width=100%>
 
+</details>
+
 ## Performance
+
+<details>
+<summary>Read more !</summary>
 
 > **Warning**<br>
 > Depends on the environment.
@@ -538,14 +556,25 @@ ok      command-line-arguments  50.962s
 
 </details>
 
----
+</details>
 
 ## Documents
+
+<details>
+<summary>Read more !</summary>
+
 - [Markdown形式の入力からtreeを出力するCLI](https://zenn.dev/ddddddo/articles/ad97623a004496)
 - [Goでtreeを表現する](https://zenn.dev/ddddddo/articles/8cd85c68763f2e)
 - [Markdown形式の入力からファイル/ディレクトリを生成するCLI/Goパッケージ](https://zenn.dev/ddddddo/articles/460d12e8c07763)
 - [感想](https://scrapbox.io/ddddddo/useful_tools)
 
+</details>
 
 ## Star History
+
+<details>
+<summary>Read more !</summary>
+
 [![Star History Chart](https://api.star-history.com/svg?repos=ddddddO/gtree&type=Date)](https://star-history.com/#ddddddO/gtree&Date)
+
+</details>
