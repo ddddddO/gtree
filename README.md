@@ -50,13 +50,6 @@ Also, once loaded, you can enjoy offline!<br>
 
 </details>
 
-## Package(1) / like CLI
-▶ [Read more !](https://github.com/ddddddO/gtree/blob/master/README_Package_1.md#package1--like-cli)
-
-
-## Package(2) / generate a tree programmatically
-▶ [Read more !](https://github.com/ddddddO/gtree/blob/master/README_Package_2.md#package2--generate-a-tree-programmatically)
-
 ## CLI
 
 <details>
@@ -486,6 +479,13 @@ invalid path: /root/aa
 ```
 
 </details>
+
+## Package(1) / like CLI
+▶ [Read more !](https://github.com/ddddddO/gtree/blob/master/README_Package_1.md#package1--like-cli)
+
+
+## Package(2) / generate a tree programmatically
+▶ [Read more !](https://github.com/ddddddO/gtree/blob/master/README_Package_2.md#package2--generate-a-tree-programmatically)
 
 ## Process
 
