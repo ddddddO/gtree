@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/fatih/color v1.14.1
-	github.com/pelletier/go-toml/v2 v2.0.6
+	github.com/pelletier/go-toml/v2 v2.0.7
 	github.com/urfave/cli/v2 v2.24.4
 	golang.org/x/sync v0.1.0
 	gopkg.in/yaml.v3 v3.0.1
