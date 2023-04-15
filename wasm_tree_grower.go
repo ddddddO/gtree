@@ -1,11 +1,6 @@
-//go:build !wasm
+//go:build wasm
 
 package gtree
-
-import (
-	"context"
-	"sync"
-)
 
 func newGrower(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
@@ -32,46 +27,13 @@ type defaultGrower struct {
 	enabledValidation     bool
 }
 
-const workerGrowNum = 10
-
-func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
-	nodes := make(chan *Node)
-	errc := make(chan error, 1)
-
-	go func() {
-		defer func() {
-			close(nodes)
-			close(errc)
-		}()
-
-		wg := &sync.WaitGroup{}
-		for i := 0; i < workerGrowNum; i++ {
-			wg.Add(1)
-			go dg.worker(ctx, wg, roots, nodes, errc)
-		}
-		wg.Wait()
-	}()
-
-	return nodes, errc
-}
-
-func (dg *defaultGrower) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, nodes chan<- *Node, errc chan<- error) {
-	defer wg.Done()
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case root, ok := <-roots:
-			if !ok {
-				return
-			}
-			if err := dg.assemble(root); err != nil {
-				errc <- err
-				return
-			}
-			nodes <- root
+func (dg *defaultGrower) grow(roots []*Node) error {
+	for _, root := range roots {
+		if err := dg.assemble(root); err != nil {
+			return err
 		}
 	}
+	return nil
 }
 
 func (dg *defaultGrower) assemble(current *Node) error {
@@ -158,32 +120,7 @@ func (dg *defaultGrower) enableValidation() {
 
 type nopGrower struct{}
 
-func (*nopGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
-	nodes := make(chan *Node)
-	errc := make(chan error, 1)
-
-	go func() {
-		defer func() {
-			close(nodes)
-			close(errc)
-		}()
-
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
-				}
-				nodes <- root
-			}
-		}
-	}()
-
-	return nodes, errc
-}
+func (*nopGrower) grow(_ []*Node) error { return nil }
 
 func (*nopGrower) enableValidation() {}
 
