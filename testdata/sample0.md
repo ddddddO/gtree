@@ -1,6 +1,6 @@
 - # Description
     - Output tree from markdown or programmatically.
-        - Output format is tree or yaml or toml or json.
+        - Output format is tree|yaml|toml|json.
         - Default tree.
     - Make directories from markdown or programmatically.
         - It is possible to dry run.
