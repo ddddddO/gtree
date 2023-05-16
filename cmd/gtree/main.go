@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -94,6 +95,7 @@ func main() {
 				Aliases: []string{"o", "out"},
 				Usage:   "Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.",
 				Flags:   append(commonFlags, outputFlags...),
+				Before:  notExistArgs,
 				Action:  actionOutput,
 			},
 			{
@@ -101,6 +103,7 @@ func main() {
 				Aliases: []string{"m"},
 				Usage:   "Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e makefile'.",
 				Flags:   append(commonFlags, mkdirFlags...),
+				Before:  notExistArgs,
 				Action:  actionMkdir,
 			},
 			{
@@ -108,12 +111,14 @@ func main() {
 				Aliases: []string{"t", "tmpl"},
 				Usage:   "Output markdown template.",
 				// Flags: NOTE: prepare various templates.
+				Before: notExistArgs,
 				Action: actionTemplate,
 			},
 			{
 				Name:    "version",
 				Aliases: []string{"v"},
 				Usage:   "Output gtree version.",
+				Before:  notExistArgs,
 				Action: func(c *cli.Context) error {
 					fmt.Printf("gtree version %s / revision %s\n", Version, Revision)
 					return nil
@@ -125,6 +130,13 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func notExistArgs(c *cli.Context) error {
+	if c.NArg() != 0 {
+		return errors.New("command line contains unnecessary arguments")
+	}
+	return nil
 }
 
 func actionOutput(c *cli.Context) error {
