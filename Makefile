@@ -13,6 +13,10 @@ test: sweep
 	go test . -race -v -count=1
 	go test ./markdown/... -race -v -count=1
 
+cover: sweep
+	go test . -race -coverprofile=coverage.out -covermode=atomic -v
+	go tool cover -html=coverage.out -o coverage.html
+
 bench: sweep
 	go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
 

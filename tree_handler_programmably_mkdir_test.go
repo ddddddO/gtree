@@ -50,6 +50,15 @@ func TestMkdirProgrammably(t *testing.T) {
 			wantErr: nil,
 		},
 		{
+			name: "case(dry run/specified file/succeeded)",
+			root: prepareMultiNode(),
+			options: []gtree.Option{
+				gtree.WithDryRun(),
+				gtree.WithFileExtensions([]string{"child 3", "child 5", "child 7", "child 8"}),
+			},
+			wantErr: nil,
+		},
+		{
 			name:    "case(not dry run/invalid node name)",
 			root:    prepareInvalidNodeName(),
 			wantErr: fmt.Errorf("invalid node name: %s", "chi/ld 4"),
