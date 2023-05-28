@@ -27,8 +27,6 @@ func NewParser(spaces int) *Parser {
 	}
 }
 
-const ListSymbolsLine = "#-*+" // TODO: もっといいやり方ないか
-
 const (
 	sharp = "#"
 
@@ -39,6 +37,19 @@ const (
 	space = " "
 	tab   = "\t"
 )
+
+// TODO: runeへ
+var symbols = map[string]struct{}{
+	sharp:    {},
+	hyphen:   {},
+	asterisk: {},
+	plus:     {},
+}
+
+func IsSymbol(k rune) bool {
+	_, ok := symbols[string(k)]
+	return ok
+}
 
 const (
 	rootHierarchyNum uint = 1

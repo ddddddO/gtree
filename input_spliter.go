@@ -5,7 +5,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"strings"
 
 	md "github.com/ddddddO/gtree/markdown"
 )
@@ -54,5 +53,5 @@ func isRootBlockBeginning(l string) bool {
 	if len(l) == 0 {
 		return false
 	}
-	return strings.ContainsRune(md.ListSymbolsLine, rune(l[0]))
+	return md.IsSymbol(rune(l[0]))
 }
