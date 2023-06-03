@@ -5,7 +5,20 @@ before:
   hooks:
     - go mod tidy
 builds:
-  - main: ./cmd/gtree
+  - id: gtree
+    main: ./cmd/gtree
+    binary: gtree
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.Revision={{.ShortCommit}}
+    goos:
+      - darwin
+      - windows
+    env:
+      - CGO_ENABLED=0
+  - id: gtree-linux
+    main: ./cmd/gtree
     binary: gtree
     ldflags:
       - -s -w
@@ -13,8 +26,6 @@ builds:
       - -X main.Revision={{.ShortCommit}}
     goos:
       - linux
-      - darwin
-      - windows
     env:
       - CGO_ENABLED=0
 archives:
@@ -51,3 +62,18 @@ scoop:
   homepage: "https://github.com/ddddddO/gtree"
   description: "Output tree🌳 or Make directories(files)📁 from Markdown."
   license: "BSD-2-Clause"
+nfpms:
+  - id: gtree-nfpms
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}-1_{{ .Arch }}"
+    builds:
+      - gtree-linux
+    homepage: https://github.com/ddddddO/gtree
+    maintainer: ddddddO <lbfdeatq@gmail.com>
+    description: Output tree or Make directories(files) from Markdown.
+    license: BSD-2-Clause
+    formats:
+      - deb
+      - rpm
+      - apk
+    bindir: /usr/bin
+    epoch: 1
