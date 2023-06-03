@@ -76,6 +76,27 @@ $ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
 $ scoop install ddddddO/gtree
 ```
 
+#### deb
+```console
+$ export GTREE_VERSION=X.X.X
+$ curl -o gtree.deb -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.deb
+$ dpkg -i gtree.deb
+```
+
+#### rpm
+```console
+$ export GTREE_VERSION=X.X.X
+$ yum install https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.rpm
+```
+
+#### apk
+```console
+$ export GTREE_VERSION=X.X.X
+$ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.apk
+$ apk add --allow-untrusted gtree.apk
+```
+
+
 #### [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree)
 
 ```console
