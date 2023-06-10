@@ -9,8 +9,16 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-// cd github.com/ddddddO/gtree
-// go list -deps ./... | go run sample/go-list_pipe_programmable-gtree/main.go
+// Example:
+// $ cd github.com/ddddddO/gtree
+// $ go list -deps ./cmd/gtree/
+// internal/goarch
+// unsafe
+// internal/unsafeheader
+// internal/abi
+// internal/cpu
+// ...
+// $ go list -deps ./cmd/gtree/ | go run example/go-list_pipe_programmable-gtree/main.go
 func main() {
 	var (
 		root = gtree.NewRoot("[All Dependencies]")
@@ -42,17 +50,20 @@ func main() {
 	// │   ├── abi
 	// │   ├── cpu
 	// │   ├── bytealg
+	// │   ├── coverage
+	// │   │   └── rtcov
 	// │   ├── goexperiment
 	// │   ├── goos
 	// │   ├── reflectlite
-	// │   ├── race
 	// │   ├── itoa
+	// │   ├── race
 	// │   ├── fmtsort
 	// │   ├── oserror
 	// │   ├── syscall
 	// │   │   ├── unix
 	// │   │   └── execenv
 	// │   ├── poll
+	// │   ├── safefilepath
 	// │   └── testlog
 	// ├── unsafe
 	// ├── runtime
@@ -62,39 +73,41 @@ func main() {
 	// │       ├── sys
 	// │       └── syscall
 	// ├── errors
-	// ├── sync
-	// │   └── atomic
-	// ├── io
-	// │   ├── fs
-	// │   └── ioutil
+	// ├── math
+	// │   └── bits
 	// ├── unicode
 	// │   ├── utf8
 	// │   └── utf16
-	// ├── bytes
-	// ├── strings
-	// ├── bufio
-	// ├── encoding
-	// │   ├── binary
-	// │   ├── base64
-	// │   └── json
-	// ├── math
-	// │   └── bits
 	// ├── strconv
+	// ├── sync
+	// │   └── atomic
 	// ├── reflect
 	// ├── sort
+	// ├── io
+	// │   ├── fs
+	// │   └── ioutil
 	// ├── syscall
 	// ├── time
 	// ├── path
 	// │   └── filepath
 	// ├── os
 	// ├── fmt
-	// ├── golang.org
-	// │   └── x
-	// │       └── sys
-	// │           ├── internal
-	// │           │   └── unsafeheader
-	// │           └── unix
+	// ├── bytes
+	// ├── strings
+	// ├── bufio
+	// ├── container
+	// │   └── list
+	// ├── context
+	// ├── encoding
+	// │   ├── binary
+	// │   ├── base64
+	// │   └── json
 	// ├── github.com
+	// │   ├── ddddddO
+	// │   │   └── gtree
+	// │   │       ├── markdown
+	// │   │       └── cmd
+	// │   │           └── gtree
 	// │   ├── mattn
 	// │   │   ├── go-isatty
 	// │   │   └── go-colorable
@@ -103,20 +116,11 @@ func main() {
 	// │   ├── pelletier
 	// │   │   └── go-toml
 	// │   │       └── v2
-	// │   │           └── internal
-	// │   │               ├── danger
-	// │   │               ├── ast
-	// │   │               └── tracker
-	// │   ├── ddddddO
-	// │   │   └── gtree
-	// │   │       ├── cmd
-	// │   │       │   └── gtree
-	// │   │       └── sample
-	// │   │           ├── find_pipe_programmable-gtree
-	// │   │           ├── go-list_pipe_programmable-gtree
-	// │   │           ├── like_cli
-	// │   │           │   └── adapter
-	// │   │           └── programmable
+	// │   │           ├── internal
+	// │   │           │   ├── characters
+	// │   │           │   ├── danger
+	// │   │           │   └── tracker
+	// │   │           └── unstable
 	// │   ├── russross
 	// │   │   └── blackfriday
 	// │   │       └── v2
@@ -124,14 +128,21 @@ func main() {
 	// │   │   └── go-md2man
 	// │   │       └── v2
 	// │   │           └── md2man
+	// │   ├── xrash
+	// │   │   └── smetrics
 	// │   └── urfave
 	// │       └── cli
 	// │           └── v2
+	// ├── golang.org
+	// │   └── x
+	// │       ├── sys
+	// │       │   └── unix
+	// │       └── sync
+	// │           └── errgroup
 	// ├── regexp
 	// │   └── syntax
 	// ├── gopkg.in
-	// │   └── yaml.v2
-	// ├── context
+	// │   └── yaml.v3
 	// ├── flag
 	// ├── html
 	// ├── text

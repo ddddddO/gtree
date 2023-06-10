@@ -735,11 +735,11 @@ func preparePrimate() *gtree.Node {
 
 ```
 
-- You can also output JSON 👉 [ref](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L61)
+- You can also output JSON 👉 [ref](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L61)
 
-- You can also output YAML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L198)
+- You can also output YAML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L198)
 
-- You can also output TOML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L262)
+- You can also output TOML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L262)
 
 ---
 
@@ -757,7 +757,7 @@ import (
 )
 
 // cd github.com/ddddddO/gtree
-// find . -type d -name .git -prune -o -type f -print | go run sample/find_pipe_programmable-gtree/main.go
+// find . -type d -name .git -prune -o -type f -print | go run example/find_pipe_programmable-gtree/main.go
 func main() {
 	var (
 		root *gtree.Node
@@ -854,7 +854,7 @@ func main() {
 
 ```
 
-- Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/sample/go-list_pipe_programmable-gtree/main.go)
+- Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
   - inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
 
 #### *MkdirProgrammably* func
@@ -910,7 +910,7 @@ func main() {
 }
 ```
 
-[details](https://github.com/ddddddO/gtree/blob/master/sample/programmable/main.go#L354)
+[details](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L354)
 
 ---
 

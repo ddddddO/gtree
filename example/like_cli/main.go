@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ddddddO/gtree/sample/like_cli/adapter"
+	"github.com/ddddddO/gtree/example/like_cli/adapter"
 )
 
 func main() {
