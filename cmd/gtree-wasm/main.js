@@ -26,3 +26,10 @@ const copyToClipboard = () => {
   const clipboard = window.navigator.clipboard;
   clipboard.writeText(tree.innerHTML);
 };
+
+const resetParts = () => {
+  document.getElementById("parts1").value = "└";
+  document.getElementById("parts2").value = "├";
+  document.getElementById("parts3").value = "──";
+  document.getElementById("parts4").value = "│";
+};
