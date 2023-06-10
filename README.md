@@ -8,7 +8,8 @@
 Output tree🌳 or Make directories📁 from Markdown or Programmatically.</br>
 Provide CLI, Go library and Web.
 
-```
+```console
+$ gtree template --description | gtree output
 # Description
 ├── Output tree from markdown or programmatically.
 │   ├── Output format is tree|yaml|toml|json.
@@ -19,16 +20,6 @@ Provide CLI, Go library and Web.
 ├── Output a markdown template that can be used with either `output` subcommand or `mkdir` subcommand.
 └── Provide CLI, Go library and Web.
 ```
-
-
-<details>
-<summary>this description is output by</summary>
-
-```console
-$ cat testdata/sample0.md | gtree output --fs
-```
-
-</details>
 
 
 ## Web

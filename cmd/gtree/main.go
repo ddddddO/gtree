@@ -86,6 +86,14 @@ func main() {
 		},
 	}
 
+	templateFlags := []cli.Flag{
+		&cli.BoolFlag{
+			Name:    "description",
+			Aliases: []string{"desc"},
+			Usage:   "Show gtree description.",
+		},
+	}
+
 	app := &cli.App{
 		Name:  "gtree",
 		Usage: "This CLI outputs tree or makes directories from markdown.",
@@ -110,9 +118,9 @@ func main() {
 				Name:    "template",
 				Aliases: []string{"t", "tmpl"},
 				Usage:   "Output markdown template.",
-				// Flags: NOTE: prepare various templates.
-				Before: notExistArgs,
-				Action: actionTemplate,
+				Flags:   templateFlags,
+				Before:  notExistArgs,
+				Action:  actionTemplate,
 			},
 			{
 				Name:    "version",
@@ -259,7 +267,22 @@ const template = `
 	- tree.go
 `
 
+const description = "- # Description\n" +
+	"	- Output tree from markdown or programmatically.\n" +
+	"		- Output format is tree|yaml|toml|json.\n" +
+	"		- Default tree.\n" +
+	"	- Make directories from markdown or programmatically.\n" +
+	"		- It is possible to dry run.\n" +
+	"		- You can use `-e` flag to make specified extensions as file.\n" +
+	"	- Output a markdown template that can be used with either `output` subcommand or `mkdir` subcommand.\n" +
+	"	- Provide CLI, Go library and Web.\n"
+
 func actionTemplate(c *cli.Context) error {
+	if c.Bool("description") {
+		fmt.Print(strings.TrimLeft(description, "\n"))
+		return nil
+	}
+
 	fmt.Print(strings.TrimLeft(template, "\n"))
 	return nil
 }
