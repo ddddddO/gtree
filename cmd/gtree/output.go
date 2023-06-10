@@ -2,8 +2,10 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"io"
 	"os"
+	"time"
 
 	"github.com/ddddddO/gtree"
 	"github.com/fatih/color"
@@ -17,6 +19,38 @@ func output(in io.Reader, options []gtree.Option) error {
 func outputWithValidation(in io.Reader, options []gtree.Option) error {
 	options = append(options, gtree.WithDryRun())
 	return gtree.Output(color.Output, in, options...)
+}
+
+const intervalms = 500 * time.Millisecond
+
+func outputContinuously(markdownPath string, options []gtree.Option) error {
+	ticker := time.NewTicker(intervalms)
+	defer ticker.Stop()
+	var preFileModTime time.Time
+	for range ticker.C {
+		if err := func() error {
+			f, err := os.Open(markdownPath)
+			if err != nil {
+				return err
+			}
+			defer f.Close()
+
+			fi, err := f.Stat()
+			if err != nil {
+				return err
+			}
+
+			if fi.ModTime() != preFileModTime {
+				preFileModTime = fi.ModTime()
+				_ = output(f, options)
+				fmt.Println()
+			}
+			return nil
+		}(); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 type encodeType uint

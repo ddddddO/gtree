@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/ddddddO/gtree"
 	"github.com/urfave/cli/v2"
@@ -166,7 +165,11 @@ func actionOutput(c *cli.Context) error {
 		return nil
 	}
 
-	if !c.Bool("watch") {
+	if c.Bool("watch") {
+		if err := outputContinuously(markdownPath, options); err != nil {
+			return cli.Exit(err, exitCodeErrOutput)
+		}
+	} else {
 		f, err := os.Open(markdownPath)
 		if err != nil {
 			return cli.Exit(err, exitCodeErrOpen)
@@ -176,49 +179,8 @@ func actionOutput(c *cli.Context) error {
 		if err := output(f, options); err != nil {
 			return cli.Exit(err, exitCodeErrOutput)
 		}
-		return nil
 	}
 
-	if err := watchMarkdownAndOutput(markdownPath, options); err != nil {
-		return cli.Exit(err, exitCodeErrOutput)
-	}
-
-	return nil
-}
-
-func isInputStdin(path string) bool {
-	return path == "" || path == "-"
-}
-
-const intervalms = 500 * time.Millisecond
-
-func watchMarkdownAndOutput(markdownPath string, options []gtree.Option) error {
-	ticker := time.NewTicker(intervalms)
-	defer ticker.Stop()
-	var preFileModTime time.Time
-	for range ticker.C {
-		if err := func() error {
-			f, err := os.Open(markdownPath)
-			if err != nil {
-				return err
-			}
-			defer f.Close()
-
-			fi, err := f.Stat()
-			if err != nil {
-				return err
-			}
-
-			if fi.ModTime() != preFileModTime {
-				preFileModTime = fi.ModTime()
-				_ = output(f, options)
-				fmt.Println()
-			}
-			return nil
-		}(); err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -253,6 +215,10 @@ func actionMkdir(c *cli.Context) error {
 	}
 
 	return nil
+}
+
+func isInputStdin(path string) bool {
+	return path == "" || path == "-"
 }
 
 const template = `
