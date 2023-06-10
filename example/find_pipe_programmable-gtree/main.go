@@ -9,7 +9,7 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-// Exapmle:
+// Example:
 // $ cd github.com/ddddddO/gtree
 // $ find . -type d -name .git -prune -o -type f -print
 // ./config.go
