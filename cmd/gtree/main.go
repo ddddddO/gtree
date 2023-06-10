@@ -17,13 +17,6 @@ var (
 	Revision = "unset"
 )
 
-const (
-	exitCodeErrOpts = iota + 1
-	exitCodeErrOutput
-	exitCodeErrOpen
-	exitCodeErrMkdir
-)
-
 func main() {
 	commonFlags := []cli.Flag{
 		&cli.PathFlag{
@@ -149,35 +142,35 @@ func notExistArgs(c *cli.Context) error {
 func actionOutput(c *cli.Context) error {
 	oi, err := optionIndentation(c)
 	if err != nil {
-		return cli.Exit(err, exitCodeErrOpts)
+		return exitErrOpts(err)
 	}
 	oo, err := optionOutput(c)
 	if err != nil {
-		return cli.Exit(err, exitCodeErrOpts)
+		return exitErrOpts(err)
 	}
 	options := []gtree.Option{oi, oo}
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
 		if err := output(os.Stdin, options); err != nil {
-			return cli.Exit(err, exitCodeErrOutput)
+			return exitErrOutput(err)
 		}
 		return nil
 	}
 
 	if c.Bool("watch") {
 		if err := outputContinuously(markdownPath, options); err != nil {
-			return cli.Exit(err, exitCodeErrOutput)
+			return exitErrOutput(err)
 		}
 	} else {
 		f, err := os.Open(markdownPath)
 		if err != nil {
-			return cli.Exit(err, exitCodeErrOpen)
+			return exitErrOpen(err)
 		}
 		defer f.Close()
 
 		if err := output(f, options); err != nil {
-			return cli.Exit(err, exitCodeErrOutput)
+			return exitErrOutput(err)
 		}
 	}
 
@@ -185,33 +178,34 @@ func actionOutput(c *cli.Context) error {
 }
 
 func actionMkdir(c *cli.Context) error {
-	markdownPath := c.Path("file")
-	in := os.Stdin
-	var err error
-	if !isInputStdin(markdownPath) {
-		in, err = os.Open(markdownPath)
+	var (
+		in  = os.Stdin
+		err error
+	)
+	if !isInputStdin(c.Path("file")) {
+		in, err = os.Open(c.Path("file"))
 		if err != nil {
-			return cli.Exit(err, exitCodeErrOpen)
+			return exitErrOpen(err)
 		}
 		defer in.Close()
 	}
 
 	oi, err := optionIndentation(c)
 	if err != nil {
-		return cli.Exit(err, exitCodeErrOpts)
+		return exitErrOpts(err)
 	}
 	oe := gtree.WithFileExtensions(c.StringSlice("extension"))
 	options := []gtree.Option{oi, oe}
 
 	if c.Bool("dry-run") {
 		if err := outputWithValidation(in, options); err != nil {
-			return cli.Exit(err, exitCodeErrOutput)
+			return exitErrOutput(err)
 		}
 		return nil
 	}
 
 	if err := mkdir(in, options); err != nil {
-		return cli.Exit(err, exitCodeErrMkdir)
+		return exitErrMkdir(err)
 	}
 
 	return nil
