@@ -755,8 +755,18 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-// cd github.com/ddddddO/gtree
-// find . -type d -name .git -prune -o -type f -print | go run example/find_pipe_programmable-gtree/main.go
+// Example:
+// $ cd github.com/ddddddO/gtree
+// $ find . -type d -name .git -prune -o -type f -print
+// ./config.go
+// ./node_generator_test.go
+// ./example/like_cli/adapter/indentation.go
+// ./example/like_cli/adapter/executor.go
+// ./example/like_cli/main.go
+// ./example/find_pipe_programmable-gtree/main.go
+// ...
+// $ find . -type d -name .git -prune -o -type f -print | go run example/find_pipe_programmable-gtree/main.go
+// << See "Output:" below. >>
 func main() {
 	var (
 		root *gtree.Node
@@ -764,17 +774,19 @@ func main() {
 	)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		line := scanner.Text()
-		splited := strings.Split(line, "/")
+		line := scanner.Text() // e.g.) "./example/find_pipe_programmable-gtree/main.go"
+		splited := strings.Split(line, "/") // e.g.) [. example find_pipe_programmable-gtree main.go]
 
 		for i, s := range splited {
-			if i == 0 {
-				if root == nil {
-					root = gtree.NewRoot(s)
-					node = root
-				}
+			if root == nil {
+				root = gtree.NewRoot(s) // s := "."
+				node = root
 				continue
 			}
+			if i == 0 {
+				continue
+			}
+
 			tmp := node.Add(s)
 			node = tmp
 		}
@@ -787,68 +799,25 @@ func main() {
 	}
 	// Output:
 	// .
-	// ├── .github
-	// │   ├── dependabot.yml
-	// │   └── workflows
-	// │       ├── cd.yaml
-	// │       └── ci.yaml
-	// ├── .gitignore
-	// ├── .goreleaser.yml
-	// ├── cli_mkdir_dryrun.png
-	// ├── cmd
-	// │   └── gtree
-	// │       ├── indent.go
-	// │       ├── main.go
-	// │       ├── mkdir.go
-	// │       └── output.go
 	// ├── config.go
-	// ├── counter.go
-	// ├── CREDITS
-	// ├── example_tree_handler_programmable_test.go
-	// ├── file_consider.go
-	// ├── go.mod
-	// ├── go.sum
-	// ├── LICENSE
-	// ├── Makefile
-	// ├── node.go
-	// ├── node_generate.go
-	// ├── node_generate_strategy.go
-	// ├── node_generate_strategy_test.go
-	// ├── README.md
-	// ├── README_CLI.md
-	// ├── README_Package_1.md
-	// ├── README_Package_2.md
-	// ├── sample
+	// ├── node_generator_test.go
+	// ├── example
+	// │   ├── like_cli
+	// │   │   ├── adapter
+	// │   │   │   ├── indentation.go
+	// │   │   │   └── executor.go
+	// │   │   └── main.go
 	// │   ├── find_pipe_programmable-gtree
 	// │   │   └── main.go
 	// │   ├── go-list_pipe_programmable-gtree
 	// │   │   └── main.go
-	// │   ├── like_cli
-	// │   │   ├── adapter
-	// │   │   │   ├── executor.go
-	// │   │   │   └── indentation.go
-	// │   │   └── main.go
 	// │   └── programmable
 	// │       └── main.go
-	// ├── stack.go
-	// ├── testdata
-	// │   ├── demo.md
-	// │   ├── sample0.md
-	// │   ├── sample1.md
-	// │   ├── sample2.md
-	// │   ├── sample3.md
-	// │   ├── sample4.md
-	// │   ├── sample5.md
-	// │   └── sample6.md
-	// ├── tmp.md
-	// ├── tree.go
-	// ├── tree_grow.go
-	// ├── tree_handler.go
-	// ├── tree_handler_programmable.go
-	// ├── tree_handler_programmable_test.go
-	// ├── tree_handler_test.go
-	// ├── tree_mkdir.go
-	// └── tree_spread.go
+	// ├── file_considerer.go
+	// ├── node.go
+	// ├── node_generator.go
+	// ├── .gitignore
+	// ...
 }
 
 ```
