@@ -32,13 +32,15 @@ func main() {
 		splited := strings.Split(line, "/") // e.g.) [. example find_pipe_programmable-gtree main.go]
 
 		for i, s := range splited {
-			if i == 0 {
-				if root == nil {
-					root = gtree.NewRoot(s)  // s := "."
-					node = root
-				}
+			if root == nil {
+				root = gtree.NewRoot(s) // s := "."
+				node = root
 				continue
 			}
+			if i == 0 {
+				continue
+			}
+
 			tmp := node.Add(s)
 			node = tmp
 		}
