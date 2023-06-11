@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/ddddddO/gtree"
 	"github.com/urfave/cli/v2"
@@ -217,10 +216,8 @@ func isInputStdin(path string) bool {
 
 func actionTemplate(c *cli.Context) error {
 	if c.Bool("description") {
-		fmt.Print(description)
-		return nil
+		return description.println()
 	}
 
-	fmt.Print(strings.TrimLeft(template, "\n"))
-	return nil
+	return directory.println()
 }
