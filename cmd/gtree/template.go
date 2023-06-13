@@ -2,28 +2,36 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 type template string
 
-func (t template) println() error {
-	_, err := fmt.Println(strings.TrimLeft(string(t), "\n"))
+func (t template) print() error {
+	_, err := fmt.Print(string(t))
 	return err
 }
 
-const directory template = `
-- gtree
-	- cmd
-		- gtree
-			- main.go
-	- testdata
-		- sample1.md
-		- sample2.md
-	- makefile
-	- tree.go`
+func (t template) println() error {
+	if err := t.print(); err != nil {
+		return err
+	}
+	_, err := fmt.Println()
+	return err
+}
 
-const description template = "- # Description\n" +
+const directory template = "" +
+	"- gtree\n" +
+	"	- cmd\n" +
+	"		- gtree\n" +
+	"			- main.go\n" +
+	"	- testdata\n" +
+	"		- sample1.md\n" +
+	"		- sample2.md\n" +
+	"	- Makefile\n" +
+	"	- tree.go"
+
+const description template = "" +
+	"- # Description\n" +
 	"	- Output tree from markdown or programmatically.\n" +
 	"		- Output format is tree|yaml|toml|json.\n" +
 	"		- Default tree.\n" +
