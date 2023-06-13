@@ -1,5 +1,3 @@
-# gtree
-
 [![GitHub Pages](https://img.shields.io/badge/-GitHub_Pages-00A98F.svg?logo=github&style=flat)](https://ddddddo.github.io/gtree/)<br>
 [![GitHub release](https://img.shields.io/github/release/ddddddO/gtree.svg?label=Release&color=darkcyan)](https://github.com/ddddddO/gtree/releases) [![Go Reference](https://pkg.go.dev/badge/github.com/ddddddO/gtree)](https://pkg.go.dev/github.com/ddddddO/gtree)<br>
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg?color=darkcyan)](https://github.com/ddddddO/gtree/blob/master/LICENSE) [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#uncategorized)<br>
@@ -21,10 +19,7 @@ $ gtree template --description | gtree output
 ```
 
 
-## Web
-
-<details>
-<summary>Read more !</summary>
+# Web
 
 https://ddddddo.github.io/gtree/
 
@@ -38,48 +33,44 @@ Also, once loaded, you can enjoy offline!<br>
 
 [source code](cmd/gtree-wasm/)
 
-</details>
 
-## CLI
+# CLI
 
-<details>
-<summary>Read more !</summary>
+## Installation
 
-### Installation
-
-#### Go (requires 1.18 or later)
+### Go (requires 1.18 or later)
 
 ```console
 $ go install github.com/ddddddO/gtree/cmd/gtree@latest
 ```
 
-#### Homebrew
+### Homebrew
 
 ```console
 $ brew install ddddddO/tap/gtree
 ```
 
-#### Scoop
+### Scoop
 
 ```console
 $ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
 $ scoop install ddddddO/gtree
 ```
 
-#### deb
+### deb
 ```console
 $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.deb -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.deb
 $ dpkg -i gtree.deb
 ```
 
-#### rpm
+### rpm
 ```console
 $ export GTREE_VERSION=X.X.X
 $ yum install https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.rpm
 ```
 
-#### apk
+### apk
 ```console
 $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.apk
@@ -87,7 +78,7 @@ $ apk add --allow-untrusted gtree.apk
 ```
 
 
-#### [docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree)
+### [Docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree)
 
 ```console
 $ docker pull ghcr.io/ddddddo/gtree:latest
@@ -103,11 +94,11 @@ gtree
 └── tree.go
 ```
 
-#### etc
+### etc
 
 **download binary from [here](https://github.com/ddddddO/gtree/releases).**
 
-### Usage
+## Usage
 
 ```console
 $ gtree --help
@@ -130,7 +121,7 @@ GLOBAL OPTIONS:
 
 - The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
-#### *Output* subcommand
+### *Output* subcommand
 ```console
 $ gtree output --help
 NAME:
@@ -183,9 +174,6 @@ When Markdown is indented as a tab.
 
 For 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
 
-
-<details>
-<summary>More details</summary>
 
 - Usage other than representing a directory.
 
@@ -371,10 +359,9 @@ children = []
 
 ```
 
-</details>
 
 ---
-#### *Mkdir* subcommand
+### *Mkdir* subcommand
 
 ```console
 $ gtree mkdir --help
@@ -419,7 +406,7 @@ gtree/
 8 directories, 0 files
 ```
 
-##### *make directories and files*
+#### *make directories and files*
 ```console
 $ gtree template
 - gtree
@@ -446,7 +433,7 @@ gtree/
 3 directories, 5 files
 ```
 
-##### *dry run*
+#### *dry run*
 Does not create a file and directory.
 
 ```console
@@ -489,13 +476,10 @@ EOS
 invalid path: /root/aa
 ```
 
-</details>
 
-## Package(1) / like CLI
-<details>
-<summary>Read more !</summary>
+# Package(1) / like CLI
 
-### Installation
+## Installation
 
 Go version requires 1.18 or later.
 
@@ -503,11 +487,11 @@ Go version requires 1.18 or later.
 $ go get github.com/ddddddO/gtree
 ```
 
-### Usage
+## Usage
 
 - The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
-#### *Output* func
+### *Output* func
 
 ```go
 package main
@@ -598,19 +582,16 @@ func main() {
 
 ---
 
-#### *Mkdir* func
+### *Mkdir* func
 
 - `gtree.Mkdir` func makes directories.
 	- You can use `gtree.WithFileExtensions` func to make specified extensions as file.
 
-</details>
 
 
-## Package(2) / generate a tree programmatically
-<details>
-<summary>Read more !</summary>
+# Package(2) / generate a tree programmatically
 
-### Installation
+## Installation
 
 Go version requires 1.18 or later.
 
@@ -618,9 +599,9 @@ Go version requires 1.18 or later.
 $ go get github.com/ddddddO/gtree
 ```
 
-### Usage
+## Usage
 
-#### *OutputProgrammably* func
+### *OutputProgrammably* func
 
 ```go
 package main
@@ -825,7 +806,7 @@ func main() {
 - Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
   - inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
 
-#### *MkdirProgrammably* func
+### *MkdirProgrammably* func
 
 ```go
 package main
@@ -926,24 +907,18 @@ func main() {
 }
 ```
 
-</details>
 
 
-## Process
+# Process
 
-<details>
-<summary>Read more !</summary>
 
-### e.g. [*gtree/tree_handler.go*](https://github.com/ddddddO/gtree/blob/master/tree_handler.go)
+## e.g. [*gtree/tree_handler.go*](https://github.com/ddddddO/gtree/blob/master/tree_handler.go)
 
 <image src="./process.svg" width=100%>
 
-</details>
 
-## Performance
+# Performance
 
-<details>
-<summary>Read more !</summary>
 
 > **Warning**<br>
 > Depends on the environment.
@@ -954,10 +929,9 @@ func main() {
 
 <image src="./performance.svg" width=100%>
 
-<details>
-<summary>benchmark</summary>
+<details><summary>Benchmark log</summary>
 
-#### Before pipelining
+## Before pipelining
 ```console
 $ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
 goos: linux
@@ -977,7 +951,7 @@ PASS
 ok      command-line-arguments  68.124s
 ```
 
-#### After pipelining
+## After pipelining
 ```console
 $ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
 goos: linux
@@ -999,25 +973,17 @@ ok      command-line-arguments  50.962s
 
 </details>
 
-</details>
+# Documents
 
-## Documents
-
-<details>
-<summary>Read more !</summary>
 
 - [Markdown形式の入力からtreeを出力するCLI](https://zenn.dev/ddddddo/articles/ad97623a004496)
 - [Goでtreeを表現する](https://zenn.dev/ddddddo/articles/8cd85c68763f2e)
 - [Markdown形式の入力からファイル/ディレクトリを生成するCLI/Goパッケージ](https://zenn.dev/ddddddo/articles/460d12e8c07763)
 - [感想](https://scrapbox.io/ddddddo/useful_tools)
 
-</details>
 
-## Star History
+# Star History
 
-<details>
-<summary>Read more !</summary>
 
 [![Star History Chart](https://api.star-history.com/svg?repos=ddddddO/gtree&type=Date)](https://star-history.com/#ddddddO/gtree&Date)
 
-</details>
