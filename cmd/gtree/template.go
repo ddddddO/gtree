@@ -33,10 +33,18 @@ const directory template = "" +
 const description template = "" +
 	"- # Description\n" +
 	"	- Output tree from markdown or programmatically.\n" +
-	"		- Output format is tree|yaml|toml|json.\n" +
+	"		- Output formats are\n" +
+	"			- tree\n" +
+	"			- yaml\n" +
+	"			- toml\n" +
+	"			- json\n" +
 	"		- Default tree.\n" +
 	"	- Make directories from markdown or programmatically.\n" +
 	"		- It is possible to dry run.\n" +
 	"		- You can use `-e` flag to make specified extensions as file.\n" +
-	"	- Output a markdown template that can be used with either `output` subcommand or `mkdir` subcommand.\n" +
-	"	- Provide CLI, Go library and Web."
+	"	- Output a markdown template\n" +
+	"		- that can be used with either `output` subcommand or `mkdir` subcommand.\n" +
+	"	- Provide the following\n" +
+	"		- CLI\n" +
+	"		- Go library\n" +
+	"		- Web"
