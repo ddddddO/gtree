@@ -98,7 +98,11 @@ func (ds *defaultSpreader) worker(ctx context.Context, wg *sync.WaitGroup, bw *b
 }
 
 func (*defaultSpreader) spreadBranch(current *Node) string {
-	ret := current.branch()
+	ret := current.name + "\n"
+	if !current.isRoot() {
+		ret = current.branch() + " " + current.name + "\n"
+	}
+
 	for _, child := range current.children {
 		ret += (*defaultSpreader)(nil).spreadBranch(child)
 	}
@@ -154,21 +158,26 @@ func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-cha
 }
 
 func (cs *colorizeSpreader) spreadBranch(current *Node) string {
-	cs.colorize(current)
-	ret := current.branch()
+	ret := ""
+	if current.isRoot() {
+		ret = cs.colorize(current) + "\n"
+	} else {
+		ret = current.branch() + " " + cs.colorize(current) + "\n"
+	}
+
 	for _, child := range current.children {
 		ret += cs.spreadBranch(child)
 	}
 	return ret
 }
 
-func (cs *colorizeSpreader) colorize(current *Node) {
+func (cs *colorizeSpreader) colorize(current *Node) string {
 	if cs.fileConsiderer.isFile(current) {
 		_ = cs.fileCounter.next()
-		current.name = cs.fileColor.Sprint(current.name)
+		return cs.fileColor.Sprint(current.name)
 	} else {
 		_ = cs.dirCounter.next()
-		current.name = cs.dirColor.Sprint(current.name)
+		return cs.dirColor.Sprint(current.name)
 	}
 }
 
