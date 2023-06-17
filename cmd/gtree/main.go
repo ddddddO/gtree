@@ -92,6 +92,13 @@ func main() {
 		},
 	}
 
+	gocodeFlags := []cli.Flag{
+		&cli.BoolFlag{
+			Name:  "godeps-to-tree",
+			Usage: "Output Go program to convert Go package dependency list to tree.",
+		},
+	}
+
 	app := &cli.App{
 		Name:  "gtree",
 		Usage: "This CLI generates directory trees and the directories itself using Markdown.",
@@ -132,6 +139,7 @@ func main() {
 				Name:    "gocode",
 				Aliases: []string{"gc", "code"},
 				Usage:   "Output a sample Go program calling \"gtree\" package.",
+				Flags:   gocodeFlags,
 				Before:  notExistArgs,
 				Action:  actionGoCode,
 			},
@@ -255,7 +263,10 @@ func actionWeb(c *cli.Context) error {
 	return nil
 }
 
-func actionGoCode(_ *cli.Context) error {
-	findToTree.println()
-	return nil
+func actionGoCode(c *cli.Context) error {
+	if c.Bool("godeps-to-tree") {
+		return goDependencesToTree.println()
+	}
+
+	return findToTree.println()
 }

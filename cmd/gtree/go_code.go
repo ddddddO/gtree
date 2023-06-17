@@ -32,8 +32,7 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-// $ gtree gocode > find_to_tree.go
-// $ find . -type d -name .git -prune -o -type f -print | go run find_to_tree.go
+// $ gtree gocode > find_to_tree.go && go mod init xxx 2>/dev/null && go mod tidy 2>/dev/null && find . -type d -o -type f -print | go run find_to_tree.go
 func main() {
 	var (
 		root *gtree.Node
@@ -58,6 +57,46 @@ func main() {
 			node = tmp
 		}
 		node = root
+	}
+
+	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+`
+
+const goDependencesToTree gocode = `
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/ddddddO/gtree"
+)
+
+// $ ls | grep go.mod && go list -deps ./path/to/go_dir > go_dependences.txt
+// $ mkdir tmp && cd tmp && gtree gocode --godeps-to-tree > godeps_to_tree.go && go mod init xxx 2>/dev/null && go mod tidy 2>/dev/null && cat ../go_dependences.txt | go run godeps_to_tree.go
+func main() {
+	var (
+		root = gtree.NewRoot("[All Dependencies]")
+		node *gtree.Node
+	)
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		line := scanner.Text()
+		splited := strings.Split(line, "/")
+
+		for i, s := range splited {
+			if i == 0 {
+				node = root.Add(s)
+				continue
+			}
+			node = node.Add(s)
+		}
 	}
 
 	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
