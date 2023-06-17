@@ -111,7 +111,7 @@ gtree
 ```console
 $ gtree --help
 NAME:
-   gtree - This CLI outputs tree or makes directories from markdown.
+   gtree - This CLI generates directory trees and the directories itself using Markdown.
 
 USAGE:
    gtree [global options] command [command options] [arguments...]
@@ -120,11 +120,12 @@ COMMANDS:
    output, o, out     Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
    mkdir, m           Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
    template, t, tmpl  Output markdown template.
+   web, w, www        Open "Tree Maker" in your browser. If it doesn't open, it will display the url.
    version, v         Output gtree version.
    help, h            Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --help, -h  show help (default: false)
+   --help, -h  show help
 ```
 
 - The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.

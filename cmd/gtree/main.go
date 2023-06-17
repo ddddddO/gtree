@@ -94,7 +94,7 @@ func main() {
 
 	app := &cli.App{
 		Name:  "gtree",
-		Usage: "This CLI outputs tree or makes directories from markdown.",
+		Usage: "This CLI generates directory trees and the directories itself using Markdown.",
 		Commands: []*cli.Command{
 			{
 				Name:    "output",
