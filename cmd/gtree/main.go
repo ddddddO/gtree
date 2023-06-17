@@ -85,9 +85,16 @@ func main() {
 		},
 	}
 
+	webFlags := []cli.Flag{
+		&cli.BoolFlag{
+			Name:  "wsl",
+			Usage: "Specify this option if you are using WSL.",
+		},
+	}
+
 	app := &cli.App{
 		Name:  "gtree",
-		Usage: "This CLI outputs tree or makes directories from markdown.",
+		Usage: "This CLI generates directory trees and the directories itself using Markdown.",
 		Commands: []*cli.Command{
 			{
 				Name:    "output",
@@ -112,6 +119,14 @@ func main() {
 				Flags:   templateFlags,
 				Before:  notExistArgs,
 				Action:  actionTemplate,
+			},
+			{
+				Name:    "web",
+				Aliases: []string{"w", "www"},
+				Usage:   "Open \"Tree Maker\" in your browser. If it doesn't open, it will display the url.",
+				Flags:   webFlags,
+				Before:  notExistArgs,
+				Action:  actionWeb,
 			},
 			{
 				Name:    "version",
@@ -220,4 +235,15 @@ func actionTemplate(c *cli.Context) error {
 	}
 
 	return directory.println()
+}
+
+const treeMakerURL = "https://ddddddo.github.io/gtree/"
+
+func actionWeb(c *cli.Context) error {
+	if err := openWeb(treeMakerURL, c.Bool("wsl")); err != nil {
+		fmt.Println(treeMakerURL)
+		return nil
+	}
+
+	return nil
 }
