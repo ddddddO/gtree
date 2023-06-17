@@ -51,8 +51,8 @@ func (p *Parser) Parse(row string) (*Markdown, error) {
 		if !found {
 			return nil, ErrIncorrectFormat
 		}
-		text := strings.TrimLeft(after, sharp)
-		text = strings.Trim(text, space)
+
+		text := strings.Trim(strings.TrimLeft(after, sharp), space)
 		if len(text) == 0 {
 			return nil, ErrEmptyText
 		}
@@ -73,9 +73,8 @@ func (p *Parser) Parse(row string) (*Markdown, error) {
 		return nil, ErrEmptyText
 	}
 
-	hierarchy := p.calculateHierarchy(spaceCount)
 	return &Markdown{
-		hierarchy: hierarchy,
+		hierarchy: p.calculateHierarchy(spaceCount),
 		text:      text,
 	}, nil
 }
