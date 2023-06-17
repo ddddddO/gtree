@@ -23,7 +23,6 @@ func openWeb(url string, isWSL bool) error {
 	if !ok {
 		return errors.New("That OS is not yet supported....")
 	}
-
 	return openFunc(url)
 }
 
