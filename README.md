@@ -738,7 +738,8 @@ func preparePrimate() *gtree.Node {
 
 ---
 
-- The program below converts the result of `find` into a tree.
+#### The program below converts the result of `find` into a tree.
+
 ```go
 package main
 
@@ -818,8 +819,20 @@ func main() {
 
 ```
 
-- Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
-  - inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
+- The above Go program can be output with the command below.
+
+	```console
+	$ gtree gocode
+	```
+
+
+#### Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
+
+- The above Go program can be output with the command below.
+	```console
+	$ gtree gocode --godeps-to-tree
+	```
+- inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
 
 ### *MkdirProgrammably* func
 
