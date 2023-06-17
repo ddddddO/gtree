@@ -21,7 +21,7 @@ func openWeb(url string) error {
 }
 
 func openWebByWindows(url string) error {
-	_, err := exec.Command("start", url).CombinedOutput()
+	_, err := exec.Command("cmd.exe", "/c", "start", url).CombinedOutput()
 	return err
 }
 
