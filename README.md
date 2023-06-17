@@ -39,6 +39,11 @@ Also, once loaded, you can enjoy offline!<br>
 
 ![](web_example.gif)
 
+You can open it in your browser with
+```console
+$ gtree web
+```
+
 [source code](cmd/gtree-wasm/)
 
 
