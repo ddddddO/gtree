@@ -114,6 +114,13 @@ func main() {
 				Action:  actionTemplate,
 			},
 			{
+				Name:    "web",
+				Aliases: []string{"w", "www"},
+				Usage:   "Open \"Tree Maker\" in your browser. If it doesn't open, it will display the url.",
+				Before:  notExistArgs,
+				Action:  actionWeb,
+			},
+			{
 				Name:    "version",
 				Aliases: []string{"v"},
 				Usage:   "Output gtree version.",
@@ -220,4 +227,15 @@ func actionTemplate(c *cli.Context) error {
 	}
 
 	return directory.println()
+}
+
+const treeMakerURL = "https://ddddddo.github.io/gtree/"
+
+func actionWeb(_ *cli.Context) error {
+	if err := openWeb(treeMakerURL); err != nil {
+		fmt.Println(treeMakerURL)
+		return nil
+	}
+
+	return nil
 }
