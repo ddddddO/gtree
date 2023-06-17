@@ -129,6 +129,13 @@ func main() {
 				Action:  actionWeb,
 			},
 			{
+				Name:    "gocode",
+				Aliases: []string{"gc", "code"},
+				Usage:   "Output a sample Go program calling \"gtree\" package.",
+				Before:  notExistArgs,
+				Action:  actionGoCode,
+			},
+			{
 				Name:    "version",
 				Aliases: []string{"v"},
 				Usage:   "Output gtree version.",
@@ -245,5 +252,10 @@ func actionWeb(c *cli.Context) error {
 		return nil
 	}
 
+	return nil
+}
+
+func actionGoCode(_ *cli.Context) error {
+	findToTree.println()
 	return nil
 }
