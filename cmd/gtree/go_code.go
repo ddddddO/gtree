@@ -41,12 +41,12 @@ func main() {
 	)
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
-		line := scanner.Text() // e.g.) "./example/find_pipe_programmable-gtree/main.go"
-		splited := strings.Split(line, "/") // e.g.) [. example find_pipe_programmable-gtree main.go]
+		line := scanner.Text()
+		splited := strings.Split(line, "/")
 
 		for i, s := range splited {
 			if root == nil {
-				root = gtree.NewRoot(s) // s := "."
+				root = gtree.NewRoot(s)
 				node = root
 				continue
 			}
