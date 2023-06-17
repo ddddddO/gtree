@@ -1,4 +1,6 @@
 tmp.md
+go_dependences.txt
+tmp/
 coverage.*
 gtreetest/
 root/

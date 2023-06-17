@@ -126,6 +126,7 @@ COMMANDS:
    mkdir, m           Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
    template, t, tmpl  Output markdown template.
    web, w, www        Open "Tree Maker" in your browser. If it doesn't open, it will display the url.
+   gocode, gc, code   Output a sample Go program calling "gtree" package.
    version, v         Output gtree version.
    help, h            Shows a list of commands or help for one command
 
@@ -737,7 +738,8 @@ func preparePrimate() *gtree.Node {
 
 ---
 
-- The program below converts the result of `find` into a tree.
+#### The program below converts the result of `find` into a tree.
+
 ```go
 package main
 
@@ -817,8 +819,20 @@ func main() {
 
 ```
 
-- Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
-  - inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
+- The above Go program can be output with the command below.
+
+	```console
+	$ gtree gocode
+	```
+
+
+#### Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
+
+- The above Go program can be output with the command below.
+	```console
+	$ gtree gocode --godeps-to-tree
+	```
+- inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
 
 ### *MkdirProgrammably* func
 
