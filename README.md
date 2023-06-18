@@ -117,17 +117,18 @@ gtree
 $ gtree --help
 NAME:
    gtree - This CLI generates directory trees and the directories itself using Markdown.
+           The symbols that can be used in Markdown are '-', '+', '*', and '#'.
 
 USAGE:
    gtree [global options] command [command options] [arguments...]
 
 COMMANDS:
-   output, o, out     Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
-   mkdir, m           Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
-   template, t, tmpl  Output markdown template.
-   web, w, www        Open "Tree Maker" in your browser. If it doesn't open, it will display the url.
-   gocode, gc, code   Output a sample Go program calling "gtree" package.
-   version, v         Output gtree version.
+   output, o, out     Outputs tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
+   mkdir, m           Makes directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
+   template, t, tmpl  Outputs markdown template.
+   web, w, www        Opens "Tree Maker" in your browser. If it doesn't open, it will display the url.
+   gocode, gc, code   Outputs a sample Go program calling "gtree" package.
+   version, v         Outputs gtree version.
    help, h            Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -140,7 +141,7 @@ GLOBAL OPTIONS:
 ```console
 $ gtree output --help
 NAME:
-   gtree output - Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
+   gtree output - Outputs tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
 
 USAGE:
    gtree output [command options] [arguments...]
@@ -149,11 +150,11 @@ OPTIONS:
    --file value, -f value  Markdown file path. (default: stdin)
    --two-spaces, --ts      Markdown is Two Spaces indentation. (default: tab spaces)
    --four-spaces, --fs     Markdown is Four Spaces indentation. (default: tab spaces)
-   --json, -j              Output JSON format. (default: stdout)
-   --yaml, -y              Output YAML format. (default: stdout)
-   --toml, -t              Output TOML format. (default: stdout)
+   --json, -j              Outputs JSON format. (default: tree)
+   --yaml, -y              Outputs YAML format. (default: tree)
+   --toml, -t              Outputs TOML format. (default: tree)
    --watch, -w             Watching markdown file. (default: false)
-   --help, -h              show help (default: false)
+   --help, -h              show help
 ```
 
 ```console
@@ -381,18 +382,18 @@ children = []
 ```console
 $ gtree mkdir --help
 NAME:
-   gtree mkdir - Make directories from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
+   gtree mkdir - Makes directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
 
 USAGE:
    gtree mkdir [command options] [arguments...]
 
 OPTIONS:
-   --file value, -f value                    Markdown file path. (default: stdin)
-   --two-spaces, --ts                        Markdown is Two Spaces indentation. (default: tab spaces)
-   --four-spaces, --fs                       Markdown is Four Spaces indentation. (default: tab spaces)
-   --dry-run, -d, --dr                       Dry run. Detects node that is invalid for directory generation. The order of the output and made directories does not always match. (default: false)
-   --extension value, -e value, --ext value  Specified extension will be created as file.
-   --help, -h                                show help (default: false)
+   --file value, -f value                                                                 Markdown file path. (default: stdin)
+   --two-spaces, --ts                                                                     Markdown is Two Spaces indentation. (default: tab spaces)
+   --four-spaces, --fs                                                                    Markdown is Four Spaces indentation. (default: tab spaces)
+   --dry-run, -d, --dr                                                                    Dry run. Detects node that is invalid for directory generation. The order of the output and made directories does not always match. (default: false)
+   --extension value, -e value, --ext value [ --extension value, -e value, --ext value ]  Specified extension will be created as file.
+   --help, -h                                                                             show help
 ```
 
 ```console

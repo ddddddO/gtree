@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/ddddddO/gtree"
+	"github.com/fatih/color"
 	"github.com/urfave/cli/v2"
 )
 
@@ -42,19 +43,19 @@ func main() {
 		&cli.BoolFlag{
 			Name:        "json",
 			Aliases:     []string{"j"},
-			Usage:       "Output JSON format.",
+			Usage:       "Outputs JSON format.",
 			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:        "yaml",
 			Aliases:     []string{"y"},
-			Usage:       "Output YAML format.",
+			Usage:       "Outputs YAML format.",
 			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:        "toml",
 			Aliases:     []string{"t"},
-			Usage:       "Output TOML format.",
+			Usage:       "Outputs TOML format.",
 			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
@@ -81,7 +82,7 @@ func main() {
 		&cli.BoolFlag{
 			Name:    "description",
 			Aliases: []string{"desc"},
-			Usage:   "Show gtree description.",
+			Usage:   "Shows gtree description.",
 		},
 	}
 
@@ -95,18 +96,21 @@ func main() {
 	gocodeFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:  "godeps-to-tree",
-			Usage: "Output Go program to convert Go package dependency list to tree.",
+			Usage: "Outputs Go program to convert Go package dependency list to tree.",
 		},
 	}
 
+	green := color.New(color.FgGreen).SprintFunc()
+
 	app := &cli.App{
-		Name:  "gtree",
-		Usage: "This CLI generates directory trees and the directories itself using Markdown.",
+		Name: "gtree",
+		Usage: "This CLI generates directory trees and the directories itself using Markdown.\n" +
+			fmt.Sprintf("The symbols that can be used in Markdown are '%s', '%s', '%s', and '%s'.", green("-"), green("+"), green("*"), green("#")),
 		Commands: []*cli.Command{
 			{
 				Name:    "output",
 				Aliases: []string{"o", "out"},
-				Usage:   "Output tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.",
+				Usage:   "Outputs tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.",
 				Flags:   append(commonFlags, outputFlags...),
 				Before:  notExistArgs,
 				Action:  actionOutput,
@@ -114,7 +118,7 @@ func main() {
 			{
 				Name:    "mkdir",
 				Aliases: []string{"m"},
-				Usage:   "Make directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.",
+				Usage:   "Makes directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.",
 				Flags:   append(commonFlags, mkdirFlags...),
 				Before:  notExistArgs,
 				Action:  actionMkdir,
@@ -122,7 +126,7 @@ func main() {
 			{
 				Name:    "template",
 				Aliases: []string{"t", "tmpl"},
-				Usage:   "Output markdown template.",
+				Usage:   "Outputs markdown template.",
 				Flags:   templateFlags,
 				Before:  notExistArgs,
 				Action:  actionTemplate,
@@ -130,7 +134,7 @@ func main() {
 			{
 				Name:    "web",
 				Aliases: []string{"w", "www"},
-				Usage:   "Open \"Tree Maker\" in your browser. If it doesn't open, it will display the url.",
+				Usage:   "Opens \"Tree Maker\" in your browser. If it doesn't open, it will display the url.",
 				Flags:   webFlags,
 				Before:  notExistArgs,
 				Action:  actionWeb,
@@ -138,7 +142,7 @@ func main() {
 			{
 				Name:    "gocode",
 				Aliases: []string{"gc", "code"},
-				Usage:   "Output a sample Go program calling \"gtree\" package.",
+				Usage:   "Outputs a sample Go program calling \"gtree\" package.",
 				Flags:   gocodeFlags,
 				Before:  notExistArgs,
 				Action:  actionGoCode,
@@ -146,7 +150,7 @@ func main() {
 			{
 				Name:    "version",
 				Aliases: []string{"v"},
-				Usage:   "Output gtree version.",
+				Usage:   "Outputs gtree version.",
 				Before:  notExistArgs,
 				Action: func(c *cli.Context) error {
 					fmt.Printf("gtree version %s / revision %s\n", Version, Revision)
