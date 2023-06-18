@@ -100,7 +100,7 @@ func main() {
 		},
 	}
 
-	green := color.New(color.FgGreen).SprintFunc()
+	green := color.New(color.FgHiGreen).SprintFunc()
 
 	app := &cli.App{
 		Name: "gtree",
