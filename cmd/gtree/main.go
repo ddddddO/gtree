@@ -106,6 +106,7 @@ func main() {
 		Name: "gtree",
 		Usage: "This CLI generates directory trees and the directories itself using Markdown.\n" +
 			fmt.Sprintf("The symbols that can be used in Markdown are '%s', '%s', '%s', and '%s'.", green("-"), green("+"), green("*"), green("#")),
+		Version: fmt.Sprintf("%s / revision %s", Version, Revision),
 		Commands: []*cli.Command{
 			{
 				Name:    "output",
