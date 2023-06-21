@@ -123,6 +123,9 @@ NAME:
 USAGE:
    gtree [global options] command [command options] [arguments...]
 
+VERSION:
+   1.7.51 / revision b49eff1
+
 COMMANDS:
    output, o, out     Outputs tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.
    mkdir, m           Makes directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
@@ -133,7 +136,8 @@ COMMANDS:
    help, h            Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --help, -h  show help
+   --help, -h     show help
+   --version, -v  print the version
 ```
 
 - The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
