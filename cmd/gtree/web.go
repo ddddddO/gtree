@@ -21,7 +21,7 @@ func openWeb(url string, isWSL bool) error {
 
 	openFunc, ok := openFuncs[runtimeOS]
 	if !ok {
-		return errors.New("That OS is not yet supported....")
+		return errors.New("OS is not yet supported....")
 	}
 	return openFunc(url)
 }

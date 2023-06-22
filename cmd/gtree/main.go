@@ -22,19 +22,19 @@ func main() {
 		&cli.PathFlag{
 			Name:        "file",
 			Aliases:     []string{"f"},
-			Usage:       "Markdown file path.",
+			Usage:       "specify the path to markdown file.",
 			DefaultText: "stdin",
 		},
 		&cli.BoolFlag{
 			Name:        "two-spaces",
 			Aliases:     []string{"ts"},
-			Usage:       "Markdown is Two Spaces indentation.",
+			Usage:       "set this option when the markdown indent is 2 spaces.",
 			DefaultText: "tab spaces",
 		},
 		&cli.BoolFlag{
 			Name:        "four-spaces",
 			Aliases:     []string{"fs"},
-			Usage:       "Markdown is Four Spaces indentation.",
+			Usage:       "set this option when the markdown indent is 4 spaces.",
 			DefaultText: "tab spaces",
 		},
 	}
@@ -43,25 +43,25 @@ func main() {
 		&cli.BoolFlag{
 			Name:        "json",
 			Aliases:     []string{"j"},
-			Usage:       "Outputs JSON format.",
+			Usage:       "set this option when outputting JSON.",
 			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:        "yaml",
 			Aliases:     []string{"y"},
-			Usage:       "Outputs YAML format.",
+			Usage:       "set this option when outputting YAML.",
 			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:        "toml",
 			Aliases:     []string{"t"},
-			Usage:       "Outputs TOML format.",
+			Usage:       "set this option when outputting TOML.",
 			DefaultText: "tree",
 		},
 		&cli.BoolFlag{
 			Name:    "watch",
 			Aliases: []string{"w"},
-			Usage:   "Watching markdown file.",
+			Usage:   "follow changes in markdown file.",
 		},
 	}
 
@@ -69,12 +69,14 @@ func main() {
 		&cli.BoolFlag{
 			Name:    "dry-run",
 			Aliases: []string{"d", "dr"},
-			Usage:   "Dry run. Detects node that is invalid for directory generation. The order of the output and made directories does not always match.",
+			Usage: "dry run. detects node that is invalid for directory generation.\n" +
+				"the order of the output and made directories does not always match.",
 		},
 		&cli.StringSliceFlag{
 			Name:    "extension",
 			Aliases: []string{"e", "ext"},
-			Usage:   "Specified extension will be created as file.",
+			Usage: "set this option if you want to create file instead of directory.\n" +
+				"for example, if you want to generate files with \".go\" extension: \"-e .go\"",
 		},
 	}
 
@@ -82,21 +84,21 @@ func main() {
 		&cli.BoolFlag{
 			Name:    "description",
 			Aliases: []string{"desc"},
-			Usage:   "Shows gtree description.",
+			Usage:   "show gtree CLI description.",
 		},
 	}
 
 	webFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:  "wsl",
-			Usage: "Specify this option if you are using WSL.",
+			Usage: "specify this option if you are using WSL.",
 		},
 	}
 
 	gocodeFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:  "godeps-to-tree",
-			Usage: "Outputs Go program to convert Go package dependency list to tree.",
+			Usage: "output Go program to convert Go package dependency list to tree.",
 		},
 	}
 
@@ -111,23 +113,25 @@ func main() {
 			{
 				Name:    "output",
 				Aliases: []string{"o", "out"},
-				Usage:   "Outputs tree from markdown. Let's try 'gtree template | gtree output'. Output format is tree or yaml or toml or json. Default tree.",
-				Flags:   append(commonFlags, outputFlags...),
-				Before:  notExistArgs,
-				Action:  actionOutput,
+				Usage: "Outputs tree from markdown.\n" +
+					"Let's try 'gtree template | gtree output'.",
+				Flags:  append(commonFlags, outputFlags...),
+				Before: notExistArgs,
+				Action: actionOutput,
 			},
 			{
 				Name:    "mkdir",
 				Aliases: []string{"m"},
-				Usage:   "Makes directories(and files) from markdown. It is possible to dry run. Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.",
-				Flags:   append(commonFlags, mkdirFlags...),
-				Before:  notExistArgs,
-				Action:  actionMkdir,
+				Usage: "Makes directories and files from markdown. It is possible to dry run.\n" +
+					"Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.",
+				Flags:  append(commonFlags, mkdirFlags...),
+				Before: notExistArgs,
+				Action: actionMkdir,
 			},
 			{
 				Name:    "template",
 				Aliases: []string{"t", "tmpl"},
-				Usage:   "Outputs markdown template.",
+				Usage:   "Outputs markdown template. use it to try out gtree CLI.",
 				Flags:   templateFlags,
 				Before:  notExistArgs,
 				Action:  actionTemplate,
@@ -151,7 +155,7 @@ func main() {
 			{
 				Name:    "version",
 				Aliases: []string{"v"},
-				Usage:   "Outputs gtree version.",
+				Usage:   "Prints the version.",
 				Before:  notExistArgs,
 				Action: func(c *cli.Context) error {
 					fmt.Printf("gtree version %s / revision %s\n", Version, Revision)
