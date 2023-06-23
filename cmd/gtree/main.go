@@ -131,7 +131,7 @@ func main() {
 			{
 				Name:    "template",
 				Aliases: []string{"t", "tmpl"},
-				Usage:   "Outputs markdown template. use it to try out gtree CLI.",
+				Usage:   "Outputs markdown template. Use it to try out gtree CLI.",
 				Flags:   templateFlags,
 				Before:  notExistArgs,
 				Action:  actionTemplate,
