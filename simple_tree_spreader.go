@@ -59,7 +59,11 @@ func (ds *defaultSpreaderSimple) spread(w io.Writer, roots []*Node) error {
 }
 
 func (*defaultSpreaderSimple) spreadBranch(current *Node) string {
-	ret := current.branch()
+	ret := current.name + "\n"
+	if !current.isRoot() {
+		ret = current.branch() + " " + current.name + "\n"
+	}
+
 	for _, child := range current.children {
 		ret += (*defaultSpreaderSimple)(nil).spreadBranch(child)
 	}
@@ -96,21 +100,26 @@ func (cs *colorizeSpreaderSimple) spread(w io.Writer, roots []*Node) error {
 }
 
 func (cs *colorizeSpreaderSimple) spreadBranch(current *Node) string {
-	cs.colorize(current)
-	ret := current.branch()
+	ret := ""
+	if current.isRoot() {
+		ret = cs.colorize(current) + "\n"
+	} else {
+		ret = current.branch() + " " + cs.colorize(current) + "\n"
+	}
+
 	for _, child := range current.children {
 		ret += cs.spreadBranch(child)
 	}
 	return ret
 }
 
-func (cs *colorizeSpreaderSimple) colorize(current *Node) {
+func (cs *colorizeSpreaderSimple) colorize(current *Node) string {
 	if cs.fileConsiderer.isFile(current) {
 		_ = cs.fileCounter.next()
-		current.name = cs.fileColor.Sprint(current.name)
+		return cs.fileColor.Sprint(current.name)
 	} else {
 		_ = cs.dirCounter.next()
-		current.name = cs.dirColor.Sprint(current.name)
+		return cs.dirColor.Sprint(current.name)
 	}
 }
 

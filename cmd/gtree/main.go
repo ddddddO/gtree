@@ -192,6 +192,9 @@ func actionOutput(c *cli.Context) error {
 		return exitErrOpts(err)
 	}
 	options := []gtree.Option{oi, oo}
+	if c.Bool("massive") {
+		options = append(options, gtree.WithMassive())
+	}
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
@@ -239,6 +242,9 @@ func actionMkdir(c *cli.Context) error {
 	}
 	oe := gtree.WithFileExtensions(c.StringSlice("extension"))
 	options := []gtree.Option{oi, oe}
+	if c.Bool("massive") {
+		options = append(options, gtree.WithMassive())
+	}
 
 	if c.Bool("dry-run") {
 		if err := outputWithValidation(in, options); err != nil {

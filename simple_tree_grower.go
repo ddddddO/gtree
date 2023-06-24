@@ -106,12 +106,6 @@ func (*defaultGrowerSimple) assembleBranchFinally(current, root *Node) {
 	if root != nil {
 		current.setPath(root.path(), current.path())
 	}
-
-	if current.isRoot() {
-		current.setBranch(current.name, "\n")
-	} else {
-		current.setBranch(current.branch(), " ", current.name, "\n")
-	}
 }
 
 func (dg *defaultGrowerSimple) enableValidation() {
