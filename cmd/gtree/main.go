@@ -38,9 +38,9 @@ func main() {
 			DefaultText: "tab spaces",
 		},
 		&cli.BoolFlag{
-			Name:        "massive",
-			Aliases:     []string{"m"},
-			Usage:       "set this option when there are very many blocks of markdown.",
+			Name:    "massive",
+			Aliases: []string{"m"},
+			Usage:   "set this option when there are very many blocks of markdown.",
 		},
 	}
 
