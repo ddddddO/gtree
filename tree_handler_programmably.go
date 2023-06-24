@@ -35,12 +35,10 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	if conf.massive {
-		tree := newTreePipeline(conf)
-		return tree.outputProgrammably(w, root, conf)
-	}
-
 	tree := newTreeSimple(conf)
+	if conf.massive {
+		tree = newTreePipeline(conf)
+	}
 	return tree.outputProgrammably(w, root, conf)
 }
 
@@ -66,12 +64,10 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	if conf.massive {
-		tree := newTreePipeline(conf)
-		return tree.makedirProgrammably(root, conf)
-	}
-
 	tree := newTreeSimple(conf)
+	if conf.massive {
+		tree = newTreePipeline(conf)
+	}
 	return tree.makedirProgrammably(root, conf)
 }
 
