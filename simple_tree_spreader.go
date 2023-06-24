@@ -26,19 +26,6 @@ func newSpreaderSimple(encode encode) spreaderSimple {
 	}
 }
 
-func newColorizeSpreaderSimple(fileExtensions []string) spreaderSimple {
-	return &colorizeSpreaderSimple{
-		defaultSpreaderSimple: &defaultSpreaderSimple{},
-
-		fileConsiderer: newFileConsiderer(fileExtensions),
-		fileColor:      color.New(color.Bold, color.FgHiCyan),
-		fileCounter:    newCounter(),
-
-		dirColor:   color.New(color.FgGreen),
-		dirCounter: newCounter(),
-	}
-}
-
 type encode int
 
 const (
@@ -76,59 +63,6 @@ func (*defaultSpreaderSimple) write(w io.Writer, in string) error {
 		return err
 	}
 	return buf.Flush()
-}
-
-type colorizeSpreaderSimple struct {
-	*defaultSpreaderSimple // NOTE: xxx
-
-	fileConsiderer *fileConsiderer
-	fileColor      *color.Color
-	fileCounter    *counter
-
-	dirColor   *color.Color
-	dirCounter *counter
-}
-
-func (cs *colorizeSpreaderSimple) spread(w io.Writer, roots []*Node) error {
-	ret := ""
-	for _, root := range roots {
-		cs.fileCounter.reset()
-		cs.dirCounter.reset()
-		ret += fmt.Sprintf("%s\n%s\n", cs.spreadBranch(root), cs.summary())
-	}
-	return cs.write(w, ret)
-}
-
-func (cs *colorizeSpreaderSimple) spreadBranch(current *Node) string {
-	ret := ""
-	if current.isRoot() {
-		ret = cs.colorize(current) + "\n"
-	} else {
-		ret = current.branch() + " " + cs.colorize(current) + "\n"
-	}
-
-	for _, child := range current.children {
-		ret += cs.spreadBranch(child)
-	}
-	return ret
-}
-
-func (cs *colorizeSpreaderSimple) colorize(current *Node) string {
-	if cs.fileConsiderer.isFile(current) {
-		_ = cs.fileCounter.next()
-		return cs.fileColor.Sprint(current.name)
-	} else {
-		_ = cs.dirCounter.next()
-		return cs.dirColor.Sprint(current.name)
-	}
-}
-
-func (cs *colorizeSpreaderSimple) summary() string {
-	return fmt.Sprintf(
-		"%d directories, %d files",
-		cs.dirCounter.current(),
-		cs.fileCounter.current(),
-	)
 }
 
 type jsonSpreaderSimple struct{}
@@ -236,10 +170,76 @@ func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
 	return yParent
 }
 
+func newColorizeSpreaderSimple(fileExtensions []string) spreaderSimple {
+	return &colorizeSpreaderSimple{
+		defaultSpreaderSimple: &defaultSpreaderSimple{},
+
+		fileConsiderer: newFileConsiderer(fileExtensions),
+		fileColor:      color.New(color.Bold, color.FgHiCyan),
+		fileCounter:    newCounter(),
+
+		dirColor:   color.New(color.FgGreen),
+		dirCounter: newCounter(),
+	}
+}
+
+type colorizeSpreaderSimple struct {
+	*defaultSpreaderSimple // NOTE: xxx
+
+	fileConsiderer *fileConsiderer
+	fileColor      *color.Color
+	fileCounter    *counter
+
+	dirColor   *color.Color
+	dirCounter *counter
+}
+
+func (cs *colorizeSpreaderSimple) spread(w io.Writer, roots []*Node) error {
+	ret := ""
+	for _, root := range roots {
+		cs.fileCounter.reset()
+		cs.dirCounter.reset()
+		ret += fmt.Sprintf("%s\n%s\n", cs.spreadBranch(root), cs.summary())
+	}
+	return cs.write(w, ret)
+}
+
+func (cs *colorizeSpreaderSimple) spreadBranch(current *Node) string {
+	ret := ""
+	if current.isRoot() {
+		ret = cs.colorize(current) + "\n"
+	} else {
+		ret = current.branch() + " " + cs.colorize(current) + "\n"
+	}
+
+	for _, child := range current.children {
+		ret += cs.spreadBranch(child)
+	}
+	return ret
+}
+
+func (cs *colorizeSpreaderSimple) colorize(current *Node) string {
+	if cs.fileConsiderer.isFile(current) {
+		_ = cs.fileCounter.next()
+		return cs.fileColor.Sprint(current.name)
+	} else {
+		_ = cs.dirCounter.next()
+		return cs.dirColor.Sprint(current.name)
+	}
+}
+
+func (cs *colorizeSpreaderSimple) summary() string {
+	return fmt.Sprintf(
+		"%d directories, %d files",
+		cs.dirCounter.current(),
+		cs.fileCounter.current(),
+	)
+}
+
 var (
 	_ spreaderSimple = (*defaultSpreaderSimple)(nil)
-	_ spreaderSimple = (*colorizeSpreaderSimple)(nil)
 	_ spreaderSimple = (*jsonSpreaderSimple)(nil)
 	_ spreaderSimple = (*yamlSpreaderSimple)(nil)
 	_ spreaderSimple = (*tomlSpreaderSimple)(nil)
+	_ spreaderSimple = (*colorizeSpreaderSimple)(nil)
 )

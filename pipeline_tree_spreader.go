@@ -29,12 +29,6 @@ func newSpreaderPipeline(encode encode) spreaderPipeline {
 	}
 }
 
-func newColorizeSpreaderPipeline(fileExtensions []string) spreaderPipeline {
-	return &colorizeSpreaderPipeline{
-		colorizeSpreaderSimple: newColorizeSpreaderSimple(fileExtensions).(*colorizeSpreaderSimple),
-	}
-}
-
 type defaultSpreaderPipeline struct {
 	*defaultSpreaderSimple
 	sync.Mutex
@@ -83,49 +77,6 @@ func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGrou
 			errc <- err
 		}
 	}
-}
-
-type colorizeSpreaderPipeline struct {
-	*colorizeSpreaderSimple
-}
-
-func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
-	errc := make(chan error, 1)
-
-	go func() {
-		defer close(errc)
-
-		bw := bufio.NewWriter(w)
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
-				}
-				cs.fileCounter.reset()
-				cs.dirCounter.reset()
-
-				if _, err := bw.WriteString(
-					fmt.Sprintf(
-						"%s\n%s\n",
-						cs.spreadBranch(root),
-						cs.summary()),
-				); err != nil {
-					errc <- err
-					return
-				}
-			}
-			if err := bw.Flush(); err != nil {
-				errc <- err
-				return
-			}
-		}
-	}()
-
-	return errc
 }
 
 type jsonSpreaderPipeline struct{}
@@ -215,10 +166,59 @@ func (*yamlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-ch
 	return errc
 }
 
+func newColorizeSpreaderPipeline(fileExtensions []string) spreaderPipeline {
+	return &colorizeSpreaderPipeline{
+		colorizeSpreaderSimple: newColorizeSpreaderSimple(fileExtensions).(*colorizeSpreaderSimple),
+	}
+}
+
+type colorizeSpreaderPipeline struct {
+	*colorizeSpreaderSimple
+}
+
+func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		bw := bufio.NewWriter(w)
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				cs.fileCounter.reset()
+				cs.dirCounter.reset()
+
+				if _, err := bw.WriteString(
+					fmt.Sprintf(
+						"%s\n%s\n",
+						cs.spreadBranch(root),
+						cs.summary()),
+				); err != nil {
+					errc <- err
+					return
+				}
+			}
+			if err := bw.Flush(); err != nil {
+				errc <- err
+				return
+			}
+		}
+	}()
+
+	return errc
+}
+
 var (
 	_ spreaderPipeline = (*defaultSpreaderPipeline)(nil)
-	_ spreaderPipeline = (*colorizeSpreaderPipeline)(nil)
 	_ spreaderPipeline = (*jsonSpreaderPipeline)(nil)
 	_ spreaderPipeline = (*yamlSpreaderPipeline)(nil)
 	_ spreaderPipeline = (*tomlSpreaderPipeline)(nil)
+	_ spreaderPipeline = (*colorizeSpreaderPipeline)(nil)
 )
