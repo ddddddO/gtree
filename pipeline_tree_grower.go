@@ -16,12 +16,6 @@ func newGrowerPipeline(
 	}
 }
 
-func newNopGrowerPipeline() growerPipeline {
-	return &nopGrowerPipeline{
-		nopGrowerSimple: newNopGrowerSimple().(*nopGrowerSimple),
-	}
-}
-
 type defaultGrowerPipeline struct {
 	*defaultGrowerSimple
 }
@@ -65,6 +59,12 @@ func (dg *defaultGrowerPipeline) worker(ctx context.Context, wg *sync.WaitGroup,
 			}
 			nodes <- root
 		}
+	}
+}
+
+func newNopGrowerPipeline() growerPipeline {
+	return &nopGrowerPipeline{
+		nopGrowerSimple: newNopGrowerSimple().(*nopGrowerSimple),
 	}
 }
 

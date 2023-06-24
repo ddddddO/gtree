@@ -13,18 +13,14 @@ func newGrowerSimple(
 	}
 }
 
-func newNopGrowerSimple() growerSimple {
-	return &nopGrowerSimple{}
-}
-
-type branchFormat struct {
-	directly, indirectly string
-}
-
 type defaultGrowerSimple struct {
 	lastNodeFormat        branchFormat
 	intermedialNodeFormat branchFormat
 	enabledValidation     bool
+}
+
+type branchFormat struct {
+	directly, indirectly string
 }
 
 func (dg *defaultGrowerSimple) grow(roots []*Node) error {
@@ -110,6 +106,10 @@ func (*defaultGrowerSimple) assembleBranchFinally(current, root *Node) {
 
 func (dg *defaultGrowerSimple) enableValidation() {
 	dg.enabledValidation = true
+}
+
+func newNopGrowerSimple() growerSimple {
+	return &nopGrowerSimple{}
 }
 
 type nopGrowerSimple struct{}
