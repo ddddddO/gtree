@@ -108,6 +108,21 @@ func TestMkdir(t *testing.T) {
 			},
 			wantErr: nil,
 		},
+		{
+			name: "case(succeeded/make directories and files/massive root)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root_j
+	- b.go
+	- bb.go
+		- lll`)),
+				options: []gtree.Option{
+					gtree.WithFileExtensions([]string{".go"}),
+					gtree.WithMassive(),
+				},
+			},
+			wantErr: nil,
+		},
 	}
 
 	for _, tt := range tests {

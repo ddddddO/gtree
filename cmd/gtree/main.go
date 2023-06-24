@@ -37,6 +37,11 @@ func main() {
 			Usage:       "set this option when the markdown indent is 4 spaces.",
 			DefaultText: "tab spaces",
 		},
+		&cli.BoolFlag{
+			Name:        "massive",
+			Aliases:     []string{"m"},
+			Usage:       "set this option when there are very many blocks of markdown.",
+		},
 	}
 
 	outputFlags := []cli.Flag{

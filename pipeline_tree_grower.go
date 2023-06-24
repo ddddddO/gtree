@@ -7,26 +7,22 @@ import (
 	"sync"
 )
 
-func newGrower(
+func newGrowerPipeline(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
 	enabledValidation bool,
-) grower {
-	return &defaultGrower{
+) growerPipeline {
+	return &defaultGrowerPipeline{
 		lastNodeFormat:        lastNodeFormat,
 		intermedialNodeFormat: intermedialNodeFormat,
 		enabledValidation:     enabledValidation,
 	}
 }
 
-func newNopGrower() grower {
-	return &nopGrower{}
+func newNopGrowerPipeline() growerPipeline {
+	return &nopGrowerPipeline{}
 }
 
-type branchFormat struct {
-	directly, indirectly string
-}
-
-type defaultGrower struct {
+type defaultGrowerPipeline struct {
 	lastNodeFormat        branchFormat
 	intermedialNodeFormat branchFormat
 	enabledValidation     bool
@@ -34,7 +30,7 @@ type defaultGrower struct {
 
 const workerGrowNum = 10
 
-func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
+func (dg *defaultGrowerPipeline) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
 	nodes := make(chan *Node)
 	errc := make(chan error, 1)
 
@@ -55,7 +51,7 @@ func (dg *defaultGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *
 	return nodes, errc
 }
 
-func (dg *defaultGrower) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, nodes chan<- *Node, errc chan<- error) {
+func (dg *defaultGrowerPipeline) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, nodes chan<- *Node, errc chan<- error) {
 	defer wg.Done()
 	for {
 		select {
@@ -74,7 +70,7 @@ func (dg *defaultGrower) worker(ctx context.Context, wg *sync.WaitGroup, roots <
 	}
 }
 
-func (dg *defaultGrower) assemble(current *Node) error {
+func (dg *defaultGrowerPipeline) assemble(current *Node) error {
 	if err := dg.assembleBranch(current); err != nil {
 		return err
 	}
@@ -87,7 +83,7 @@ func (dg *defaultGrower) assemble(current *Node) error {
 	return nil
 }
 
-func (dg *defaultGrower) assembleBranch(current *Node) error {
+func (dg *defaultGrowerPipeline) assembleBranch(current *Node) error {
 	current.clean() // 例えば、MkdirProgrammably funcでrootノードを使いまわすと、前回func実行時に形成されたノードの枝が残ったまま追記されてしまうため。
 
 	dg.assembleBranchDirectly(current)
@@ -108,7 +104,7 @@ func (dg *defaultGrower) assembleBranch(current *Node) error {
 	return nil
 }
 
-func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
+func (dg *defaultGrowerPipeline) assembleBranchDirectly(current *Node) {
 	if current == nil || current.isRoot() {
 		return
 	}
@@ -122,7 +118,7 @@ func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
 	}
 }
 
-func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
+func (dg *defaultGrowerPipeline) assembleBranchIndirectly(current, parent *Node) {
 	if current == nil || parent == nil || current.isRoot() {
 		return
 	}
@@ -136,7 +132,7 @@ func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
 	}
 }
 
-func (*defaultGrower) assembleBranchFinally(current, root *Node) {
+func (*defaultGrowerPipeline) assembleBranchFinally(current, root *Node) {
 	if current == nil {
 		return
 	}
@@ -146,13 +142,13 @@ func (*defaultGrower) assembleBranchFinally(current, root *Node) {
 	}
 }
 
-func (dg *defaultGrower) enableValidation() {
+func (dg *defaultGrowerPipeline) enableValidation() {
 	dg.enabledValidation = true
 }
 
-type nopGrower struct{}
+type nopGrowerPipeline struct{}
 
-func (*nopGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
+func (*nopGrowerPipeline) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
 	nodes := make(chan *Node)
 	errc := make(chan error, 1)
 
@@ -179,9 +175,9 @@ func (*nopGrower) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <
 	return nodes, errc
 }
 
-func (*nopGrower) enableValidation() {}
+func (*nopGrowerPipeline) enableValidation() {}
 
 var (
-	_ grower = (*defaultGrower)(nil)
-	_ grower = (*nopGrower)(nil)
+	_ growerPipeline = (*defaultGrowerPipeline)(nil)
+	_ growerPipeline = (*nopGrowerPipeline)(nil)
 )

@@ -469,6 +469,126 @@ a	prev tab
 				err: nil,
 			},
 		},
+		{
+			// 複数Rootブロックを指定すべきだが、実装上、出力の順番が保証されないため1Rootで実施
+			name: "case(succeeded/when massive root)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
+		- c`)),
+				options: []gtree.Option{
+					gtree.WithMassive(),
+				},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+a
+└── b
+    └── c
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			// 複数Rootブロックを指定すべきだが、実装上、出力の順番が保証されないため1Rootで実施
+			name: "case(succeeded/when massive root and dryrun)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
+		- z
+		- c
+	- y`)),
+				options: []gtree.Option{
+					gtree.WithMassive(),
+					gtree.WithDryRun(),
+					gtree.WithFileExtensions([]string{"c"}),
+				},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+a
+├── b
+│   ├── z
+│   └── c
+└── y
+
+4 directories, 1 files
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			// 複数Rootブロックを指定すべきだが、実装上、出力の順番が保証されないため1Rootで実施
+			name: "case(succeeded/when massive root and json)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
+		- c`)),
+				options: []gtree.Option{
+					gtree.WithMassive(),
+					gtree.WithEncodeJSON(),
+				},
+			},
+			out: out{
+				output: `{"value":"a","children":[{"value":"b","children":[{"value":"c","children":null}]}]}` + "\n",
+				err:    nil,
+			},
+		},
+		{
+			// 複数Rootブロックを指定すべきだが、実装上、出力の順番が保証されないため1Rootで実施
+			name: "case(succeeded/when massive root and yaml)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
+		- c`)),
+				options: []gtree.Option{
+					gtree.WithMassive(),
+					gtree.WithEncodeYAML(),
+				},
+			},
+			out: out{
+				output: strings.TrimSpace(`
+value: a
+children:
+    - value: b
+      children:
+        - value: c
+          children: []
+`) + "\n",
+				err: nil,
+			},
+		},
+		{
+			// 複数Rootブロックを指定すべきだが、実装上、出力の順番が保証されないため1Rootで実施
+			name: "case(succeeded/when massive root and toml)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- b
+		- c`)),
+				options: []gtree.Option{
+					gtree.WithMassive(),
+					gtree.WithEncodeTOML(),
+				},
+			},
+			out: out{
+				output: strings.TrimSpace(`
+value = 'a'
+
+[[children]]
+value = 'b'
+
+[[children.children]]
+value = 'c'
+children = []
+`) + "\n",
+				err: nil,
+			},
+		},
 	}
 
 	for _, tt := range tests {

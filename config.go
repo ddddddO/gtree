@@ -5,6 +5,7 @@ type config struct {
 	intermedialNodeFormat branchFormat
 
 	space          spaceType
+	massive        bool
 	encode         encode
 	dryrun         bool
 	fileExtensions []string
@@ -20,8 +21,9 @@ func newConfig(options []Option) (*config, error) {
 			directly:   "├──",
 			indirectly: "│   ",
 		},
-		space:  spacesTab,
-		encode: encodeDefault,
+		space:   spacesTab,
+		massive: false,
+		encode:  encodeDefault,
 	}
 	for _, opt := range options {
 		if opt == nil {
@@ -68,6 +70,14 @@ func WithBranchFormatLastNode(directly, indirectly string) Option {
 	return func(c *config) error {
 		c.lastNodeFormat.directly = directly
 		c.lastNodeFormat.indirectly = indirectly
+		return nil
+	}
+}
+
+// WithMassive returns function for large amount roots.
+func WithMassive() Option {
+	return func(c *config) error {
+		c.massive = true
 		return nil
 	}
 }

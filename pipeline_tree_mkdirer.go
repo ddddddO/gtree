@@ -9,19 +9,19 @@ import (
 	"sync"
 )
 
-func newMkdirer(fileExtensions []string) mkdirer {
-	return &defaultMkdirer{
+func newMkdirerPipeline(fileExtensions []string) mkdirerPipeline {
+	return &defaultMkdirerPipeline{
 		fileConsiderer: newFileConsiderer(fileExtensions),
 	}
 }
 
-type defaultMkdirer struct {
+type defaultMkdirerPipeline struct {
 	fileConsiderer *fileConsiderer
 }
 
 const workerMkdirNum = 10
 
-func (dm *defaultMkdirer) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
+func (dm *defaultMkdirerPipeline) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -38,7 +38,7 @@ func (dm *defaultMkdirer) mkdir(ctx context.Context, roots <-chan *Node) <-chan 
 	return errc
 }
 
-func (dm *defaultMkdirer) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, errc chan<- error) {
+func (dm *defaultMkdirerPipeline) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, errc chan<- error) {
 	defer wg.Done()
 	for {
 		select {
@@ -60,14 +60,14 @@ func (dm *defaultMkdirer) worker(ctx context.Context, wg *sync.WaitGroup, roots 
 	}
 }
 
-func (*defaultMkdirer) isExistRoot(root *Node) bool {
+func (*defaultMkdirerPipeline) isExistRoot(root *Node) bool {
 	if _, err := os.Stat(root.path()); !os.IsNotExist(err) {
 		return true
 	}
 	return false
 }
 
-func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
+func (dm *defaultMkdirerPipeline) makeDirectoriesAndFiles(current *Node) error {
 	if dm.fileConsiderer.isFile(current) {
 		dir := strings.TrimSuffix(current.path(), current.name)
 		if err := dm.mkdirAll(dir); err != nil {
@@ -90,11 +90,11 @@ func (dm *defaultMkdirer) makeDirectoriesAndFiles(current *Node) error {
 
 const permission = 0o755
 
-func (*defaultMkdirer) mkdirAll(dir string) error {
+func (*defaultMkdirerPipeline) mkdirAll(dir string) error {
 	return os.MkdirAll(dir, permission)
 }
 
-func (*defaultMkdirer) mkfile(path string) error {
+func (*defaultMkdirerPipeline) mkfile(path string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -102,4 +102,4 @@ func (*defaultMkdirer) mkfile(path string) error {
 	return f.Close()
 }
 
-var _ mkdirer = (*defaultMkdirer)(nil)
+var _ mkdirerPipeline = (*defaultMkdirerPipeline)(nil)

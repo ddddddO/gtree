@@ -3,7 +3,6 @@
 package gtree
 
 import (
-	"context"
 	"io"
 )
 
@@ -14,15 +13,13 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 		return err
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	if conf.massive {
+		tree := newTreePipeline(conf)
+		return tree.output(w, r, conf)
+	}
 
-	tree := newTree(conf)
-	splitStream, errcsl := split(ctx, r)
-	rootStream, errcr := newRootGenerator(conf.space).generate(ctx, splitStream)
-	growStream, errcg := tree.grow(ctx, rootStream)
-	errcs := tree.spread(ctx, w, growStream)
-	return handlePipelineErr(errcsl, errcr, errcg, errcs)
+	tree := newTreeSimple(conf)
+	return tree.output(w, r, conf)
 }
 
 // Mkdir makes directories.
@@ -32,13 +29,11 @@ func Mkdir(r io.Reader, options ...Option) error {
 		return err
 	}
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	if conf.massive {
+		tree := newTreePipeline(conf)
+		return tree.makedir(r, conf)
+	}
 
-	tree := newTree(conf)
-	splitStream, errcsl := split(ctx, r)
-	rootStream, errcr := newRootGenerator(conf.space).generate(ctx, splitStream)
-	growStream, errcg := tree.grow(ctx, rootStream)
-	errcm := tree.mkdir(ctx, growStream)
-	return handlePipelineErr(errcsl, errcr, errcg, errcm)
+	tree := newTreeSimple(conf)
+	return tree.makedir(r, conf)
 }

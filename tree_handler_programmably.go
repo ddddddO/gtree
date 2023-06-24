@@ -3,11 +3,8 @@
 package gtree
 
 import (
-	"context"
 	"errors"
 	"io"
-
-	"github.com/fatih/color"
 )
 
 var (
@@ -38,18 +35,13 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	if conf.massive {
+		tree := newTreePipeline(conf)
+		return tree.outputProgrammably(w, root, conf)
+	}
 
-	rootStream := make(chan *Node)
-	go func() {
-		defer close(rootStream)
-		rootStream <- root
-	}()
-	tree := newTree(conf)
-	growStream, errcg := tree.grow(ctx, rootStream)
-	errcs := tree.spread(ctx, w, growStream)
-	return handlePipelineErr(errcg, errcs)
+	tree := newTreeSimple(conf)
+	return tree.outputProgrammably(w, root, conf)
 }
 
 var (
@@ -74,29 +66,20 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 
 	idxCounter.reset()
 
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	rootStream := make(chan *Node)
-	go func() {
-		defer close(rootStream)
-		rootStream <- root
-	}()
-	tree := newTree(conf)
-	tree.enableValidation()
-	// when detect invalid node name, return error. process end.
-	growStream, errcg := tree.grow(ctx, rootStream)
-	if conf.dryrun {
-		// when detected no invalid node name, output tree.
-		errcs := tree.spread(ctx, color.Output, growStream)
-		return handlePipelineErr(errcg, errcs)
+	if conf.massive {
+		tree := newTreePipeline(conf)
+		return tree.makedirProgrammably(root, conf)
 	}
-	// when detected no invalid node name, no output tree.
-	errcm := tree.mkdir(ctx, growStream)
-	return handlePipelineErr(errcg, errcm)
+
+	tree := newTreeSimple(conf)
+	return tree.makedirProgrammably(root, conf)
 }
 
-func (t *tree) enableValidation() {
+func (t *treeSimple) enableValidation() {
+	t.grower.enableValidation()
+}
+
+func (t *treePipeline) enableValidation() {
 	t.grower.enableValidation()
 }
 
