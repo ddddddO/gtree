@@ -56,6 +56,17 @@ root
 			wantErr: nil,
 		},
 		{
+			name:    "case(succeeded/massive)",
+			root:    prepare(),
+			options: []gtree.Option{gtree.WithMassive()},
+			want: strings.TrimPrefix(`
+root
+└── child 1
+    └── child 2
+`, "\n"),
+			wantErr: nil,
+		},
+		{
 			name: "case(succeeded / added same name)",
 			root: prepareSameNameChild(),
 			want: strings.TrimPrefix(`

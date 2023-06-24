@@ -20,6 +20,11 @@ func TestMkdirProgrammably(t *testing.T) {
 			root: prepare(),
 		},
 		{
+			name:    "case(succeeded/massive)",
+			root:    prepare_a(),
+			options: []gtree.Option{gtree.WithMassive()},
+		},
+		{
 			name:    "case(not root)",
 			root:    prepareNotRoot(),
 			wantErr: gtree.ErrNotRoot,
@@ -94,5 +99,11 @@ func prepareExistRoot(t *testing.T) *gtree.Node {
 
 	root := gtree.NewRoot(name)
 	root.Add("temp")
+	return root
+}
+
+func prepare_a() *gtree.Node {
+	root := gtree.NewRoot("root8")
+	root.Add("child 1").Add("child 2")
 	return root
 }

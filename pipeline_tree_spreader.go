@@ -15,21 +15,21 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func newSpreader(encode encode) spreader {
+func newSpreaderPipeline(encode encode) spreaderPipeline {
 	switch encode {
 	case encodeJSON:
-		return &jsonSpreader{}
+		return &jsonSpreaderPipeline{}
 	case encodeYAML:
-		return &yamlSpreader{}
+		return &yamlSpreaderPipeline{}
 	case encodeTOML:
-		return &tomlSpreader{}
+		return &tomlSpreaderPipeline{}
 	default:
-		return &defaultSpreader{}
+		return &defaultSpreaderPipeline{}
 	}
 }
 
-func newColorizeSpreader(fileExtensions []string) spreader {
-	return &colorizeSpreader{
+func newColorizeSpreaderPipeline(fileExtensions []string) spreaderPipeline {
+	return &colorizeSpreaderPipeline{
 		fileConsiderer: newFileConsiderer(fileExtensions),
 		fileColor:      color.New(color.Bold, color.FgHiCyan),
 		fileCounter:    newCounter(),
@@ -39,22 +39,13 @@ func newColorizeSpreader(fileExtensions []string) spreader {
 	}
 }
 
-type encode int
-
-const (
-	encodeDefault encode = iota
-	encodeJSON
-	encodeYAML
-	encodeTOML
-)
-
-type defaultSpreader struct {
+type defaultSpreaderPipeline struct {
 	sync.Mutex
 }
 
 const workerSpreadNum = 10
 
-func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+func (ds *defaultSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -76,7 +67,7 @@ func (ds *defaultSpreader) spread(ctx context.Context, w io.Writer, roots <-chan
 	return errc
 }
 
-func (ds *defaultSpreader) worker(ctx context.Context, wg *sync.WaitGroup, bw *bufio.Writer, roots <-chan *Node, errc chan<- error) {
+func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGroup, bw *bufio.Writer, roots <-chan *Node, errc chan<- error) {
 	defer wg.Done()
 	for {
 		select {
@@ -97,19 +88,19 @@ func (ds *defaultSpreader) worker(ctx context.Context, wg *sync.WaitGroup, bw *b
 	}
 }
 
-func (*defaultSpreader) spreadBranch(current *Node) string {
+func (*defaultSpreaderPipeline) spreadBranch(current *Node) string {
 	ret := current.name + "\n"
 	if !current.isRoot() {
 		ret = current.branch() + " " + current.name + "\n"
 	}
 
 	for _, child := range current.children {
-		ret += (*defaultSpreader)(nil).spreadBranch(child)
+		ret += (*defaultSpreaderPipeline)(nil).spreadBranch(child)
 	}
 	return ret
 }
 
-type colorizeSpreader struct {
+type colorizeSpreaderPipeline struct {
 	fileConsiderer *fileConsiderer
 	fileColor      *color.Color
 	fileCounter    *counter
@@ -118,7 +109,7 @@ type colorizeSpreader struct {
 	dirCounter *counter
 }
 
-func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -157,7 +148,7 @@ func (cs *colorizeSpreader) spread(ctx context.Context, w io.Writer, roots <-cha
 	return errc
 }
 
-func (cs *colorizeSpreader) spreadBranch(current *Node) string {
+func (cs *colorizeSpreaderPipeline) spreadBranch(current *Node) string {
 	ret := ""
 	if current.isRoot() {
 		ret = cs.colorize(current) + "\n"
@@ -171,7 +162,7 @@ func (cs *colorizeSpreader) spreadBranch(current *Node) string {
 	return ret
 }
 
-func (cs *colorizeSpreader) colorize(current *Node) string {
+func (cs *colorizeSpreaderPipeline) colorize(current *Node) string {
 	if cs.fileConsiderer.isFile(current) {
 		_ = cs.fileCounter.next()
 		return cs.fileColor.Sprint(current.name)
@@ -181,7 +172,7 @@ func (cs *colorizeSpreader) colorize(current *Node) string {
 	}
 }
 
-func (cs *colorizeSpreader) summary() string {
+func (cs *colorizeSpreaderPipeline) summary() string {
 	return fmt.Sprintf(
 		"%d directories, %d files",
 		cs.dirCounter.current(),
@@ -189,9 +180,9 @@ func (cs *colorizeSpreader) summary() string {
 	)
 }
 
-type jsonSpreader struct{}
+type jsonSpreaderPipeline struct{}
 
-func (*jsonSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+func (*jsonSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -218,31 +209,9 @@ func (*jsonSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node
 	return errc
 }
 
-type jsonNode struct {
-	Name     string      `json:"value"`
-	Children []*jsonNode `json:"children"`
-}
+type tomlSpreaderPipeline struct{}
 
-func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
-	if jParent == nil {
-		jParent = &jsonNode{Name: parent.name}
-	}
-	if !parent.hasChild() {
-		return jParent
-	}
-
-	jParent.Children = make([]*jsonNode, len(parent.children))
-	for i := range parent.children {
-		jParent.Children[i] = &jsonNode{Name: parent.children[i].name}
-		_ = parent.children[i].toJSONNode(jParent.Children[i])
-	}
-
-	return jParent
-}
-
-type tomlSpreader struct{}
-
-func (*tomlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+func (*tomlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -269,31 +238,9 @@ func (*tomlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node
 	return errc
 }
 
-type tomlNode struct {
-	Name     string      `toml:"value"`
-	Children []*tomlNode `toml:"children"`
-}
+type yamlSpreaderPipeline struct{}
 
-func (parent *Node) toTOMLNode(tParent *tomlNode) *tomlNode {
-	if tParent == nil {
-		tParent = &tomlNode{Name: parent.name}
-	}
-	if !parent.hasChild() {
-		return tParent
-	}
-
-	tParent.Children = make([]*tomlNode, len(parent.children))
-	for i := range parent.children {
-		tParent.Children[i] = &tomlNode{Name: parent.children[i].name}
-		_ = parent.children[i].toTOMLNode(tParent.Children[i])
-	}
-
-	return tParent
-}
-
-type yamlSpreader struct{}
-
-func (*yamlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+func (*yamlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -320,32 +267,10 @@ func (*yamlSpreader) spread(ctx context.Context, w io.Writer, roots <-chan *Node
 	return errc
 }
 
-type yamlNode struct {
-	Name     string      `yaml:"value"`
-	Children []*yamlNode `yaml:"children"`
-}
-
-func (parent *Node) toYAMLNode(yParent *yamlNode) *yamlNode {
-	if yParent == nil {
-		yParent = &yamlNode{Name: parent.name}
-	}
-	if !parent.hasChild() {
-		return yParent
-	}
-
-	yParent.Children = make([]*yamlNode, len(parent.children))
-	for i := range parent.children {
-		yParent.Children[i] = &yamlNode{Name: parent.children[i].name}
-		_ = parent.children[i].toYAMLNode(yParent.Children[i])
-	}
-
-	return yParent
-}
-
 var (
-	_ spreader = (*defaultSpreader)(nil)
-	_ spreader = (*colorizeSpreader)(nil)
-	_ spreader = (*jsonSpreader)(nil)
-	_ spreader = (*yamlSpreader)(nil)
-	_ spreader = (*tomlSpreader)(nil)
+	_ spreaderPipeline = (*defaultSpreaderPipeline)(nil)
+	_ spreaderPipeline = (*colorizeSpreaderPipeline)(nil)
+	_ spreaderPipeline = (*jsonSpreaderPipeline)(nil)
+	_ spreaderPipeline = (*yamlSpreaderPipeline)(nil)
+	_ spreaderPipeline = (*tomlSpreaderPipeline)(nil)
 )

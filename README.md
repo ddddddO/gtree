@@ -158,6 +158,7 @@ OPTIONS:
    --file value, -f value  specify the path to markdown file. (default: stdin)
    --two-spaces, --ts      set this option when the markdown indent is 2 spaces. (default: tab spaces)
    --four-spaces, --fs     set this option when the markdown indent is 4 spaces. (default: tab spaces)
+   --massive, -m           set this option when there are very many blocks of markdown. (default: false)
    --json, -j              set this option when outputting JSON. (default: tree)
    --yaml, -y              set this option when outputting YAML. (default: tree)
    --toml, -t              set this option when outputting TOML. (default: tree)
@@ -400,6 +401,7 @@ OPTIONS:
    --file value, -f value  specify the path to markdown file. (default: stdin)
    --two-spaces, --ts      set this option when the markdown indent is 2 spaces. (default: tab spaces)
    --four-spaces, --fs     set this option when the markdown indent is 4 spaces. (default: tab spaces)
+   --massive, -m           set this option when there are very many blocks of markdown. (default: false)
    --dry-run, -d, --dr     dry run. detects node that is invalid for directory generation.
       the order of the output and made directories does not always match. (default: false)
    --extension value, -e value, --ext value [ --extension value, -e value, --ext value ]  set this option if you want to create file instead of directory.
@@ -951,27 +953,31 @@ func main() {
 
 # Process
 
+> **Note**<br>
+> This process is for the Massive Roots mode.
 
-## e.g. [*gtree/tree_handler.go*](https://github.com/ddddddO/gtree/blob/master/tree_handler.go)
+## e.g. [*gtree/pipeline_tree.go*](https://github.com/ddddddO/gtree/blob/master/pipeline_tree.go)
 
 <image src="./process.svg" width=100%>
 
 
 # Performance
 
-
 > **Warning**<br>
 > Depends on the environment.
 
-- Comparison before and after software architecture was changed.
-- In the case of few Roots, previous architecture is faster in execution😅
-- However, for multiple Roots, execution speed tends to be faster💪✨
+- Comparison simple implementation and pipeline implementation.
+- In the case of few Roots, simple implementation is faster in execution!
+	- Use this one by default.
+- However, for multiple Roots, pipeline implementation execution speed tends to be faster💪✨
+	- In the CLI, it is available by specifying `--massive`.
+	- In the Go program, it is available by specifying `WithMassive` func.
 
 <image src="./performance.svg" width=100%>
 
 <details><summary>Benchmark log</summary>
 
-## Before pipelining
+## Simple implementation
 ```console
 $ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
 goos: linux
@@ -991,7 +997,7 @@ PASS
 ok      command-line-arguments  68.124s
 ```
 
-## After pipelining
+## Pipeline implementation
 ```console
 $ go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
 goos: linux
