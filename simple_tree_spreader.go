@@ -94,7 +94,7 @@ func (cs *colorizeSpreaderSimple) spread(w io.Writer, roots []*Node) error {
 	for _, root := range roots {
 		cs.fileCounter.reset()
 		cs.dirCounter.reset()
-		ret += fmt.Sprintf("%s\n%s", cs.spreadBranch(root), cs.summary())
+		ret += fmt.Sprintf("%s\n%s\n", cs.spreadBranch(root), cs.summary())
 	}
 	return cs.write(w, ret)
 }
@@ -125,7 +125,7 @@ func (cs *colorizeSpreaderSimple) colorize(current *Node) string {
 
 func (cs *colorizeSpreaderSimple) summary() string {
 	return fmt.Sprintf(
-		"%d directories, %d files\n",
+		"%d directories, %d files",
 		cs.dirCounter.current(),
 		cs.fileCounter.current(),
 	)

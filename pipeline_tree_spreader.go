@@ -10,7 +10,6 @@ import (
 	"io"
 	"sync"
 
-	"github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
 	"gopkg.in/yaml.v3"
 )
@@ -30,12 +29,7 @@ func newSpreaderPipeline(encode encode) spreaderPipeline {
 
 func newColorizeSpreaderPipeline(fileExtensions []string) spreaderPipeline {
 	return &colorizeSpreaderPipeline{
-		fileConsiderer: newFileConsiderer(fileExtensions),
-		fileColor:      color.New(color.Bold, color.FgHiCyan),
-		fileCounter:    newCounter(),
-
-		dirColor:   color.New(color.FgGreen),
-		dirCounter: newCounter(),
+		colorizeSpreaderSimple: newColorizeSpreaderSimple(fileExtensions).(*colorizeSpreaderSimple),
 	}
 }
 
@@ -101,12 +95,7 @@ func (*defaultSpreaderPipeline) spreadBranch(current *Node) string {
 }
 
 type colorizeSpreaderPipeline struct {
-	fileConsiderer *fileConsiderer
-	fileColor      *color.Color
-	fileCounter    *counter
-
-	dirColor   *color.Color
-	dirCounter *counter
+	*colorizeSpreaderSimple
 }
 
 func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
@@ -146,38 +135,6 @@ func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roo
 	}()
 
 	return errc
-}
-
-func (cs *colorizeSpreaderPipeline) spreadBranch(current *Node) string {
-	ret := ""
-	if current.isRoot() {
-		ret = cs.colorize(current) + "\n"
-	} else {
-		ret = current.branch() + " " + cs.colorize(current) + "\n"
-	}
-
-	for _, child := range current.children {
-		ret += cs.spreadBranch(child)
-	}
-	return ret
-}
-
-func (cs *colorizeSpreaderPipeline) colorize(current *Node) string {
-	if cs.fileConsiderer.isFile(current) {
-		_ = cs.fileCounter.next()
-		return cs.fileColor.Sprint(current.name)
-	} else {
-		_ = cs.dirCounter.next()
-		return cs.dirColor.Sprint(current.name)
-	}
-}
-
-func (cs *colorizeSpreaderPipeline) summary() string {
-	return fmt.Sprintf(
-		"%d directories, %d files",
-		cs.dirCounter.current(),
-		cs.fileCounter.current(),
-	)
 }
 
 type jsonSpreaderPipeline struct{}
