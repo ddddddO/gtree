@@ -23,7 +23,9 @@ func newSpreaderPipeline(encode encode) spreaderPipeline {
 	case encodeTOML:
 		return &tomlSpreaderPipeline{}
 	default:
-		return &defaultSpreaderPipeline{}
+		return &defaultSpreaderPipeline{
+			defaultSpreaderSimple: &defaultSpreaderSimple{},
+		}
 	}
 }
 
@@ -34,6 +36,7 @@ func newColorizeSpreaderPipeline(fileExtensions []string) spreaderPipeline {
 }
 
 type defaultSpreaderPipeline struct {
+	*defaultSpreaderSimple
 	sync.Mutex
 }
 
@@ -80,18 +83,6 @@ func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGrou
 			errc <- err
 		}
 	}
-}
-
-func (*defaultSpreaderPipeline) spreadBranch(current *Node) string {
-	ret := current.name + "\n"
-	if !current.isRoot() {
-		ret = current.branch() + " " + current.name + "\n"
-	}
-
-	for _, child := range current.children {
-		ret += (*defaultSpreaderPipeline)(nil).spreadBranch(child)
-	}
-	return ret
 }
 
 type colorizeSpreaderPipeline struct {
