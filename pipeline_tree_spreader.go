@@ -10,7 +10,6 @@ import (
 	"io"
 	"sync"
 
-	"github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
 	"gopkg.in/yaml.v3"
 )
@@ -24,22 +23,14 @@ func newSpreaderPipeline(encode encode) spreaderPipeline {
 	case encodeTOML:
 		return &tomlSpreaderPipeline{}
 	default:
-		return &defaultSpreaderPipeline{}
-	}
-}
-
-func newColorizeSpreaderPipeline(fileExtensions []string) spreaderPipeline {
-	return &colorizeSpreaderPipeline{
-		fileConsiderer: newFileConsiderer(fileExtensions),
-		fileColor:      color.New(color.Bold, color.FgHiCyan),
-		fileCounter:    newCounter(),
-
-		dirColor:   color.New(color.FgGreen),
-		dirCounter: newCounter(),
+		return &defaultSpreaderPipeline{
+			defaultSpreaderSimple: &defaultSpreaderSimple{},
+		}
 	}
 }
 
 type defaultSpreaderPipeline struct {
+	*defaultSpreaderSimple
 	sync.Mutex
 }
 
@@ -86,98 +77,6 @@ func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGrou
 			errc <- err
 		}
 	}
-}
-
-func (*defaultSpreaderPipeline) spreadBranch(current *Node) string {
-	ret := current.name + "\n"
-	if !current.isRoot() {
-		ret = current.branch() + " " + current.name + "\n"
-	}
-
-	for _, child := range current.children {
-		ret += (*defaultSpreaderPipeline)(nil).spreadBranch(child)
-	}
-	return ret
-}
-
-type colorizeSpreaderPipeline struct {
-	fileConsiderer *fileConsiderer
-	fileColor      *color.Color
-	fileCounter    *counter
-
-	dirColor   *color.Color
-	dirCounter *counter
-}
-
-func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
-	errc := make(chan error, 1)
-
-	go func() {
-		defer close(errc)
-
-		bw := bufio.NewWriter(w)
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
-				}
-				cs.fileCounter.reset()
-				cs.dirCounter.reset()
-
-				if _, err := bw.WriteString(
-					fmt.Sprintf(
-						"%s\n%s\n",
-						cs.spreadBranch(root),
-						cs.summary()),
-				); err != nil {
-					errc <- err
-					return
-				}
-			}
-			if err := bw.Flush(); err != nil {
-				errc <- err
-				return
-			}
-		}
-	}()
-
-	return errc
-}
-
-func (cs *colorizeSpreaderPipeline) spreadBranch(current *Node) string {
-	ret := ""
-	if current.isRoot() {
-		ret = cs.colorize(current) + "\n"
-	} else {
-		ret = current.branch() + " " + cs.colorize(current) + "\n"
-	}
-
-	for _, child := range current.children {
-		ret += cs.spreadBranch(child)
-	}
-	return ret
-}
-
-func (cs *colorizeSpreaderPipeline) colorize(current *Node) string {
-	if cs.fileConsiderer.isFile(current) {
-		_ = cs.fileCounter.next()
-		return cs.fileColor.Sprint(current.name)
-	} else {
-		_ = cs.dirCounter.next()
-		return cs.dirColor.Sprint(current.name)
-	}
-}
-
-func (cs *colorizeSpreaderPipeline) summary() string {
-	return fmt.Sprintf(
-		"%d directories, %d files",
-		cs.dirCounter.current(),
-		cs.fileCounter.current(),
-	)
 }
 
 type jsonSpreaderPipeline struct{}
@@ -267,10 +166,59 @@ func (*yamlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-ch
 	return errc
 }
 
+func newColorizeSpreaderPipeline(fileExtensions []string) spreaderPipeline {
+	return &colorizeSpreaderPipeline{
+		colorizeSpreaderSimple: newColorizeSpreaderSimple(fileExtensions).(*colorizeSpreaderSimple),
+	}
+}
+
+type colorizeSpreaderPipeline struct {
+	*colorizeSpreaderSimple
+}
+
+func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+	errc := make(chan error, 1)
+
+	go func() {
+		defer close(errc)
+
+		bw := bufio.NewWriter(w)
+	BREAK:
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case root, ok := <-roots:
+				if !ok {
+					break BREAK
+				}
+				cs.fileCounter.reset()
+				cs.dirCounter.reset()
+
+				if _, err := bw.WriteString(
+					fmt.Sprintf(
+						"%s\n%s\n",
+						cs.spreadBranch(root),
+						cs.summary()),
+				); err != nil {
+					errc <- err
+					return
+				}
+			}
+			if err := bw.Flush(); err != nil {
+				errc <- err
+				return
+			}
+		}
+	}()
+
+	return errc
+}
+
 var (
 	_ spreaderPipeline = (*defaultSpreaderPipeline)(nil)
-	_ spreaderPipeline = (*colorizeSpreaderPipeline)(nil)
 	_ spreaderPipeline = (*jsonSpreaderPipeline)(nil)
 	_ spreaderPipeline = (*yamlSpreaderPipeline)(nil)
 	_ spreaderPipeline = (*tomlSpreaderPipeline)(nil)
+	_ spreaderPipeline = (*colorizeSpreaderPipeline)(nil)
 )

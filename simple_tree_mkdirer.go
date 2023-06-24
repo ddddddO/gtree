@@ -60,6 +60,8 @@ func (dm *defaultMkdirerSimple) makeDirectoriesAndFiles(current *Node) error {
 	return nil
 }
 
+const permission = 0o755
+
 func (*defaultMkdirerSimple) mkdirAll(dir string) error {
 	return os.MkdirAll(dir, permission)
 }
