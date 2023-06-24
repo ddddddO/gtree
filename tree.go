@@ -4,7 +4,7 @@ package gtree
 
 import "io"
 
-type tree interface {
+type iTree interface {
 	output(io.Writer, io.Reader, *config) error
 	outputProgrammably(io.Writer, *Node, *config) error
 	makedir(io.Reader, *config) error

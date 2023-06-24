@@ -13,12 +13,10 @@ func Output(w io.Writer, r io.Reader, options ...Option) error {
 		return err
 	}
 
-	if conf.massive {
-		tree := newTreePipeline(conf)
-		return tree.output(w, r, conf)
-	}
-
 	tree := newTreeSimple(conf)
+	if conf.massive {
+		tree = newTreePipeline(conf)
+	}
 	return tree.output(w, r, conf)
 }
 
@@ -29,11 +27,9 @@ func Mkdir(r io.Reader, options ...Option) error {
 		return err
 	}
 
-	if conf.massive {
-		tree := newTreePipeline(conf)
-		return tree.makedir(r, conf)
-	}
-
 	tree := newTreeSimple(conf)
+	if conf.massive {
+		tree = newTreePipeline(conf)
+	}
 	return tree.makedir(r, conf)
 }
