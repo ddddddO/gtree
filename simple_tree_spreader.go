@@ -184,7 +184,7 @@ func newColorizeSpreaderSimple(fileExtensions []string) spreaderSimple {
 }
 
 type colorizeSpreaderSimple struct {
-	*defaultSpreaderSimple // NOTE: xxx
+	*defaultSpreaderSimple
 
 	fileConsiderer *fileConsiderer
 	fileColor      *color.Color
