@@ -68,7 +68,7 @@ func newNopGrowerPipeline() growerPipeline {
 	}
 }
 
-type nopGrowerPipeline struct{
+type nopGrowerPipeline struct {
 	*nopGrowerSimple
 }
 
