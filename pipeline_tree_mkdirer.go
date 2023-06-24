@@ -4,19 +4,17 @@ package gtree
 
 import (
 	"context"
-	"os"
-	"strings"
 	"sync"
 )
 
 func newMkdirerPipeline(fileExtensions []string) mkdirerPipeline {
 	return &defaultMkdirerPipeline{
-		fileConsiderer: newFileConsiderer(fileExtensions),
+		defaultMkdirerSimple: newMkdirerSimple(fileExtensions).(*defaultMkdirerSimple),
 	}
 }
 
 type defaultMkdirerPipeline struct {
-	fileConsiderer *fileConsiderer
+	*defaultMkdirerSimple
 }
 
 const workerMkdirNum = 10
@@ -48,7 +46,7 @@ func (dm *defaultMkdirerPipeline) worker(ctx context.Context, wg *sync.WaitGroup
 			if !ok {
 				return
 			}
-			if dm.isExistRoot(root) {
+			if dm.isExistRoot([]*Node{root}) {
 				errc <- ErrExistPath
 				return
 			}
@@ -58,48 +56,6 @@ func (dm *defaultMkdirerPipeline) worker(ctx context.Context, wg *sync.WaitGroup
 			}
 		}
 	}
-}
-
-func (*defaultMkdirerPipeline) isExistRoot(root *Node) bool {
-	if _, err := os.Stat(root.path()); !os.IsNotExist(err) {
-		return true
-	}
-	return false
-}
-
-func (dm *defaultMkdirerPipeline) makeDirectoriesAndFiles(current *Node) error {
-	if dm.fileConsiderer.isFile(current) {
-		dir := strings.TrimSuffix(current.path(), current.name)
-		if err := dm.mkdirAll(dir); err != nil {
-			return err
-		}
-		return dm.mkfile(current.path())
-	}
-
-	if !current.hasChild() {
-		return dm.mkdirAll(current.path())
-	}
-
-	for _, child := range current.children {
-		if err := dm.makeDirectoriesAndFiles(child); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-const permission = 0o755
-
-func (*defaultMkdirerPipeline) mkdirAll(dir string) error {
-	return os.MkdirAll(dir, permission)
-}
-
-func (*defaultMkdirerPipeline) mkfile(path string) error {
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	return f.Close()
 }
 
 var _ mkdirerPipeline = (*defaultMkdirerPipeline)(nil)
