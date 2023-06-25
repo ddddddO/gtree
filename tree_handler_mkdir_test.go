@@ -40,6 +40,19 @@ func TestMkdir(t *testing.T) {
 			wantErr: gtree.ErrExistPath,
 		},
 		{
+			name: "case(dry-run/massive/path exist err)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- root_b
+	- b
+	- bb
+		- lll
+	-ff`)),
+				options: []gtree.Option{gtree.WithDryRun(), gtree.WithMassive()},
+			},
+			wantErr: gtree.ErrExistPath,
+		},
+		{
 			name: "case(dry-run/invalid node name)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
