@@ -321,6 +321,54 @@ a
 			},
 		},
 		{
+			name: "case(succeeded/multi root/massive)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g
+- a
+	- i
+		- u
+			- k
+			- kk
+		- t
+	- e
+		- o
+	- g`)),
+				options: []gtree.Option{gtree.WithMassive()},
+			},
+			out: out{
+				output: strings.TrimPrefix(`
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+a
+├── i
+│   ├── u
+│   │   ├── k
+│   │   └── kk
+│   └── t
+├── e
+│   └── o
+└── g
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
 			name: "case(empty node name)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
