@@ -455,6 +455,21 @@ a
 			},
 		},
 		{
+			name: "case(input format error)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	 - b`)),
+				options: []gtree.Option{
+					gtree.WithDryRun(),
+				},
+			},
+			out: out{
+				output: "",
+				err:    gtree.ExportErrIncorrectFormat("	 - b"),
+			},
+		},
+		{
 			name: "case(succeeded/tab on the way)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
