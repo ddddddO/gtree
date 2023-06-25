@@ -132,7 +132,7 @@ COMMANDS:
    mkdir, m           Makes directories and files from markdown. It is possible to dry run.
                       Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
    template, t, tmpl  Outputs markdown template. Use it to try out gtree CLI.
-   web, w, www        Opens "Tree Maker" in your browser. If it doesn't open, it will display the url.
+   web, w, www        Opens "Tree Maker" in your browser and shows the URL in terminal.
    gocode, gc, code   Outputs a sample Go program calling "gtree" package.
    version, v         Prints the version.
    help, h            Shows a list of commands or help for one command
