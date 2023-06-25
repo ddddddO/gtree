@@ -358,6 +358,19 @@ a
 			},
 		},
 		{
+			name: "case(massive/bufio.Scanner err)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(fmt.Sprintf(`
+- a
+	- %s`, strings.Repeat("a", 64*1024)))),
+				options: []gtree.Option{gtree.WithMassive()},
+			},
+			out: out{
+				output: "",
+				err:    bufio.ErrTooLong,
+			},
+		},
+		{
 			name: "case(succeeded/input markdown file)",
 			in: in{
 				input: prepareMarkdownFile(t)},
