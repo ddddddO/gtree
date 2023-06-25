@@ -28,12 +28,8 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 		return ErrNotRoot
 	}
 
-	conf, err := newConfig(options)
-	if err != nil {
-		return err
-	}
-
 	idxCounter.reset()
+	conf := newConfig(options)
 
 	tree := newTreeSimple(conf)
 	if conf.massive {
@@ -57,12 +53,8 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 		return ErrNotRoot
 	}
 
-	conf, err := newConfig(options)
-	if err != nil {
-		return err
-	}
-
 	idxCounter.reset()
+	conf := newConfig(options)
 
 	tree := newTreeSimple(conf)
 	if conf.massive {

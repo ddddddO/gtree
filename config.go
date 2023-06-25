@@ -11,7 +11,7 @@ type config struct {
 	fileExtensions []string
 }
 
-func newConfig(options []Option) (*config, error) {
+func newConfig(options []Option) *config {
 	c := &config{
 		lastNodeFormat: branchFormat{
 			directly:   "└──",
@@ -29,95 +29,82 @@ func newConfig(options []Option) (*config, error) {
 		if opt == nil {
 			continue
 		}
-
-		if err := opt(c); err != nil {
-			return nil, err
-		}
+		opt(c)
 	}
-	return c, nil
+	return c
 }
 
 // Option is functional options pattern
-type Option func(*config) error
+type Option func(*config)
 
 // WithIndentTwoSpaces returns function for two spaces indent input.
 func WithIndentTwoSpaces() Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.space = spacesTwo
-		return nil
 	}
 }
 
 // WithIndentFourSpaces returns function for four spaces indent input.
 func WithIndentFourSpaces() Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.space = spacesFour
-		return nil
 	}
 }
 
 // WithBranchFormatIntermedialNode returns function for branch format.
 func WithBranchFormatIntermedialNode(directly, indirectly string) Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.intermedialNodeFormat.directly = directly
 		c.intermedialNodeFormat.indirectly = indirectly
-		return nil
 	}
 }
 
 // WithBranchFormatLastNode returns function for branch format.
 func WithBranchFormatLastNode(directly, indirectly string) Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.lastNodeFormat.directly = directly
 		c.lastNodeFormat.indirectly = indirectly
-		return nil
 	}
 }
 
 // WithMassive returns function for large amount roots.
 func WithMassive() Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.massive = true
-		return nil
 	}
 }
 
 // WithEncodeJSON returns function for output json format.
 func WithEncodeJSON() Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.encode = encodeJSON
-		return nil
 	}
 }
 
 // WithEncodeYAML returns function for output yaml format.
 func WithEncodeYAML() Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.encode = encodeYAML
-		return nil
 	}
 }
 
 // WithEncodeTOML returns function for output toml format.
 func WithEncodeTOML() Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.encode = encodeTOML
-		return nil
 	}
 }
 
 // WithDryRun returns function for dry run. Detects node that is invalid for directory generation.
 func WithDryRun() Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.dryrun = true
-		return nil
 	}
 }
 
 // WithFileExtensions returns function for creating as a file instead of a directory.
 func WithFileExtensions(extensions []string) Option {
-	return func(c *config) error {
+	return func(c *config) {
 		c.fileExtensions = extensions
-		return nil
 	}
 }
