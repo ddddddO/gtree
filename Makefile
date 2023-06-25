@@ -18,7 +18,8 @@ cover: sweep
 	go tool cover -html=coverage.out -o coverage.html
 
 bench: sweep
-	go test -benchmem -bench Benchmark -benchtime 100x tree_handler_benchmark_test.go
+	go test -benchmem -bench Benchmark -benchtime 100x benchmark_simple_test.go
+	go test -benchmem -bench Benchmark -benchtime 100x benchmark_pipeline_test.go
 
 cyclo: sweep
 	gocyclo .
