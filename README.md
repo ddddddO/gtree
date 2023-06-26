@@ -91,6 +91,19 @@ $ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTRE
 $ apk add --allow-untrusted gtree.apk
 ```
 
+### Nix
+```console
+$ nix-env -i gtree
+or
+$ nix-shell -p gtree
+```
+
+### MacPorts
+```console
+$ port install gtree
+```
+
+### Using [**aqua**](https://aquaproj.github.io/)
 
 ### [Docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree)
 
