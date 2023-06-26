@@ -8,119 +8,47 @@ import (
 )
 
 func BenchmarkOutput_pipeline_singleRoot(b *testing.B) {
-	r := strings.NewReader(singleRootP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(singleRootP)
-	}
+	baseBenchmarkWithMassive(singleRootP, b)
 }
 
 func BenchmarkOutput_pipeline_tenRoots(b *testing.B) {
-	r := strings.NewReader(tenRootsP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(tenRootsP)
-	}
+	baseBenchmarkWithMassive(tenRootsP, b)
 }
 
 func BenchmarkOutput_pipeline_fiftyRoots(b *testing.B) {
-	r := strings.NewReader(fiftyRootsP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(fiftyRootsP)
-	}
+	baseBenchmarkWithMassive(fiftyRootsP, b)
 }
 
 func BenchmarkOutput_pipeline_hundredRoots(b *testing.B) {
-	r := strings.NewReader(hundredRootsP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(hundredRootsP)
-	}
+	baseBenchmarkWithMassive(hundredRootsP, b)
 }
 
 func BenchmarkOutput_pipeline_fiveHundredsRoots(b *testing.B) {
-	r := strings.NewReader(fiveHundredsRootsP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(fiveHundredsRootsP)
-	}
+	baseBenchmarkWithMassive(fiveHundredsRootsP, b)
 }
 
 func BenchmarkOutput_pipeline_thousandRoots(b *testing.B) {
-	r := strings.NewReader(thousandRootsP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(thousandRootsP)
-	}
+	baseBenchmarkWithMassive(thousandRootsP, b)
 }
 
 func BenchmarkOutput_pipeline_3000Roots(b *testing.B) {
-	r := strings.NewReader(threeThousandRootsP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(threeThousandRootsP)
-	}
+	baseBenchmarkWithMassive(threeThousandRootsP, b)
 }
 
 func BenchmarkOutput_pipeline_6000Roots(b *testing.B) {
-	r := strings.NewReader(sixThousandRootsP)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(sixThousandRootsP)
-	}
+	baseBenchmarkWithMassive(sixThousandRootsP, b)
 }
 
 func BenchmarkOutput_pipeline_10000Roots(b *testing.B) {
-	r := strings.NewReader(tenThousandRootsP)
+	baseBenchmarkWithMassive(tenThousandRootsP, b)
+}
+
+// func BenchmarkOutput_pipeline_20000Roots(b *testing.B) {
+// 	baseBenchmarkWithMassive(twentyThousandRootsP, b)
+// }
+
+func baseBenchmarkWithMassive(roots string, b *testing.B) {
+	r := strings.NewReader(roots)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		w := &strings.Builder{}
@@ -129,23 +57,9 @@ func BenchmarkOutput_pipeline_10000Roots(b *testing.B) {
 			b.Fatal(err)
 		}
 		b.StopTimer()
-		r.Reset(tenThousandRootsP)
+		r.Reset(roots)
 	}
 }
-
-// func BenchmarkOutput_pipeline_20000Roots(b *testing.B) {
-// 	r := strings.NewReader(twentyThousandRootsP)
-// 	b.ResetTimer()
-// 	for i := 0; i < b.N; i++ {
-// 		w := &strings.Builder{}
-// 		b.StartTimer()
-// 		if err := gtree.Output(w, r, gtree.WithMassive()); err != nil {
-// 			b.Fatal(err)
-// 		}
-// 		b.StopTimer()
-// 		r.Reset(twentyThousandRootsP)
-// 	}
-// }
 
 var (
 	singleRootP          = singleP

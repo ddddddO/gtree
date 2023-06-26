@@ -8,145 +8,59 @@ import (
 )
 
 func BenchmarkOutput_singleRoot(b *testing.B) {
-	r := strings.NewReader(singleRoot)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(singleRoot)
-	}
+	baseBenchmark(singleRoot, b)
 }
 
 func BenchmarkOutput_tenRoots(b *testing.B) {
-	r := strings.NewReader(tenRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(tenRoots)
-	}
+	baseBenchmark(tenRoots, b)
 }
 
 func BenchmarkOutput_fiftyRoots(b *testing.B) {
-	r := strings.NewReader(fiftyRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(fiftyRoots)
-	}
+	baseBenchmark(fiftyRoots, b)
 }
 
 func BenchmarkOutput_hundredRoots(b *testing.B) {
-	r := strings.NewReader(hundredRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(hundredRoots)
-	}
+	baseBenchmark(hundredRoots, b)
 }
 
 func BenchmarkOutput_fiveHundredsRoots(b *testing.B) {
-	r := strings.NewReader(fiveHundredsRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(fiveHundredsRoots)
-	}
+	baseBenchmark(fiveHundredsRoots, b)
 }
 
 func BenchmarkOutput_thousandRoots(b *testing.B) {
-	r := strings.NewReader(thousandRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(thousandRoots)
-	}
+	baseBenchmark(thousandRoots, b)
 }
 
 func BenchmarkOutput_3000Roots(b *testing.B) {
-	r := strings.NewReader(threeThousandRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(threeThousandRoots)
-	}
+	baseBenchmark(threeThousandRoots, b)
 }
 
 func BenchmarkOutput_6000Roots(b *testing.B) {
-	r := strings.NewReader(sixThousandRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(sixThousandRoots)
-	}
+	baseBenchmark(sixThousandRoots, b)
 }
 
 func BenchmarkOutput_10000Roots(b *testing.B) {
-	r := strings.NewReader(tenThousandRoots)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		w := &strings.Builder{}
-		b.StartTimer()
-		if err := gtree.Output(w, r); err != nil {
-			b.Fatal(err)
-		}
-		b.StopTimer()
-		r.Reset(tenThousandRoots)
-	}
+	baseBenchmark(tenThousandRoots, b)
 }
 
 // NOTE: ベンチマーク取得でタイムアウトになったため。条件を合わせるためpipeline側もコメントアウト
 // func BenchmarkOutput_20000Roots(b *testing.B) {
-// 	r := strings.NewReader(twentyThousandRoots)
-// 	b.ResetTimer()
-// 	for i := 0; i < b.N; i++ {
-// 		w := &strings.Builder{}
-// 		b.StartTimer()
-// 		if err := gtree.Output(w, r); err != nil {
-// 			b.Fatal(err)
-// 		}
-// 		b.StopTimer()
-// 		r.Reset(twentyThousandRoots)
-// 	}
+// 	baseBenchmark(twentyThousandRoots, b)
 // }
+
+func baseBenchmark(roots string, b *testing.B) {
+	r := strings.NewReader(roots)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		w := &strings.Builder{}
+		b.StartTimer()
+		if err := gtree.Output(w, r); err != nil {
+			b.Fatal(err)
+		}
+		b.StopTimer()
+		r.Reset(roots)
+	}
+}
 
 var (
 	singleRoot          = single
