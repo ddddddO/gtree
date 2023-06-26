@@ -2,10 +2,10 @@ package gtree_test
 
 import (
 	"fmt"
-	"os"
 	"testing"
 
 	"github.com/ddddddO/gtree"
+	tu "github.com/ddddddO/gtree/testutil"
 )
 
 func TestMkdirProgrammably(t *testing.T) {
@@ -17,30 +17,30 @@ func TestMkdirProgrammably(t *testing.T) {
 	}{
 		{
 			name: "case(succeeded)",
-			root: prepare(),
+			root: tu.Prepare(),
 		},
 		{
 			name:    "case(succeeded/massive)",
-			root:    prepare_a(),
+			root:    tu.Prepare_a(),
 			options: []gtree.Option{gtree.WithMassive()},
 		},
 		{
 			name:    "case(not root)",
-			root:    prepareNotRoot(),
+			root:    tu.PrepareNotRoot(),
 			wantErr: gtree.ErrNotRoot,
 		},
 		{
 			name:    "case(nil node)",
-			root:    prepareNilNode(),
+			root:    tu.PrepareNilNode(),
 			wantErr: gtree.ErrNilNode,
 		},
 		{
 			name: "case(succeeded)",
-			root: prepareMultiNode(),
+			root: tu.PrepareMultiNode(),
 		},
 		{
 			name: "case(dry run/invalid node name)",
-			root: prepareInvalidNodeName(),
+			root: tu.PrepareInvalidNodeName(),
 			options: []gtree.Option{
 				gtree.WithDryRun(),
 			},
@@ -48,7 +48,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		},
 		{
 			name: "case(dry run/succeeded)",
-			root: prepareMultiNode(),
+			root: tu.PrepareMultiNode(),
 			options: []gtree.Option{
 				gtree.WithDryRun(),
 			},
@@ -56,7 +56,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		},
 		{
 			name: "case(dry run/specified file/succeeded)",
-			root: prepareMultiNode(),
+			root: tu.PrepareMultiNode(),
 			options: []gtree.Option{
 				gtree.WithDryRun(),
 				gtree.WithFileExtensions([]string{"child 3", "child 5", "child 7", "child 8"}),
@@ -65,12 +65,12 @@ func TestMkdirProgrammably(t *testing.T) {
 		},
 		{
 			name:    "case(not dry run/invalid node name)",
-			root:    prepareInvalidNodeName(),
+			root:    tu.PrepareInvalidNodeName(),
 			wantErr: fmt.Errorf("invalid node name: %s", "chi/ld 4"),
 		},
 		{
 			name:    "case(root already exists)",
-			root:    prepareExistRoot(t),
+			root:    tu.PrepareExistRoot(t),
 			wantErr: gtree.ErrExistPath,
 		},
 	}
@@ -88,22 +88,4 @@ func TestMkdirProgrammably(t *testing.T) {
 			}
 		})
 	}
-}
-
-func prepareExistRoot(t *testing.T) *gtree.Node {
-	name := "gtreetest"
-
-	if err := os.MkdirAll(name, 0o755); err != nil {
-		t.Fatal(err)
-	}
-
-	root := gtree.NewRoot(name)
-	root.Add("temp")
-	return root
-}
-
-func prepare_a() *gtree.Node {
-	root := gtree.NewRoot("root8")
-	root.Add("child 1").Add("child 2")
-	return root
 }

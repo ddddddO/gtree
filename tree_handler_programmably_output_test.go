@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/ddddddO/gtree"
+	tu "github.com/ddddddO/gtree/testutil"
 )
 
 func Example() {
@@ -47,7 +48,7 @@ func TestOutputProgrammably(t *testing.T) {
 	}{
 		{
 			name: "case(succeeded)",
-			root: prepare(),
+			root: tu.Prepare(),
 			want: strings.TrimPrefix(`
 root
 └── child 1
@@ -57,7 +58,7 @@ root
 		},
 		{
 			name:    "case(succeeded/massive)",
-			root:    prepare(),
+			root:    tu.Prepare(),
 			options: []gtree.Option{gtree.WithMassive()},
 			want: strings.TrimPrefix(`
 root
@@ -68,7 +69,7 @@ root
 		},
 		{
 			name: "case(succeeded / added same name)",
-			root: prepareSameNameChild(),
+			root: tu.PrepareSameNameChild(),
 			want: strings.TrimPrefix(`
 root
 └── child 1
@@ -79,19 +80,19 @@ root
 		},
 		{
 			name:    "case(not root)",
-			root:    prepareNotRoot(),
+			root:    tu.PrepareNotRoot(),
 			want:    "",
 			wantErr: gtree.ErrNotRoot,
 		},
 		{
 			name:    "case(nil node)",
-			root:    prepareNilNode(),
+			root:    tu.PrepareNilNode(),
 			want:    "",
 			wantErr: gtree.ErrNilNode,
 		},
 		{
 			name: "case(succeeded / branch format)",
-			root: prepareMultiNode(),
+			root: tu.PrepareMultiNode(),
 			options: []gtree.Option{
 				gtree.WithBranchFormatIntermedialNode("+--", ":   "),
 				gtree.WithBranchFormatLastNode("+--", "    "),
@@ -110,7 +111,7 @@ root1
 		},
 		{
 			name:    "case(succeeded / output json)",
-			root:    prepareMultiNode(),
+			root:    tu.PrepareMultiNode(),
 			options: []gtree.Option{gtree.WithEncodeJSON()},
 			want: strings.TrimPrefix(`
 {"value":"root1","children":[{"value":"child 1","children":[{"value":"child 2","children":[{"value":"child 3","children":null},{"value":"child 4","children":[{"value":"child 5","children":null},{"value":"child 6","children":[{"value":"child 7","children":null}]}]}]}]},{"value":"child 8","children":null}]}
@@ -118,7 +119,7 @@ root1
 		},
 		{
 			name:    "case(succeeded / output yaml)",
-			root:    prepareMultiNode(),
+			root:    tu.PrepareMultiNode(),
 			options: []gtree.Option{gtree.WithEncodeYAML()},
 			want: strings.TrimPrefix(`
 value: root1
@@ -143,7 +144,7 @@ children:
 		},
 		{
 			name:    "case(succeeded / output toml)",
-			root:    prepareMultiNode(),
+			root:    tu.PrepareMultiNode(),
 			options: []gtree.Option{gtree.WithEncodeTOML()},
 			want: strings.TrimPrefix(`
 value = 'root1'
@@ -196,48 +197,4 @@ children = []
 			}
 		})
 	}
-}
-
-func prepare() *gtree.Node {
-	root := gtree.NewRoot("root")
-	root.Add("child 1").Add("child 2")
-	return root
-}
-
-func prepareSameNameChild() *gtree.Node {
-	root := gtree.NewRoot("root")
-	root.Add("child 1").Add("child 2")
-	root.Add("child 1").Add("child 3")
-	return root
-}
-
-func prepareNotRoot() *gtree.Node {
-	root := gtree.NewRoot("root")
-	child1 := root.Add("child 1")
-	return child1
-}
-
-func prepareNilNode() *gtree.Node {
-	var node *gtree.Node
-	return node
-}
-
-func prepareMultiNode() *gtree.Node {
-	var root *gtree.Node = gtree.NewRoot("root1")
-	root.Add("child 1").Add("child 2").Add("child 3")
-	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("child 4")
-	child4.Add("child 5")
-	child4.Add("child 6").Add("child 7")
-	root.Add("child 8")
-	return root
-}
-
-func prepareInvalidNodeName() *gtree.Node {
-	var root *gtree.Node = gtree.NewRoot("root1")
-	root.Add("child 1").Add("child 2").Add("child 3")
-	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("chi/ld 4")
-	child4.Add("child 5")
-	child4.Add("child 6").Add("child 7")
-	root.Add("child 8")
-	return root
 }

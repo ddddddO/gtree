@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/ddddddO/gtree"
+	tu "github.com/ddddddO/gtree/testutil"
 	"go.uber.org/goleak"
 )
 
@@ -426,7 +427,7 @@ a
 		{
 			name: "case(succeeded/input markdown file)",
 			in: in{
-				input: prepareMarkdownFile(t)},
+				input: tu.PrepareMarkdownFile(t)},
 			out: out{
 				output: strings.TrimPrefix(`
 a
@@ -695,15 +696,6 @@ children = []
 			}
 		})
 	}
-}
-
-func prepareMarkdownFile(t *testing.T) *os.File {
-	const testfilepath = "./testdata/sample6.md"
-	file, err := os.Open(testfilepath)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return file
 }
 
 func TestOutput_encodeJSON(t *testing.T) {
