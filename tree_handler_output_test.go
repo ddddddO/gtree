@@ -11,7 +11,12 @@ import (
 	"testing"
 
 	"github.com/ddddddO/gtree"
+	"go.uber.org/goleak"
 )
+
+func TestMain(m *testing.M) {
+	goleak.VerifyTestMain(m)
+}
 
 type in struct {
 	input   io.Reader
