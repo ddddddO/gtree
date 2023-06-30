@@ -1,11 +1,14 @@
 package gtree
 
+import "context"
+
 type config struct {
 	lastNodeFormat        branchFormat
 	intermedialNodeFormat branchFormat
 
 	space          spaceType
 	massive        bool
+	ctx            context.Context
 	encode         encode
 	dryrun         bool
 	fileExtensions []string
@@ -68,9 +71,14 @@ func WithBranchFormatLastNode(directly, indirectly string) Option {
 }
 
 // WithMassive returns function for large amount roots.
-func WithMassive() Option {
+func WithMassive(ctx context.Context) Option {
 	return func(c *config) {
 		c.massive = true
+
+		if ctx == nil {
+			ctx = context.Background()
+		}
+		c.ctx = ctx
 	}
 }
 

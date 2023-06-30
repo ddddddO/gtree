@@ -54,18 +54,18 @@ func newTreePipeline(conf *config) iTree {
 }
 
 func (t *treePipeline) output(w io.Writer, r io.Reader, conf *config) error {
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(conf.ctx)
 	defer cancel()
 
 	splitStream, errcsl := split(ctx, r)
 	rootStream, errcr := newRootGeneratorPipeline(conf.space).generate(ctx, splitStream)
 	growStream, errcg := t.grow(ctx, rootStream)
 	errcs := t.spread(ctx, w, growStream)
-	return t.handlePipelineErr(errcsl, errcr, errcg, errcs)
+	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcs)
 }
 
 func (t *treePipeline) outputProgrammably(w io.Writer, root *Node, conf *config) error {
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(conf.ctx)
 	defer cancel()
 
 	rootStream := make(chan *Node)
@@ -75,22 +75,22 @@ func (t *treePipeline) outputProgrammably(w io.Writer, root *Node, conf *config)
 	}()
 	growStream, errcg := t.grow(ctx, rootStream)
 	errcs := t.spread(ctx, w, growStream)
-	return t.handlePipelineErr(errcg, errcs)
+	return t.handlePipelineErr(ctx, errcg, errcs)
 }
 
 func (t *treePipeline) makedir(r io.Reader, conf *config) error {
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(conf.ctx)
 	defer cancel()
 
 	splitStream, errcsl := split(ctx, r)
 	rootStream, errcr := newRootGeneratorPipeline(conf.space).generate(ctx, splitStream)
 	growStream, errcg := t.grow(ctx, rootStream)
 	errcm := t.mkdir(ctx, growStream)
-	return t.handlePipelineErr(errcsl, errcr, errcg, errcm)
+	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcm)
 }
 
 func (t *treePipeline) makedirProgrammably(root *Node, conf *config) error {
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(conf.ctx)
 	defer cancel()
 
 	rootStream := make(chan *Node)
@@ -104,11 +104,11 @@ func (t *treePipeline) makedirProgrammably(root *Node, conf *config) error {
 	if conf.dryrun {
 		// when detected no invalid node name, output tree.
 		errcs := t.spread(ctx, color.Output, growStream)
-		return t.handlePipelineErr(errcg, errcs)
+		return t.handlePipelineErr(ctx, errcg, errcs)
 	}
 	// when detected no invalid node name, no output tree.
 	errcm := t.mkdir(ctx, growStream)
-	return t.handlePipelineErr(errcg, errcm)
+	return t.handlePipelineErr(ctx, errcg, errcm)
 }
 
 // 関心事は各ノードの枝の形成
@@ -141,17 +141,22 @@ func (t *treePipeline) mkdir(ctx context.Context, roots <-chan *Node) <-chan err
 }
 
 // パイプラインの全ステージで最初のエラーを返却
-func (*treePipeline) handlePipelineErr(echs ...<-chan error) error {
-	eg, _ := errgroup.WithContext(context.TODO())
+func (*treePipeline) handlePipelineErr(ctx context.Context, echs ...<-chan error) error {
+	eg, ectx := errgroup.WithContext(ctx)
 	for i := range echs {
 		i := i
 		eg.Go(func() error {
-			for e := range echs[i] {
-				if e != nil {
-					return e
+			for {
+				select {
+				case err := <-echs[i]:
+					if err != nil {
+						return err
+					}
+					return nil
+				case <-ectx.Done():
+					return ectx.Err()
 				}
 			}
-			return nil
 		})
 	}
 	return eg.Wait()

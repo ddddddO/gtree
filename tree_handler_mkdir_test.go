@@ -1,6 +1,7 @@
 package gtree_test
 
 import (
+	"context"
 	"errors"
 	"strings"
 	"testing"
@@ -48,7 +49,7 @@ func TestMkdir(t *testing.T) {
 	- bb
 		- lll
 	-ff`)),
-				options: []gtree.Option{gtree.WithMassive()},
+				options: []gtree.Option{gtree.WithMassive(context.Background())},
 			},
 			wantErr: gtree.ErrExistPath,
 		},
@@ -131,7 +132,7 @@ func TestMkdir(t *testing.T) {
 		- lll`)),
 				options: []gtree.Option{
 					gtree.WithFileExtensions([]string{".go"}),
-					gtree.WithMassive(),
+					gtree.WithMassive(context.Background()),
 				},
 			},
 			wantErr: nil,

@@ -1,6 +1,7 @@
 package testutil
 
 import (
+	"context"
 	"strings"
 	"testing"
 
@@ -8,7 +9,7 @@ import (
 )
 
 func BaseBenchmarkWithMassive(roots string, b *testing.B) {
-	BaseBenchmark(roots, b, gtree.WithMassive())
+	BaseBenchmark(roots, b, gtree.WithMassive(context.Background()))
 }
 
 func BaseBenchmark(roots string, b *testing.B, options ...gtree.Option) {

@@ -74,7 +74,9 @@ func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGrou
 			_, err := bw.WriteString(ret)
 			ds.Unlock()
 
-			errc <- err
+			if err != nil {
+				errc <- err
+			}
 		}
 	}
 }

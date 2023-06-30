@@ -1,6 +1,7 @@
 package gtree_test
 
 import (
+	"context"
 	"fmt"
 	"testing"
 
@@ -22,7 +23,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		{
 			name:    "case(succeeded/massive)",
 			root:    tu.Prepare_a(),
-			options: []gtree.Option{gtree.WithMassive()},
+			options: []gtree.Option{gtree.WithMassive(context.Background())},
 		},
 		{
 			name:    "case(not root)",
