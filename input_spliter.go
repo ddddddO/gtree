@@ -20,30 +20,29 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 			close(errc)
 		}()
 
-		for {
+		block := ""
+		for sc.Scan() {
 			select {
 			case <-ctx.Done():
+				errc <- ctx.Err()
 				return
 			default:
-				block := ""
-				for sc.Scan() {
-					l := sc.Text()
-					if isRootBlockBeginning(l) {
-						if len(block) != 0 {
-							blockc <- block
-						}
-						block = ""
+				l := sc.Text()
+				if isRootBlockBeginning(l) {
+					if len(block) != 0 {
+						blockc <- block
 					}
-					block += fmt.Sprintln(l)
+					block = ""
 				}
-				if err := sc.Err(); err != nil {
-					errc <- err
-					return
-				}
-				blockc <- block // 最後のRootブロック送出
-				return
+				block += fmt.Sprintln(l)
 			}
 		}
+		if err := sc.Err(); err != nil {
+			errc <- err
+			return
+		}
+		blockc <- block // 最後のRootブロック送出
+		return
 	}()
 
 	return blockc, errc

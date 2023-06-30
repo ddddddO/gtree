@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -193,7 +194,8 @@ func actionOutput(c *cli.Context) error {
 	}
 	options := []gtree.Option{oi, oo}
 	if c.Bool("massive") {
-		options = append(options, gtree.WithMassive())
+		// TODO: ほぼいらないけど、タイムアウト値をフラグで取ってcontext.WithTimeout渡すようにするでもいいかも
+		options = append(options, gtree.WithMassive(context.Background()))
 	}
 
 	markdownPath := c.Path("file")
@@ -243,7 +245,7 @@ func actionMkdir(c *cli.Context) error {
 	oe := gtree.WithFileExtensions(c.StringSlice("extension"))
 	options := []gtree.Option{oi, oe}
 	if c.Bool("massive") {
-		options = append(options, gtree.WithMassive())
+		options = append(options, gtree.WithMassive(context.Background()))
 	}
 
 	if c.Bool("dry-run") {

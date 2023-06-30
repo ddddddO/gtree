@@ -3,6 +3,7 @@ package gtree_test
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -348,7 +349,7 @@ a
 	- e
 		- o
 	- g`)),
-				options: []gtree.Option{gtree.WithMassive()},
+				options: []gtree.Option{gtree.WithMassive(context.Background())},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -417,7 +418,7 @@ a
 				input: strings.NewReader(strings.TrimSpace(fmt.Sprintf(`
 - a
 	- %s`, strings.Repeat("a", 64*1024)))),
-				options: []gtree.Option{gtree.WithMassive()},
+				options: []gtree.Option{gtree.WithMassive(context.Background())},
 			},
 			out: out{
 				output: "",
@@ -560,7 +561,7 @@ a	prev tab
 	- b
 		- c`)),
 				options: []gtree.Option{
-					gtree.WithMassive(),
+					gtree.WithMassive(context.Background()),
 				},
 			},
 			out: out{
@@ -583,7 +584,7 @@ a
 		- c
 	- y`)),
 				options: []gtree.Option{
-					gtree.WithMassive(),
+					gtree.WithMassive(context.Background()),
 					gtree.WithDryRun(),
 					gtree.WithFileExtensions([]string{"c"}),
 				},
@@ -610,7 +611,7 @@ a
 	- b
 		- c`)),
 				options: []gtree.Option{
-					gtree.WithMassive(),
+					gtree.WithMassive(context.Background()),
 					gtree.WithEncodeJSON(),
 				},
 			},
@@ -628,7 +629,7 @@ a
 	- b
 		- c`)),
 				options: []gtree.Option{
-					gtree.WithMassive(),
+					gtree.WithMassive(context.Background()),
 					gtree.WithEncodeYAML(),
 				},
 			},
@@ -653,7 +654,7 @@ children:
 	- b
 		- c`)),
 				options: []gtree.Option{
-					gtree.WithMassive(),
+					gtree.WithMassive(context.Background()),
 					gtree.WithEncodeTOML(),
 				},
 			},

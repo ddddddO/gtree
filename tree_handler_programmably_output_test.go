@@ -2,6 +2,7 @@ package gtree_test
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"os"
 	"strings"
@@ -59,7 +60,7 @@ root
 		{
 			name:    "case(succeeded/massive)",
 			root:    tu.Prepare(),
-			options: []gtree.Option{gtree.WithMassive()},
+			options: []gtree.Option{gtree.WithMassive(context.Background())},
 			want: strings.TrimPrefix(`
 root
 └── child 1
