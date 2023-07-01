@@ -134,8 +134,11 @@ func (rg *rootGeneratorPipeline) worker(ctx context.Context, wg *sync.WaitGroup,
 				errc <- err
 				return
 			}
-
-			rootc <- root
+			select {
+			case <-ctx.Done():
+				return
+			case rootc <- root:
+			}
 		}
 	}
 }

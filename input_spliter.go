@@ -24,13 +24,16 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 		for sc.Scan() {
 			select {
 			case <-ctx.Done():
-				errc <- ctx.Err()
 				return
 			default:
 				l := sc.Text()
 				if isRootBlockBeginning(l) {
 					if len(block) != 0 {
-						blockc <- block
+						select {
+						case <-ctx.Done():
+							return
+						case blockc <- block:
+						}
 					}
 					block = ""
 				}
@@ -41,8 +44,12 @@ func split(ctx context.Context, r io.Reader) (<-chan string, <-chan error) {
 			errc <- err
 			return
 		}
-		blockc <- block // 最後のRootブロック送出
-		return
+		select {
+		case <-ctx.Done():
+			return
+		case blockc <- block: // 最後のRootブロック送出
+			return
+		}
 	}()
 
 	return blockc, errc

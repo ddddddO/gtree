@@ -57,7 +57,11 @@ func (dg *defaultGrowerPipeline) worker(ctx context.Context, wg *sync.WaitGroup,
 				errc <- err
 				return
 			}
-			nodes <- root
+			select {
+			case <-ctx.Done():
+				return
+			case nodes <- root:
+			}
 		}
 	}
 }
