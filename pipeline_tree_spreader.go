@@ -52,7 +52,9 @@ func (ds *defaultSpreaderPipeline) spread(ctx context.Context, w io.Writer, root
 		}
 		wg.Wait()
 
-		errc <- bw.Flush()
+		if err := bw.Flush(); err != nil {
+			errc <- err
+		}
 	}()
 
 	return errc

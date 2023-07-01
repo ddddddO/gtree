@@ -148,11 +148,13 @@ func (*treePipeline) handlePipelineErr(ctx context.Context, echs ...<-chan error
 		eg.Go(func() error {
 			for {
 				select {
-				case err := <-echs[i]:
+				case err, ok := <-echs[i]:
+					if !ok {
+						return nil
+					}
 					if err != nil {
 						return err
 					}
-					return nil
 				case <-ectx.Done():
 					return ectx.Err()
 				}
