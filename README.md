@@ -137,7 +137,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.8.2 / revision ce9a27f
+   1.8.5 / revision b09286f
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -172,11 +172,11 @@ OPTIONS:
    --two-spaces, --ts                   set this option when the markdown indent is 2 spaces. (default: tab spaces)
    --four-spaces, --fs                  set this option when the markdown indent is 4 spaces. (default: tab spaces)
    --massive, -m                        set this option when there are very many blocks of markdown. (default: false)
+   --massive-timeout value, --mt value  Set this option if you want to set a timeout. (default: 5s)
    --json, -j                           set this option when outputting JSON. (default: tree)
    --yaml, -y                           set this option when outputting YAML. (default: tree)
    --toml, -t                           set this option when outputting TOML. (default: tree)
    --watch, -w                          follow changes in markdown file. (default: false)
-   --massive-timeout value, --mt value  Set this option if you want to set a timeout. (default: 5s)
    --help, -h                           show help
 ```
 
@@ -415,7 +415,6 @@ OPTIONS:
    --file value, -f value  specify the path to markdown file. (default: stdin)
    --two-spaces, --ts      set this option when the markdown indent is 2 spaces. (default: tab spaces)
    --four-spaces, --fs     set this option when the markdown indent is 4 spaces. (default: tab spaces)
-   --massive, -m           set this option when there are very many blocks of markdown. (default: false)
    --dry-run, -d, --dr     dry run. detects node that is invalid for directory generation.
       the order of the output and made directories does not always match. (default: false)
    --extension value, -e value, --ext value [ --extension value, -e value, --ext value ]  set this option if you want to create file instead of directory.

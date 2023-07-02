@@ -39,14 +39,26 @@ func main() {
 			Usage:       "set this option when the markdown indent is 4 spaces.",
 			DefaultText: "tab spaces",
 		},
+	}
+
+	outputFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:    "massive",
 			Aliases: []string{"m"},
 			Usage:   "set this option when there are very many blocks of markdown.",
 		},
-	}
-
-	outputFlags := []cli.Flag{
+		&cli.DurationFlag{
+			Name:    "massive-timeout",
+			Aliases: []string{"mt"},
+			Usage:   "Set this option if you want to set a timeout.",
+			Value:   time.Duration(5 * time.Second),
+			Action: func(ctx *cli.Context, v time.Duration) error {
+				if v <= 0 {
+					return errors.New("the timeout value should be greater than 0.")
+				}
+				return nil
+			},
+		},
 		&cli.BoolFlag{
 			Name:        "json",
 			Aliases:     []string{"j"},
@@ -69,18 +81,6 @@ func main() {
 			Name:    "watch",
 			Aliases: []string{"w"},
 			Usage:   "follow changes in markdown file.",
-		},
-		&cli.DurationFlag{
-			Name:    "massive-timeout",
-			Aliases: []string{"mt"},
-			Usage:   "Set this option if you want to set a timeout.",
-			Value:   time.Duration(5 * time.Second),
-			Action: func(ctx *cli.Context, v time.Duration) error {
-				if v <= 0 {
-					return errors.New("the timeout value should be greater than 0.")
-				}
-				return nil
-			},
 		},
 	}
 

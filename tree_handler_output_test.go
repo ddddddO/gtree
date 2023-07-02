@@ -21,6 +21,18 @@ func TestMain(m *testing.M) {
 	goleak.VerifyTestMain(m)
 }
 
+func TestOutput_detecting_goroutineleak(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(500*time.Millisecond))
+	defer cancel()
+	w := io.Discard
+	r := strings.NewReader(tu.TwentyThousandRoots)
+	if gotErr := gtree.Output(w, r, gtree.WithMassive(ctx)); gotErr != nil {
+		if gotErr != context.DeadlineExceeded {
+			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
+		}
+	}
+}
+
 type in struct {
 	input   io.Reader
 	options []gtree.Option
@@ -1191,17 +1203,5 @@ children:
 				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
 			}
 		})
-	}
-}
-
-func TestOutput_detecting_goroutinelerk(t *testing.T) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(500*time.Millisecond))
-	defer cancel()
-	w := io.Discard
-	r := strings.NewReader(tu.TwentyThousandRoots)
-	if gotErr := gtree.Output(w, r, gtree.WithMassive(ctx)); gotErr != nil {
-		if gotErr != context.DeadlineExceeded {
-			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
-		}
 	}
 }
