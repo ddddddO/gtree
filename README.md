@@ -168,15 +168,16 @@ USAGE:
    gtree output [command options] [arguments...]
 
 OPTIONS:
-   --file value, -f value  specify the path to markdown file. (default: stdin)
-   --two-spaces, --ts      set this option when the markdown indent is 2 spaces. (default: tab spaces)
-   --four-spaces, --fs     set this option when the markdown indent is 4 spaces. (default: tab spaces)
-   --massive, -m           set this option when there are very many blocks of markdown. (default: false)
-   --json, -j              set this option when outputting JSON. (default: tree)
-   --yaml, -y              set this option when outputting YAML. (default: tree)
-   --toml, -t              set this option when outputting TOML. (default: tree)
-   --watch, -w             follow changes in markdown file. (default: false)
-   --help, -h              show help
+   --file value, -f value               specify the path to markdown file. (default: stdin)
+   --two-spaces, --ts                   set this option when the markdown indent is 2 spaces. (default: tab spaces)
+   --four-spaces, --fs                  set this option when the markdown indent is 4 spaces. (default: tab spaces)
+   --massive, -m                        set this option when there are very many blocks of markdown. (default: false)
+   --json, -j                           set this option when outputting JSON. (default: tree)
+   --yaml, -y                           set this option when outputting YAML. (default: tree)
+   --toml, -t                           set this option when outputting TOML. (default: tree)
+   --watch, -w                          follow changes in markdown file. (default: false)
+   --massive-timeout value, --mt value  Set this option if you want to set a timeout. (default: 5s)
+   --help, -h                           show help
 ```
 
 ```console

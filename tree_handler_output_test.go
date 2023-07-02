@@ -1197,7 +1197,7 @@ children:
 func TestOutput_detecting_goroutinelerk(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(500*time.Millisecond))
 	defer cancel()
-	w := &strings.Builder{}
+	w := io.Discard
 	r := strings.NewReader(tu.TwentyThousandRoots)
 	if gotErr := gtree.Output(w, r, gtree.WithMassive(ctx)); gotErr != nil {
 		if gotErr != context.DeadlineExceeded {

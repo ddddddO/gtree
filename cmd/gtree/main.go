@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/ddddddO/gtree"
 	"github.com/fatih/color"
@@ -68,6 +69,18 @@ func main() {
 			Name:    "watch",
 			Aliases: []string{"w"},
 			Usage:   "follow changes in markdown file.",
+		},
+		&cli.DurationFlag{
+			Name:    "massive-timeout",
+			Aliases: []string{"mt"},
+			Usage:   "Set this option if you want to set a timeout.",
+			Value:   time.Duration(5 * time.Second),
+			Action: func(ctx *cli.Context, v time.Duration) error {
+				if v <= 0 {
+					return errors.New("the timeout value should be greater than 0.")
+				}
+				return nil
+			},
 		},
 	}
 
@@ -192,11 +205,16 @@ func actionOutput(c *cli.Context) error {
 	if err != nil {
 		return exitErrOpts(err)
 	}
-	options := []gtree.Option{oi, oo}
+	var om gtree.Option
 	if c.Bool("massive") {
-		// TODO: ほぼいらないけど、タイムアウト値をフラグで取ってcontext.WithTimeout渡すようにするでもいいかも
-		options = append(options, gtree.WithMassive(context.Background()))
+		om = gtree.WithMassive(context.Background())
 	}
+	if c.Duration("massive-timeout") > 0 {
+		ctx, cancel := context.WithTimeout(context.Background(), c.Duration("massive-timeout"))
+		defer cancel()
+		om = gtree.WithMassive(ctx)
+	}
+	options := []gtree.Option{oi, oo, om}
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
