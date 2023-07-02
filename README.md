@@ -137,7 +137,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.8.5 / revision b09286f
+   1.8.6 / revision a1bfb1a
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -172,7 +172,7 @@ OPTIONS:
    --two-spaces, --ts                   set this option when the markdown indent is 2 spaces. (default: tab spaces)
    --four-spaces, --fs                  set this option when the markdown indent is 4 spaces. (default: tab spaces)
    --massive, -m                        set this option when there are very many blocks of markdown. (default: false)
-   --massive-timeout value, --mt value  set this option if you want to set a timeout. (default: 5s)
+   --massive-timeout value, --mt value  set this option if you want to set a timeout. (default: 0s)
    --json, -j                           set this option when outputting JSON. (default: tree)
    --yaml, -y                           set this option when outputting YAML. (default: tree)
    --toml, -t                           set this option when outputting TOML. (default: tree)
