@@ -51,7 +51,6 @@ func main() {
 			Name:    "massive-timeout",
 			Aliases: []string{"mt"},
 			Usage:   "set this option if you want to set a timeout.",
-			Value:   time.Duration(5 * time.Second),
 			Action: func(ctx *cli.Context, v time.Duration) error {
 				if v <= 0 {
 					return errors.New("the timeout value should be greater than 0.")
