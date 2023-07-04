@@ -31,4 +31,7 @@ cyclo: sweep
 credit:
 	gocredits . > CREDITS
 
+tape:
+	vhs demo.tape
+
 all: fmt test bench cyclo
