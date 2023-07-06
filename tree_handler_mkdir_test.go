@@ -31,7 +31,7 @@ func TestMkdir(t *testing.T) {
 			name: "case(dry-run/path exist err)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root_b
+- example
 	- b
 	- bb
 		- lll
@@ -44,7 +44,7 @@ func TestMkdir(t *testing.T) {
 			name: "case(massive/path exist err)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
-- root_b
+- example
 	- b
 	- bb
 		- lll

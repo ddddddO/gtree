@@ -95,7 +95,12 @@ func (*nopGrowerPipeline) grow(ctx context.Context, roots <-chan *Node) (<-chan 
 				if !ok {
 					break BREAK
 				}
-				nodes <- root
+				select {
+				case nodes <- root:
+				case <-ctx.Done():
+					return
+				}
+
 			}
 		}
 	}()

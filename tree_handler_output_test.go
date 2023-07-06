@@ -33,6 +33,54 @@ func TestOutput_detecting_goroutineleak(t *testing.T) {
 	}
 }
 
+func TestOutput_json_detecting_goroutineleak(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(500*time.Millisecond))
+	defer cancel()
+	w := io.Discard
+	r := strings.NewReader(tu.TwentyThousandRoots)
+	if gotErr := gtree.Output(w, r, gtree.WithEncodeJSON(), gtree.WithMassive(ctx)); gotErr != nil {
+		if gotErr != context.DeadlineExceeded {
+			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
+		}
+	}
+}
+
+func TestOutput_yaml_detecting_goroutineleak(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(500*time.Millisecond))
+	defer cancel()
+	w := io.Discard
+	r := strings.NewReader(tu.TwentyThousandRoots)
+	if gotErr := gtree.Output(w, r, gtree.WithEncodeYAML(), gtree.WithMassive(ctx)); gotErr != nil {
+		if gotErr != context.DeadlineExceeded {
+			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
+		}
+	}
+}
+
+func TestOutput_toml_detecting_goroutineleak(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(500*time.Millisecond))
+	defer cancel()
+	w := io.Discard
+	r := strings.NewReader(tu.TwentyThousandRoots)
+	if gotErr := gtree.Output(w, r, gtree.WithEncodeTOML(), gtree.WithMassive(ctx)); gotErr != nil {
+		if gotErr != context.DeadlineExceeded {
+			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
+		}
+	}
+}
+
+func TestOutput_dryrun_detecting_goroutineleak(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(500*time.Millisecond))
+	defer cancel()
+	w := io.Discard
+	r := strings.NewReader(tu.TwentyThousandRoots)
+	if gotErr := gtree.Output(w, r, gtree.WithDryRun(), gtree.WithMassive(ctx)); gotErr != nil {
+		if gotErr != context.DeadlineExceeded {
+			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
+		}
+	}
+}
+
 type in struct {
 	input   io.Reader
 	options []gtree.Option
@@ -1203,5 +1251,24 @@ children:
 				t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
 			}
 		})
+	}
+}
+
+// TODO: config.go用にtest.goあってもいいんじゃないか
+func TestOutput_nilctx(t *testing.T) {
+	w := io.Discard
+	r := strings.NewReader(tu.SingleRoot)
+	if gotErr := gtree.Output(w, r, gtree.WithMassive(nil)); gotErr != nil {
+		t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, nil)
+	}
+}
+
+// TODO: config.go用にtest.goあってもいいんじゃないか
+func TestOutput_nilopt(t *testing.T) {
+	w := io.Discard
+	r := strings.NewReader(tu.SingleRoot)
+	var emptyOpt gtree.Option
+	if gotErr := gtree.Output(w, r, emptyOpt); gotErr != nil {
+		t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, nil)
 	}
 }
