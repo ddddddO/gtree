@@ -43,7 +43,7 @@ Type "gtree template | gtree mkdir --dry-run -e .go -e .md -e Makefile" Enter
 Sleep 2s
 Type "gtree template | gtree mkdir -e .go -e .md -e Makefile" Enter
 Sleep 2s
-Type "tree -C gtree" Enter
+Type "tree gtree" Enter
 Sleep 6s
 Hide
 Type "rm -rf gtree/" Enter
