@@ -5,7 +5,11 @@
 [![codecov](https://codecov.io/gh/ddddddO/gtree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gtree) [![Go Report Card](https://goreportcard.com/badge/github.com/ddddddO/gtree)](https://goreportcard.com/report/github.com/ddddddO/gtree) [![ci](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml)
 
 
-<img src="demo.gif"><br>
+<video src="https://github.com/ddddddO/gtree/assets/41510086/c04b9e8c-87a6-457c-a95a-5d91b8869185" autoplay muted playsinline></video>
+aaa
+<video src="https://github-production-user-asset-6210df.s3.amazonaws.com/41510086/253793660-c04b9e8c-87a6-457c-a95a-5d91b8869185.mp4" autoplay muted playsinline></video>
+
+
 
 Generate directory trees🌳 and the directories itself🗂 using Markdown or Programmatically. Provide CLI, Golang library and Web (using WebAssembly).
 
