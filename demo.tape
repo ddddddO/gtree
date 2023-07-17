@@ -53,7 +53,9 @@ Sleep 2s
 Enter
 Sleep 2s
 
-Type "tree gtree" Enter
+Type "tree gtree"
+Sleep 2s
+Enter
 Sleep 8s
 Hide
 Type "rm -rf gtree/" Enter
