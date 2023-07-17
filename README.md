@@ -1035,6 +1035,9 @@ ok      command-line-arguments  27.559s
 
 </details>
 
+# ClassDiagram
+<image src="./gtree.svg" width=100%>
+
 # Documents
 
 

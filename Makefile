@@ -34,4 +34,7 @@ credit:
 tape:
 	vhs demo.tape
 
+uml:
+	goplantuml -hide-fields -hide-methods . > gtree.pu
+
 all: fmt test bench cyclo
