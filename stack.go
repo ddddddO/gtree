@@ -41,17 +41,13 @@ func (s *stack) dfs(current *Node) {
 		parent := s.pop()
 
 		// for same name on the same hierarchy
-		for _, child := range parent.children {
-			if current.name == child.name {
-				current = child
-
-				if !current.isDirectlyUnder(parent) {
-					break
-				}
-		
-				s.push(parent).push(current)
-				return
+		if child := parent.findChildByText(current.name); child != nil {
+			if !child.isDirectlyUnder(parent) {
+				continue
 			}
+
+			s.push(parent).push(child)
+			return
 		}
 
 		if !current.isDirectlyUnder(parent) {
