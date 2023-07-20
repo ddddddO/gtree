@@ -45,18 +45,15 @@ func (s *stack) dfs(current *Node) {
 			if !child.isDirectlyUnder(parent) {
 				continue
 			}
-
 			s.push(parent).push(child)
-			return
+		} else {
+			if !current.isDirectlyUnder(parent) {
+				continue
+			}
+			parent.addChild(current)
+			current.setParent(parent)
+			s.push(parent).push(current)
 		}
-
-		if !current.isDirectlyUnder(parent) {
-			continue
-		}
-
-		parent.addChild(current)
-		current.setParent(parent)
-		s.push(parent).push(current)
 		return
 	}
 }

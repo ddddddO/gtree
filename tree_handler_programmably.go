@@ -88,12 +88,3 @@ func (parent *Node) Add(text string) *Node {
 	parent.addChild(current)
 	return current
 }
-
-func (parent *Node) findChildByText(text string) *Node {
-	for _, child := range parent.children {
-		if text == child.name {
-			return child
-		}
-	}
-	return nil
-}
