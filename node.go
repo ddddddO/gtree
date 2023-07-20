@@ -42,6 +42,15 @@ func (n *Node) hasChild() bool {
 	return len(n.children) > 0
 }
 
+func (n *Node) findChildByText(text string) *Node {
+	for _, child := range n.children {
+		if text == child.name {
+			return child
+		}
+	}
+	return nil
+}
+
 func (n *Node) isDirectlyUnder(node *Node) bool {
 	if node == nil {
 		return false
