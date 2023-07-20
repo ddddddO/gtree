@@ -195,6 +195,42 @@ a
 				err: nil,
 			},
 		},
+
+		{
+			name: "case(succeeded/same name on the same hierarchy)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- a
+	- same_a
+		- same_b
+			- k
+			- kk
+		- t
+	- p
+		- q
+	- same_a
+		- o
+		- same_b
+			- ppp
+	- g`))},
+			out: out{
+				output: strings.TrimPrefix(`
+a
+├── same_a
+│   ├── same_b
+│   │   ├── k
+│   │   ├── kk
+│   │   └── ppp
+│   ├── t
+│   └── o
+├── p
+│   └── q
+└── g
+`, "\n"),
+				err: nil,
+			},
+		},
+
 		{
 			name: "case(succeeded/very deeply)",
 			in: in{
@@ -318,11 +354,8 @@ root dir aaa
 			out: out{
 				output: strings.TrimPrefix(`
 parent
-├── child
-│   ├── chilchil
-│   ├── chilchil
-│   └── chilchil
 └── child
+    └── chilchil
 `, "\n"),
 				err: nil,
 			},

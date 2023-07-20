@@ -39,6 +39,21 @@ func (s *stack) dfs(current *Node) {
 	size := s.size()
 	for i := 0; i < size; i++ {
 		parent := s.pop()
+
+		// for same name on the same hierarchy
+		for _, child := range parent.children {
+			if current.name == child.name {
+				current = child
+
+				if !current.isDirectlyUnder(parent) {
+					break
+				}
+		
+				s.push(parent).push(current)
+				return
+			}
+		}
+
 		if !current.isDirectlyUnder(parent) {
 			continue
 		}
