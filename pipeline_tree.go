@@ -146,19 +146,18 @@ func (*treePipeline) handlePipelineErr(ctx context.Context, echs ...<-chan error
 	for i := range echs {
 		i := i
 		eg.Go(func() error {
-			for {
-				select {
-				case err, ok := <-echs[i]:
-					if !ok {
-						return nil
-					}
-					if err != nil {
-						return err
-					}
-				case <-ectx.Done():
-					return ectx.Err()
+			select {
+			case err, ok := <-echs[i]:
+				if !ok {
+					return nil
 				}
+				if err != nil {
+					return err
+				}
+			case <-ectx.Done():
+				return ectx.Err()
 			}
+			return nil
 		})
 	}
 	return eg.Wait()
