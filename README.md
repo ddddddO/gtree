@@ -160,8 +160,6 @@ GLOBAL OPTIONS:
    --version, -v  print the version
 ```
 
-- The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
-
 ### *Output* subcommand
 ```console
 $ gtree output --help
@@ -219,7 +217,7 @@ When Markdown is indented as a tab.
 For 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
 
 
-- Usage other than representing a directory.
+#### Usage other than representing a directory.
 
 ```console
 $ cat testdata/sample2.md | gtree output
@@ -245,8 +243,7 @@ k8s_resources
             └── container(s)
 ```
 
----
-- Two spaces indent
+#### Two spaces indent
 
 ```console
 $ cat testdata/sample4.md | gtree output -ts
@@ -261,7 +258,7 @@ a
 └── g
 ```
 
-- Four spaces indent
+#### Four spaces indent
 
 ```console
 $ cat testdata/sample5.md | gtree output -fs
@@ -276,7 +273,7 @@ a
 └── g
 ```
 
-- Multiple roots
+#### Multiple roots
 
 ```console
 $ cat testdata/sample6.md | gtree output
@@ -300,7 +297,7 @@ a
 └── g
 ```
 
-- Output JSON
+#### Output JSON
 
 ```console
 $ cat testdata/sample5.md | gtree output -fs -j | jq
@@ -346,7 +343,7 @@ $ cat testdata/sample5.md | gtree output -fs -j | jq
 }
 ```
 
-- Output YAML
+#### Output YAML
 
 ```console
 $ cat testdata/sample5.md | gtree output -fs -y
@@ -370,7 +367,7 @@ children:
   children: []
 ```
 
-- Output TOML
+#### Output TOML
 
 ```console
 $ cat testdata/sample5.md | gtree output -fs -t
@@ -403,7 +400,6 @@ children = []
 ```
 
 
----
 ### *Mkdir* subcommand
 
 ```console
@@ -621,17 +617,17 @@ func main() {
 
 ```
 
-- You can also output JSON/YAML/TOML.
-  - `gtree.WithEncodeJSON()`
-  - `gtree.WithEncodeTOML()`
-  - `gtree.WithEncodeYAML()`
+#### You can also output JSON/YAML/TOML.
+- `gtree.WithEncodeJSON()`
+- `gtree.WithEncodeTOML()`
+- `gtree.WithEncodeYAML()`
 
----
 
 ### *Mkdir* func
 
-- `gtree.Mkdir` func makes directories.
-	- You can use `gtree.WithFileExtensions` func to make specified extensions as file.
+#### `gtree.Mkdir` func makes directories.
+
+You can use `gtree.WithFileExtensions` func to make specified extensions as file.
 
 
 
@@ -767,7 +763,6 @@ func preparePrimate() *gtree.Node {
 
 - You can also output TOML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L262)
 
----
 
 #### The program below converts the result of `find` into a tree.
 
@@ -850,20 +845,21 @@ func main() {
 
 ```
 
-- The above Go program can be output with the command below.
-
-	```console
-	$ gtree gocode
-	```
-
+#### The above Go program can be output with the command below.
+```console
+$ gtree gocode
+```
 
 #### Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
 
-- The above Go program can be output with the command below.
-	```console
-	$ gtree gocode --godeps-to-tree
-	```
-- inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
+The above Go program can be output with the command below.
+
+```console
+$ gtree gocode --godeps-to-tree
+```
+
+inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
+
 
 ### *MkdirProgrammably* func
 
@@ -920,9 +916,8 @@ func main() {
 
 [details](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L354)
 
----
 
-- Make directories and files with specific extensions.
+#### Make directories and files with specific extensions.
 
 ```go
 package main
@@ -965,7 +960,6 @@ func main() {
 	// 3 directories, 5 files
 }
 ```
-
 
 
 # Process
@@ -1039,7 +1033,6 @@ ok      command-line-arguments  27.559s
 
 # Documents
 
-
 - [Markdown形式の入力からtreeを出力するCLI](https://zenn.dev/ddddddo/articles/ad97623a004496)
 - [Goでtreeを表現する](https://zenn.dev/ddddddo/articles/8cd85c68763f2e)
 - [Markdown形式の入力からファイル/ディレクトリを生成するCLI/Goパッケージ](https://zenn.dev/ddddddo/articles/460d12e8c07763)
@@ -1048,6 +1041,4 @@ ok      command-line-arguments  27.559s
 
 # Star History
 
-
 [![Star History Chart](https://api.star-history.com/svg?repos=ddddddO/gtree&type=Date)](https://star-history.com/#ddddddO/gtree&Date)
-
