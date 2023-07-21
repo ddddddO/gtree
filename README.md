@@ -183,6 +183,8 @@ OPTIONS:
    --help, -h                           show help
 ```
 
+#### Try it!
+
 ```console
 $ gtree template
 - gtree
@@ -422,6 +424,8 @@ OPTIONS:
    --help, -h  show help
 ```
 
+#### Try it!
+
 ```console
 $ gtree template
 - gtree
@@ -515,9 +519,8 @@ $ gtree mkdir --dry-run --ts <<EOS
   - bb
     - bb
 EOS
-invalid path: /root/aa
+invalid node name: /root
 ```
-
 
 # Package(1) / like CLI
 
@@ -531,7 +534,7 @@ $ go get github.com/ddddddO/gtree
 
 ## Usage
 
-- The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
+The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
 ### *Output* func
 
@@ -628,7 +631,6 @@ func main() {
 #### `gtree.Mkdir` func makes directories.
 
 You can use `gtree.WithFileExtensions` func to make specified extensions as file.
-
 
 
 # Package(2) / generate a tree programmatically
@@ -757,13 +759,6 @@ func preparePrimate() *gtree.Node {
 
 ```
 
-- You can also output JSON 👉 [ref](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L61)
-
-- You can also output YAML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L198)
-
-- You can also output TOML 👉 [ref](https://github.com/ddddddO/gtree/blob/master/example/programmable/main.go#L262)
-
-
 #### The program below converts the result of `find` into a tree.
 
 ```go
@@ -850,7 +845,7 @@ func main() {
 $ gtree gocode
 ```
 
-#### Convert `go list -deps ./...` to tree 👉 [link](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
+#### Convert `go list -deps ./...` to tree 👉 [sample program](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
 
 The above Go program can be output with the command below.
 
