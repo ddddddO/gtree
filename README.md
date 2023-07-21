@@ -840,7 +840,8 @@ func main() {
 
 ```
 
-#### The above Go program can be output with the command below.
+The above Go program can be output with the command below.
+
 ```console
 $ gtree gocode
 ```
