@@ -107,7 +107,7 @@ reverse link gtree.spreader to gtree.yamlSpreaderSimple--><g id="link_gtree.spre
 reverse link gtree.spreaderSimple to gtree.yamlSpreaderSimple--><g id="link_gtree.spreaderSimple_gtree.yamlSpreaderSimple"><path codeLine="404" d="M857,200.61 C857,214.31 857,229.22 857,239.96 " fill="none" id="gtree.spreaderSimple-backto-gtree.yamlSpreaderSimple" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="850,200.27,857,180.27,864,200.27,850,200.27" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[8a661b5d8616b259e9799ae55cc649cc]
 reverse link __builtin__.int to gtree.encode--><g id="link___builtin__.int_gtree.encode"><path codeLine="406" d="M2504.24,77.47 C2517.05,97.86 2536.91,129.44 2548.56,147.98 " fill="none" id="__builtin__.int-backto-gtree.encode" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><rect fill="#FFFFFF" height="10" style="stroke:#181818;stroke-width:1.5;" width="10" x="2496.46" y="68.04"/></g><!--MD5=[fd4b045da6077126bd7ac8181e5b687d]
 reverse link __builtin__.int to gtree.spaceType--><g id="link___builtin__.int_gtree.spaceType"><path codeLine="407" d="M2479.76,77.47 C2466.95,97.86 2447.09,129.44 2435.44,147.98 " fill="none" id="__builtin__.int-backto-gtree.spaceType" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><rect fill="#FFFFFF" height="10" style="stroke:#181818;stroke-width:1.5;" width="10" x="2477.54" y="68.04"/></g><!--MD5=[ec01859a0f2471c1cc676da1e268332d]
-reverse link gtree.<font color=blue>func</font>(*config)  to gtree.Option--><g id="link_gtree.&lt;font color=blue&gt;func&lt;/font&gt;(*config) _gtree.Option"><path codeLine="408" d="M210.39,185.19 C205.78,201.8 199.35,224.95 195.18,239.96 " fill="none" id="gtree.&lt;font color=blue&gt;func&lt;/font&gt;(*config) -backto-gtree.Option" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><rect fill="#FFFFFF" height="10" style="stroke:#181818;stroke-width:1.5;" width="10" x="206.76" y="175.27"/></g><!--MD5=[bf33e7d3e33005532870edf51fd70f0d]
+reverse link gtree.<font color=blue>func</font>(*config)  to gtree.Option--><g id="link_gtree.&lt;font color=blue&gt;func&lt;/font&gt;(*config) _gtree.Option"><path codeLine="408" d="M210.39,185.19 C205.78,201.8 199.35,224.95 195.18,239.96 " fill="none" id="gtree.&lt;font color=blue&gt;func&lt;/font&gt;(*config) -backto-gtree.Option" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><rect fill="#FFFFFF" height="10" style="stroke:#181818;stroke-width:1.5;" width="10" x="206.76" y="175.27"/></g><!--MD5=[185d418c3e5a375e8ea3c675d4a7a2bd]
 @startuml
 namespace gtree {
     class Node << (S,Aquamarine) >> {
@@ -121,6 +121,7 @@ namespace gtree {
         - setParent(parent *Node) 
         - addChild(child *Node) 
         - hasChild() bool
+        - findChildByText(text string) *Node
         - isDirectlyUnder(node *Node) bool
         - isLastOfHierarchy() bool
         - isRoot() bool
@@ -133,7 +134,6 @@ namespace gtree {
         - toJSONNode(jParent *jsonNode) *jsonNode
         - toTOMLNode(tParent *tomlNode) *tomlNode
         - toYAMLNode(yParent *yamlNode) *yamlNode
-        - findChildByText(text string) *Node
         - toJSONNode(jParent *jsonNode) *jsonNode
 
         + Add(text string) *Node

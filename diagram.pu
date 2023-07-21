@@ -11,6 +11,7 @@ namespace gtree {
         - setParent(parent *Node) 
         - addChild(child *Node) 
         - hasChild() bool
+        - findChildByText(text string) *Node
         - isDirectlyUnder(node *Node) bool
         - isLastOfHierarchy() bool
         - isRoot() bool
@@ -23,7 +24,6 @@ namespace gtree {
         - toJSONNode(jParent *jsonNode) *jsonNode
         - toTOMLNode(tParent *tomlNode) *tomlNode
         - toYAMLNode(yParent *yamlNode) *yamlNode
-        - findChildByText(text string) *Node
         - toJSONNode(jParent *jsonNode) *jsonNode
 
         + Add(text string) *Node
