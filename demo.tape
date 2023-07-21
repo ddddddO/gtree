@@ -5,41 +5,75 @@ Set Shell "bash"
 Set FontSize 32
 Set Width 1500
 Set Height 1100
-Set TypingSpeed 75ms
+Set TypingSpeed 150ms
 
-Type "gtree template" Enter
+Type "gtree template"
 Sleep 2s
-Type "gtree template | gtree output" Enter
+Enter
+Sleep 2s
+Hide
+Type "gtree template"
+Show
+Sleep 2s
+Type " | gtree output"
+Sleep 2s
+Enter
 Sleep 5s
 Hide
 Type "clear" Enter
 Show
 
-Type "cat testdata/sample4.md" Enter
+Type "cat testdata/sample4.md"
 Sleep 2s
-Type "cat testdata/sample4.md | gtree output --two-spaces" Enter
+Enter
+Sleep 2s
+Hide
+Type "cat testdata/sample4.md"
+Show
+Sleep 2s
+Type " | gtree output --two-spaces"
+Sleep 2s
+Enter
 Sleep 5s
 Hide
 Type "clear" Enter
 Show
 
-Type "cat testdata/sample5.md" Enter
+Type "cat testdata/sample5.md"
 Sleep 2s
-Type "cat testdata/sample5.md | gtree output --four-spaces" Enter
+Enter
+Sleep 2s
+Hide
+Type "cat testdata/sample5.md"
+Show
+Sleep 2s
+Type " | gtree output --four-spaces"
+Sleep 2s
+Enter
 Sleep 5s
 Hide
 Type "clear" Enter
 Show
 
-Type "gtree template" Enter
+Type "gtree template"
 Sleep 2s
-Type "gtree template | gtree mkdir --dry-run" Enter
-Sleep 5s
+Enter
+Sleep 2s
+Hide
+Type "gtree template"
+Show
+Sleep 2s
+Type " | gtree mkdir --dry-run"
+Sleep 2s
+Enter
+Sleep 6s
 Hide
 Type "clear" Enter
 Show
 
-Type "gtree template | gtree mkdir --dry-run -e .go -e .md -e Makefile" Enter
+Type "gtree template | gtree mkdir --dry-run -e .go -e .md -e Makefile"
+Sleep 2s
+Enter
 Sleep 2s
 
 Hide
@@ -53,7 +87,7 @@ Sleep 2s
 Enter
 Sleep 2s
 
-Type "tree gtree"
+Type "tree gtree --dirsfirst"
 Sleep 2s
 Enter
 Sleep 8s

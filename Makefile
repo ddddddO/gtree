@@ -32,7 +32,7 @@ credit:
 	gocredits . > CREDITS
 
 tape:
-	vhs demo.tape
+	LS_COLORS='di=32:fi=01;34' vhs demo.tape
 
 uml:
 	goplantuml -hide-fields -hide-methods . > gtree.pu
