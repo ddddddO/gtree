@@ -142,7 +142,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.8.6 / revision a1bfb1a
+   1.8.7 / revision cdef0bf
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -236,11 +236,10 @@ k8s_resources
 │   └── Job
 │       └── Pod
 │           └── container(s)
-├── (empty)
-│   └── DaemonSet
-│       └── Pod
-│           └── container(s)
 └── (empty)
+    ├── DaemonSet
+    │   └── Pod
+    │       └── container(s)
     └── StatefulSet
         └── Pod
             └── container(s)
