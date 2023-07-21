@@ -7,7 +7,7 @@
 
 <img src="demo.gif"><br>
 
-Generate directory trees🌳 and the directories itself🗂 using Markdown or Programmatically. Provide CLI, Golang library and Web (using WebAssembly).
+Generate directory trees🌳 and the directories itself🗂 using Markdown or Programmatically. Provide CLI, Golang library and Web.
 
 ```console
 $ gtree template --description | gtree output
