@@ -94,7 +94,7 @@ $ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTRE
 $ apk add --allow-untrusted gtree.apk
 ```
 
-### [AUR](https://aur.archlinux.org/packages/gtree)
+### ~~[AUR](https://aur.archlinux.org/packages/gtree)~~
 
 ### Nix
 ```console
