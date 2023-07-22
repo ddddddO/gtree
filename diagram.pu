@@ -24,7 +24,6 @@ namespace gtree {
         - toJSONNode(jParent *jsonNode) *jsonNode
         - toTOMLNode(tParent *tomlNode) *tomlNode
         - toYAMLNode(yParent *yamlNode) *yamlNode
-        - toJSONNode(jParent *jsonNode) *jsonNode
 
         + Add(text string) *Node
 
@@ -36,20 +35,6 @@ namespace gtree {
     }
     class branchFormat << (S,Aquamarine) >> {
         - directly string
-        - directly string
-
-    }
-    class colorizeSpreader << (S,Aquamarine) >> {
-        - fileConsiderer *fileConsiderer
-        - fileColor *color.Color
-        - fileCounter *counter
-        - dirColor *color.Color
-        - dirCounter *counter
-
-        - spread(w io.Writer, roots []*Node) error
-        - spreadBranch(current *Node) string
-        - colorize(current *Node) 
-        - summary() string
 
     }
     class colorizeSpreaderPipeline << (S,Aquamarine) >> {
@@ -89,20 +74,6 @@ namespace gtree {
         - current() uint
 
     }
-    class defaultGrower << (S,Aquamarine) >> {
-        - lastNodeFormat branchFormat
-        - intermedialNodeFormat branchFormat
-        - enabledValidation bool
-
-        - grow(roots []*Node) error
-        - assemble(current *Node) error
-        - assembleBranch(current *Node) error
-        - assembleBranchDirectly(current *Node) 
-        - assembleBranchIndirectly(current *Node, parent *Node) 
-        - assembleBranchFinally(current *Node, root *Node) 
-        - enableValidation() 
-
-    }
     class defaultGrowerPipeline << (S,Aquamarine) >> {
         - grow(ctx context.Context, roots <font color=blue>chan</font> *Node) (<font color=blue>chan</font> *Node, <font color=blue>chan</font> error)
         - worker(ctx context.Context, wg *sync.WaitGroup, roots <font color=blue>chan</font> *Node, nodes <font color=blue>chan</font> *Node, errc <font color=blue>chan</font> error) 
@@ -137,12 +108,6 @@ namespace gtree {
         - mkfile(path string) error
 
     }
-    class defaultSpreader << (S,Aquamarine) >> {
-        - spread(w io.Writer, roots []*Node) error
-        - spreadBranch(current *Node) string
-        - write(w io.Writer, in string) error
-
-    }
     class defaultSpreaderPipeline << (S,Aquamarine) >> {
         - spread(ctx context.Context, w io.Writer, roots <font color=blue>chan</font> *Node) <font color=blue>chan</font> error
         - worker(ctx context.Context, wg *sync.WaitGroup, bw *bufio.Writer, roots <font color=blue>chan</font> *Node, errc <font color=blue>chan</font> error) 
@@ -158,11 +123,6 @@ namespace gtree {
         - extensions []string
 
         - isFile(current *Node) bool
-
-    }
-    interface grower  {
-        - grow( []*Node) error
-        - enableValidation() 
 
     }
     interface growerPipeline  {
@@ -197,12 +157,6 @@ namespace gtree {
     class jsonNode << (S,Aquamarine) >> {
         + Name string
         + Children []*jsonNode
-        + Name string
-        + Children []*jsonNode
-
-    }
-    class jsonSpreader << (S,Aquamarine) >> {
-        - spread(w io.Writer, roots []*Node) error
 
     }
     class jsonSpreaderPipeline << (S,Aquamarine) >> {
@@ -228,11 +182,6 @@ namespace gtree {
         - handleErr(err error, row string) error
 
     }
-    class nopGrower << (S,Aquamarine) >> {
-        - grow(_ []*Node) error
-        - enableValidation() 
-
-    }
     class nopGrowerPipeline << (S,Aquamarine) >> {
         - grow(ctx context.Context, roots <font color=blue>chan</font> *Node) (<font color=blue>chan</font> *Node, <font color=blue>chan</font> error)
 
@@ -240,14 +189,6 @@ namespace gtree {
     class nopGrowerSimple << (S,Aquamarine) >> {
         - grow(_ []*Node) error
         - enableValidation() 
-
-    }
-    class rootGenerator << (S,Aquamarine) >> {
-        - counter *counter
-        - scanner *bufio.Scanner
-        - nodeGenerator *nodeGenerator
-
-        - generate() ([]*Node, error)
 
     }
     class rootGeneratorPipeline << (S,Aquamarine) >> {
@@ -263,10 +204,6 @@ namespace gtree {
         - nodeGenerator *nodeGenerator
 
         - generate() ([]*Node, error)
-
-    }
-    interface spreader  {
-        - spread( io.Writer,  []*Node) error
 
     }
     interface spreaderPipeline  {
@@ -297,15 +234,6 @@ namespace gtree {
     }
     class tomlSpreaderSimple << (S,Aquamarine) >> {
         - spread(w io.Writer, roots []*Node) error
-
-    }
-    class tree << (S,Aquamarine) >> {
-        - roots []*Node
-        - grower grower
-        - spreader spreader
-
-        - grow() error
-        - spread(w io.Writer) error
 
     }
     class treePipeline << (S,Aquamarine) >> {
@@ -353,7 +281,6 @@ namespace gtree {
 
     }
 }
-"gtree.defaultSpreader" *-- "gtree.colorizeSpreader"
 "gtree.colorizeSpreaderSimple" *-- "gtree.colorizeSpreaderPipeline"
 "gtree.defaultSpreaderSimple" *-- "gtree.colorizeSpreaderSimple"
 "gtree.defaultGrowerSimple" *-- "gtree.defaultGrowerPipeline"
@@ -362,46 +289,27 @@ namespace gtree {
 "sync.Mutex" *-- "gtree.defaultSpreaderPipeline"
 "gtree.nopGrowerSimple" *-- "gtree.nopGrowerPipeline"
 
-"gtree.spreader" <|-- "gtree.colorizeSpreader"
-"gtree.spreaderSimple" <|-- "gtree.colorizeSpreader"
 "gtree.spreaderPipeline" <|-- "gtree.colorizeSpreaderPipeline"
-"gtree.spreader" <|-- "gtree.colorizeSpreaderSimple"
 "gtree.spreaderSimple" <|-- "gtree.colorizeSpreaderSimple"
-"gtree.grower" <|-- "gtree.defaultGrower"
-"gtree.growerSimple" <|-- "gtree.defaultGrower"
-"gtree.grower" <|-- "gtree.defaultGrowerSimple"
 "gtree.growerSimple" <|-- "gtree.defaultGrowerSimple"
 "gtree.mkdirerPipeline" <|-- "gtree.defaultMkdirerPipeline"
 "gtree.mkdirerSimple" <|-- "gtree.defaultMkdirerSimple"
-"gtree.spreader" <|-- "gtree.defaultSpreader"
-"gtree.spreaderSimple" <|-- "gtree.defaultSpreader"
 "gtree.spreaderPipeline" <|-- "gtree.defaultSpreaderPipeline"
-"gtree.spreader" <|-- "gtree.defaultSpreaderSimple"
 "gtree.spreaderSimple" <|-- "gtree.defaultSpreaderSimple"
-"gtree.spreader" <|-- "gtree.jsonSpreader"
-"gtree.spreaderSimple" <|-- "gtree.jsonSpreader"
 "gtree.spreaderPipeline" <|-- "gtree.jsonSpreaderPipeline"
-"gtree.spreader" <|-- "gtree.jsonSpreaderSimple"
 "gtree.spreaderSimple" <|-- "gtree.jsonSpreaderSimple"
-"gtree.grower" <|-- "gtree.nopGrower"
-"gtree.growerSimple" <|-- "gtree.nopGrower"
-"gtree.grower" <|-- "gtree.nopGrowerSimple"
 "gtree.growerSimple" <|-- "gtree.nopGrowerSimple"
 "gtree.spreaderPipeline" <|-- "gtree.tomlSpreaderPipeline"
-"gtree.spreader" <|-- "gtree.tomlSpreaderSimple"
 "gtree.spreaderSimple" <|-- "gtree.tomlSpreaderSimple"
 "gtree.growerPipeline" <|-- "gtree.treePipeline"
 "gtree.iTree" <|-- "gtree.treePipeline"
 "gtree.mkdirerPipeline" <|-- "gtree.treePipeline"
 "gtree.spreaderPipeline" <|-- "gtree.treePipeline"
-"gtree.grower" <|-- "gtree.treeSimple"
 "gtree.growerSimple" <|-- "gtree.treeSimple"
 "gtree.iTree" <|-- "gtree.treeSimple"
 "gtree.mkdirerSimple" <|-- "gtree.treeSimple"
-"gtree.spreader" <|-- "gtree.treeSimple"
 "gtree.spreaderSimple" <|-- "gtree.treeSimple"
 "gtree.spreaderPipeline" <|-- "gtree.yamlSpreaderPipeline"
-"gtree.spreader" <|-- "gtree.yamlSpreaderSimple"
 "gtree.spreaderSimple" <|-- "gtree.yamlSpreaderSimple"
 
 "__builtin__.int" #.. "gtree.encode"

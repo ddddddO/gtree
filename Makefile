@@ -35,6 +35,9 @@ tape:
 	LS_COLORS='di=32:fi=01;34' vhs demo.tape
 
 uml:
+	git rm wasm_*.go
 	goplantuml -hide-fields -hide-methods . > diagram.pu
+	git restore --staged wasm_*.go
+	git restore wasm_*.go
 
 all: fmt test bench cyclo
