@@ -141,13 +141,6 @@ namespace gtree {
     }
     class gtree.spaceType << (T, #FF7700) >>  {
     }
-    interface iTree  {
-        - output( io.Writer,  io.Reader,  *config) error
-        - outputProgrammably( io.Writer,  *Node,  *config) error
-        - mkdir( io.Reader,  *config) error
-        - mkdirProgrammably( *Node,  *config) error
-
-    }
     class inputFormatError << (S,Aquamarine) >> {
         - row string
 
@@ -236,15 +229,22 @@ namespace gtree {
         - spread(w io.Writer, roots []*Node) error
 
     }
+    interface tree  {
+        - output( io.Writer,  io.Reader,  *config) error
+        - outputProgrammably( io.Writer,  *Node,  *config) error
+        - mkdir( io.Reader,  *config) error
+        - mkdirProgrammably( *Node,  *config) error
+
+    }
     class treePipeline << (S,Aquamarine) >> {
         - grower growerPipeline
         - spreader spreaderPipeline
         - mkdirer mkdirerPipeline
 
-        - output(w io.Writer, r io.Reader, conf *config) error
-        - outputProgrammably(w io.Writer, root *Node, conf *config) error
-        - mkdir(r io.Reader, conf *config) error
-        - mkdirProgrammably(root *Node, conf *config) error
+        - output(w io.Writer, r io.Reader, cfg *config) error
+        - outputProgrammably(w io.Writer, root *Node, cfg *config) error
+        - mkdir(r io.Reader, cfg *config) error
+        - mkdirProgrammably(root *Node, cfg *config) error
         - handlePipelineErr(ctx context.Context, echs ...<font color=blue>chan</font> error) error
 
     }
@@ -253,10 +253,10 @@ namespace gtree {
         - spreader spreaderSimple
         - mkdirer mkdirerSimple
 
-        - output(w io.Writer, r io.Reader, conf *config) error
-        - outputProgrammably(w io.Writer, root *Node, conf *config) error
-        - mkdir(r io.Reader, conf *config) error
-        - mkdirProgrammably(root *Node, conf *config) error
+        - output(w io.Writer, r io.Reader, cfg *config) error
+        - outputProgrammably(w io.Writer, root *Node, cfg *config) error
+        - mkdir(r io.Reader, cfg *config) error
+        - mkdirProgrammably(root *Node, cfg *config) error
 
     }
     class yamlNode << (S,Aquamarine) >> {
@@ -293,8 +293,8 @@ namespace gtree {
 "gtree.growerSimple" <|-- "gtree.nopGrowerSimple"
 "gtree.spreaderPipeline" <|-- "gtree.tomlSpreaderPipeline"
 "gtree.spreaderSimple" <|-- "gtree.tomlSpreaderSimple"
-"gtree.iTree" <|-- "gtree.treePipeline"
-"gtree.iTree" <|-- "gtree.treeSimple"
+"gtree.tree" <|-- "gtree.treePipeline"
+"gtree.tree" <|-- "gtree.treeSimple"
 "gtree.spreaderPipeline" <|-- "gtree.yamlSpreaderPipeline"
 "gtree.spreaderSimple" <|-- "gtree.yamlSpreaderSimple"
 

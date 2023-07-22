@@ -14,9 +14,9 @@ type treeSimple struct {
 	mkdirer  mkdirerSimple
 }
 
-var _ iTree = (*treeSimple)(nil)
+var _ tree = (*treeSimple)(nil)
 
-func newTreeSimple(cfg *config) iTree {
+func newTreeSimple(cfg *config) tree {
 	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) growerSimple {
 		if encode != encodeDefault {
 			return newNopGrowerSimple()

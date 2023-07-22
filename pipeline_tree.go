@@ -16,9 +16,9 @@ type treePipeline struct {
 	mkdirer  mkdirerPipeline
 }
 
-var _ iTree = (*treePipeline)(nil)
+var _ tree = (*treePipeline)(nil)
 
-func newTreePipeline(cfg *config) iTree {
+func newTreePipeline(cfg *config) tree {
 	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) growerPipeline {
 		if encode != encodeDefault {
 			return newNopGrowerPipeline()
