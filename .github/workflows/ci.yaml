@@ -3,8 +3,11 @@ on: [push, pull_request]
 
 jobs:
   test:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
     name: test and coverage
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - name: set up
         uses: actions/setup-go@v3
@@ -22,4 +25,5 @@ jobs:
       - name: test
         run: go test . -race -coverprofile=coverage.out -covermode=atomic -v
       - name: upload coverage to Codecov
+        if: ${{ matrix.os }} == 'ubuntu-latest'
         uses: codecov/codecov-action@v3
