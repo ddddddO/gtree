@@ -17,14 +17,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: golangci-lint # localでmake lintした方が今はわかりやすい
-        if: runner.os != 'Windows'
+        if: runner.os == 'Linux'
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
           args: --issues-exit-code=0
 
-      - name: test
+      - name: test # testだけ各OSで実行
         run: go test . -race -coverprofile=coverage.out -covermode=atomic -v
+
       - name: upload coverage to Codecov
         if: runner.os == 'Linux'
         uses: codecov/codecov-action@v3
