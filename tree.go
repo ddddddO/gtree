@@ -7,6 +7,6 @@ import "io"
 type iTree interface {
 	output(io.Writer, io.Reader, *config) error
 	outputProgrammably(io.Writer, *Node, *config) error
-	makedir(io.Reader, *config) error
-	makedirProgrammably(*Node, *config) error
+	mkdir(io.Reader, *config) error
+	mkdirProgrammably(*Node, *config) error
 }

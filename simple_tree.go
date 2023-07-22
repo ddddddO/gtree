@@ -14,6 +14,8 @@ type treeSimple struct {
 	mkdirer  mkdirerSimple
 }
 
+var _ iTree = (*treeSimple)(nil)
+
 func newTreeSimple(conf *config) iTree {
 	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) growerSimple {
 		if encode != encodeDefault {
@@ -58,44 +60,44 @@ func (t *treeSimple) output(w io.Writer, r io.Reader, conf *config) error {
 		return err
 	}
 
-	if err := t.grow(roots); err != nil {
+	if err := t.grower.grow(roots); err != nil {
 		return err
 	}
-	return t.spread(w, roots)
+	return t.spreader.spread(w, roots)
 }
 
 func (t *treeSimple) outputProgrammably(w io.Writer, root *Node, conf *config) error {
-	if err := t.grow([]*Node{root}); err != nil {
+	if err := t.grower.grow([]*Node{root}); err != nil {
 		return err
 	}
-	return t.spread(w, []*Node{root})
+	return t.spreader.spread(w, []*Node{root})
 }
 
-func (t *treeSimple) makedir(r io.Reader, conf *config) error {
+func (t *treeSimple) mkdir(r io.Reader, conf *config) error {
 	rg := newRootGeneratorSimple(r, conf.space)
 	roots, err := rg.generate()
 	if err != nil {
 		return err
 	}
 
-	if err := t.grow(roots); err != nil {
+	if err := t.grower.grow(roots); err != nil {
 		return err
 	}
-	return t.mkdir(roots)
+	return t.mkdirer.mkdir(roots)
 }
 
-func (t *treeSimple) makedirProgrammably(root *Node, conf *config) error {
-	t.enableValidation()
+func (t *treeSimple) mkdirProgrammably(root *Node, conf *config) error {
+	t.grower.enableValidation()
 	// when detect invalid node name, return error. process end.
-	if err := t.grow([]*Node{root}); err != nil {
+	if err := t.grower.grow([]*Node{root}); err != nil {
 		return err
 	}
 	if conf.dryrun {
 		// when detected no invalid node name, output tree.
-		return t.spread(color.Output, []*Node{root})
+		return t.spreader.spread(color.Output, []*Node{root})
 	}
 	// when detected no invalid node name, no output tree.
-	return t.mkdir([]*Node{root})
+	return t.mkdirer.mkdir([]*Node{root})
 }
 
 // 関心事は各ノードの枝の形成
@@ -113,16 +115,4 @@ type spreaderSimple interface {
 // interfaceを使う必要はないが、growerSimple/spreaderSimpleと合わせたいため
 type mkdirerSimple interface {
 	mkdir([]*Node) error
-}
-
-func (t *treeSimple) grow(roots []*Node) error {
-	return t.grower.grow(roots)
-}
-
-func (t *treeSimple) spread(w io.Writer, roots []*Node) error {
-	return t.spreader.spread(w, roots)
-}
-
-func (t *treeSimple) mkdir(roots []*Node) error {
-	return t.mkdirer.mkdir(roots)
 }

@@ -25,5 +25,5 @@ func Mkdir(r io.Reader, options ...Option) error {
 	if conf.massive {
 		tree = newTreePipeline(conf)
 	}
-	return tree.makedir(r, conf)
+	return tree.mkdir(r, conf)
 }

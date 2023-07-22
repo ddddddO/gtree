@@ -60,15 +60,7 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 	if conf.massive {
 		tree = newTreePipeline(conf)
 	}
-	return tree.makedirProgrammably(root, conf)
-}
-
-func (t *treeSimple) enableValidation() {
-	t.grower.enableValidation()
-}
-
-func (t *treePipeline) enableValidation() {
-	t.grower.enableValidation()
+	return tree.mkdirProgrammably(root, conf)
 }
 
 // NewRoot creates a starting node for building tree.
