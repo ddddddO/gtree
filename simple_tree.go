@@ -16,7 +16,7 @@ type treeSimple struct {
 
 var _ iTree = (*treeSimple)(nil)
 
-func newTreeSimple(conf *config) iTree {
+func newTreeSimple(cfg *config) iTree {
 	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) growerSimple {
 		if encode != encodeDefault {
 			return newNopGrowerSimple()
@@ -37,24 +37,24 @@ func newTreeSimple(conf *config) iTree {
 
 	return &treeSimple{
 		grower: growerFactory(
-			conf.lastNodeFormat,
-			conf.intermedialNodeFormat,
-			conf.dryrun,
-			conf.encode,
+			cfg.lastNodeFormat,
+			cfg.intermedialNodeFormat,
+			cfg.dryrun,
+			cfg.encode,
 		),
 		spreader: spreaderFactory(
-			conf.encode,
-			conf.dryrun,
-			conf.fileExtensions,
+			cfg.encode,
+			cfg.dryrun,
+			cfg.fileExtensions,
 		),
 		mkdirer: mkdirerFactory(
-			conf.fileExtensions,
+			cfg.fileExtensions,
 		),
 	}
 }
 
-func (t *treeSimple) output(w io.Writer, r io.Reader, conf *config) error {
-	rg := newRootGeneratorSimple(r, conf.space)
+func (t *treeSimple) output(w io.Writer, r io.Reader, cfg *config) error {
+	rg := newRootGeneratorSimple(r, cfg.space)
 	roots, err := rg.generate()
 	if err != nil {
 		return err
@@ -66,15 +66,15 @@ func (t *treeSimple) output(w io.Writer, r io.Reader, conf *config) error {
 	return t.spreader.spread(w, roots)
 }
 
-func (t *treeSimple) outputProgrammably(w io.Writer, root *Node, conf *config) error {
+func (t *treeSimple) outputProgrammably(w io.Writer, root *Node, cfg *config) error {
 	if err := t.grower.grow([]*Node{root}); err != nil {
 		return err
 	}
 	return t.spreader.spread(w, []*Node{root})
 }
 
-func (t *treeSimple) mkdir(r io.Reader, conf *config) error {
-	rg := newRootGeneratorSimple(r, conf.space)
+func (t *treeSimple) mkdir(r io.Reader, cfg *config) error {
+	rg := newRootGeneratorSimple(r, cfg.space)
 	roots, err := rg.generate()
 	if err != nil {
 		return err
@@ -86,13 +86,13 @@ func (t *treeSimple) mkdir(r io.Reader, conf *config) error {
 	return t.mkdirer.mkdir(roots)
 }
 
-func (t *treeSimple) mkdirProgrammably(root *Node, conf *config) error {
+func (t *treeSimple) mkdirProgrammably(root *Node, cfg *config) error {
 	t.grower.enableValidation()
 	// when detect invalid node name, return error. process end.
 	if err := t.grower.grow([]*Node{root}); err != nil {
 		return err
 	}
-	if conf.dryrun {
+	if cfg.dryrun {
 		// when detected no invalid node name, output tree.
 		return t.spreader.spread(color.Output, []*Node{root})
 	}

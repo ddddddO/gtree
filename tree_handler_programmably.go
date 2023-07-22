@@ -29,13 +29,13 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 	}
 
 	idxCounter.reset()
-	conf := newConfig(options)
+	cfg := newConfig(options)
 
-	tree := newTreeSimple(conf)
-	if conf.massive {
-		tree = newTreePipeline(conf)
+	tree := newTreeSimple(cfg)
+	if cfg.massive {
+		tree = newTreePipeline(cfg)
 	}
-	return tree.outputProgrammably(w, root, conf)
+	return tree.outputProgrammably(w, root, cfg)
 }
 
 var (
@@ -54,13 +54,13 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 	}
 
 	idxCounter.reset()
-	conf := newConfig(options)
+	cfg := newConfig(options)
 
-	tree := newTreeSimple(conf)
-	if conf.massive {
-		tree = newTreePipeline(conf)
+	tree := newTreeSimple(cfg)
+	if cfg.massive {
+		tree = newTreePipeline(cfg)
 	}
-	return tree.mkdirProgrammably(root, conf)
+	return tree.mkdirProgrammably(root, cfg)
 }
 
 // NewRoot creates a starting node for building tree.
