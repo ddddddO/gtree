@@ -144,8 +144,8 @@ namespace gtree {
     interface iTree  {
         - output( io.Writer,  io.Reader,  *config) error
         - outputProgrammably( io.Writer,  *Node,  *config) error
-        - makedir( io.Reader,  *config) error
-        - makedirProgrammably( *Node,  *config) error
+        - mkdir( io.Reader,  *config) error
+        - mkdirProgrammably( *Node,  *config) error
 
     }
     class inputFormatError << (S,Aquamarine) >> {
@@ -243,13 +243,9 @@ namespace gtree {
 
         - output(w io.Writer, r io.Reader, conf *config) error
         - outputProgrammably(w io.Writer, root *Node, conf *config) error
-        - makedir(r io.Reader, conf *config) error
-        - makedirProgrammably(root *Node, conf *config) error
-        - grow(ctx context.Context, roots <font color=blue>chan</font> *Node) (<font color=blue>chan</font> *Node, <font color=blue>chan</font> error)
-        - spread(ctx context.Context, w io.Writer, roots <font color=blue>chan</font> *Node) <font color=blue>chan</font> error
-        - mkdir(ctx context.Context, roots <font color=blue>chan</font> *Node) <font color=blue>chan</font> error
+        - mkdir(r io.Reader, conf *config) error
+        - mkdirProgrammably(root *Node, conf *config) error
         - handlePipelineErr(ctx context.Context, echs ...<font color=blue>chan</font> error) error
-        - enableValidation() 
 
     }
     class treeSimple << (S,Aquamarine) >> {
@@ -259,12 +255,8 @@ namespace gtree {
 
         - output(w io.Writer, r io.Reader, conf *config) error
         - outputProgrammably(w io.Writer, root *Node, conf *config) error
-        - makedir(r io.Reader, conf *config) error
-        - makedirProgrammably(root *Node, conf *config) error
-        - grow(roots []*Node) error
-        - spread(w io.Writer, roots []*Node) error
-        - mkdir(roots []*Node) error
-        - enableValidation() 
+        - mkdir(r io.Reader, conf *config) error
+        - mkdirProgrammably(root *Node, conf *config) error
 
     }
     class yamlNode << (S,Aquamarine) >> {
@@ -301,14 +293,8 @@ namespace gtree {
 "gtree.growerSimple" <|-- "gtree.nopGrowerSimple"
 "gtree.spreaderPipeline" <|-- "gtree.tomlSpreaderPipeline"
 "gtree.spreaderSimple" <|-- "gtree.tomlSpreaderSimple"
-"gtree.growerPipeline" <|-- "gtree.treePipeline"
 "gtree.iTree" <|-- "gtree.treePipeline"
-"gtree.mkdirerPipeline" <|-- "gtree.treePipeline"
-"gtree.spreaderPipeline" <|-- "gtree.treePipeline"
-"gtree.growerSimple" <|-- "gtree.treeSimple"
 "gtree.iTree" <|-- "gtree.treeSimple"
-"gtree.mkdirerSimple" <|-- "gtree.treeSimple"
-"gtree.spreaderSimple" <|-- "gtree.treeSimple"
 "gtree.spreaderPipeline" <|-- "gtree.yamlSpreaderPipeline"
 "gtree.spreaderSimple" <|-- "gtree.yamlSpreaderSimple"
 

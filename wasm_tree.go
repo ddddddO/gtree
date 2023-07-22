@@ -24,7 +24,7 @@ type spreader interface {
 	spread(io.Writer, []*Node) error
 }
 
-func newTree(conf *config, roots []*Node) *tree {
+func newTree(cfg *config, roots []*Node) *tree {
 	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) grower {
 		if encode != encodeDefault {
 			return newNopGrower()
@@ -42,15 +42,15 @@ func newTree(conf *config, roots []*Node) *tree {
 	return &tree{
 		roots: roots,
 		grower: growerFactory(
-			conf.lastNodeFormat,
-			conf.intermedialNodeFormat,
-			conf.dryrun,
-			conf.encode,
+			cfg.lastNodeFormat,
+			cfg.intermedialNodeFormat,
+			cfg.dryrun,
+			cfg.encode,
 		),
 		spreader: spreaderFactory(
-			conf.encode,
-			conf.dryrun,
-			conf.fileExtensions,
+			cfg.encode,
+			cfg.dryrun,
+			cfg.fileExtensions,
 		),
 	}
 }

@@ -16,7 +16,9 @@ type treePipeline struct {
 	mkdirer  mkdirerPipeline
 }
 
-func newTreePipeline(conf *config) iTree {
+var _ iTree = (*treePipeline)(nil)
+
+func newTreePipeline(cfg *config) iTree {
 	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) growerPipeline {
 		if encode != encodeDefault {
 			return newNopGrowerPipeline()
@@ -37,35 +39,35 @@ func newTreePipeline(conf *config) iTree {
 
 	return &treePipeline{
 		grower: growerFactory(
-			conf.lastNodeFormat,
-			conf.intermedialNodeFormat,
-			conf.dryrun,
-			conf.encode,
+			cfg.lastNodeFormat,
+			cfg.intermedialNodeFormat,
+			cfg.dryrun,
+			cfg.encode,
 		),
 		spreader: spreaderFactory(
-			conf.encode,
-			conf.dryrun,
-			conf.fileExtensions,
+			cfg.encode,
+			cfg.dryrun,
+			cfg.fileExtensions,
 		),
 		mkdirer: mkdirerFactory(
-			conf.fileExtensions,
+			cfg.fileExtensions,
 		),
 	}
 }
 
-func (t *treePipeline) output(w io.Writer, r io.Reader, conf *config) error {
-	ctx, cancel := context.WithCancel(conf.ctx)
+func (t *treePipeline) output(w io.Writer, r io.Reader, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
 	defer cancel()
 
 	splitStream, errcsl := split(ctx, r)
-	rootStream, errcr := newRootGeneratorPipeline(conf.space).generate(ctx, splitStream)
-	growStream, errcg := t.grow(ctx, rootStream)
-	errcs := t.spread(ctx, w, growStream)
+	rootStream, errcr := newRootGeneratorPipeline(cfg.space).generate(ctx, splitStream)
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	errcs := t.spreader.spread(ctx, w, growStream)
 	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcs)
 }
 
-func (t *treePipeline) outputProgrammably(w io.Writer, root *Node, conf *config) error {
-	ctx, cancel := context.WithCancel(conf.ctx)
+func (t *treePipeline) outputProgrammably(w io.Writer, root *Node, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
 	defer cancel()
 
 	rootStream := make(chan *Node)
@@ -73,24 +75,24 @@ func (t *treePipeline) outputProgrammably(w io.Writer, root *Node, conf *config)
 		defer close(rootStream)
 		rootStream <- root
 	}()
-	growStream, errcg := t.grow(ctx, rootStream)
-	errcs := t.spread(ctx, w, growStream)
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	errcs := t.spreader.spread(ctx, w, growStream)
 	return t.handlePipelineErr(ctx, errcg, errcs)
 }
 
-func (t *treePipeline) makedir(r io.Reader, conf *config) error {
-	ctx, cancel := context.WithCancel(conf.ctx)
+func (t *treePipeline) mkdir(r io.Reader, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
 	defer cancel()
 
 	splitStream, errcsl := split(ctx, r)
-	rootStream, errcr := newRootGeneratorPipeline(conf.space).generate(ctx, splitStream)
-	growStream, errcg := t.grow(ctx, rootStream)
-	errcm := t.mkdir(ctx, growStream)
+	rootStream, errcr := newRootGeneratorPipeline(cfg.space).generate(ctx, splitStream)
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	errcm := t.mkdirer.mkdir(ctx, growStream)
 	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcm)
 }
 
-func (t *treePipeline) makedirProgrammably(root *Node, conf *config) error {
-	ctx, cancel := context.WithCancel(conf.ctx)
+func (t *treePipeline) mkdirProgrammably(root *Node, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
 	defer cancel()
 
 	rootStream := make(chan *Node)
@@ -98,16 +100,16 @@ func (t *treePipeline) makedirProgrammably(root *Node, conf *config) error {
 		defer close(rootStream)
 		rootStream <- root
 	}()
-	t.enableValidation()
+	t.grower.enableValidation()
 	// when detect invalid node name, return error. process end.
-	growStream, errcg := t.grow(ctx, rootStream)
-	if conf.dryrun {
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	if cfg.dryrun {
 		// when detected no invalid node name, output tree.
-		errcs := t.spread(ctx, color.Output, growStream)
+		errcs := t.spreader.spread(ctx, color.Output, growStream)
 		return t.handlePipelineErr(ctx, errcg, errcs)
 	}
 	// when detected no invalid node name, no output tree.
-	errcm := t.mkdir(ctx, growStream)
+	errcm := t.mkdirer.mkdir(ctx, growStream)
 	return t.handlePipelineErr(ctx, errcg, errcm)
 }
 
@@ -126,18 +128,6 @@ type spreaderPipeline interface {
 // interfaceを使う必要はないが、growerPipeline/spreaderPipelineと合わせたいため
 type mkdirerPipeline interface {
 	mkdir(context.Context, <-chan *Node) <-chan error
-}
-
-func (t *treePipeline) grow(ctx context.Context, roots <-chan *Node) (<-chan *Node, <-chan error) {
-	return t.grower.grow(ctx, roots)
-}
-
-func (t *treePipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
-	return t.spreader.spread(ctx, w, roots)
-}
-
-func (t *treePipeline) mkdir(ctx context.Context, roots <-chan *Node) <-chan error {
-	return t.mkdirer.mkdir(ctx, roots)
 }
 
 // パイプラインの全ステージで最初のエラーを返却

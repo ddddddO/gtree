@@ -8,22 +8,22 @@ import (
 
 // Output outputs a tree to w with r as Markdown format input.
 func Output(w io.Writer, r io.Reader, options ...Option) error {
-	conf := newConfig(options)
+	cfg := newConfig(options)
 
-	tree := newTreeSimple(conf)
-	if conf.massive {
-		tree = newTreePipeline(conf)
+	tree := newTreeSimple(cfg)
+	if cfg.massive {
+		tree = newTreePipeline(cfg)
 	}
-	return tree.output(w, r, conf)
+	return tree.output(w, r, cfg)
 }
 
 // Mkdir makes directories.
 func Mkdir(r io.Reader, options ...Option) error {
-	conf := newConfig(options)
+	cfg := newConfig(options)
 
-	tree := newTreeSimple(conf)
-	if conf.massive {
-		tree = newTreePipeline(conf)
+	tree := newTreeSimple(cfg)
+	if cfg.massive {
+		tree = newTreePipeline(cfg)
 	}
-	return tree.makedir(r, conf)
+	return tree.mkdir(r, cfg)
 }
