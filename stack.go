@@ -26,8 +26,7 @@ func (s *stack) pop() *Node {
 		return nil
 	}
 
-	n := s.nodes.Remove(tmp)
-	return n.(*Node)
+	return s.nodes.Remove(tmp).(*Node)
 }
 
 func (s *stack) size() int {
