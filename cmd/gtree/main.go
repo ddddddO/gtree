@@ -147,6 +147,15 @@ func main() {
 				Action: actionMkdir,
 			},
 			{
+				Name: "verify",
+				// Aliases: []string{"m"},
+				// Usage: "Makes directories and files from markdown. It is possible to dry run.\n" +
+				// 	"Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.",
+				// Flags:  append(commonFlags, mkdirFlags...),
+				Before: notExistArgs,
+				Action: actionVerify,
+			},
+			{
 				Name:    "template",
 				Aliases: []string{"t", "tmpl"},
 				Usage:   "Outputs markdown template. Use it to try out gtree CLI.",
@@ -281,6 +290,10 @@ func actionMkdir(c *cli.Context) error {
 
 func isInputStdin(path string) bool {
 	return path == "" || path == "-"
+}
+
+func actionVerify(c *cli.Context) error {
+	return gtree.Verify(os.Stdin)
 }
 
 func actionTemplate(c *cli.Context) error {

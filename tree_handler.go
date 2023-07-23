@@ -27,3 +27,14 @@ func Mkdir(r io.Reader, options ...Option) error {
 	}
 	return tree.mkdir(r, cfg)
 }
+
+// Verify verifies directories.
+func Verify(r io.Reader, options ...Option) error {
+	cfg := newConfig(options)
+
+	tree := newTreeSimple(cfg)
+	if cfg.massive {
+		tree = newTreePipeline(cfg)
+	}
+	return tree.verify(r, cfg)
+}
