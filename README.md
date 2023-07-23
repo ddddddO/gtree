@@ -39,64 +39,45 @@ $ gtree web
 
 ## Installation
 
-### Go (requires 1.18 or later)
-
-```console
+<pre>
+<strong>Go (requires 1.18 or later)</strong>
 $ go install github.com/ddddddO/gtree/cmd/gtree@latest
-```
 
-### Homebrew
-
-```console
+<strong>Homebrew</strong>
 $ brew install ddddddO/tap/gtree
-```
 
-### Scoop
-
-```console
+<strong>Scoop</strong>
 $ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
 $ scoop install ddddddO/gtree
-```
 
-### deb
-```console
+<strong>deb</strong>
 $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.deb -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.deb
 $ dpkg -i gtree.deb
-```
 
-### rpm
-```console
+<strong>rpm</strong>
 $ export GTREE_VERSION=X.X.X
 $ yum install https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.rpm
-```
 
-### apk
-```console
+<strong>apk</strong>
 $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.apk
 $ apk add --allow-untrusted gtree.apk
-```
 
-### ~~[AUR](https://aur.archlinux.org/packages/gtree)~~
+<s><strong><a src="https://aur.archlinux.org/packages/gtree">AUR</a></strong></s>
+$ wip...
 
-### Nix
-```console
+<strong><a src="https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/text/gtree/default.nix">Nix</a></strong>
 $ nix-env -i gtree
 or
 $ nix-shell -p gtree
-```
 
-### MacPorts
-```console
+<strong><a src="https://github.com/macports/macports-ports/blob/master/sysutils/gtree/Portfile">MacPorts</a></strong>
 $ port install gtree
-```
 
-### Using [**aqua**](https://aquaproj.github.io/)
+<strong><a src="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml">aqua</a></strong>
 
-### [Docker image](https://github.com/ddddddO/gtree/pkgs/container/gtree)
-
-```console
+<strong><a src="https://github.com/ddddddO/gtree/pkgs/container/gtree">Docker</a></strong>
 $ docker pull ghcr.io/ddddddo/gtree:latest
 $ docker run ghcr.io/ddddddo/gtree:latest template | docker run -i ghcr.io/ddddddo/gtree:latest output
 gtree
@@ -108,7 +89,7 @@ gtree
 │   └── sample2.md
 ├── Makefile
 └── tree.go
-```
+</pre>
 
 ### etc
 
