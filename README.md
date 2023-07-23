@@ -64,20 +64,20 @@ $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.apk
 $ apk add --allow-untrusted gtree.apk
 
-<s><strong><a src="https://aur.archlinux.org/packages/gtree">AUR</a></strong></s>
+<s><strong><a href="https://aur.archlinux.org/packages/gtree">AUR</a></strong></s>
 $ wip...
 
-<strong><a src="https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/text/gtree/default.nix">Nix</a></strong>
+<strong><a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/text/gtree/default.nix">Nix</a></strong>
 $ nix-env -i gtree
 or
 $ nix-shell -p gtree
 
-<strong><a src="https://github.com/macports/macports-ports/blob/master/sysutils/gtree/Portfile">MacPorts</a></strong>
+<strong><a href="https://github.com/macports/macports-ports/blob/master/sysutils/gtree/Portfile">MacPorts</a></strong>
 $ port install gtree
 
-<strong><a src="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml">aqua</a></strong>
+<strong><a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml">aqua</a></strong>
 
-<strong><a src="https://github.com/ddddddO/gtree/pkgs/container/gtree">Docker</a></strong>
+<strong><a href="https://github.com/ddddddO/gtree/pkgs/container/gtree">Docker</a></strong>
 $ docker pull ghcr.io/ddddddo/gtree:latest
 $ docker run ghcr.io/ddddddo/gtree:latest template | docker run -i ghcr.io/ddddddo/gtree:latest output
 gtree
