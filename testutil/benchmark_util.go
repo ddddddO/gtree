@@ -8,11 +8,11 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-func BaseBenchmarkWithMassive(roots string, b *testing.B) {
-	BaseBenchmark(roots, b, gtree.WithMassive(context.Background()))
+func BenchmarkWithMassive(b *testing.B, roots string) {
+	BaseBenchmark(b, roots, gtree.WithMassive(context.Background()))
 }
 
-func BaseBenchmark(roots string, b *testing.B, options ...gtree.Option) {
+func BaseBenchmark(b *testing.B, roots string, options ...gtree.Option) {
 	r := strings.NewReader(roots)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
