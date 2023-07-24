@@ -9,4 +9,6 @@ type tree interface {
 	outputProgrammably(io.Writer, *Node, *config) error
 	mkdir(io.Reader, *config) error
 	mkdirProgrammably(*Node, *config) error
+	verify(io.Reader, *config) error
+	verifyProgrammably(*Node, *config) error
 }

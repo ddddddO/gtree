@@ -1,0 +1,18 @@
+- example
+	- find_pipe_programmable-gtree
+		- main.go
+	- go-list_pipe_programmable-gtree
+		- main.go
+	- like_cli
+		- adapter
+			- executor.go
+			- indentation.go
+		- main.go
+	- programmable
+		- main.go
+	- noexist
+		- xxx
+
+- docs
+	- main.js
+	- toast.js

@@ -14,6 +14,7 @@ type treePipeline struct {
 	grower   growerPipeline
 	spreader spreaderPipeline
 	mkdirer  mkdirerPipeline
+	verifier verifierPipeline
 }
 
 var _ tree = (*treePipeline)(nil)
@@ -37,6 +38,10 @@ func newTreePipeline(cfg *config) tree {
 		return newMkdirerPipeline(fileExtensions)
 	}
 
+	verifierFactory := func(targetDir string, strict bool) verifierPipeline {
+		return newVerifierPipeline(targetDir, strict)
+	}
+
 	return &treePipeline{
 		grower: growerFactory(
 			cfg.lastNodeFormat,
@@ -51,6 +56,10 @@ func newTreePipeline(cfg *config) tree {
 		),
 		mkdirer: mkdirerFactory(
 			cfg.fileExtensions,
+		),
+		verifier: verifierFactory(
+			cfg.targetDir,
+			cfg.strictVerify,
 		),
 	}
 }
@@ -113,6 +122,35 @@ func (t *treePipeline) mkdirProgrammably(root *Node, cfg *config) error {
 	return t.handlePipelineErr(ctx, errcg, errcm)
 }
 
+func (t *treePipeline) verify(r io.Reader, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
+	defer cancel()
+
+	t.grower.enableValidation()
+	splitStream, errcsl := split(ctx, r)
+	rootStream, errcr := newRootGeneratorPipeline(cfg.space).generate(ctx, splitStream)
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	errcv := t.verifier.verify(ctx, growStream)
+	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcv)
+}
+
+func (t *treePipeline) verifyProgrammably(root *Node, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
+	defer cancel()
+
+	rootStream := make(chan *Node)
+	go func() {
+		defer close(rootStream)
+		rootStream <- root
+	}()
+	t.grower.enableValidation()
+	// when detect invalid node name, return error. process end.
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	// when detected no invalid node name, no output tree.
+	errcv := t.verifier.verify(ctx, growStream)
+	return t.handlePipelineErr(ctx, errcg, errcv)
+}
+
 // 関心事は各ノードの枝の形成
 type growerPipeline interface {
 	grow(context.Context, <-chan *Node) (<-chan *Node, <-chan error)
@@ -128,6 +166,12 @@ type spreaderPipeline interface {
 // interfaceを使う必要はないが、growerPipeline/spreaderPipelineと合わせたいため
 type mkdirerPipeline interface {
 	mkdir(context.Context, <-chan *Node) <-chan error
+}
+
+// 関心事はディレクトリの検証
+// interfaceを使う必要はないが、growerPipeline/spreaderPipelineと合わせたいため
+type verifierPipeline interface {
+	verify(context.Context, <-chan *Node) <-chan error
 }
 
 // パイプラインの全ステージで最初のエラーを返却

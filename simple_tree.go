@@ -12,6 +12,7 @@ type treeSimple struct {
 	grower   growerSimple
 	spreader spreaderSimple
 	mkdirer  mkdirerSimple
+	verifier verifierSimple
 }
 
 var _ tree = (*treeSimple)(nil)
@@ -35,6 +36,10 @@ func newTreeSimple(cfg *config) tree {
 		return newMkdirerSimple(fileExtensions)
 	}
 
+	verifierFactory := func(targetDir string, strict bool) verifierSimple {
+		return newVerifierSimple(targetDir, strict)
+	}
+
 	return &treeSimple{
 		grower: growerFactory(
 			cfg.lastNodeFormat,
@@ -49,6 +54,10 @@ func newTreeSimple(cfg *config) tree {
 		),
 		mkdirer: mkdirerFactory(
 			cfg.fileExtensions,
+		),
+		verifier: verifierFactory(
+			cfg.targetDir,
+			cfg.strictVerify,
 		),
 	}
 }
@@ -100,6 +109,29 @@ func (t *treeSimple) mkdirProgrammably(root *Node, cfg *config) error {
 	return t.mkdirer.mkdir([]*Node{root})
 }
 
+func (t *treeSimple) verify(r io.Reader, cfg *config) error {
+	rg := newRootGeneratorSimple(r, cfg.space)
+	roots, err := rg.generate()
+	if err != nil {
+		return err
+	}
+
+	t.grower.enableValidation()
+	if err := t.grower.grow(roots); err != nil {
+		return err
+	}
+	return t.verifier.verify(roots)
+}
+
+func (t *treeSimple) verifyProgrammably(root *Node, cfg *config) error {
+	t.grower.enableValidation()
+	// when detect invalid node name, return error. process end.
+	if err := t.grower.grow([]*Node{root}); err != nil {
+		return err
+	}
+	return t.verifier.verify([]*Node{root})
+}
+
 // 関心事は各ノードの枝の形成
 type growerSimple interface {
 	grow([]*Node) error
@@ -115,4 +147,10 @@ type spreaderSimple interface {
 // interfaceを使う必要はないが、growerSimple/spreaderSimpleと合わせたいため
 type mkdirerSimple interface {
 	mkdir([]*Node) error
+}
+
+// 関心事はディレクトリの検証
+// interfaceを使う必要はないが、growerSimple/spreaderSimpleと合わせたいため
+type verifierSimple interface {
+	verify([]*Node) error
 }
