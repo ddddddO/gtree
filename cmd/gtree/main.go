@@ -162,7 +162,7 @@ func main() {
 			{
 				Name:    "verify",
 				Aliases: []string{"vf"},
-				Usage: "Verify tree structure represented in markdown by comparing it with existing directories.\n" +
+				Usage: "Verifies tree structure represented in markdown by comparing it with existing directories.\n" +
 					"Let's try 'gtree template | gtree verify'.",
 				Flags:  append(commonFlags, verifyFlags...),
 				Before: notExistArgs,
