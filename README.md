@@ -107,13 +107,15 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.8.7 / revision cdef0bf
+   1.9.1 / revision 91a2226
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
                       Let's try 'gtree template | gtree output'.
    mkdir, m           Makes directories and files from markdown. It is possible to dry run.
                       Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.
+   verify, vf         Verifies tree structure represented in markdown by comparing it with existing directories.
+                      Let's try 'gtree template | gtree verify'.
    template, t, tmpl  Outputs markdown template. Use it to try out gtree CLI.
    web, w, www        Opens "Tree Maker" in your browser and shows the URL in terminal.
    gocode, gc, code   Outputs a sample Go program calling "gtree" package.
@@ -487,6 +489,55 @@ EOS
 invalid node name: /root
 ```
 
+### *Verify* subcommand
+```console
+$ gtree verify --help
+NAME:
+   gtree verify - Verifies tree structure represented in markdown by comparing it with existing directories.
+                  Let's try 'gtree template | gtree verify'.
+
+USAGE:
+   gtree verify [command options] [arguments...]
+
+OPTIONS:
+   --file value, -f value  specify the path to markdown file. (default: stdin)
+   --two-spaces, --ts      set this option when the markdown indent is 2 spaces. (default: tab spaces)
+   --four-spaces, --fs     set this option when the markdown indent is 4 spaces. (default: tab spaces)
+   --target-dir value      set this option if you want to specify the directory you want to verify. (default: current directory)
+   --strict                set this option if you want strict directory match validation. (default: non strict)
+   --help, -h              show help
+```
+
+#### Try it!
+
+```console
+~/github.com/ddddddO/gtree
+$ cat testdata/sample9.md
+- example
+        - find_pipe_programmable-gtree
+                - main.go
+        - go-list_pipe_programmable-gtree
+                - main.go
+        - like_cli
+                - adapter
+                        - executor.go
+                        - indentation.go
+                - main.go
+                - kkk
+        - programmable
+                - main.go
+~/github.com/ddddddO/gtree
+$ cat testdata/sample9.md | gtree verify --strict
+2023/07/25 01:04:04 
+Extra paths exist:
+        example/noexist
+        example/noexist/xxx
+Required paths does not exist:
+        example/like_cli/kkk
+exit status 1
+```
+
+
 # Package(1) / like CLI
 
 ## Installation
@@ -597,6 +648,12 @@ func main() {
 
 You can use `gtree.WithFileExtensions` func to make specified extensions as file.
 
+
+### *Verify* func
+
+#### `gtree.Verify` func verifies directories.
+
+You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
 # Package(2) / generate a tree programmatically
 
@@ -922,6 +979,9 @@ func main() {
 }
 ```
 
+### *VerifyProgrammably* func
+
+You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
 # Process
 
