@@ -134,6 +134,23 @@ func (t *treePipeline) verify(r io.Reader, cfg *config) error {
 	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcv)
 }
 
+func (t *treePipeline) verifyProgrammably(root *Node, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
+	defer cancel()
+
+	rootStream := make(chan *Node)
+	go func() {
+		defer close(rootStream)
+		rootStream <- root
+	}()
+	t.grower.enableValidation()
+	// when detect invalid node name, return error. process end.
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	// when detected no invalid node name, no output tree.
+	errcv := t.verifier.verify(ctx, growStream)
+	return t.handlePipelineErr(ctx, errcg, errcv)
+}
+
 // 関心事は各ノードの枝の形成
 type growerPipeline interface {
 	grow(context.Context, <-chan *Node) (<-chan *Node, <-chan error)

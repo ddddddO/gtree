@@ -123,6 +123,15 @@ func (t *treeSimple) verify(r io.Reader, cfg *config) error {
 	return t.verifier.verify(roots)
 }
 
+func (t *treeSimple) verifyProgrammably(root *Node, cfg *config) error {
+	t.grower.enableValidation()
+	// when detect invalid node name, return error. process end.
+	if err := t.grower.grow([]*Node{root}); err != nil {
+		return err
+	}
+	return t.verifier.verify([]*Node{root})
+}
+
 // 関心事は各ノードの枝の形成
 type growerSimple interface {
 	grow([]*Node) error
