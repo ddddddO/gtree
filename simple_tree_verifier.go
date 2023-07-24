@@ -7,32 +7,55 @@ import (
 	"path/filepath"
 )
 
-func newVerifierSimple() verifierSimple {
-	return &defaultVerifierSimple{}
+func newVerifierSimple(dir string, strict bool) verifierSimple {
+	targetDir := "."
+	if len(targetDir) != 0 {
+		targetDir = dir
+	}
+
+	return &defaultVerifierSimple{
+		strict:    strict,
+		targetDir: targetDir,
+	}
 }
 
-type defaultVerifierSimple struct{}
+type defaultVerifierSimple struct {
+	strict    bool
+	targetDir string
+}
 
-// cat testdata/sample9.md | sudo go run cmd/gtree/*.go verify
+// cat testdata/sample9.md | sudo go run cmd/gtree/*.go verify --strict --target-dir /home/ochi/github.com/ddddddO/gtree
+// cat testdata/sample10.md | sudo go run cmd/gtree/*.go verify --strict --target-dir /home/ochi/github.com/ddddddO/gtree
 func (dv *defaultVerifierSimple) verify(roots []*Node) error {
-	dirsMarkdown := map[string]struct{}{}
 	for i := range roots {
-		if err := dv.recursive(roots[i], dirsMarkdown); err != nil {
+		exists, noExists, err := dv.verifyRoot(roots[i])
+		if err != nil {
+			return err
+		}
+		if err := dv.handleErr(exists, noExists); err != nil {
 			return err
 		}
 	}
 
+	return nil
+}
+
+func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, error) {
+	dirsMarkdown := map[string]struct{}{}
+	if err := dv.recursive(root, dirsMarkdown); err != nil {
+		return nil, nil, err
+	}
+
 	dirsFilesystem := map[string]struct{}{}
 	existDirs := []string{}
-	root := "example"
-	fileSystem := os.DirFS(root)
+	rootPath := root.path()
+	fileSystem := os.DirFS(filepath.Join(dv.targetDir, rootPath))
 	err := fs.WalkDir(fileSystem, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
 
-		dir := filepath.Join(root, path)
-		// fmt.Println(dir)
+		dir := filepath.Join(dv.targetDir, rootPath, path)
 		if _, ok := dirsMarkdown[dir]; !ok {
 			// Markdownに無いパスがディレクトリに有る => strictモードでエラー
 			existDirs = append(existDirs, dir)
@@ -42,7 +65,7 @@ func (dv *defaultVerifierSimple) verify(roots []*Node) error {
 		return nil
 	})
 	if err != nil {
-		return err
+		return nil, nil, err
 	}
 
 	// Markdownに有るパスがディレクトリに無い時 => 通常/strictモード共通でエラー
@@ -53,30 +76,11 @@ func (dv *defaultVerifierSimple) verify(roots []*Node) error {
 		}
 	}
 
-	fmt.Println("Markdownに無いパスがディレクトリに有る:")
-	for _, dir := range existDirs {
-		fmt.Println(dir)
-	}
-
-	fmt.Println("\nMarkdownに有るパスがディレクトリに無い:")
-	for _, dir := range noExistDirs {
-		fmt.Println(dir)
-	}
-
-	// Output:
-	// Markdownに無いパスがディレクトリに有る:
-	// example/noexist
-	// example/noexist/xxx
-	//
-	// Markdownに有るパスがディレクトリに無い:
-	// example/like_cli/kkk
-
-	return nil
+	return existDirs, noExistDirs, nil
 }
 
 func (dv *defaultVerifierSimple) recursive(node *Node, dirs map[string]struct{}) error {
-	// fmt.Println(node.path())
-	dirs[node.path()] = struct{}{}
+	dirs[filepath.Join(dv.targetDir, node.path())] = struct{}{}
 
 	for i := range node.children {
 		if err := dv.recursive(node.children[i], dirs); err != nil {
@@ -84,4 +88,40 @@ func (dv *defaultVerifierSimple) recursive(node *Node, dirs map[string]struct{})
 		}
 	}
 	return nil
+}
+
+func (dv *defaultVerifierSimple) handleErr(exists, noExists []string) error {
+	if (dv.strict && len(exists) != 0) || len(noExists) != 0 {
+		return VerifyError{
+			strict:   dv.strict,
+			exists:   exists,
+			noExists: noExists,
+		}
+	}
+	return nil
+}
+
+type VerifyError struct {
+	strict   bool
+	exists   []string
+	noExists []string
+}
+
+func (v VerifyError) Error() string {
+	tabPrefix := func(arr []string) string {
+		tmp := ""
+		for i := range arr {
+			tmp += fmt.Sprintf("\t%s\n", arr[i])
+		}
+		return tmp
+	}
+
+	msg := ""
+	if v.strict && len(v.exists) != 0 {
+		msg += fmt.Sprintf("Extra paths exist:\n%s", tabPrefix(v.exists))
+	}
+	if len(v.noExists) != 0 {
+		msg += fmt.Sprintf("Required paths does not exist:\n%s", tabPrefix(v.noExists))
+	}
+	return msg
 }

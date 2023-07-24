@@ -12,6 +12,8 @@ type config struct {
 	encode         encode
 	dryrun         bool
 	fileExtensions []string
+	targetDir      string
+	strictVerify   bool
 }
 
 func newConfig(options []Option) *config {
@@ -24,9 +26,10 @@ func newConfig(options []Option) *config {
 			directly:   "├──",
 			indirectly: "│   ",
 		},
-		space:   spacesTab,
-		massive: false,
-		encode:  encodeDefault,
+		space:     spacesTab,
+		massive:   false,
+		encode:    encodeDefault,
+		targetDir: ".",
 	}
 	for _, opt := range options {
 		if opt == nil {
@@ -114,5 +117,19 @@ func WithDryRun() Option {
 func WithFileExtensions(extensions []string) Option {
 	return func(c *config) {
 		c.fileExtensions = extensions
+	}
+}
+
+// WithTargetDir returns function for specifing directory. Default is current directory.
+func WithTargetDir(dir string) Option {
+	return func(c *config) {
+		c.targetDir = dir
+	}
+}
+
+// WithStrictVerify returns function for verifing directory strictly.
+func WithStrictVerify() Option {
+	return func(c *config) {
+		c.strictVerify = true
 	}
 }

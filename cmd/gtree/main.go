@@ -98,6 +98,19 @@ func main() {
 		},
 	}
 
+	verifyFlags := []cli.Flag{
+		&cli.StringFlag{
+			Name:        "target-dir",
+			Usage:       "set this option if you want to specify the directory you want to verify.",
+			DefaultText: "current directory",
+		},
+		&cli.BoolFlag{
+			Name:        "strict",
+			Usage:       "set this option if you want strict directory match validation.",
+			DefaultText: "non strict",
+		},
+	}
+
 	templateFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:    "description",
@@ -147,11 +160,11 @@ func main() {
 				Action: actionMkdir,
 			},
 			{
-				Name: "verify",
-				// Aliases: []string{"m"},
-				// Usage: "Makes directories and files from markdown. It is possible to dry run.\n" +
-				// 	"Let's try 'gtree template | gtree mkdir -e .go -e .md -e Makefile'.",
-				// Flags:  append(commonFlags, mkdirFlags...),
+				Name:    "verify",
+				Aliases: []string{"vf"},
+				Usage: "Verify tree structure represented in markdown by comparing it with existing directories.\n" +
+					"Let's try 'gtree template | gtree verify'.",
+				Flags:  append(commonFlags, verifyFlags...),
 				Before: notExistArgs,
 				Action: actionVerify,
 			},
@@ -293,7 +306,34 @@ func isInputStdin(path string) bool {
 }
 
 func actionVerify(c *cli.Context) error {
-	return gtree.Verify(os.Stdin)
+	var (
+		in  = os.Stdin
+		err error
+	)
+	if !isInputStdin(c.Path("file")) {
+		in, err = os.Open(c.Path("file"))
+		if err != nil {
+			return exitErrOpen(err)
+		}
+		defer in.Close()
+	}
+
+	oi, err := optionIndentation(c)
+	if err != nil {
+		return exitErrOpts(err)
+	}
+	options := []gtree.Option{oi, gtree.WithTargetDir(c.String("target-dir"))}
+	if c.Bool("strict") {
+		options = append(options, gtree.WithStrictVerify())
+	}
+
+	if err := verify(in, options); err != nil {
+		if errors.As(err, &gtree.VerifyError{}) {
+			return errors.New(fmt.Sprintf("\n%s", err.Error()))
+		}
+		return err
+	}
+	return nil
 }
 
 func actionTemplate(c *cli.Context) error {

@@ -38,8 +38,8 @@ func newTreePipeline(cfg *config) tree {
 		return newMkdirerPipeline(fileExtensions)
 	}
 
-	verifierFactory := func() verifierPipeline {
-		return newVerifierPipeline()
+	verifierFactory := func(targetDir string, strict bool) verifierPipeline {
+		return newVerifierPipeline(targetDir, strict)
 	}
 
 	return &treePipeline{
@@ -57,7 +57,10 @@ func newTreePipeline(cfg *config) tree {
 		mkdirer: mkdirerFactory(
 			cfg.fileExtensions,
 		),
-		verifier: verifierFactory(),
+		verifier: verifierFactory(
+			cfg.targetDir,
+			cfg.strictVerify,
+		),
 	}
 }
 
