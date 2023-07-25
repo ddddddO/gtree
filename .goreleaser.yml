@@ -50,7 +50,7 @@ brews:
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     folder: Formula
     homepage: 'https://github.com/ddddddO/gtree'
-    description: 'Output tree🌳 or Make directories(files)📁 from Markdown.'
+    description: 'This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories.'
     license: "BSD-2-Clause"
 scoops:
   - repository:
@@ -59,7 +59,7 @@ scoops:
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
     url_template: "https://github.com/ddddddO/gtree/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
     homepage: "https://github.com/ddddddO/gtree"
-    description: "Output tree🌳 or Make directories(files)📁 from Markdown."
+    description: "This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories."
     license: "BSD-2-Clause"
 nfpms:
   - id: gtree-nfpms
@@ -68,7 +68,7 @@ nfpms:
       - gtree-linux
     homepage: https://github.com/ddddddO/gtree
     maintainer: ddddddO <lbfdeatq@gmail.com>
-    description: Output tree or Make directories(files) from Markdown.
+    description: This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories.
     license: BSD-2-Clause
     formats:
       - deb

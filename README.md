@@ -7,7 +7,8 @@
 
 <img src="demo.gif"><br>
 
-Generate directory trees🌳 and the directories itself🗂 using Markdown or Programmatically. Provide CLI, Golang library and Web.
+Using either Markdown or Programmatically to generate directory trees🌳 and directories🗂, and to verify directories🔍.
+Provide CLI, Golang library and Web.
 
 - **[Web](https://github.com/ddddddO/gtree#web)**
 - **[CLI](https://github.com/ddddddO/gtree#cli)**
@@ -100,7 +101,7 @@ gtree
 ```console
 $ gtree --help
 NAME:
-   gtree - This CLI generates directory trees and the directories itself using Markdown.
+   gtree - This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories.
            The symbols that can be used in Markdown are '-', '+', '*', and '#'.
 
 USAGE:
