@@ -2,7 +2,6 @@ package gtree
 
 import (
 	"context"
-	"fmt"
 )
 
 type defaultVerifierPipeline struct {
@@ -16,7 +15,6 @@ func newVerifierPipeline(dir string, strict bool) verifierPipeline {
 }
 
 func (dv *defaultVerifierPipeline) verify(ctx context.Context, roots <-chan *Node) <-chan error {
-	fmt.Println("in verify pipeline")
 	errc := make(chan error, 1)
 
 	go func() {
@@ -40,6 +38,5 @@ func (dv *defaultVerifierPipeline) verify(ctx context.Context, roots <-chan *Nod
 		}
 	}()
 
-	fmt.Println("in verify pipeline end")
 	return errc
 }
