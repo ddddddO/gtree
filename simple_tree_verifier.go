@@ -1,6 +1,7 @@
 package gtree
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 	"os"
@@ -51,11 +52,16 @@ func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, err
 	rootPath := root.path()
 	fileSystem := os.DirFS(filepath.Join(dv.targetDir, rootPath))
 	err := fs.WalkDir(fileSystem, ".", func(path string, d fs.DirEntry, err error) error {
+		dir := filepath.Join(dv.targetDir, rootPath, path)
+
 		if err != nil {
+			if errors.Is(err, fs.ErrNotExist) {
+				// markdown上のrootが検査対象パスに無いとエラー
+				return VerifyError{noExists: []string{dir}}
+			}
 			return err
 		}
 
-		dir := filepath.Join(dv.targetDir, rootPath, path)
 		if _, ok := dirsMarkdown[dir]; !ok {
 			// Markdownに無いパスがディレクトリに有る => strictモードでエラー
 			existDirs = append(existDirs, dir)
