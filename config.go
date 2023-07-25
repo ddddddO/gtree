@@ -120,7 +120,7 @@ func WithFileExtensions(extensions []string) Option {
 	}
 }
 
-// WithTargetDir returns function for specifing directory. Default is current directory.
+// WithTargetDir returns function for specifying directory. Default is current directory.
 func WithTargetDir(dir string) Option {
 	return func(c *config) {
 		c.targetDir = dir
