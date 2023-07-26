@@ -30,11 +30,11 @@ type defaultVerifierSimple struct {
 // cat testdata/sample10.md | sudo go run cmd/gtree/*.go verify --strict --target-dir /home/ochi/github.com/ddddddO/gtree
 func (dv *defaultVerifierSimple) verify(roots []*Node) error {
 	for i := range roots {
-		exists, noExists, err := dv.verifyRoot(roots[i])
+		extra, noExists, err := dv.verifyRoot(roots[i])
 		if err != nil {
 			return err
 		}
-		if err := dv.handleErr(exists, noExists); err != nil {
+		if err := dv.handleErr(extra, noExists); err != nil {
 			return err
 		}
 	}
@@ -97,11 +97,11 @@ func (dv *defaultVerifierSimple) recursive(node *Node, dirs map[string]struct{})
 	return nil
 }
 
-func (dv *defaultVerifierSimple) handleErr(exists, noExists []string) error {
-	if (dv.strict && len(exists) != 0) || len(noExists) != 0 {
+func (dv *defaultVerifierSimple) handleErr(extra, noExists []string) error {
+	if (dv.strict && len(extra) != 0) || len(noExists) != 0 {
 		return VerifyError{
 			strict:   dv.strict,
-			exists:   exists,
+			extra:    extra,
 			noExists: noExists,
 		}
 	}
@@ -110,7 +110,7 @@ func (dv *defaultVerifierSimple) handleErr(exists, noExists []string) error {
 
 type VerifyError struct {
 	strict   bool
-	exists   []string
+	extra    []string
 	noExists []string
 }
 
@@ -124,8 +124,8 @@ func (v VerifyError) Error() string {
 	}
 
 	msg := ""
-	if v.strict && len(v.exists) != 0 {
-		msg += fmt.Sprintf("Extra paths exist:\n%s", tabPrefix(v.exists))
+	if v.strict && len(v.extra) != 0 {
+		msg += fmt.Sprintf("Extra paths exist:\n%s", tabPrefix(v.extra))
 	}
 	if len(v.noExists) != 0 {
 		msg += fmt.Sprintf("Required paths does not exist:\n%s", tabPrefix(v.noExists))
