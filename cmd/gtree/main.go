@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -206,7 +205,7 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
+		fmt.Fprint(os.Stderr, err)
 	}
 }
 
@@ -328,10 +327,7 @@ func actionVerify(c *cli.Context) error {
 	}
 
 	if err := verify(in, options); err != nil {
-		if errors.As(err, &gtree.VerifyError{}) {
-			return errors.New(fmt.Sprintf("\n%s", err.Error()))
-		}
-		return err
+		return exitErrVerify(err)
 	}
 	return nil
 }

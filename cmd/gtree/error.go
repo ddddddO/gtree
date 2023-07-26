@@ -7,6 +7,7 @@ const (
 	exitCodeErrOpen
 	exitCodeErrOutput
 	exitCodeErrMkdir
+	exitCodeErrVerify
 )
 
 func exitErrOpts(err error) cli.ExitCoder {
@@ -23,4 +24,8 @@ func exitErrOutput(err error) cli.ExitCoder {
 
 func exitErrMkdir(err error) cli.ExitCoder {
 	return cli.Exit(err, exitCodeErrMkdir)
+}
+
+func exitErrVerify(err error) cli.ExitCoder {
+	return cli.Exit(err, exitCodeErrVerify)
 }

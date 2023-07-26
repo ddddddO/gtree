@@ -108,7 +108,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.9.2 / revision 136b147
+   1.9.3 / revision 136b147
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -529,13 +529,11 @@ $ cat testdata/sample9.md
                 - main.go
 ~/github.com/ddddddO/gtree
 $ cat testdata/sample9.md | gtree verify --strict
-2023/07/25 01:04:04 
 Extra paths exist:
         example/noexist
         example/noexist/xxx
 Required paths does not exist:
         example/like_cli/kkk
-exit status 1
 ```
 
 

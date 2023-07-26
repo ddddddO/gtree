@@ -6,11 +6,12 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func newVerifierSimple(dir string, strict bool) verifierSimple {
 	targetDir := "."
-	if len(targetDir) != 0 {
+	if len(dir) != 0 {
 		targetDir = dir
 	}
 
@@ -48,7 +49,7 @@ func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, err
 	}
 
 	dirsFilesystem := map[string]struct{}{}
-	existDirs := []string{}
+	extraDirs := []string{}
 	rootPath := root.path()
 	fileSystem := os.DirFS(filepath.Join(dv.targetDir, rootPath))
 	err := fs.WalkDir(fileSystem, ".", func(path string, d fs.DirEntry, err error) error {
@@ -64,7 +65,7 @@ func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, err
 
 		if _, ok := dirsMarkdown[dir]; !ok {
 			// Markdownに無いパスがディレクトリに有る => strictモードでエラー
-			existDirs = append(existDirs, dir)
+			extraDirs = append(extraDirs, dir)
 		}
 
 		dirsFilesystem[dir] = struct{}{}
@@ -82,7 +83,7 @@ func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, err
 		}
 	}
 
-	return existDirs, noExistDirs, nil
+	return extraDirs, noExistDirs, nil
 }
 
 func (dv *defaultVerifierSimple) recursive(node *Node, dirs map[string]struct{}) error {
@@ -129,5 +130,5 @@ func (v VerifyError) Error() string {
 	if len(v.noExists) != 0 {
 		msg += fmt.Sprintf("Required paths does not exist:\n%s", tabPrefix(v.noExists))
 	}
-	return msg
+	return strings.TrimSuffix(msg, "\n")
 }
