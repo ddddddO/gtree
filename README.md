@@ -12,8 +12,8 @@ Provide CLI, Golang library and Web.
 
 - **[Web](https://github.com/ddddddO/gtree#web)**
 - **[CLI](https://github.com/ddddddO/gtree#cli)**
-- **[Library / Like CLI](https://github.com/ddddddO/gtree#package1--like-cli)**
-- **[Library / Programmable](https://github.com/ddddddO/gtree#package2--generate-a-tree-programmatically)**
+- **[Library - Like CLI](https://github.com/ddddddO/gtree#package1--like-cli)**
+- **[Library - Programmable](https://github.com/ddddddO/gtree#package2--generate-a-tree-programmatically)**
 
 
 # Web
