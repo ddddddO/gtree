@@ -58,7 +58,7 @@ func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, err
 		if err != nil {
 			if errors.Is(err, fs.ErrNotExist) {
 				// markdown上のrootが検査対象パスに無いとエラー
-				return VerifyError{noExists: []string{dir}}
+				return verifyError{noExists: []string{dir}}
 			}
 			return err
 		}
@@ -99,7 +99,7 @@ func (dv *defaultVerifierSimple) recursive(node *Node, dirs map[string]struct{})
 
 func (dv *defaultVerifierSimple) handleErr(extra, noExists []string) error {
 	if (dv.strict && len(extra) != 0) || len(noExists) != 0 {
-		return VerifyError{
+		return verifyError{
 			strict:   dv.strict,
 			extra:    extra,
 			noExists: noExists,
@@ -108,13 +108,13 @@ func (dv *defaultVerifierSimple) handleErr(extra, noExists []string) error {
 	return nil
 }
 
-type VerifyError struct {
+type verifyError struct {
 	strict   bool
 	extra    []string
 	noExists []string
 }
 
-func (v VerifyError) Error() string {
+func (v verifyError) Error() string {
 	tabPrefix := func(arr []string) string {
 		tmp := ""
 		for i := range arr {
