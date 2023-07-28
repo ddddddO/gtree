@@ -27,11 +27,11 @@ func (dv *defaultVerifierPipeline) verify(ctx context.Context, roots <-chan *Nod
 				if !ok {
 					return
 				}
-				exists, noExists, err := dv.verifyRoot(root)
+				extra, noExists, err := dv.verifyRoot(root)
 				if err != nil {
 					errc <- err
 				}
-				if err := dv.handleErr(exists, noExists); err != nil {
+				if err := dv.handleErr(extra, noExists); err != nil {
 					errc <- err
 				}
 			}

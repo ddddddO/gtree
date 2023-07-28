@@ -512,7 +512,23 @@ OPTIONS:
 #### Try it!
 
 ```console
-~/github.com/ddddddO/gtree
+$ tree example
+example
+├── find_pipe_programmable-gtree
+│   └── main.go
+├── go-list_pipe_programmable-gtree
+│   └── main.go
+├── like_cli
+│   ├── adapter
+│   │   ├── executor.go
+│   │   └── indentation.go
+│   └── main.go
+├── noexist
+│   └── xxx
+└── programmable
+    └── main.go
+
+6 directories, 7 files
 $ cat testdata/sample9.md
 - example
         - find_pipe_programmable-gtree
@@ -527,7 +543,6 @@ $ cat testdata/sample9.md
                 - kkk
         - programmable
                 - main.go
-~/github.com/ddddddO/gtree
 $ cat testdata/sample9.md | gtree verify --strict
 Extra paths exist:
         example/noexist
