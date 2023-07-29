@@ -1,4 +1,4 @@
-Output demo.gif
+Output assets/demo.gif
 
 Set Theme "IC_Green_PPL"
 Set Shell "bash"
