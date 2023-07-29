@@ -12,8 +12,8 @@ Provide CLI, Golang library and Web.
 
 - **[Web](https://github.com/ddddddO/gtree#web)**
 - **[CLI](https://github.com/ddddddO/gtree#cli)**
-- **[Library - Like CLI](https://github.com/ddddddO/gtree#package1--like-cli)**
-- **[Library - Programmable](https://github.com/ddddddO/gtree#package2--generate-a-tree-programmatically)**
+- **[Library - used in Web and CLI](https://github.com/ddddddO/gtree#package1--like-cli)**
+- **[Library - programmable tree structure](https://github.com/ddddddO/gtree#package2--generate-a-tree-programmatically)**
 
 
 # Web
@@ -552,7 +552,7 @@ Required paths does not exist:
 ```
 
 
-# Package(1) / like CLI
+# Library - used in Web and CLI
 
 ## Installation
 
@@ -669,7 +669,7 @@ You can use `gtree.WithFileExtensions` func to make specified extensions as file
 
 You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
-# Package(2) / generate a tree programmatically
+# Library - programmable tree structure
 
 ## Installation
 
