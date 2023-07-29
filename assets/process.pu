@@ -12,23 +12,35 @@ skinparam {
 
 ' stages
 interface "START" as start
+card markdown [
+- root1
+    - a
+        - b
+- root2
+    - c
+- root3
+    - d
+        - e
+]
 
 (Launch pipeline) as init
 
 frame "Pipeline" as pipeline {
   control "Split input" as split_proc
+  collections "- root1\n    - a\n        - b" as splited
   control "Generate root node\n(10 workers)" as generate_root_worker
   control "Grow root node\n(10 workers)" as grow_worker
-  control "Spread root node\n(10 workers)" as spread_worker
-  control "Mkdir root node\n(10 workers)" as mkdir_worker
+  control "Spread tree\n(10 workers)" as spread_worker
+  control "Mkdir tree\n(10 workers)" as mkdir_worker
+  control "Verify tree\n(10 workers)" as verify_worker
   control "Handle error queue" as error_handler #CC6699
 
-  queue "Root block" as split_q
+  queue "Markdown root block" as split_q
   queue "Root node" as root_q
-  queue "Growed root node" as growing_q
-  note right of growing_q
+  queue "Tree structure node" as growing_q
+  note left of growing_q
   Next process is
-  Spred or Mkdir.
+  Spred, Mkdir or Verify.
   end note
 }
 
@@ -36,22 +48,26 @@ interface "END" as end
 
 
 ' flow
+markdown . start
 start -|> init
 init --|> pipeline
 pipeline --|> split_proc
-split_proc --|> split_q
+split_proc - splited
+splited --|> split_q
 split_q -|> generate_root_worker
 generate_root_worker --|> root_q
 root_q -|> grow_worker
 grow_worker --|> growing_q
-growing_q -|> spread_worker
+growing_q --|> spread_worker
 growing_q --|> mkdir_worker
+growing_q --|> verify_worker
 
 split_proc ..> error_handler
 generate_root_worker ..> error_handler
 grow_worker ..> error_handler
 spread_worker ..> error_handler
 mkdir_worker ..> error_handler
+verify_worker ..> error_handler
 
 error_handler -|> end
 @enduml
