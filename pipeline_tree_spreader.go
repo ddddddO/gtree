@@ -101,7 +101,7 @@ func (*jsonSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-ch
 				if !ok {
 					break BREAK
 				}
-				if err := enc.Encode(root.toJSONNode(nil)); err != nil {
+				if err := enc.Encode(toFormattedNode(root, &jsonNode{Name: root.name})); err != nil {
 					errc <- err
 					return
 				}
@@ -130,7 +130,7 @@ func (*tomlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-ch
 				if !ok {
 					break BREAK
 				}
-				if err := enc.Encode(root.toTOMLNode(nil)); err != nil {
+				if err := enc.Encode(toFormattedNode(root, &tomlNode{Name: root.name})); err != nil {
 					errc <- err
 					return
 				}
@@ -159,7 +159,7 @@ func (*yamlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-ch
 				if !ok {
 					break BREAK
 				}
-				if err := enc.Encode(root.toYAMLNode(nil)); err != nil {
+				if err := enc.Encode(toFormattedNode(root, &yamlNode{Name: root.name})); err != nil {
 					errc <- err
 					return
 				}
