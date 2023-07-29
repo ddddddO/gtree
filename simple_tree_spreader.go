@@ -106,8 +106,8 @@ func newTOMLSpreaderSimple() *formattedSpreaderSimple[*tomlNode] {
 func (f *formattedSpreaderSimple[T]) spread(w io.Writer, roots []*Node) error {
 	encode := f.encode(w)
 	for _, root := range roots {
-		jRoot := toFormattedNode(root, f.formattedRoot(root.name))
-		if err := encode(jRoot); err != nil {
+		fRoot := toFormattedNode(root, f.formattedRoot(root.name))
+		if err := encode(fRoot); err != nil {
 			return err
 		}
 	}
