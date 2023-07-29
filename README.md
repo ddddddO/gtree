@@ -1,11 +1,11 @@
-<img src="heart-balloon.svg" width="77"><br>
+<img src="assets/heart-balloon.svg" width="77"><br>
 [![GitHub Pages](https://img.shields.io/badge/-GitHub_Pages-00A98F.svg?logo=github&style=flat)](https://ddddddo.github.io/gtree/)<br>
 [![GitHub release](https://img.shields.io/github/release/ddddddO/gtree.svg?label=Release&color=darkcyan)](https://github.com/ddddddO/gtree/releases) [![Go Reference](https://pkg.go.dev/badge/github.com/ddddddO/gtree)](https://pkg.go.dev/github.com/ddddddO/gtree)<br>
 [![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg?color=darkcyan)](https://github.com/ddddddO/gtree/blob/master/LICENSE) [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go#uncategorized)<br>
 [![codecov](https://codecov.io/gh/ddddddO/gtree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gtree) [![Go Report Card](https://goreportcard.com/badge/github.com/ddddddO/gtree)](https://goreportcard.com/report/github.com/ddddddO/gtree) [![ci](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml)
 
 
-<img src="demo.gif"><br>
+<img src="assets/demo.gif"><br>
 
 Using either Markdown or Programmatically to generate directory trees🌳 and directories🗂, and to verify directories🔍.
 Provide CLI, Golang library and Web.
@@ -26,7 +26,7 @@ The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.<br>
 You can change the branches like in the image below.<br>
 Also, once loaded, you can enjoy offline!<br>
 
-![](web_example.gif)
+![](assets/web_example.gif)
 
 You can open it in your browser with
 ```console
@@ -465,7 +465,7 @@ gtree
 4 directories, 5 files
 ```
 
-![](cli_mkdir_dryrun.png)
+![](assets/cli_mkdir_dryrun.png)
 
 
 Any invalid file or directory name will result in an error.
@@ -1004,7 +1004,7 @@ You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
 ## e.g. [*gtree/pipeline_tree.go*](https://github.com/ddddddO/gtree/blob/master/pipeline_tree.go)
 
-<image src="./process.svg" width=100%>
+<image src="assets/process.svg" width=100%>
 
 
 # Performance
@@ -1019,7 +1019,7 @@ You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 	- In the CLI, it is available by specifying `--massive`.
 	- In the Go program, it is available by specifying `WithMassive` func.
 
-<image src="./performance.svg" width=100%>
+<image src="assets/performance.svg" width=100%>
 
 <details><summary>Benchmark log</summary>
 
