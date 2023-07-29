@@ -1063,8 +1063,6 @@ ok      command-line-arguments  30.670s
 
 </details>
 
-# Diagram
-<image src="./diagram.svg" width=100%>
 
 # Documents
 

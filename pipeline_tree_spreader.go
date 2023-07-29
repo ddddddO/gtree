@@ -17,11 +17,11 @@ import (
 func newSpreaderPipeline(encode encode) spreaderPipeline {
 	switch encode {
 	case encodeJSON:
-		return &jsonSpreaderPipeline{}
+		return newJSONSpreaderPipeline()
 	case encodeYAML:
-		return &yamlSpreaderPipeline{}
+		return newYAMLSpreaderPipeline()
 	case encodeTOML:
-		return &tomlSpreaderPipeline{}
+		return newTOMLSpreaderPipeline()
 	default:
 		return &defaultSpreaderPipeline{
 			defaultSpreaderSimple: &defaultSpreaderSimple{},
@@ -83,73 +83,51 @@ func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGrou
 	}
 }
 
-type jsonSpreaderPipeline struct{}
-
-func (*jsonSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
-	errc := make(chan error, 1)
-
-	go func() {
-		defer close(errc)
-
-		enc := json.NewEncoder(w)
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
-				}
-				if err := enc.Encode(toFormattedNode(root, &jsonNode{Name: root.name})); err != nil {
-					errc <- err
-					return
-				}
-			}
-		}
-	}()
-
-	return errc
+type formattedSpreaderPipeline[T sitter] struct {
+	formattedRoot func(string) T
+	encode        func(io.Writer) func(any) error
 }
 
-type tomlSpreaderPipeline struct{}
-
-func (*tomlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
-	errc := make(chan error, 1)
-
-	go func() {
-		defer close(errc)
-
-		enc := toml.NewEncoder(w)
-	BREAK:
-		for {
-			select {
-			case <-ctx.Done():
-				return
-			case root, ok := <-roots:
-				if !ok {
-					break BREAK
-				}
-				if err := enc.Encode(toFormattedNode(root, &tomlNode{Name: root.name})); err != nil {
-					errc <- err
-					return
-				}
-			}
-		}
-	}()
-
-	return errc
+func newJSONSpreaderPipeline() *formattedSpreaderPipeline[*jsonNode] {
+	return &formattedSpreaderPipeline[*jsonNode]{
+		formattedRoot: func(name string) *jsonNode {
+			return &jsonNode{Name: name}
+		},
+		encode: func(w io.Writer) func(any) error {
+			return json.NewEncoder(w).Encode
+		},
+	}
 }
 
-type yamlSpreaderPipeline struct{}
+func newYAMLSpreaderPipeline() *formattedSpreaderPipeline[*yamlNode] {
+	return &formattedSpreaderPipeline[*yamlNode]{
+		formattedRoot: func(name string) *yamlNode {
+			return &yamlNode{Name: name}
+		},
+		encode: func(w io.Writer) func(any) error {
+			return yaml.NewEncoder(w).Encode
+		},
+	}
+}
 
-func (*yamlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
+func newTOMLSpreaderPipeline() *formattedSpreaderPipeline[*tomlNode] {
+	return &formattedSpreaderPipeline[*tomlNode]{
+		formattedRoot: func(name string) *tomlNode {
+			return &tomlNode{Name: name}
+		},
+		encode: func(w io.Writer) func(any) error {
+			return toml.NewEncoder(w).Encode
+		},
+	}
+}
+
+func (f *formattedSpreaderPipeline[T]) spread(ctx context.Context, w io.Writer, roots <-chan *Node) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
 		defer close(errc)
 
-		enc := yaml.NewEncoder(w)
+		encode := f.encode(w)
 	BREAK:
 		for {
 			select {
@@ -159,9 +137,8 @@ func (*yamlSpreaderPipeline) spread(ctx context.Context, w io.Writer, roots <-ch
 				if !ok {
 					break BREAK
 				}
-				if err := enc.Encode(toFormattedNode(root, &yamlNode{Name: root.name})); err != nil {
+				if err := encode(toFormattedNode(root, f.formattedRoot(root.name))); err != nil {
 					errc <- err
-					return
 				}
 			}
 		}
@@ -221,8 +198,6 @@ func (cs *colorizeSpreaderPipeline) spread(ctx context.Context, w io.Writer, roo
 
 var (
 	_ spreaderPipeline = (*defaultSpreaderPipeline)(nil)
-	_ spreaderPipeline = (*jsonSpreaderPipeline)(nil)
-	_ spreaderPipeline = (*yamlSpreaderPipeline)(nil)
-	_ spreaderPipeline = (*tomlSpreaderPipeline)(nil)
+	_ spreaderPipeline = (*formattedSpreaderPipeline[sitter])(nil)
 	_ spreaderPipeline = (*colorizeSpreaderPipeline)(nil)
 )
