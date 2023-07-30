@@ -12,3 +12,11 @@ type tree interface {
 	verify(io.Reader, *config) error
 	verifyProgrammably(*Node, *config) error
 }
+
+func initializeTree(cfg *config) tree {
+	tree := newTreeSimple(cfg)
+	if cfg.massive {
+		tree = newTreePipeline(cfg)
+	}
+	return tree
+}

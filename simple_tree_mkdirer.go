@@ -3,8 +3,14 @@
 package gtree
 
 import (
+	"errors"
 	"os"
 	"strings"
+)
+
+var (
+	// ErrExistPath is returned if the argument *gtree.Node of MkdirProgrammably function is path already exists.
+	ErrExistPath = errors.New("path already exists")
 )
 
 func newMkdirerSimple(fileExtensions []string) mkdirerSimple {
