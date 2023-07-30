@@ -12,7 +12,7 @@ skinparam {
 
 ' stages
 interface "START" as start
-card markdown [
+card markdown #42DD78 [
 - root1
     - a
         - b
@@ -27,20 +27,20 @@ card markdown [
 
 frame "Pipeline" as pipeline {
   control "Split input" as split_proc
-  collections "- root1\n    - a\n        - b" as splited
+  collections "- root1\n    - a\n        - b" as splited #42DD78
   control "Generate root node\n(10 workers)" as generate_root_worker
   control "Grow root node\n(10 workers)" as grow_worker
-  control "Spread tree\n(10 workers)" as spread_worker
-  control "Mkdir tree\n(10 workers)" as mkdir_worker
-  control "Verify tree\n(10 workers)" as verify_worker
+  control "Output directory trees\n(10 workers)" as spread_worker
+  control "Make directories\n(10 workers)" as mkdir_worker
+  control "Verify directories\n(10 workers)" as verify_worker
   control "Handle error queue" as error_handler #CC6699
 
   queue "Markdown root block" as split_q
   queue "Root node" as root_q
   queue "Tree structure node" as growing_q
-  note left of growing_q
+  note top of growing_q
   Next process is
-  Spred, Mkdir or Verify.
+  one of the following.
   end note
 }
 
