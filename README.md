@@ -551,6 +551,7 @@ Required paths does not exist:
         example/like_cli/kkk
 ```
 
+inspired by [mactat/framed](https://github.com/mactat/framed) !
 
 # Library - used in Web and CLI
 
