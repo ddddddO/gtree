@@ -41,44 +41,44 @@ $ gtree web
 ## Installation
 
 <pre>
-<strong>Go (requires 1.18 or later)</strong>
+<b>Go (requires 1.18 or later)</b>
 $ go install github.com/ddddddO/gtree/cmd/gtree@latest
 
-<strong>Homebrew</strong>
+<b>Homebrew</b>
 $ brew install ddddddO/tap/gtree
 
-<strong>Scoop</strong>
+<b>Scoop</b>
 $ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
 $ scoop install ddddddO/gtree
 
-<strong>deb</strong>
+<b>deb</b>
 $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.deb -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.deb
 $ dpkg -i gtree.deb
 
-<strong>rpm</strong>
+<b>rpm</b>
 $ export GTREE_VERSION=X.X.X
 $ yum install https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.rpm
 
-<strong>apk</strong>
+<b>apk</b>
 $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.apk
 $ apk add --allow-untrusted gtree.apk
 
-<s><strong><a href="https://aur.archlinux.org/packages/gtree">AUR</a></strong></s>
+<s><a href="https://aur.archlinux.org/packages/gtree"><b>AUR</b></a></s>
 $ wip...
 
-<strong><a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/text/gtree/default.nix">Nix</a></strong>
+<a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/text/gtree/default.nix"><b>Nix</b></a>
 $ nix-env -i gtree
 or
 $ nix-shell -p gtree
 
-<strong><a href="https://github.com/macports/macports-ports/blob/master/sysutils/gtree/Portfile">MacPorts</a></strong>
+<a href="https://github.com/macports/macports-ports/blob/master/sysutils/gtree/Portfile"><b>MacPorts</b></a>
 $ port install gtree
 
-<strong><a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml">aqua</a></strong>
+<a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml"><b>aqua</b></a>
 
-<strong><a href="https://github.com/ddddddO/gtree/pkgs/container/gtree">Docker</a></strong>
+<a href="https://github.com/ddddddO/gtree/pkgs/container/gtree"><b>Docker</b></a>
 $ docker pull ghcr.io/ddddddo/gtree:latest
 $ docker run ghcr.io/ddddddo/gtree:latest template | docker run -i ghcr.io/ddddddo/gtree:latest output
 gtree
