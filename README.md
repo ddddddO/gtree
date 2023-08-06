@@ -182,8 +182,6 @@ Other pattern.
 └── cat testdata/sample1.md | gtree output
 ```
 
-For 2 or 4 spaces instead of tabs, `-ts` or `-fs` is required.
-
 
 #### Usage other than representing a directory.
 
@@ -239,7 +237,7 @@ a
 #### Output JSON
 
 ```console
-$ cat testdata/sample5.md | gtree output -fs -j | jq
+$ cat testdata/sample5.md | gtree output -j | jq
 {
   "value": "a",
   "children": [
@@ -285,7 +283,7 @@ $ cat testdata/sample5.md | gtree output -fs -j | jq
 #### Output YAML
 
 ```console
-$ cat testdata/sample5.md | gtree output -fs -y
+$ cat testdata/sample5.md | gtree output -y
 value: a
 children:
 - value: i
@@ -309,7 +307,7 @@ children:
 #### Output TOML
 
 ```console
-$ cat testdata/sample5.md | gtree output -fs -t
+$ cat testdata/sample5.md | gtree output -t
 value = 'a'
 [[children]]
 value = 'i'
@@ -438,7 +436,7 @@ gtree
 Any invalid file or directory name will result in an error.
 
 ```console
-$ gtree mkdir --dry-run --ts <<EOS
+$ gtree mkdir --dry-run <<EOS
 - root
   - aa
   - bb
@@ -448,7 +446,7 @@ invalid node name: b/b
 ```
 
 ```console
-$ gtree mkdir --dry-run --ts <<EOS
+$ gtree mkdir --dry-run <<EOS
 - /root
   - aa
   - bb
