@@ -23,34 +23,18 @@ Hide
 Type "clear" Enter
 Show
 
-Type "cat testdata/sample4.md"
+Type "cat testdata/sample2.md"
 Sleep 2s
 Enter
-Sleep 2s
+Sleep 4s
 Hide
-Type "cat testdata/sample4.md"
+Type "cat testdata/sample2.md"
 Show
 Sleep 2s
-Type " | gtree output --two-spaces"
+Type " | gtree output"
 Sleep 2s
 Enter
-Sleep 5s
-Hide
-Type "clear" Enter
-Show
-
-Type "cat testdata/sample5.md"
-Sleep 2s
-Enter
-Sleep 2s
-Hide
-Type "cat testdata/sample5.md"
-Show
-Sleep 2s
-Type " | gtree output --four-spaces"
-Sleep 2s
-Enter
-Sleep 5s
+Sleep 6s
 Hide
 Type "clear" Enter
 Show
