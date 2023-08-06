@@ -13,11 +13,11 @@ type rootGenerator struct {
 	nodeGenerator *nodeGenerator
 }
 
-func newRootGenerator(r io.Reader, st spaceType) *rootGenerator {
+func newRootGenerator(r io.Reader) *rootGenerator {
 	return &rootGenerator{
 		counter:       newCounter(),
 		scanner:       bufio.NewScanner(r),
-		nodeGenerator: newNodeGenerator(st),
+		nodeGenerator: newNodeGenerator(),
 	}
 }
 

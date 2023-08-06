@@ -3,6 +3,7 @@ package markdown
 import (
 	"errors"
 	"strings"
+	"sync"
 )
 
 // 一旦簡易なパーサー
@@ -10,21 +11,14 @@ type Parser struct {
 	// rootが#要素かフラグ
 	// #であれば次の#までのhierarchyは+=1
 	isSharpRoot bool
+	mu          sync.RWMutex
 	spaces      int
 	sep         string
 }
 
 // TODO: 要リファクタ
-func NewParser(spaces int) *Parser {
-	sep := space
-	if spaces == 1 {
-		sep = tab
-	}
-
-	return &Parser{
-		spaces: spaces,
-		sep:    sep,
-	}
+func NewParser() *Parser {
+	return &Parser{}
 }
 
 const (
@@ -63,6 +57,9 @@ func (p *Parser) Parse(row string) (*Markdown, error) {
 		}, nil
 	}
 
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
 	spaceCount, afterText, err := p.separateRow(row)
 	if err != nil {
 		return nil, err
@@ -94,13 +91,43 @@ func (p *Parser) separateRow(row string) (int, string, error) {
 			err = ErrIncorrectFormat
 			continue
 		}
+
+		if len(before) != 0 {
+			sep := strings.Split(before, "")[0]
+			if sep == space || sep == tab {
+				if p.sep == "" {
+					p.sep = sep
+				}
+			} else {
+				err = ErrIncorrectFormat
+				// p.sep = ""
+				continue
+			}
+		} else {
+			p.sep = ""
+		}
+
 		spaceCount := strings.Count(before, p.sep)
-		if spaceCount != len(before) {
+		if p.sep != "" && spaceCount != len(before) {
 			err = ErrIncorrectFormat
+			// p.sep = ""
 			continue
 		}
+
+		if p.sep == "" {
+			spaceCount = 0
+		}
+
+		// Root行だとspaceCountは0にしかならない
+		// Rootの次行のスペース数を一度だけ取得し、それをMarkdown全体のパースで利用する
+		if spaceCount > 0 && p.spaces == 0 {
+			p.spaces = spaceCount
+		}
+
 		if e := p.validateSpaces(spaceCount); e != nil {
 			err = e
+			// p.sep = ""
+			// p.spaces = 0
 			continue
 		}
 
@@ -111,7 +138,7 @@ func (p *Parser) separateRow(row string) (int, string, error) {
 }
 
 func (p *Parser) validateSpaces(spaceCount int) error {
-	if p.isTab() {
+	if p.spaces <= 1 {
 		return nil
 	}
 	if spaceCount%p.spaces != 0 {
@@ -122,7 +149,7 @@ func (p *Parser) validateSpaces(spaceCount int) error {
 
 func (p *Parser) calculateHierarchy(spaceCount int) uint {
 	var hierarchy uint
-	if p.isTab() {
+	if p.spaces == 0 || p.sep == "" {
 		hierarchy = uint(spaceCount) + rootHierarchyNum
 	} else {
 		hierarchy = uint(spaceCount/p.spaces) + rootHierarchyNum
@@ -132,8 +159,4 @@ func (p *Parser) calculateHierarchy(spaceCount int) uint {
 		hierarchy += 1
 	}
 	return hierarchy
-}
-
-func (p *Parser) isTab() bool {
-	return p.spaces == 1
 }

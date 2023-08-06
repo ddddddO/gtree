@@ -7,30 +7,13 @@ import (
 	md "github.com/ddddddO/gtree/markdown"
 )
 
-type spaceType int
-
-const (
-	spacesTab spaceType = iota
-	spacesTwo
-	spacesFour
-)
-
 type nodeGenerator struct {
 	parser *md.Parser
 }
 
-func newNodeGenerator(st spaceType) *nodeGenerator {
-	var p *md.Parser
-	switch st {
-	case spacesTwo:
-		p = md.NewParser(2)
-	case spacesFour:
-		p = md.NewParser(4)
-	default:
-		p = md.NewParser(1)
-	}
+func newNodeGenerator() *nodeGenerator {
 	return &nodeGenerator{
-		parser: p,
+		parser: md.NewParser(),
 	}
 }
 

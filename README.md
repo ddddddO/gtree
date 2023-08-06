@@ -140,8 +140,6 @@ USAGE:
 
 OPTIONS:
    --file value, -f value               specify the path to markdown file. (default: stdin)
-   --two-spaces, --ts                   set this option when the markdown indent is 2 spaces. (default: tab spaces)
-   --four-spaces, --fs                  set this option when the markdown indent is 4 spaces. (default: tab spaces)
    --massive, -m                        set this option when there are very many blocks of markdown. (default: false)
    --massive-timeout value, --mt value  set this option if you want to set a timeout. (default: 0s)
    --json, -j                           set this option when outputting JSON. (default: tree)
@@ -176,7 +174,7 @@ gtree
 └── tree.go
 ```
 
-When Markdown is indented as a tab.
+Other pattern.
 
 ```
 ├── gtree output -f testdata/sample1.md
@@ -213,35 +211,6 @@ k8s_resources
             └── container(s)
 ```
 
-#### Two spaces indent
-
-```console
-$ cat testdata/sample4.md | gtree output -ts
-a
-├── i
-│   ├── u
-│   │   ├── k
-│   │   └── kk
-│   └── t
-├── e
-│   └── o
-└── g
-```
-
-#### Four spaces indent
-
-```console
-$ cat testdata/sample5.md | gtree output -fs
-a
-├── i
-│   ├── u
-│   │   ├── k
-│   │   └── kk
-│   └── t
-├── e
-│   └── o
-└── g
-```
 
 #### Multiple roots
 
@@ -383,8 +352,6 @@ USAGE:
 
 OPTIONS:
    --file value, -f value  specify the path to markdown file. (default: stdin)
-   --two-spaces, --ts      set this option when the markdown indent is 2 spaces. (default: tab spaces)
-   --four-spaces, --fs     set this option when the markdown indent is 4 spaces. (default: tab spaces)
    --dry-run, -d, --dr     dry run. detects node that is invalid for directory generation.
       the order of the output and made directories does not always match. (default: false)
    --extension value, -e value, --ext value [ --extension value, -e value, --ext value ]  set this option if you want to create file instead of directory.
@@ -502,8 +469,6 @@ USAGE:
 
 OPTIONS:
    --file value, -f value  specify the path to markdown file. (default: stdin)
-   --two-spaces, --ts      set this option when the markdown indent is 2 spaces. (default: tab spaces)
-   --four-spaces, --fs     set this option when the markdown indent is 4 spaces. (default: tab spaces)
    --target-dir value      set this option if you want to specify the directory you want to verify. (default: current directory)
    --strict                set this option if you want strict directory match validation. (default: non strict)
    --help, -h              show help
@@ -582,7 +547,6 @@ import (
 )
 
 func main() {
-	// input Markdown is tab indented
 	r1 := bytes.NewBufferString(strings.TrimSpace(`
 - root
 	- dddd
@@ -616,7 +580,6 @@ func main() {
 	// │                       └── AAAAAAA
 	// └── eee
 
-	// input Markdown is two spaces indented
 	r2 := bytes.NewBufferString(strings.TrimSpace(`
 - a
   - i
@@ -627,10 +590,9 @@ func main() {
   - e
     - o
   - g`))
-	// When indentation is four spaces, use WithIndentFourSpaces func instead of WithIndentTwoSpaces func.
-	// and, you can customize branch format.
+
+	// You can customize branch format.
 	if err := gtree.Output(os.Stdout, r2,
-		gtree.WithIndentTwoSpaces(),
 		gtree.WithBranchFormatIntermedialNode("+->", ":   "),
 		gtree.WithBranchFormatLastNode("+->", "    "),
 	); err != nil {

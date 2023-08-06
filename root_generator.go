@@ -16,11 +16,11 @@ type rootGeneratorSimple struct {
 	nodeGenerator *nodeGenerator
 }
 
-func newRootGeneratorSimple(r io.Reader, st spaceType) *rootGeneratorSimple {
+func newRootGeneratorSimple(r io.Reader) *rootGeneratorSimple {
 	return &rootGeneratorSimple{
 		counter:       newCounter(),
 		scanner:       bufio.NewScanner(r),
-		nodeGenerator: newNodeGenerator(st),
+		nodeGenerator: newNodeGenerator(),
 	}
 }
 
@@ -61,9 +61,9 @@ type rootGeneratorPipeline struct {
 	nodeGenerator *nodeGenerator
 }
 
-func newRootGeneratorPipeline(st spaceType) *rootGeneratorPipeline {
+func newRootGeneratorPipeline() *rootGeneratorPipeline {
 	return &rootGeneratorPipeline{
-		nodeGenerator: newNodeGenerator(st),
+		nodeGenerator: newNodeGenerator(),
 	}
 }
 

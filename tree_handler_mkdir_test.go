@@ -23,7 +23,7 @@ func TestMkdir(t *testing.T) {
 	- b
 	- bb
 		- lll
-	-ff`)),
+	- ff`)),
 			},
 			wantErr: nil,
 		},
@@ -35,7 +35,7 @@ func TestMkdir(t *testing.T) {
 	- b
 	- bb
 		- lll
-	-ff`)),
+	- ff`)),
 				options: []gtree.Option{gtree.WithDryRun()},
 			},
 			wantErr: gtree.ErrExistPath,
@@ -48,7 +48,7 @@ func TestMkdir(t *testing.T) {
 	- b
 	- bb
 		- lll
-	-ff`)),
+	- ff`)),
 				options: []gtree.Option{gtree.WithMassive(context.Background())},
 			},
 			wantErr: gtree.ErrExistPath,
@@ -61,7 +61,7 @@ func TestMkdir(t *testing.T) {
 	- b
 	- b/b
 		- lll
-	-ff`)),
+	- ff`)),
 				options: []gtree.Option{gtree.WithDryRun()},
 			},
 			wantErr: errors.New("invalid node name: b/b"),
@@ -105,7 +105,7 @@ func TestMkdir(t *testing.T) {
 	- b.go
 	- bb
 		- lll
-	-Makefile`)),
+	- Makefile`)),
 				options: []gtree.Option{gtree.WithFileExtensions([]string{".go", "Makefile"})},
 			},
 			wantErr: nil,
@@ -146,6 +146,7 @@ func TestMkdir(t *testing.T) {
 
 			gotErr := gtree.Mkdir(tt.in.input, tt.in.options...)
 			if gotErr != nil {
+				t.Log(gotErr.Error())
 				if gotErr.Error() != tt.wantErr.Error() {
 					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)
 				}
