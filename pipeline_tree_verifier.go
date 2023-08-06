@@ -26,7 +26,7 @@ func (dv *defaultVerifierPipeline) verify(ctx context.Context, roots <-chan *Nod
 		}()
 
 		wg := &sync.WaitGroup{}
-		for i := 0; i < workerSpreadNum; i++ {
+		for i := 0; i < workerVerifyNum; i++ {
 			wg.Add(1)
 			go dv.worker(ctx, wg, roots, errc)
 		}
