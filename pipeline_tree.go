@@ -69,7 +69,7 @@ func (t *treePipeline) output(w io.Writer, r io.Reader, cfg *config) error {
 	defer cancel()
 
 	splitStream, errcsl := split(ctx, r)
-	rootStream, errcr := newRootGeneratorPipeline(cfg.space).generate(ctx, splitStream)
+	rootStream, errcr := newRootGeneratorPipeline().generate(ctx, splitStream)
 	growStream, errcg := t.grower.grow(ctx, rootStream)
 	errcs := t.spreader.spread(ctx, w, growStream)
 	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcs)
@@ -94,7 +94,7 @@ func (t *treePipeline) mkdir(r io.Reader, cfg *config) error {
 	defer cancel()
 
 	splitStream, errcsl := split(ctx, r)
-	rootStream, errcr := newRootGeneratorPipeline(cfg.space).generate(ctx, splitStream)
+	rootStream, errcr := newRootGeneratorPipeline().generate(ctx, splitStream)
 	growStream, errcg := t.grower.grow(ctx, rootStream)
 	errcm := t.mkdirer.mkdir(ctx, growStream)
 	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcm)
@@ -128,7 +128,7 @@ func (t *treePipeline) verify(r io.Reader, cfg *config) error {
 
 	t.grower.enableValidation()
 	splitStream, errcsl := split(ctx, r)
-	rootStream, errcr := newRootGeneratorPipeline(cfg.space).generate(ctx, splitStream)
+	rootStream, errcr := newRootGeneratorPipeline().generate(ctx, splitStream)
 	growStream, errcg := t.grower.grow(ctx, rootStream)
 	errcv := t.verifier.verify(ctx, growStream)
 	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcv)

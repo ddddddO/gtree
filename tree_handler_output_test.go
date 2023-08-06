@@ -280,7 +280,6 @@ root
   - e
     - o
   - g`)),
-				options: []gtree.Option{gtree.WithIndentTwoSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -310,7 +309,6 @@ a
     - e
         - o
     - g`)),
-				options: []gtree.Option{gtree.WithIndentFourSpaces()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -561,7 +559,6 @@ a
     - o
   - g`)),
 				options: []gtree.Option{
-					gtree.WithIndentTwoSpaces(),
 					gtree.WithBranchFormatIntermedialNode("+->", ":   "),
 					gtree.WithBranchFormatLastNode("+->", "    "),
 				},
@@ -844,7 +841,7 @@ func TestOutput_encodeJSON(t *testing.T) {
   - e
     - o
   - g`)),
-				options: []gtree.Option{gtree.WithIndentTwoSpaces(), gtree.WithEncodeJSON()},
+				options: []gtree.Option{gtree.WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -866,7 +863,7 @@ func TestOutput_encodeJSON(t *testing.T) {
     - e
         - o
     - g`)),
-				options: []gtree.Option{gtree.WithIndentFourSpaces(), gtree.WithEncodeJSON()},
+				options: []gtree.Option{gtree.WithEncodeJSON()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1005,7 +1002,7 @@ children = []
   - e
     - o
   - g`)),
-				options: []gtree.Option{gtree.WithIndentTwoSpaces(), gtree.WithEncodeTOML()},
+				options: []gtree.Option{gtree.WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1056,7 +1053,7 @@ children = []
     - e
         - o
     - g`)),
-				options: []gtree.Option{gtree.WithIndentFourSpaces(), gtree.WithEncodeTOML()},
+				options: []gtree.Option{gtree.WithEncodeTOML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1201,7 +1198,7 @@ children:
   - e
     - o
   - g`)),
-				options: []gtree.Option{gtree.WithIndentTwoSpaces(), gtree.WithEncodeYAML()},
+				options: []gtree.Option{gtree.WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`
@@ -1240,7 +1237,7 @@ children:
     - e
         - o
     - g`)),
-				options: []gtree.Option{gtree.WithIndentFourSpaces(), gtree.WithEncodeYAML()},
+				options: []gtree.Option{gtree.WithEncodeYAML()},
 			},
 			out: out{
 				output: strings.TrimPrefix(`

@@ -83,10 +83,9 @@ func TestParser_ParseTab(t *testing.T) {
 		},
 	}
 
-	indentSpaces := 1
 	for name, tt := range tests {
 		tt := tt
-		parser := NewParser(indentSpaces)
+		parser := NewParser()
 
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
@@ -177,10 +176,9 @@ func TestParser_ParseTwoSpaces(t *testing.T) {
 		},
 	}
 
-	indentSpaces := 2
 	for name, tt := range tests {
 		tt := tt
-		parser := NewParser(indentSpaces)
+		parser := NewParser()
 
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
@@ -271,10 +269,9 @@ func TestParser_ParseFourSpaces(t *testing.T) {
 		},
 	}
 
-	indentSpaces := 4
 	for name, tt := range tests {
 		tt := tt
-		parser := NewParser(indentSpaces)
+		parser := NewParser()
 
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()

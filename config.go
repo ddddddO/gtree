@@ -6,7 +6,6 @@ type config struct {
 	lastNodeFormat        branchFormat
 	intermedialNodeFormat branchFormat
 
-	space          spaceType
 	massive        bool
 	ctx            context.Context
 	encode         encode
@@ -26,7 +25,6 @@ func newConfig(options []Option) *config {
 			directly:   "├──",
 			indirectly: "│   ",
 		},
-		space:     spacesTab,
 		massive:   false,
 		encode:    encodeDefault,
 		targetDir: ".",
@@ -42,20 +40,6 @@ func newConfig(options []Option) *config {
 
 // Option is functional options pattern
 type Option func(*config)
-
-// WithIndentTwoSpaces returns function for two spaces indent input.
-func WithIndentTwoSpaces() Option {
-	return func(c *config) {
-		c.space = spacesTwo
-	}
-}
-
-// WithIndentFourSpaces returns function for four spaces indent input.
-func WithIndentFourSpaces() Option {
-	return func(c *config) {
-		c.space = spacesFour
-	}
-}
 
 // WithBranchFormatIntermedialNode returns function for branch format.
 func WithBranchFormatIntermedialNode(directly, indirectly string) Option {

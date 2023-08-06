@@ -23,13 +23,14 @@ func TestGenerateTab(t *testing.T) {
 		"root/hierarchy=1":                 {"- aaa bb", &want{name: "aaa bb", hierarchy: 1, index: fixedIndex, err: nil}},
 		"child/hierarchy=2":                {"	- aaa bb", &want{name: "aaa bb", hierarchy: 2, index: fixedIndex, err: nil}},
 		"child/hierarchy=2/tab on the way": {"	- aaa	bb", &want{name: "aaa	bb", hierarchy: 2, index: fixedIndex, err: nil}},
-		"invalid/hierarchy=0/prefix space": {" - aaa bb", &want{err: &inputFormatError{row: " - aaa bb"}}},
 		"invalid/hierarchy=0/prefix chars": {"xx- aaa bb", &want{err: &inputFormatError{row: "xx- aaa bb"}}},
 		"invalid/hierarchy=0/no hyphen":    {"xx aaa bb", &want{err: &inputFormatError{row: "xx aaa bb"}}},
 		"invalid/hierarchy=0/tab only":     {"			", nil},
 	}
 
-	nodeGenerator := newNodeGenerator(spacesTab)
+	nodeGenerator := newNodeGenerator()
+	_, _ = nodeGenerator.generate("	- xxx", fixedIndex) // Parserのインデントスペース数を決めるために必要
+
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
@@ -72,7 +73,9 @@ func TestGenerateTwoSpaces(t *testing.T) {
 		"invalid/hierarchy=0/space only":       {"  ", nil},
 	}
 
-	nodeGenerator := newNodeGenerator(spacesTwo)
+	nodeGenerator := newNodeGenerator()
+	_, _ = nodeGenerator.generate("  - xxx", fixedIndex) // Parserのインデントスペース数を決めるために必要
+
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {
@@ -116,7 +119,9 @@ func TestGenerateFourSpaces(t *testing.T) {
 		"invalid/hierarchy=0/space only":       {"    ", nil},
 	}
 
-	nodeGenerator := newNodeGenerator(spacesFour)
+	nodeGenerator := newNodeGenerator()
+	_, _ = nodeGenerator.generate("    - xxx", fixedIndex) // Parserのインデントスペース数を決めるために必要
+
 	for name, tt := range tests {
 		tt := tt
 		t.Run(name, func(t *testing.T) {

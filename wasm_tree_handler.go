@@ -10,7 +10,7 @@ import (
 func Output(w io.Writer, r io.Reader, options ...Option) error {
 	cfg := newConfig(options)
 
-	rg := newRootGenerator(r, cfg.space)
+	rg := newRootGenerator(r)
 	roots, err := rg.generate()
 	if err != nil {
 		return err

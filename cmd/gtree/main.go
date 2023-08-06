@@ -26,18 +26,6 @@ func main() {
 			Usage:       "specify the path to markdown file.",
 			DefaultText: "stdin",
 		},
-		&cli.BoolFlag{
-			Name:        "two-spaces",
-			Aliases:     []string{"ts"},
-			Usage:       "set this option when the markdown indent is 2 spaces.",
-			DefaultText: "tab spaces",
-		},
-		&cli.BoolFlag{
-			Name:        "four-spaces",
-			Aliases:     []string{"fs"},
-			Usage:       "set this option when the markdown indent is 4 spaces.",
-			DefaultText: "tab spaces",
-		},
 	}
 
 	outputFlags := []cli.Flag{
@@ -217,10 +205,6 @@ func notExistArgs(c *cli.Context) error {
 }
 
 func actionOutput(c *cli.Context) error {
-	oi, err := optionIndentation(c)
-	if err != nil {
-		return exitErrOpts(err)
-	}
 	oo, err := optionOutput(c)
 	if err != nil {
 		return exitErrOpts(err)
@@ -234,7 +218,7 @@ func actionOutput(c *cli.Context) error {
 		defer cancel()
 		om = gtree.WithMassive(ctx)
 	}
-	options := []gtree.Option{oi, oo, om}
+	options := []gtree.Option{oo, om}
 
 	markdownPath := c.Path("file")
 	if isInputStdin(markdownPath) {
@@ -276,12 +260,7 @@ func actionMkdir(c *cli.Context) error {
 		defer in.Close()
 	}
 
-	oi, err := optionIndentation(c)
-	if err != nil {
-		return exitErrOpts(err)
-	}
-	oe := gtree.WithFileExtensions(c.StringSlice("extension"))
-	options := []gtree.Option{oi, oe}
+	options := []gtree.Option{gtree.WithFileExtensions(c.StringSlice("extension"))}
 	if c.Bool("massive") {
 		options = append(options, gtree.WithMassive(context.Background()))
 	}
@@ -317,11 +296,7 @@ func actionVerify(c *cli.Context) error {
 		defer in.Close()
 	}
 
-	oi, err := optionIndentation(c)
-	if err != nil {
-		return exitErrOpts(err)
-	}
-	options := []gtree.Option{oi, gtree.WithTargetDir(c.String("target-dir"))}
+	options := []gtree.Option{gtree.WithTargetDir(c.String("target-dir"))}
 	if c.Bool("strict") {
 		options = append(options, gtree.WithStrictVerify())
 	}

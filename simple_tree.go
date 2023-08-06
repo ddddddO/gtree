@@ -63,7 +63,7 @@ func newTreeSimple(cfg *config) tree {
 }
 
 func (t *treeSimple) output(w io.Writer, r io.Reader, cfg *config) error {
-	roots, err := newRootGeneratorSimple(r, cfg.space).generate()
+	roots, err := newRootGeneratorSimple(r).generate()
 	if err != nil {
 		return err
 	}
@@ -82,7 +82,7 @@ func (t *treeSimple) outputProgrammably(w io.Writer, root *Node, cfg *config) er
 }
 
 func (t *treeSimple) mkdir(r io.Reader, cfg *config) error {
-	roots, err := newRootGeneratorSimple(r, cfg.space).generate()
+	roots, err := newRootGeneratorSimple(r).generate()
 	if err != nil {
 		return err
 	}
@@ -108,7 +108,7 @@ func (t *treeSimple) mkdirProgrammably(root *Node, cfg *config) error {
 }
 
 func (t *treeSimple) verify(r io.Reader, cfg *config) error {
-	roots, err := newRootGeneratorSimple(r, cfg.space).generate()
+	roots, err := newRootGeneratorSimple(r).generate()
 	if err != nil {
 		return err
 	}

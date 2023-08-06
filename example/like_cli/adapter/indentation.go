@@ -33,7 +33,7 @@ type TwoSpaces struct {
 // Output is ...
 func (ts *TwoSpaces) Output() error {
 	buf := &bytes.Buffer{}
-	if err := gtree.Output(buf, ts.Data, gtree.WithIndentTwoSpaces()); err != nil {
+	if err := gtree.Output(buf, ts.Data); err != nil {
 		return err
 	}
 	fmt.Printf("%s\n\n", buf.String())
@@ -47,5 +47,5 @@ type FourSpaces struct {
 
 // Output is ...
 func (fs *FourSpaces) Output() error {
-	return gtree.Output(os.Stdout, fs.Data, gtree.WithIndentFourSpaces())
+	return gtree.Output(os.Stdout, fs.Data)
 }

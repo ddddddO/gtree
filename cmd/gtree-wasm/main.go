@@ -38,7 +38,6 @@ func gtree(this js.Value, args []js.Value) interface{} {
 	r := strings.NewReader(rawInput)
 	w := &strings.Builder{}
 	options := []gt.Option{
-		gt.WithIndentTwoSpaces(),
 		gt.WithBranchFormatLastNode(lastNodeBranchDirectly, lastNodeBranchIndirectly),
 		gt.WithBranchFormatIntermedialNode(intermedialNodeBranchDirectly, intermedialNodeBranchIndirectly),
 	}
