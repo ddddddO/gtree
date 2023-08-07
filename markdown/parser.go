@@ -100,7 +100,6 @@ func (p *Parser) separateRow(row string) (int, string, error) {
 				}
 			} else {
 				err = ErrIncorrectFormat
-				// p.sep = ""
 				continue
 			}
 		} else {
@@ -110,7 +109,6 @@ func (p *Parser) separateRow(row string) (int, string, error) {
 		spaceCount := strings.Count(before, p.sep)
 		if p.sep != "" && spaceCount != len(before) {
 			err = ErrIncorrectFormat
-			// p.sep = ""
 			continue
 		}
 
@@ -126,8 +124,6 @@ func (p *Parser) separateRow(row string) (int, string, error) {
 
 		if e := p.validateSpaces(spaceCount); e != nil {
 			err = e
-			// p.sep = ""
-			// p.spaces = 0
 			continue
 		}
 
