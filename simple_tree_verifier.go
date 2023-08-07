@@ -28,8 +28,6 @@ type defaultVerifierSimple struct {
 	targetDir string
 }
 
-// cat testdata/sample9.md | sudo go run cmd/gtree/*.go verify --strict --target-dir /home/ochi/github.com/ddddddO/gtree
-// cat testdata/sample10.md | sudo go run cmd/gtree/*.go verify --strict --target-dir /home/ochi/github.com/ddddddO/gtree
 func (dv *defaultVerifierSimple) verify(roots []*Node) error {
 	for i := range roots {
 		extra, noExists, err := dv.verifyRoot(roots[i])
@@ -46,34 +44,35 @@ func (dv *defaultVerifierSimple) verify(roots []*Node) error {
 
 func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, error) {
 	dirsMarkdown := map[string]struct{}{}
-	if err := dv.recursive(root, dirsMarkdown); err != nil {
+	if err := dv.fillDirsMarkdown(root, dirsMarkdown); err != nil {
 		return nil, nil, err
 	}
 
 	dirsFilesystem := map[string]struct{}{}
 	extraDirs := []string{}
-	rootPath := root.path()
-	fileSystem := os.DirFS(filepath.Join(dv.targetDir, rootPath))
-	err := fs.WalkDir(fileSystem, ".", func(path string, d fs.DirEntry, err error) error {
-		dir := filepath.Join(dv.targetDir, rootPath, path)
+	if err := fs.WalkDir(
+		os.DirFS(filepath.Join(dv.targetDir, root.path())),
+		".",
+		func(path string, d fs.DirEntry, err error) error {
+			dir := filepath.Join(dv.targetDir, root.path(), path)
 
-		if err != nil {
-			if errors.Is(err, fs.ErrNotExist) {
-				// markdown上のrootが検査対象パスに無いとエラー
-				return verifyError{noExists: []string{dir}}
+			if err != nil {
+				if errors.Is(err, fs.ErrNotExist) {
+					// markdown上のrootが検査対象パスに無いとエラー
+					return verifyError{noExists: []string{dir}}
+				}
+				return err
 			}
-			return err
-		}
 
-		if _, ok := dirsMarkdown[dir]; !ok {
-			// Markdownに無いパスがディレクトリに有る => strictモードでエラー
-			extraDirs = append(extraDirs, dir)
-		}
+			if _, ok := dirsMarkdown[dir]; !ok {
+				// Markdownに無いパスがディレクトリに有る => strictモードでエラー
+				extraDirs = append(extraDirs, dir)
+			}
 
-		dirsFilesystem[dir] = struct{}{}
-		return nil
-	})
-	if err != nil {
+			dirsFilesystem[dir] = struct{}{}
+			return nil
+		},
+	); err != nil {
 		return nil, nil, err
 	}
 
@@ -88,11 +87,11 @@ func (dv *defaultVerifierSimple) verifyRoot(root *Node) ([]string, []string, err
 	return extraDirs, noExistDirs, nil
 }
 
-func (dv *defaultVerifierSimple) recursive(node *Node, dirs map[string]struct{}) error {
+func (dv *defaultVerifierSimple) fillDirsMarkdown(node *Node, dirs map[string]struct{}) error {
 	dirs[filepath.Join(dv.targetDir, node.path())] = struct{}{}
 
 	for i := range node.children {
-		if err := dv.recursive(node.children[i], dirs); err != nil {
+		if err := dv.fillDirsMarkdown(node.children[i], dirs); err != nil {
 			return err
 		}
 	}
