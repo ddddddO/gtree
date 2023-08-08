@@ -45,23 +45,9 @@ func main() {
 				return nil
 			},
 		},
-		&cli.BoolFlag{
-			Name:        "json",
-			Aliases:     []string{"j"},
-			Usage:       "set this option when outputting JSON.",
-			DefaultText: "tree",
-		},
-		&cli.BoolFlag{
-			Name:        "yaml",
-			Aliases:     []string{"y"},
-			Usage:       "set this option when outputting YAML.",
-			DefaultText: "tree",
-		},
-		&cli.BoolFlag{
-			Name:        "toml",
-			Aliases:     []string{"t"},
-			Usage:       "set this option when outputting TOML.",
-			DefaultText: "tree",
+		&cli.StringFlag{
+			Name:  "format",
+			Usage: `set this option when specifying output format. "json", "yaml", "toml"`,
 		},
 		&cli.BoolFlag{
 			Name:    "watch",

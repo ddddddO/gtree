@@ -142,9 +142,7 @@ OPTIONS:
    --file value, -f value               specify the path to markdown file. (default: stdin)
    --massive, -m                        set this option when there are very many blocks of markdown. (default: false)
    --massive-timeout value, --mt value  set this option if you want to set a timeout. (default: 0s)
-   --json, -j                           set this option when outputting JSON. (default: tree)
-   --yaml, -y                           set this option when outputting YAML. (default: tree)
-   --toml, -t                           set this option when outputting TOML. (default: tree)
+   --format value                       set this option when specifying output format. "json", "yaml", "toml"
    --watch, -w                          follow changes in markdown file. (default: false)
    --help, -h                           show help
 ```
@@ -237,7 +235,7 @@ a
 #### Output JSON
 
 ```console
-$ cat testdata/sample5.md | gtree output -j | jq
+$ cat testdata/sample5.md | gtree output --format json | jq
 {
   "value": "a",
   "children": [
@@ -283,7 +281,7 @@ $ cat testdata/sample5.md | gtree output -j | jq
 #### Output YAML
 
 ```console
-$ cat testdata/sample5.md | gtree output -y
+$ cat testdata/sample5.md | gtree output --format yaml
 value: a
 children:
 - value: i
@@ -307,7 +305,7 @@ children:
 #### Output TOML
 
 ```console
-$ cat testdata/sample5.md | gtree output -t
+$ cat testdata/sample5.md | gtree output --format toml
 value = 'a'
 [[children]]
 value = 'i'

@@ -53,56 +53,17 @@ func outputContinuously(markdownPath string, options []gtree.Option) error {
 	return nil
 }
 
-type encodeType uint
-
-const (
-	encodeJSON encodeType = 1 << iota
-	encodeYAML
-	encodeTOML
-)
-
-type stateOutputFormat struct {
-	encode encodeType
-}
-
 func optionOutput(c *cli.Context) (gtree.Option, error) {
-	s := &stateOutputFormat{}
-
-	if c.Bool("json") {
-		s.encode |= encodeJSON
-	}
-	if c.Bool("yaml") {
-		s.encode |= encodeYAML
-	}
-	if c.Bool("toml") {
-		s.encode |= encodeTOML
-	}
-
-	return s.decideOption()
-}
-
-func (s *stateOutputFormat) decideOption() (gtree.Option, error) {
-	if err := s.validate(); err != nil {
-		return nil, err
-	}
-
-	switch s.encode {
-	case encodeJSON:
+	switch c.String("format") {
+	case "json":
 		return gtree.WithEncodeJSON(), nil
-	case encodeYAML:
+	case "yaml":
 		return gtree.WithEncodeYAML(), nil
-	case encodeTOML:
+	case "toml":
 		return gtree.WithEncodeTOML(), nil
+	case "":
+		return nil, nil
+	default:
+		return nil, errors.New(`specify either "json" or "yaml" or "toml"`)
 	}
-	return nil, nil
-}
-
-const encodeDefault = encodeType(0)
-
-func (s *stateOutputFormat) validate() error {
-	switch s.encode {
-	case encodeDefault, encodeJSON, encodeYAML, encodeTOML:
-		return nil
-	}
-	return errors.New(`choose either "json(j)" or "yaml(y)" or "toml(t)" or blank.`)
 }
