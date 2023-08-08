@@ -108,7 +108,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.9.4 / revision b76b22e
+   1.9.5 / revision e764353
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
