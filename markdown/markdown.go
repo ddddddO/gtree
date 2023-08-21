@@ -24,7 +24,6 @@ const (
 	tab   = "\t"
 )
 
-// TODO: runeへ
 var symbols = map[string]struct{}{
 	sharp:    {},
 	hyphen:   {},
@@ -32,7 +31,7 @@ var symbols = map[string]struct{}{
 	plus:     {},
 }
 
-func IsSymbol(k rune) bool {
-	_, ok := symbols[string(k)]
+func IsSymbol(key string) bool {
+	_, ok := symbols[key]
 	return ok
 }

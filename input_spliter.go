@@ -59,5 +59,5 @@ func isRootBlockBeginning(l string) bool {
 	if len(l) == 0 {
 		return false
 	}
-	return md.IsSymbol(rune(l[0]))
+	return md.IsSymbol(l[0:1])
 }
