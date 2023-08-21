@@ -297,7 +297,6 @@ func actionTemplate(c *cli.Context) error {
 	if c.Bool("description") {
 		return description.println()
 	}
-
 	return directory.println()
 }
 
@@ -313,6 +312,5 @@ func actionGoCode(c *cli.Context) error {
 	if c.Bool("godeps-to-tree") {
 		return goDependencesToTree.println()
 	}
-
 	return findToTree.println()
 }
