@@ -2,7 +2,8 @@
 hotreload:
 	air
 
-# sudo GOOS=wasip1 GOARCH=wasm go build -o gtree.wasm ./cmd/gtree
+# MEMO: ver/rev を入れて、手動でGitHub releases にアップロードする
+# sudo GOOS=wasip1 GOARCH=wasm go build -ldflags '-X main.Version=1.9.6 -X main.Revision=xxx' -o gtree.wasm ./cmd/gtree
 wasi:
 	GOOS=wasip1 GOARCH=wasm go build -o gtree.wasm ./cmd/gtree
 
