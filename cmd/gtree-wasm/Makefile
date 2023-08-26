@@ -17,7 +17,7 @@ confirm:
 # -> gzip圧縮で268KBだった。
 # ただ、goのwasm_exec.jsではなく、tinygo/targets/wasm_exec.js を使用する。ref: https://tinygo.org/docs/guides/webassembly/#how-it-works
 tinybuild:
-	tinygo build -o main.wasm -target wasm -tags wasm main.go
+	tinygo build -o main.wasm -target wasm -tags tinywasm main.go
 
 deploy: confirm tinybuild
 	cleancss -o ../../docs/main.css main.css
