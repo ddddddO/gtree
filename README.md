@@ -41,7 +41,7 @@ $ gtree web
 > **Note**<br>
 > WASM binary with WASI support are also available.
 > Basically, the usage is the same as the CLI built with Go.
-> Please refer [here](README_wasi_wasm.md) for usage.
+> Please refer [here](./README_wasi_wasm.md) for usage.
 
 ## Installation
 
