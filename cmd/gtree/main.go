@@ -110,8 +110,9 @@ func main() {
 
 	app := &cli.App{
 		Name: "gtree",
-		Usage: "This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories.\n" +
-			fmt.Sprintf("The symbols that can be used in Markdown are '%s', '%s', '%s', and '%s'.", green("-"), green("+"), green("*"), green("#")),
+		Usage: "This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories." + "\n" +
+			fmt.Sprintf("The symbols that can be used in Markdown are '%s', '%s', '%s', and '%s'.", green("-"), green("+"), green("*"), green("#")) + "\n" +
+			"Within Markdown, indentation represents hierarchy. The indentation can be whatever you specify, but use the same pattern.",
 		Version: fmt.Sprintf("%s / revision %s", Version, Revision),
 		Commands: []*cli.Command{
 			{

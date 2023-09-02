@@ -23,6 +23,8 @@ https://ddddddo.github.io/gtree/
 This page is that converts from Markdown to tree!<br>
 This page calls a function that outputs tree. This function is a Go package compiled as WebAssembly.<br>
 The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.<br>
+Indentation represents hierarchy.<br>
+The indentation can be whatever you specify, but use the same pattern.<br>
 You can change the branches like in the image below.<br>
 Also, once loaded, you can enjoy offline!<br>
 
@@ -111,12 +113,13 @@ $ gtree --help
 NAME:
    gtree - This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories.
            The symbols that can be used in Markdown are '-', '+', '*', and '#'.
+					 Within Markdown, indentation represents hierarchy. The indentation can be whatever you specify, but use the same pattern.
 
 USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.9.5 / revision e764353
+   1.9.6 / revision e764353
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
