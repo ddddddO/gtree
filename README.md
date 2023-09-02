@@ -113,7 +113,7 @@ $ gtree --help
 NAME:
    gtree - This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories.
            The symbols that can be used in Markdown are '-', '+', '*', and '#'.
-					 Within Markdown, indentation represents hierarchy. The indentation can be whatever you specify, but use the same pattern.
+           Within Markdown, indentation represents hierarchy. The indentation can be whatever you specify, but use the same pattern.
 
 USAGE:
    gtree [global options] command [command options] [arguments...]
