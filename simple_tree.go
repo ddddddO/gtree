@@ -32,8 +32,8 @@ func newTreeSimple(cfg *config) tree {
 		return newSpreaderSimple(encode)
 	}
 
-	mkdirerFactory := func(fileExtensions []string) mkdirerSimple {
-		return newMkdirerSimple(fileExtensions)
+	mkdirerFactory := func(targetDir string, fileExtensions []string) mkdirerSimple {
+		return newMkdirerSimple(targetDir, fileExtensions)
 	}
 
 	verifierFactory := func(targetDir string, strict bool) verifierSimple {
@@ -53,6 +53,7 @@ func newTreeSimple(cfg *config) tree {
 			cfg.fileExtensions,
 		),
 		mkdirer: mkdirerFactory(
+			cfg.targetDir,
 			cfg.fileExtensions,
 		),
 		verifier: verifierFactory(

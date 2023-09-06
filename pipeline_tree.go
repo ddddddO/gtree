@@ -34,8 +34,8 @@ func newTreePipeline(cfg *config) tree {
 		return newSpreaderPipeline(encode)
 	}
 
-	mkdirerFactory := func(fileExtensions []string) mkdirerPipeline {
-		return newMkdirerPipeline(fileExtensions)
+	mkdirerFactory := func(targetDir string, fileExtensions []string) mkdirerPipeline {
+		return newMkdirerPipeline(targetDir, fileExtensions)
 	}
 
 	verifierFactory := func(targetDir string, strict bool) verifierPipeline {
@@ -55,6 +55,7 @@ func newTreePipeline(cfg *config) tree {
 			cfg.fileExtensions,
 		),
 		mkdirer: mkdirerFactory(
+			cfg.targetDir,
 			cfg.fileExtensions,
 		),
 		verifier: verifierFactory(

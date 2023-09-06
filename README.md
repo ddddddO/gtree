@@ -119,7 +119,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.9.7 / revision c54ad7f
+   1.9.8 / revision c54ad7f
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -363,6 +363,7 @@ OPTIONS:
       the order of the output and made directories does not always match. (default: false)
    --extension value, -e value, --ext value [ --extension value, -e value, --ext value ]  set this option if you want to create file instead of directory.
       for example, if you want to generate files with ".go" extension: "-e .go"
+   --target-dir value  set this option if you want to specify the directory you want to make directory. (default: current directory)
    --help, -h  show help
 ```
 

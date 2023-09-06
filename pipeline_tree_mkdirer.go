@@ -7,9 +7,9 @@ import (
 	"sync"
 )
 
-func newMkdirerPipeline(fileExtensions []string) mkdirerPipeline {
+func newMkdirerPipeline(dir string, fileExtensions []string) mkdirerPipeline {
 	return &defaultMkdirerPipeline{
-		defaultMkdirerSimple: newMkdirerSimple(fileExtensions).(*defaultMkdirerSimple),
+		defaultMkdirerSimple: newMkdirerSimple(dir, fileExtensions).(*defaultMkdirerSimple),
 	}
 }
 
