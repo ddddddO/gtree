@@ -69,6 +69,11 @@ func main() {
 			Usage: "set this option if you want to create file instead of directory.\n" +
 				"for example, if you want to generate files with \".go\" extension: \"-e .go\"",
 		},
+		&cli.StringFlag{
+			Name:        "target-dir",
+			Usage:       "set this option if you want to specify the directory you want to make directory.",
+			DefaultText: "current directory",
+		},
 	}
 
 	verifyFlags := []cli.Flag{
@@ -247,7 +252,7 @@ func actionMkdir(c *cli.Context) error {
 		defer in.Close()
 	}
 
-	options := []gtree.Option{gtree.WithFileExtensions(c.StringSlice("extension"))}
+	options := []gtree.Option{gtree.WithTargetDir(c.String("target-dir")), gtree.WithFileExtensions(c.StringSlice("extension"))}
 	if c.Bool("massive") {
 		options = append(options, gtree.WithMassive(context.Background()))
 	}
