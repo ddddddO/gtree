@@ -119,7 +119,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.9.8 / revision c54ad7f
+   1.9.9 / revision c54ad7f
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -358,13 +358,11 @@ USAGE:
    gtree mkdir [command options] [arguments...]
 
 OPTIONS:
-   --file value, -f value  specify the path to markdown file. (default: stdin)
-   --dry-run, -d, --dr     dry run. detects node that is invalid for directory generation.
-      the order of the output and made directories does not always match. (default: false)
-   --extension value, -e value, --ext value [ --extension value, -e value, --ext value ]  set this option if you want to create file instead of directory.
-      for example, if you want to generate files with ".go" extension: "-e .go"
-   --target-dir value  set this option if you want to specify the directory you want to make directory. (default: current directory)
-   --help, -h  show help
+   --file value, -f value                                       specify the path to markdown file. (default: stdin)
+   --dry-run, -d                                                dry run. detects node that is invalid for directory generation. the order of the output and made directories does not always match. (default: false)
+   --extension value, -e value [ --extension value, -e value ]  set this option if you want to create file instead of directory. for example, if you want to generate files with ".go" extension: "-e .go"
+   --target-dir value                                           set this option if you want to specify the directory you want to make directory. (default: current directory)
+   --help, -h                                                   show help
 ```
 
 #### Try it!

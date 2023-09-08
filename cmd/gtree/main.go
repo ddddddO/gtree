@@ -59,15 +59,13 @@ func main() {
 	mkdirFlags := []cli.Flag{
 		&cli.BoolFlag{
 			Name:    "dry-run",
-			Aliases: []string{"d", "dr"},
-			Usage: "dry run. detects node that is invalid for directory generation.\n" +
-				"the order of the output and made directories does not always match.",
+			Aliases: []string{"d"},
+			Usage:   "dry run. detects node that is invalid for directory generation. the order of the output and made directories does not always match.",
 		},
 		&cli.StringSliceFlag{
 			Name:    "extension",
-			Aliases: []string{"e", "ext"},
-			Usage: "set this option if you want to create file instead of directory.\n" +
-				"for example, if you want to generate files with \".go\" extension: \"-e .go\"",
+			Aliases: []string{"e"},
+			Usage:   "set this option if you want to create file instead of directory. for example, if you want to generate files with \".go\" extension: \"-e .go\"",
 		},
 		&cli.StringFlag{
 			Name:        "target-dir",
