@@ -23,8 +23,7 @@ https://ddddddo.github.io/gtree/
 This page is that converts from Markdown to tree!<br>
 This page calls a function that outputs tree. This function is a Go package compiled as WebAssembly.<br>
 The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.<br>
-Indentation represents hierarchy.<br>
-The indentation can be whatever you specify, but use the same pattern.<br>
+Indentation represents hierarchy. The indentation can be whatever you specify, but use the same pattern.<br>
 You can change the branches like in the image below.<br>
 Also, once loaded, you can enjoy offline!<br>
 
