@@ -14,6 +14,7 @@ Provide CLI, Golang library and Web.
 - **[CLI](https://github.com/ddddddO/gtree#cli)**
 - **[Library - used in Web and CLI](https://github.com/ddddddO/gtree#library---used-in-web-and-cli)**
 - **[Library - programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)**
+	- You can set up sample project with the `gonew` command. See [`it`](example/README.md).
 
 
 # Web
@@ -484,9 +485,16 @@ OPTIONS:
 ```console
 $ tree example
 example
+├── README.md
 ├── find_pipe_programmable-gtree
+│   ├── README.md
+│   ├── go.mod
+│   ├── go.sum
 │   └── main.go
 ├── go-list_pipe_programmable-gtree
+│   ├── README.md
+│   ├── go.mod
+│   ├── go.sum
 │   └── main.go
 ├── like_cli
 │   ├── adapter
@@ -498,12 +506,19 @@ example
 └── programmable
     └── main.go
 
-6 directories, 7 files
+6 directories, 14 files
 $ cat testdata/sample9.md
 - example
+        - README.md
         - find_pipe_programmable-gtree
+                - README.md
+                - go.mod
+                - go.sum
                 - main.go
         - go-list_pipe_programmable-gtree
+                - README.md
+                - go.mod
+                - go.sum
                 - main.go
         - like_cli
                 - adapter
@@ -638,6 +653,10 @@ You can use `gtree.WithFileExtensions` func to make specified extensions as file
 You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
 # Library - programmable tree structure
+
+> **Note**<br>
+> The `gonew` command can be used to set up sample project using gtree library.<br>
+> See [here](example/README.md) for details.
 
 ## Installation
 
