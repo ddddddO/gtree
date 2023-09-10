@@ -14,7 +14,7 @@ Provide CLI, Golang library and Web.
 - **[CLI](https://github.com/ddddddO/gtree#cli)**
 - **[Library - used in Web and CLI](https://github.com/ddddddO/gtree#library---used-in-web-and-cli)**
 - **[Library - programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)**
-	- You can set up sample project with the `gonew` command. See [`it`](example/README.md).
+	- You can set up sample project with the `gonew` command. See [`it`](https://github.com/ddddddO/gtree/blob/master/example/README.md).
 
 
 # Web
@@ -656,7 +656,7 @@ You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
 > **Note**<br>
 > The `gonew` command can be used to set up sample project using gtree library.<br>
-> See [here](example/README.md) for details.
+> See [here](https://github.com/ddddddO/gtree/blob/master/example/README.md) for details.
 
 ## Installation
 
