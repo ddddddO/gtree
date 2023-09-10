@@ -1,4 +1,4 @@
-module example/find_pipe_programmable-gtree
+module example.com/find_pipe_programmable-gtree
 
 go 1.21.0
 

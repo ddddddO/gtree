@@ -1,4 +1,4 @@
-module example/go-list_pipe_programmable-gtree
+module example.com/go-list_pipe_programmable-gtree
 
 go 1.21.0
 

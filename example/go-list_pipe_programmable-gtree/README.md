@@ -13,7 +13,7 @@ $ go install golang.org/x/tools/cmd/gonew@latest
 ### 2. Clone by specifying template
 
 ```console
-$ gonew github.com/ddddddO/gtree/example/go-list_pipe_programmable-gtree
+$ gonew github.com/ddddddO/gtree/example/go-list_pipe_programmable-gtree example.com/go-list_pipe_programmable-gtree
 ```
 
 ### 3. Run the program
