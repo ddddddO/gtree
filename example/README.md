@@ -21,13 +21,12 @@ $ go install golang.org/x/tools/cmd/gonew@latest
 ```
 
 ### 2. Clone by specifying template
-
+#### For *find_pipe_programmable-gtree*
 ```console
 $ gonew github.com/ddddddO/gtree/example/find_pipe_programmable-gtree example.com/find_pipe_programmable-gtree
 ```
 
-or
-
+#### For *go-list_pipe_programmable-gtree*
 ```console
 $ gonew github.com/ddddddO/gtree/example/go-list_pipe_programmable-gtree example.com/go-list_pipe_programmable-gtree
 ```
