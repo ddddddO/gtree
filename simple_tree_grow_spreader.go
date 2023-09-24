@@ -25,18 +25,18 @@ type defaultGrowSpreaderSimple struct {
 	w io.Writer
 }
 
-func (dg *defaultGrowSpreaderSimple) growAndSpread(w io.Writer, roots []*Node) error {
-	dg.w = w
+func (dgs *defaultGrowSpreaderSimple) growAndSpread(w io.Writer, roots []*Node) error {
+	dgs.w = w
 	for _, root := range roots {
-		if err := dg.assembleAndPrint(root); err != nil {
+		if err := dgs.assembleAndPrint(root); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (dg *defaultGrowSpreaderSimple) assembleAndPrint(current *Node) error {
-	if err := dg.assembleBranch(current); err != nil {
+func (dgs *defaultGrowSpreaderSimple) assembleAndPrint(current *Node) error {
+	if err := dgs.assembleBranch(current); err != nil {
 		return err
 	}
 
@@ -44,10 +44,10 @@ func (dg *defaultGrowSpreaderSimple) assembleAndPrint(current *Node) error {
 	if !current.isRoot() {
 		ret = current.branch() + " " + current.name + "\n"
 	}
-	fmt.Fprint(dg.w, ret)
+	fmt.Fprint(dgs.w, ret)
 
 	for _, child := range current.children {
-		if err := dg.assembleAndPrint(child); err != nil {
+		if err := dgs.assembleAndPrint(child); err != nil {
 			return err
 		}
 	}
