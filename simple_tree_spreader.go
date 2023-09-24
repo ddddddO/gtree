@@ -35,34 +35,28 @@ const (
 	encodeTOML
 )
 
-type defaultSpreaderSimple struct{}
-
-func (ds *defaultSpreaderSimple) spread(w io.Writer, roots []*Node) error {
-	branches := ""
-	for _, root := range roots {
-		branches += ds.spreadBranch(root)
-	}
-	return ds.write(w, branches)
+type defaultSpreaderSimple struct {
+	w io.Writer
 }
 
-func (*defaultSpreaderSimple) spreadBranch(current *Node) string {
+func (ds *defaultSpreaderSimple) spread(w io.Writer, roots []*Node) error {
+	ds.w = w
+	for _, root := range roots {
+		ds.spreadBranch(root)
+	}
+	return nil
+}
+
+func (ds *defaultSpreaderSimple) spreadBranch(current *Node) {
 	ret := current.name + "\n"
 	if !current.isRoot() {
 		ret = current.branch() + " " + current.name + "\n"
 	}
+	fmt.Fprint(ds.w, ret)
 
 	for _, child := range current.children {
-		ret += (*defaultSpreaderSimple)(nil).spreadBranch(child)
+		ds.spreadBranch(child)
 	}
-	return ret
-}
-
-func (*defaultSpreaderSimple) write(w io.Writer, in string) error {
-	buf := bufio.NewWriter(w)
-	if _, err := buf.WriteString(in); err != nil {
-		return err
-	}
-	return buf.Flush()
 }
 
 type formattedSpreaderSimple[T sitter] struct {
@@ -217,6 +211,14 @@ func (cs *colorizeSpreaderSimple) spreadBranch(current *Node) string {
 		ret += cs.spreadBranch(child)
 	}
 	return ret
+}
+
+func (*colorizeSpreaderSimple) write(w io.Writer, in string) error {
+	buf := bufio.NewWriter(w)
+	if _, err := buf.WriteString(in); err != nil {
+		return err
+	}
+	return buf.Flush()
 }
 
 func (cs *colorizeSpreaderSimple) colorize(current *Node) string {
