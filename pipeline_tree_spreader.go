@@ -44,23 +44,19 @@ func (ds *defaultSpreaderPipeline) spread(ctx context.Context, w io.Writer, root
 			close(errc)
 		}()
 
-		bw := bufio.NewWriter(w)
+		ds.w = w
 		wg := &sync.WaitGroup{}
 		for i := 0; i < workerSpreadNum; i++ {
 			wg.Add(1)
-			go ds.worker(ctx, wg, bw, roots, errc)
+			go ds.worker(ctx, wg, roots, errc)
 		}
 		wg.Wait()
-
-		if err := bw.Flush(); err != nil {
-			errc <- err
-		}
 	}()
 
 	return errc
 }
 
-func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGroup, bw *bufio.Writer, roots <-chan *Node, errc chan<- error) {
+func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, _ chan<- error) {
 	defer wg.Done()
 	for {
 		select {
@@ -70,15 +66,10 @@ func (ds *defaultSpreaderPipeline) worker(ctx context.Context, wg *sync.WaitGrou
 			if !ok {
 				return
 			}
-			ret := ds.spreadBranch(root)
 
 			ds.Lock()
-			_, err := bw.WriteString(ret)
+			ds.spreadBranch(root)
 			ds.Unlock()
-
-			if err != nil {
-				errc <- err
-			}
 		}
 	}
 }
