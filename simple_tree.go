@@ -9,10 +9,11 @@ import (
 )
 
 type treeSimple struct {
-	grower   growerSimple
-	spreader spreaderSimple
-	mkdirer  mkdirerSimple
-	verifier verifierSimple
+	grower       growerSimple
+	spreader     spreaderSimple
+	mkdirer      mkdirerSimple
+	verifier     verifierSimple
+	growSpreader growSpreaderSimple
 }
 
 var _ tree = (*treeSimple)(nil)
@@ -40,6 +41,10 @@ func newTreeSimple(cfg *config) tree {
 		return newVerifierSimple(targetDir, strict)
 	}
 
+	growSpreaderFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool) growSpreaderSimple {
+		return newGrowSpreaderSimple(lastNodeFormat, intermedialNodeFormat, dryrun)
+	}
+
 	return &treeSimple{
 		grower: growerFactory(
 			cfg.lastNodeFormat,
@@ -60,6 +65,11 @@ func newTreeSimple(cfg *config) tree {
 			cfg.targetDir,
 			cfg.strictVerify,
 		),
+		growSpreader: growSpreaderFactory(
+			cfg.lastNodeFormat,
+			cfg.intermedialNodeFormat,
+			cfg.dryrun,
+		),
 	}
 }
 
@@ -76,10 +86,15 @@ func (t *treeSimple) output(w io.Writer, r io.Reader, cfg *config) error {
 }
 
 func (t *treeSimple) outputProgrammably(w io.Writer, root *Node, cfg *config) error {
-	if err := t.grower.grow([]*Node{root}); err != nil {
-		return err
+	if cfg.encode != encodeDefault {
+		if err := t.grower.grow([]*Node{root}); err != nil {
+			return err
+		}
+		return t.spreader.spread(w, []*Node{root})
 	}
-	return t.spreader.spread(w, []*Node{root})
+
+	// JSONなどのフォーマットに変えずに出力する場合は、枝の形成と出力を分けない
+	return t.growSpreader.growAndSpread(w, []*Node{root})
 }
 
 func (t *treeSimple) mkdir(r io.Reader, cfg *config) error {
@@ -151,4 +166,11 @@ type mkdirerSimple interface {
 // interfaceを使う必要はないが、growerSimple/spreaderSimpleと合わせたいため
 type verifierSimple interface {
 	verify([]*Node) error
+}
+
+// TODO: このコミット辺りのリファクタリング
+// 関心事は枝の形成と出力
+// 枝の組み立てと出力を同じloop内でしないと、例えばこれまで通り 1.grower -> 2.spreader の処理順だと、1が遅すぎる場合利用者からするといつ出力されるのか？となるし、処理回数的には無駄なため
+type growSpreaderSimple interface {
+	growAndSpread(io.Writer, []*Node) error
 }
