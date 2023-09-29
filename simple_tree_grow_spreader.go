@@ -9,13 +9,12 @@ import (
 
 func newGrowSpreaderSimple(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
-	enabledValidation bool,
 ) growSpreaderSimple {
 	return &defaultGrowSpreaderSimple{
 		defaultGrowerSimple: &defaultGrowerSimple{
 			lastNodeFormat:        lastNodeFormat,
 			intermedialNodeFormat: intermedialNodeFormat,
-			enabledValidation:     enabledValidation,
+			enabledValidation:     false,
 		},
 	}
 }

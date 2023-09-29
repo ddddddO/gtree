@@ -41,8 +41,8 @@ func newTreeSimple(cfg *config) tree {
 		return newVerifierSimple(targetDir, strict)
 	}
 
-	growSpreaderFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool) growSpreaderSimple {
-		return newGrowSpreaderSimple(lastNodeFormat, intermedialNodeFormat, dryrun)
+	growSpreaderFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat) growSpreaderSimple {
+		return newGrowSpreaderSimple(lastNodeFormat, intermedialNodeFormat)
 	}
 
 	return &treeSimple{
@@ -68,7 +68,6 @@ func newTreeSimple(cfg *config) tree {
 		growSpreader: growSpreaderFactory(
 			cfg.lastNodeFormat,
 			cfg.intermedialNodeFormat,
-			cfg.dryrun,
 		),
 	}
 }
