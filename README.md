@@ -17,6 +17,17 @@ Provide CLI, Golang library and Web.
 	- You can set up sample project with the `gonew` command. See [`it`](https://github.com/ddddddO/gtree/blob/master/example/README.md).
 
 
+# Acknowledgments
+Thanks for providing very useful CLI for cloud storage tree output🤩!
+Everyone is encouraged to use them!
+
+## [*stree*](https://github.com/orangekame3/stree)
+CLI for **Amazon S3** tree output.
+
+## [*gcstree*](https://github.com/owlinux1000/gcstree)
+CLI for **Google Cloud Storage** tree output.
+
+
 # Web
 
 https://ddddddo.github.io/gtree/
