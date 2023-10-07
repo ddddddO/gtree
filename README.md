@@ -18,15 +18,16 @@ Provide CLI, Golang library and Web.
 
 
 # Acknowledgments
-Thanks for providing very useful CLI for cloud storage tree output🤩!
+Thanks for providing very useful CLI for cloud storage tree output🤩!</br>
 Everyone is encouraged to use them!
 
-## [*stree*](https://github.com/orangekame3/stree)
-CLI for **Amazon S3** tree output.
+## ⭐[*stree*](https://github.com/orangekame3/stree)
+CLI for **Amazon S3** tree output.</br>
+[*`aws s3`*](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html) command does not do what `tree` command does, but [**`stree`**](https://github.com/orangekame3/stree) command can display tree!
 
-## [*gcstree*](https://github.com/owlinux1000/gcstree)
-CLI for **Google Cloud Storage** tree output.
-
+## ⭐[*gcstree*](https://github.com/owlinux1000/gcstree)
+CLI for **Google Cloud Storage** tree output.</br>
+[*`gcloud storage`*](https://cloud.google.com/sdk/gcloud/reference/storage) command does not do what `tree` command does, but [**`gcstree`**](https://github.com/owlinux1000/gcstree) command can display tree!
 
 # Web
 
