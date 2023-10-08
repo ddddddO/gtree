@@ -131,7 +131,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.9.9 / revision de0f986
+   1.9.12 / revision de0f986
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -142,7 +142,6 @@ COMMANDS:
                       Let's try 'gtree template | gtree verify'.
    template, t, tmpl  Outputs markdown template. Use it to try out gtree CLI.
    web, w, www        Opens "Tree Maker" in your browser and shows the URL in terminal.
-   gocode, gc, code   Outputs a sample Go program calling "gtree" package.
    version, v         Prints the version.
    help, h            Shows a list of commands or help for one command
 
@@ -872,25 +871,7 @@ func main() {
 	// ├── .gitignore
 	// ...
 }
-
 ```
-
-The above Go program can be output with the command below.
-
-```console
-$ gtree gocode
-```
-
-#### Convert `go list -deps ./...` to tree 👉 [sample program](https://github.com/ddddddO/gtree/blob/master/example/go-list_pipe_programmable-gtree/main.go)
-
-The above Go program can be output with the command below.
-
-```console
-$ gtree gocode --godeps-to-tree
-```
-
-inspired by [nikolaydubina/go-recipes](https://github.com/nikolaydubina/go-recipes#readme) !
-
 
 ### *MkdirProgrammably* func
 
