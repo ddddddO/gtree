@@ -21,8 +21,7 @@ func OutputProgrammably(w io.Writer, root *Node, options ...Option) error {
 	idxCounter.reset()
 
 	cfg := newConfig(options)
-	tree := initializeTree(cfg)
-	return tree.outputProgrammably(w, root, cfg)
+	return initializeTree(cfg).outputProgrammably(w, root, cfg)
 }
 
 // MkdirProgrammably makes directories.
@@ -35,8 +34,7 @@ func MkdirProgrammably(root *Node, options ...Option) error {
 	idxCounter.reset()
 
 	cfg := newConfig(options)
-	tree := initializeTree(cfg)
-	return tree.mkdirProgrammably(root, cfg)
+	return initializeTree(cfg).mkdirProgrammably(root, cfg)
 }
 
 // VerifyProgrammably verifies directory.
@@ -49,8 +47,7 @@ func VerifyProgrammably(root *Node, options ...Option) error {
 	idxCounter.reset()
 
 	cfg := newConfig(options)
-	tree := initializeTree(cfg)
-	return tree.verifyProgrammably(root, cfg)
+	return initializeTree(cfg).verifyProgrammably(root, cfg)
 }
 
 // NewRoot creates a starting node for building tree.
