@@ -96,6 +96,7 @@ $ nix-shell -p gtree
 $ port install gtree
 
 <a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml"><b>aqua</b></a>
+$ aqua g -i ddddddO/gtree
 
 <a href="https://github.com/ddddddO/gtree/releases"><b>WASI</b></a>
 $ Go to GitHub releases and Download `gtree.wasm`
