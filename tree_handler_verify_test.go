@@ -1,6 +1,8 @@
 package gtree_test
 
 import (
+	"fmt"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -35,14 +37,30 @@ func TestVerify(t *testing.T) {
 			},
 		},
 		{
+			name: "case(error/no exist root)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- no_exist_root_dir`)),
+			},
+			out: out{
+				err: fmt.Errorf("Required paths does not exist:\n%s", "\tno_exist_root_dir"),
+			},
+		},
+		{
 			name: "case(error/strict mode/Extra paths exist and Required paths does not exist)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - example
 	- find_pipe_programmable-gtree
 		- main.go
+		- README.md
+		- go.mod
+		- go.sum
 	- go-list_pipe_programmable-gtree
 		- main.go
+		- README.md
+		- go.mod
+		- go.sum
 	- like_cli
 		- adapter
 			- executor.go
@@ -50,11 +68,50 @@ func TestVerify(t *testing.T) {
 		- main.go
 		- xxxx
 	- programmable
-		- main.go`)),
+		- main.go
+	- README.md`)),
 				options: []gtree.Option{gtree.WithStrictVerify()},
 			},
 			out: out{
-				err: nil, // TODO: not nil
+				err: fmt.Errorf("Extra paths exist:\n%s\nRequired paths does not exist:\n%s",
+					fmt.Sprintf("\t%s\n\t%s", filepath.Join("example", "noexist"), filepath.Join("example", "noexist", "xxx")),
+					fmt.Sprintf("\t%s", filepath.Join("example", "like_cli", "xxxx")),
+				),
+			},
+		},
+		{
+			name: "case(error/strict mode/specify target dir/Extra paths exist and Required paths does not exist)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- go-list_pipe_programmable-gtree
+	- main.go
+	- README.md
+	- go.sum
+	- xxxx`)),
+				options: []gtree.Option{gtree.WithStrictVerify(), gtree.WithTargetDir("example")},
+			},
+			out: out{
+				err: fmt.Errorf("Extra paths exist:\n%s\nRequired paths does not exist:\n%s",
+					fmt.Sprintf("\t%s", filepath.Join("example", "go-list_pipe_programmable-gtree", "go.mod")),
+					fmt.Sprintf("\t%s", filepath.Join("example", "go-list_pipe_programmable-gtree", "xxxx")),
+				),
+			},
+		},
+		{
+			name: "case(error/specify target dir/Required paths does not exist)",
+			in: in{
+				input: strings.NewReader(strings.TrimSpace(`
+- go-list_pipe_programmable-gtree
+	- main.go
+	- README.md
+	- go.sum
+	- xxxx`)),
+				options: []gtree.Option{gtree.WithTargetDir("example")},
+			},
+			out: out{
+				err: fmt.Errorf("Required paths does not exist:\n%s",
+					fmt.Sprintf("\t%s", filepath.Join("example", "go-list_pipe_programmable-gtree", "xxxx")),
+				),
 			},
 		},
 	}
@@ -65,11 +122,10 @@ func TestVerify(t *testing.T) {
 			t.Parallel()
 
 			gotErr := gtree.Verify(tt.in.input, tt.in.options...)
-			if gotErr != nil {
-				// TODO:
-				// if gotErr.Error() != tt.out.err.Error() {
-				// 	t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.out.err)
-				// }
+			if gotErr != nil || tt.out.err != nil {
+				if gotErr.Error() != tt.out.err.Error() {
+					t.Errorf("\ngotErr: \n%s\nwantErr: \n%s", gotErr, tt.out.err)
+				}
 			}
 		})
 	}
