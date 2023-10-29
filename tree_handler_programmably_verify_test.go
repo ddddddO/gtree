@@ -2,6 +2,7 @@ package gtree_test
 
 import (
 	"fmt"
+	"path/filepath"
 	"testing"
 
 	"github.com/ddddddO/gtree"
@@ -30,19 +31,26 @@ func TestVerifyProgrammably(t *testing.T) {
 			name:    "case(error/specify target dir)",
 			root:    prepareDirectoryFindPipeWithNoExistDirAndRequiredDir(),
 			options: []gtree.Option{gtree.WithTargetDir("example"), gtree.WithMassive(nil)},
-			wantErr: fmt.Errorf("Required paths does not exist:\n%s", "\texample/find_pipe_programmable-gtree/required!"),
+			wantErr: fmt.Errorf("Required paths does not exist:\n%s",
+				fmt.Sprintf("\t%s", filepath.Join("example", "find_pipe_programmable-gtree", "required!")),
+			),
 		},
 		{
 			name:    "case(error/specify target dir/strict mode)",
 			root:    prepareDirectoryFindPipeWithNoExistDirAndRequiredDir(),
 			options: []gtree.Option{gtree.WithTargetDir("example"), gtree.WithStrictVerify(), gtree.WithMassive(nil)},
-			wantErr: fmt.Errorf("Extra paths exist:\n%s\nRequired paths does not exist:\n%s", "\texample/find_pipe_programmable-gtree/main.go", "\texample/find_pipe_programmable-gtree/required!"),
+			wantErr: fmt.Errorf("Extra paths exist:\n%s\nRequired paths does not exist:\n%s",
+				fmt.Sprintf("\t%s", filepath.Join("example", "find_pipe_programmable-gtree", "main.go")),
+				fmt.Sprintf("\t%s", filepath.Join("example", "find_pipe_programmable-gtree", "required!")),
+			),
 		},
 		{
 			name:    "case(error/no exist root)",
 			root:    gtree.NewRoot("no_exist_root_dir"),
 			options: []gtree.Option{gtree.WithMassive(nil)},
-			wantErr: fmt.Errorf("Required paths does not exist:\n%s", "\tno_exist_root_dir"),
+			wantErr: fmt.Errorf("Required paths does not exist:\n%s",
+				fmt.Sprintf("\t%s", "no_exist_root_dir"),
+			),
 		},
 	}
 
