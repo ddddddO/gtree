@@ -1,18 +1,24 @@
-- a
-	- i
-		- u
-			- k
-			- kk
-		- t
-	- e
-		- o
-	- g
-- a
-	- i
-		- u
-			- k
-			- kk
-		- t
-	- e
-		- o
-	- g
+- Artiodactyla
+	- Artiofabula
+		- Cetruminantia
+			- Whippomorpha
+				- Hippopotamidae
+				- Cetacea
+			- Ruminantia
+		- Suina
+	- Tylopoda
+- Carnivora
+	- Feliformia
+	- Caniformia
+		- Canidae
+		- Arctoidea
+			- Ursidae
+			- x
+				- Pinnipedia
+				- Musteloidea
+					- Ailuridae
+					- x
+						- Mephitidae
+						- x
+							- Procyonidae
+							- Mustelidae
