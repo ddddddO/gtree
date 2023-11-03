@@ -18,7 +18,7 @@ Provide CLI, Golang library and Web.
 
 
 # Acknowledgments
-Thanks for providing very useful CLI for cloud storage tree output🤩!</br>
+Thanks for providing very useful CLI for cloud storage tree output🤩🎉</br>
 Everyone is encouraged to use them!
 
 ## ⭐[_orangekame3/stree_](https://github.com/orangekame3/stree)
