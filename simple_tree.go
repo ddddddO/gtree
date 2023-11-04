@@ -14,6 +14,7 @@ type treeSimple struct {
 	mkdirer      mkdirerSimple
 	verifier     verifierSimple
 	growSpreader growSpreaderSimple
+	walker       walkerSimple
 }
 
 var _ tree = (*treeSimple)(nil)
@@ -45,6 +46,10 @@ func newTreeSimple(cfg *config) tree {
 		return newGrowSpreaderSimple(lastNodeFormat, intermedialNodeFormat)
 	}
 
+	walkerFactory := func() walkerSimple {
+		return newWalkerSimple()
+	}
+
 	return &treeSimple{
 		grower: growerFactory(
 			cfg.lastNodeFormat,
@@ -69,6 +74,7 @@ func newTreeSimple(cfg *config) tree {
 			cfg.lastNodeFormat,
 			cfg.intermedialNodeFormat,
 		),
+		walker: walkerFactory(),
 	}
 }
 
@@ -144,6 +150,25 @@ func (t *treeSimple) verifyProgrammably(root *Node, cfg *config) error {
 	return t.verifier.verify([]*Node{root})
 }
 
+func (t *treeSimple) walk(r io.Reader, cb func(*WalkerNode) error, cfg *config) error {
+	roots, err := newRootGeneratorSimple(r).generate()
+	if err != nil {
+		return err
+	}
+
+	if err := t.grower.grow(roots); err != nil {
+		return err
+	}
+	return t.walker.walk(roots, cb)
+}
+
+func (t *treeSimple) walkProgrammably(root *Node, cb func(*WalkerNode) error, cfg *config) error {
+	if err := t.grower.grow([]*Node{root}); err != nil {
+		return err
+	}
+	return t.walker.walk([]*Node{root}, cb)
+}
+
 // 関心事は各ノードの枝の形成
 type growerSimple interface {
 	grow([]*Node) error
@@ -172,4 +197,8 @@ type verifierSimple interface {
 // 枝の組み立てと出力を同じloop内でしないと、例えばこれまで通り 1.grower -> 2.spreader の処理順だと、1が遅すぎる場合利用者からするといつ出力されるのか？となるし、処理回数的には無駄なため
 type growSpreaderSimple interface {
 	growAndSpread(io.Writer, []*Node) error
+}
+
+type walkerSimple interface {
+	walk([]*Node, func(*WalkerNode) error) error
 }

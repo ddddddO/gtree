@@ -11,6 +11,8 @@ type tree interface {
 	mkdirProgrammably(*Node, *config) error
 	verify(io.Reader, *config) error
 	verifyProgrammably(*Node, *config) error
+	walk(io.Reader, func(*WalkerNode) error, *config) error
+	walkProgrammably(*Node, func(*WalkerNode) error, *config) error
 }
 
 func initializeTree(cfg *config) tree {
