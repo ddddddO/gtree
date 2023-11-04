@@ -15,6 +15,7 @@ type treePipeline struct {
 	spreader spreaderPipeline
 	mkdirer  mkdirerPipeline
 	verifier verifierPipeline
+	walker   walkerPipeline
 }
 
 var _ tree = (*treePipeline)(nil)
@@ -42,6 +43,10 @@ func newTreePipeline(cfg *config) tree {
 		return newVerifierPipeline(targetDir, strict)
 	}
 
+	walkerFactory := func() walkerPipeline {
+		return newWalkerPipeline()
+	}
+
 	return &treePipeline{
 		grower: growerFactory(
 			cfg.lastNodeFormat,
@@ -62,6 +67,7 @@ func newTreePipeline(cfg *config) tree {
 			cfg.targetDir,
 			cfg.strictVerify,
 		),
+		walker: walkerFactory(),
 	}
 }
 
@@ -152,6 +158,31 @@ func (t *treePipeline) verifyProgrammably(root *Node, cfg *config) error {
 	return t.handlePipelineErr(ctx, errcg, errcv)
 }
 
+func (t *treePipeline) walk(r io.Reader, cb func(*WalkerNode) error, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
+	defer cancel()
+
+	splitStream, errcsl := split(ctx, r)
+	rootStream, errcr := newRootGeneratorPipeline().generate(ctx, splitStream)
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	errcw := t.walker.walk(ctx, growStream, cb)
+	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcw)
+}
+
+func (t *treePipeline) walkProgrammably(root *Node, cb func(*WalkerNode) error, cfg *config) error {
+	ctx, cancel := context.WithCancel(cfg.ctx)
+	defer cancel()
+
+	rootStream := make(chan *Node)
+	go func() {
+		defer close(rootStream)
+		rootStream <- root
+	}()
+	growStream, errcg := t.grower.grow(ctx, rootStream)
+	errcw := t.walker.walk(ctx, growStream, cb)
+	return t.handlePipelineErr(ctx, errcg, errcw)
+}
+
 // 関心事は各ノードの枝の形成
 type growerPipeline interface {
 	grow(context.Context, <-chan *Node) (<-chan *Node, <-chan error)
@@ -173,6 +204,11 @@ type mkdirerPipeline interface {
 // interfaceを使う必要はないが、growerPipeline/spreaderPipelineと合わせたいため
 type verifierPipeline interface {
 	verify(context.Context, <-chan *Node) <-chan error
+}
+
+// TODO: add doc
+type walkerPipeline interface {
+	walk(context.Context, <-chan *Node, func(*WalkerNode) error) <-chan error
 }
 
 // パイプラインの全ステージで最初のエラーを返却

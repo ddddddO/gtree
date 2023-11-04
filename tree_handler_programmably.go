@@ -50,6 +50,18 @@ func VerifyProgrammably(root *Node, options ...Option) error {
 	return initializeTree(cfg).verifyProgrammably(root, cfg)
 }
 
+// TODO: add doc
+func WalkProgrammably(root *Node, cb func(*WalkerNode) error, options ...Option) error {
+	if err := validateTreeRoot(root); err != nil {
+		return err
+	}
+
+	idxCounter.reset()
+
+	cfg := newConfig(options)
+	return initializeTree(cfg).walkProgrammably(root, cb, cfg)
+}
+
 // NewRoot creates a starting node for building tree.
 func NewRoot(text string) *Node {
 	return newNode(text, rootHierarchyNum, idxCounter.next())
