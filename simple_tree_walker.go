@@ -6,6 +6,7 @@ type WalkerNode struct {
 	name   string
 	branch string
 	row    string
+	level  uint
 	path   string
 }
 
@@ -19,6 +20,10 @@ func (wn *WalkerNode) Branch() string {
 
 func (wn *WalkerNode) Row() string {
 	return wn.row
+}
+
+func (wn *WalkerNode) Level() uint {
+	return wn.level
 }
 
 func (wn *WalkerNode) Path() string {
@@ -49,8 +54,9 @@ func (dw *defaultWalkerSimple) walkNode(current *Node, cb func(*WalkerNode) erro
 	wn := &WalkerNode{
 		name:   current.name,
 		branch: current.branch(),
-		path:   current.path(),
 		row:    row,
+		level: current.hierarchy,
+		path:   current.path(),
 	}
 	if err := cb(wn); err != nil {
 		return err

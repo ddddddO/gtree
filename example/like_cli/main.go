@@ -117,6 +117,7 @@ func sampleWalker() error {
 		fmt.Printf("\tName   : %s\n", wn.Name())
 		fmt.Printf("\tBranch : %s\n", wn.Branch())
 		fmt.Printf("\tRow    : %s\n", wn.Row())
+		fmt.Printf("\tLevel  : %d\n", wn.Level())
 		fmt.Printf("\tPath   : %s\n", wn.Path())
 		return nil
 	}
@@ -127,48 +128,57 @@ func sampleWalker() error {
 	// Output:
 	// WalkerNode's methods called...
 	// 	Name   : a
-	// 	Branch :
+	// 	Branch : 
 	// 	Row    : a
+	// 	Level  : 1
 	// 	Path   : a
 	// WalkerNode's methods called...
 	// 	Name   : i
 	// 	Branch : ├──
 	// 	Row    : ├── i
+	// 	Level  : 2
 	// 	Path   : a/i
 	// WalkerNode's methods called...
 	// 	Name   : u
 	// 	Branch : │   └──
 	// 	Row    : │   └── u
+	// 	Level  : 3
 	// 	Path   : a/i/u
 	// WalkerNode's methods called...
 	// 	Name   : k
 	// 	Branch : │       └──
 	// 	Row    : │       └── k
+	// 	Level  : 4
 	// 	Path   : a/i/u/k
 	// WalkerNode's methods called...
 	// 	Name   : kk
 	// 	Branch : └──
 	// 	Row    : └── kk
+	// 	Level  : 2
 	// 	Path   : a/kk
 	// WalkerNode's methods called...
 	// 	Name   : t
 	// 	Branch :     └──
 	// 	Row    :     └── t
+	// 	Level  : 3
 	// 	Path   : a/kk/t
 	// WalkerNode's methods called...
 	// 	Name   : e
-	// 	Branch :
+	// 	Branch : 
 	// 	Row    : e
+	// 	Level  : 1
 	// 	Path   : e
 	// WalkerNode's methods called...
 	// 	Name   : o
 	// 	Branch : └──
 	// 	Row    : └── o
+	// 	Level  : 2
 	// 	Path   : e/o
 	// WalkerNode's methods called...
 	// 	Name   : g
 	// 	Branch :     └──
 	// 	Row    :     └── g
+	// 	Level  : 3
 	// 	Path   : e/o/g
 
 	fmt.Println("\nWalker Sample...end")
