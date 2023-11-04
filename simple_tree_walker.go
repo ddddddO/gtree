@@ -5,8 +5,8 @@ package gtree
 type WalkerNode struct {
 	name   string
 	branch string
-	path   string
 	row    string
+	path   string
 }
 
 func (wn *WalkerNode) Name() string {
@@ -17,12 +17,12 @@ func (wn *WalkerNode) Branch() string {
 	return wn.branch
 }
 
-func (wn *WalkerNode) Path() string {
-	return wn.path
-}
-
 func (wn *WalkerNode) Row() string {
 	return wn.row
+}
+
+func (wn *WalkerNode) Path() string {
+	return wn.path
 }
 
 func newWalkerSimple() walkerSimple {

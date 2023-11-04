@@ -670,6 +670,121 @@ You can use `gtree.WithFileExtensions` func to make specified extensions as file
 
 You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
+### *Walk* func
+
+<details>
+<summary>See sample program</summary>
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/ddddddO/gtree"
+)
+
+func main() {
+	src := strings.TrimSpace(`
+- a
+  - i
+    - u
+      - k
+  - kk
+    - t
+- e
+  - o
+    - g`)
+
+	callback := func(wn *gtree.WalkerNode) error {
+		fmt.Println(wn.Row())
+		return nil
+	}
+
+	if err := gtree.Walk(strings.NewReader(src), callback); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// Output:
+	// a
+	// ├── i
+	// │   └── u
+	// │       └── k
+	// └── kk
+	// 		└── t
+	// e
+	// └── o
+	// 		└── g
+
+	callback2 := func(wn *gtree.WalkerNode) error {
+		fmt.Println("WalkerNode's methods called...")
+		fmt.Printf("\tName   : %s\n", wn.Name())
+		fmt.Printf("\tBranch : %s\n", wn.Branch())
+		fmt.Printf("\tRow    : %s\n", wn.Row())
+		fmt.Printf("\tPath   : %s\n", wn.Path())
+		return nil
+	}
+
+	if err := gtree.Walk(strings.NewReader(src), callback2); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// Output:
+	// WalkerNode's methods called...
+	// 	Name   : a
+	// 	Branch :
+	// 	Row    : a
+	// 	Path   : a
+	// WalkerNode's methods called...
+	// 	Name   : i
+	// 	Branch : ├──
+	// 	Row    : ├── i
+	// 	Path   : a/i
+	// WalkerNode's methods called...
+	// 	Name   : u
+	// 	Branch : │   └──
+	// 	Row    : │   └── u
+	// 	Path   : a/i/u
+	// WalkerNode's methods called...
+	// 	Name   : k
+	// 	Branch : │       └──
+	// 	Row    : │       └── k
+	// 	Path   : a/i/u/k
+	// WalkerNode's methods called...
+	// 	Name   : kk
+	// 	Branch : └──
+	// 	Row    : └── kk
+	// 	Path   : a/kk
+	// WalkerNode's methods called...
+	// 	Name   : t
+	// 	Branch :     └──
+	// 	Row    :     └── t
+	// 	Path   : a/kk/t
+	// WalkerNode's methods called...
+	// 	Name   : e
+	// 	Branch :
+	// 	Row    : e
+	// 	Path   : e
+	// WalkerNode's methods called...
+	// 	Name   : o
+	// 	Branch : └──
+	// 	Row    : └── o
+	// 	Path   : e/o
+	// WalkerNode's methods called...
+	// 	Name   : g
+	// 	Branch :     └──
+	// 	Row    :     └── g
+	// 	Path   : e/o/g
+}
+```
+
+</details>
+
+inspired by [xlab/treeprint](https://github.com/xlab/treeprint#iterating-over-the-tree-nodes) !
+
+
 # Library - programmable tree structure
 
 > **Note**<br>
@@ -983,6 +1098,88 @@ func main() {
 ### *VerifyProgrammably* func
 
 You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
+
+### *WalkProgrammably* func
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/ddddddO/gtree"
+)
+
+func main() {
+	root := gtree.NewRoot("root")
+	root.Add("child 1").Add("child 2").Add("child 3")
+	root.Add("child 5")
+	root.Add("child 1").Add("child 2").Add("child 4")
+
+	callback := func(wn *gtree.WalkerNode) error {
+		fmt.Println(wn.Row())
+		return nil
+	}
+
+	if err := gtree.WalkProgrammably(root, callback); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// Output:
+	// root
+	// ├── child 1
+	// │   └── child 2
+	// │       ├── child 3
+	// │       └── child 4
+	// └── child 5
+
+	callback2 := func(wn *gtree.WalkerNode) error {
+		fmt.Println("WalkerNode's methods called...")
+		fmt.Printf("\tName   : %s\n", wn.Name())
+		fmt.Printf("\tBranch : %s\n", wn.Branch())
+		fmt.Printf("\tRow    : %s\n", wn.Row())
+		fmt.Printf("\tPath   : %s\n", wn.Path())
+		return nil
+	}
+
+	if err := gtree.WalkProgrammably(root, callback2); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// Output:
+	// WalkerNode's methods called...
+	// 	Name   : root
+	// 	Branch :
+	// 	Row    : root
+	// 	Path   : root
+	// WalkerNode's methods called...
+	// 	Name   : child 1
+	// 	Branch : ├──
+	// 	Row    : ├── child 1
+	// 	Path   : root/child 1
+	// WalkerNode's methods called...
+	// 	Name   : child 2
+	// 	Branch : │   └──
+	// 	Row    : │   └── child 2
+	// 	Path   : root/child 1/child 2
+	// WalkerNode's methods called...
+	// 	Name   : child 3
+	// 	Branch : │       ├──
+	// 	Row    : │       ├── child 3
+	// 	Path   : root/child 1/child 2/child 3
+	// WalkerNode's methods called...
+	// 	Name   : child 4
+	// 	Branch : │       └──
+	// 	Row    : │       └── child 4
+	// 	Path   : root/child 1/child 2/child 4
+	// WalkerNode's methods called...
+	// 	Name   : child 5
+	// 	Branch : └──
+	// 	Row    : └── child 5
+	// 	Path   : root/child 5
+}
+```
 
 # Process
 
