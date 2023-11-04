@@ -24,7 +24,7 @@ func Verify(r io.Reader, options ...Option) error {
 	return initializeTree(cfg).verify(r, cfg)
 }
 
-// TODO: add doc
+// Walk executes user-defined function while traversing tree structure.
 func Walk(r io.Reader, cb func(*WalkerNode) error, options ...Option) error {
 	cfg := newConfig(options)
 	return initializeTree(cfg).walk(r, cb, cfg)

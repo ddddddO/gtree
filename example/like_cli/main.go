@@ -128,7 +128,7 @@ func sampleWalker() error {
 	// Output:
 	// WalkerNode's methods called...
 	// 	Name   : a
-	// 	Branch : 
+	// 	Branch :
 	// 	Row    : a
 	// 	Level  : 1
 	// 	Path   : a
@@ -164,7 +164,7 @@ func sampleWalker() error {
 	// 	Path   : a/kk/t
 	// WalkerNode's methods called...
 	// 	Name   : e
-	// 	Branch : 
+	// 	Branch :
 	// 	Row    : e
 	// 	Level  : 1
 	// 	Path   : e

@@ -510,7 +510,7 @@ func sampleWalker() {
 	// Output:
 	// WalkerNode's methods called...
 	// 	Name   : root
-	// 	Branch : 
+	// 	Branch :
 	// 	Row    : root
 	// 	Level  : 1
 	// 	Path   : root

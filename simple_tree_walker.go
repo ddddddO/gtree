@@ -2,6 +2,7 @@
 
 package gtree
 
+// WalkerNode is used in user-defined function that can be executed with Walk/WalkProgrammably function.
 type WalkerNode struct {
 	name   string
 	branch string
@@ -10,22 +11,27 @@ type WalkerNode struct {
 	path   string
 }
 
+// Name returns name of node in completed tree structure.
 func (wn *WalkerNode) Name() string {
 	return wn.name
 }
 
+// Branch returns branch of node in completed tree structure.
 func (wn *WalkerNode) Branch() string {
 	return wn.branch
 }
 
+// Row returns row of node in completed tree structure.
 func (wn *WalkerNode) Row() string {
 	return wn.row
 }
 
+// Level returns level of node in completed tree structure.
 func (wn *WalkerNode) Level() uint {
 	return wn.level
 }
 
+// Path returns path of node in completed tree structure.
 func (wn *WalkerNode) Path() string {
 	return wn.path
 }
@@ -50,12 +56,11 @@ func (dw *defaultWalkerSimple) walkNode(current *Node, cb func(*WalkerNode) erro
 	if !current.isRoot() {
 		row = current.branch() + " " + current.name
 	}
-
 	wn := &WalkerNode{
 		name:   current.name,
 		branch: current.branch(),
 		row:    row,
-		level: current.hierarchy,
+		level:  current.hierarchy,
 		path:   current.path(),
 	}
 	if err := cb(wn); err != nil {
