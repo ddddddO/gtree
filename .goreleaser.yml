@@ -61,6 +61,17 @@ scoops:
     homepage: "https://github.com/ddddddO/gtree"
     description: "This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories."
     license: "BSD-2-Clause"
+winget:
+  - repository:
+      owner: ddddddO
+      name: winget-pkgs
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    short_description: "This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories."
+    homepage: "https://github.com/ddddddO/gtree"
+    publisher: ddddddO
+    license: "BSD-2-Clause"
+    license_url: "https://github.com/ddddddO/gtree/blob/master/LICENSE"
+    path: manifests/ddddddO/gtree
 nfpms:
   - id: gtree-nfpms
     file_name_template: "{{ .ProjectName }}_{{ .Version }}-1_{{ .Arch }}"

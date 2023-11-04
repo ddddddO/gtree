@@ -1,11 +1,12 @@
 name: cd
 on:
   push:
-    tags:
-    - "v[0-9]+.[0-9]+.[0-9]+"
+    # tags:
+    # - "v[0-9]+.[0-9]+.[0-9]+"
     # デバッグ用
-    # branches:
+    branches:
     # - goreleaser_v1.19
+    - winget
 
 
 env:
