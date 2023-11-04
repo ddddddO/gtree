@@ -713,10 +713,10 @@ func main() {
 	// │   └── u
 	// │       └── k
 	// └── kk
-	// 		└── t
+	//     └── t
 	// e
 	// └── o
-	// 		└── g
+	//     └── g
 
 	callback2 := func(wn *gtree.WalkerNode) error {
 		fmt.Println("WalkerNode's methods called...")
