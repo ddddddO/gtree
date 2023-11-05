@@ -114,11 +114,12 @@ func sampleWalker() error {
 
 	callback2 := func(wn *gtree.WalkerNode) error {
 		fmt.Println("WalkerNode's methods called...")
-		fmt.Printf("\tName   : %s\n", wn.Name())
-		fmt.Printf("\tBranch : %s\n", wn.Branch())
-		fmt.Printf("\tRow    : %s\n", wn.Row())
-		fmt.Printf("\tLevel  : %d\n", wn.Level())
-		fmt.Printf("\tPath   : %s\n", wn.Path())
+		fmt.Printf("\tName     : %s\n", wn.Name())
+		fmt.Printf("\tBranch   : %s\n", wn.Branch())
+		fmt.Printf("\tRow      : %s\n", wn.Row())
+		fmt.Printf("\tLevel    : %d\n", wn.Level())
+		fmt.Printf("\tPath     : %s\n", wn.Path())
+		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
 		return nil
 	}
 
@@ -127,59 +128,68 @@ func sampleWalker() error {
 	}
 	// Output:
 	// WalkerNode's methods called...
-	// 	Name   : a
-	// 	Branch :
-	// 	Row    : a
-	// 	Level  : 1
-	// 	Path   : a
+	// 	Name     : a
+	// 	Branch   :
+	// 	Row      : a
+	// 	Level    : 1
+	// 	Path     : a
+	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name   : i
-	// 	Branch : ├──
-	// 	Row    : ├── i
-	// 	Level  : 2
-	// 	Path   : a/i
+	// 	Name     : i
+	// 	Branch   : ├──
+	// 	Row      : ├── i
+	// 	Level    : 2
+	// 	Path     : a/i
+	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name   : u
-	// 	Branch : │   └──
-	// 	Row    : │   └── u
-	// 	Level  : 3
-	// 	Path   : a/i/u
+	// 	Name     : u
+	// 	Branch   : │   └──
+	// 	Row      : │   └── u
+	// 	Level    : 3
+	// 	Path     : a/i/u
+	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name   : k
-	// 	Branch : │       └──
-	// 	Row    : │       └── k
-	// 	Level  : 4
-	// 	Path   : a/i/u/k
+	// 	Name     : k
+	// 	Branch   : │       └──
+	// 	Row      : │       └── k
+	// 	Level    : 4
+	// 	Path     : a/i/u/k
+	// 	HasChild : false
 	// WalkerNode's methods called...
-	// 	Name   : kk
-	// 	Branch : └──
-	// 	Row    : └── kk
-	// 	Level  : 2
-	// 	Path   : a/kk
+	// 	Name     : kk
+	// 	Branch   : └──
+	// 	Row      : └── kk
+	// 	Level    : 2
+	// 	Path     : a/kk
+	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name   : t
-	// 	Branch :     └──
-	// 	Row    :     └── t
-	// 	Level  : 3
-	// 	Path   : a/kk/t
+	// 	Name     : t
+	// 	Branch   :     └──
+	// 	Row      :     └── t
+	// 	Level    : 3
+	// 	Path     : a/kk/t
+	// 	HasChild : false
 	// WalkerNode's methods called...
-	// 	Name   : e
-	// 	Branch :
-	// 	Row    : e
-	// 	Level  : 1
-	// 	Path   : e
+	// 	Name     : e
+	// 	Branch   :
+	// 	Row      : e
+	// 	Level    : 1
+	// 	Path     : e
+	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name   : o
-	// 	Branch : └──
-	// 	Row    : └── o
-	// 	Level  : 2
-	// 	Path   : e/o
+	// 	Name     : o
+	// 	Branch   : └──
+	// 	Row      : └── o
+	// 	Level    : 2
+	// 	Path     : e/o
+	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name   : g
-	// 	Branch :     └──
-	// 	Row    :     └── g
-	// 	Level  : 3
-	// 	Path   : e/o/g
+	// 	Name     : g
+	// 	Branch   :     └──
+	// 	Row      :     └── g
+	// 	Level    : 3
+	// 	Path     : e/o/g
+	// 	HasChild : false
 
 	fmt.Println("\nWalker Sample...end")
 	fmt.Println()
