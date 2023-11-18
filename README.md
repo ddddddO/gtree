@@ -836,8 +836,6 @@ $ go get github.com/ddddddO/gtree
 |*[VerifyProgrammably](https://github.com/ddddddO/gtree#verifyprogrammably-func)*|can output the difference between tree you composed and directories|WithTargetDir/WithStrictVerify|
 |*[WalkProgrammably](https://github.com/ddddddO/gtree#walkprogrammably-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode|
 
-You can set up sample project with the `gonew` command. See [`it`](https://github.com/ddddddO/gtree/blob/master/example/README.md).
-
 ### *OutputProgrammably* func
 
 ```go
