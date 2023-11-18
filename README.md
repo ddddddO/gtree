@@ -570,6 +570,14 @@ $ go get github.com/ddddddO/gtree
 
 The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
+|Function|Description|Available optional functions|
+|--|--|--|
+|*Output*|can output tree|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithEncodeJSON/WithEncodeTOML/WithEncodeYAML/WithMassive|
+|*Mkdir*|can create directories|WithTargetDir/WithFileExtensions/WithDryRun/WithMassive|
+|*Verify*|can output the difference between markdown and directories|WithTargetDir/WithStrictVerify/WithMassive|
+|*Walk*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithMassive|
+
+
 ### *Output* func
 
 ```go
