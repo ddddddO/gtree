@@ -23,7 +23,7 @@ test: sweep
 	go test ./markdown/... -race -v -count=1
 
 cover: sweep
-	go test . -race -coverprofile=coverage.out -covermode=atomic -v
+	go test . ./markdown/... -race -coverprofile=coverage.out -covermode=atomic -v
 	go tool cover -html=coverage.out -o coverage.html
 
 bench: sweep
