@@ -52,7 +52,7 @@ $ gtree web
 
 # CLI
 
-> **Note**<br>
+> [!NOTE]
 > WASM binary with WASI support are also available.
 > Basically, the usage is the same as the CLI built with Go.
 > Please refer [here](https://github.com/ddddddO/gtree/blob/master/README_wasi_wasm.md) for usage.
@@ -815,7 +815,7 @@ inspired by [xlab/treeprint](https://github.com/xlab/treeprint#iterating-over-th
 
 # Library - programmable tree structure
 
-> **Note**<br>
+> [!NOTE]
 > The `gonew` command can be used to set up sample project using gtree library.<br>
 > See [here](https://github.com/ddddddO/gtree/blob/master/example/README.md) for details.
 
@@ -1234,7 +1234,7 @@ func main() {
 
 # Process
 
-> **Note**<br>
+> [!NOTE]
 > This process is for the Massive Roots mode.
 
 ## e.g. [*gtree/pipeline_tree.go*](https://github.com/ddddddO/gtree/blob/master/pipeline_tree.go)
@@ -1244,7 +1244,7 @@ func main() {
 
 # Performance
 
-> **Warning**<br>
+> [!WARNING]
 > Depends on the environment.
 
 - Comparison simple implementation and pipeline implementation.
