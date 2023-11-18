@@ -12,9 +12,9 @@ Provide CLI, Golang library and Web.
 
 - **[Web](https://github.com/ddddddO/gtree#web)**
 - **[CLI](https://github.com/ddddddO/gtree#cli)**
-- **[Library - used in Web and CLI](https://github.com/ddddddO/gtree#library---used-in-web-and-cli)**
-- **[Library - programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)**
-	- You can set up sample project with the `gonew` command. See [`it`](https://github.com/ddddddO/gtree/blob/master/example/README.md).
+- Library
+	- **[Used in Web and CLI](https://github.com/ddddddO/gtree#library---used-in-web-and-cli)**
+	- **[Programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)** 👈Please try using it!
 
 
 # Acknowledgments
@@ -572,10 +572,10 @@ The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*Output*|can output trees|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithEncodeJSON/WithEncodeTOML/WithEncodeYAML/WithMassive|
-|*Mkdir*|can create directories|WithTargetDir/WithFileExtensions/WithDryRun/WithMassive|
-|*Verify*|can output the difference between markdown and directories|WithTargetDir/WithStrictVerify/WithMassive|
-|*Walk*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithMassive|
+|*[Output](https://github.com/ddddddO/gtree#output-func)*|can output trees|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithEncodeJSON/WithEncodeTOML/WithEncodeYAML/WithMassive|
+|*[Mkdir](https://github.com/ddddddO/gtree#mkdir-func)*|can create directories|WithTargetDir/WithFileExtensions/WithDryRun/WithMassive|
+|*[Verify](https://github.com/ddddddO/gtree#verify-func)*|can output the difference between markdown and directories|WithTargetDir/WithStrictVerify/WithMassive|
+|*[Walk](https://github.com/ddddddO/gtree#walk-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithMassive|
 
 
 ### *Output* func
@@ -831,10 +831,12 @@ $ go get github.com/ddddddO/gtree
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*OutputProgrammably*|can output tree|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithEncodeJSON/WithEncodeTOML/WithEncodeYAML|
-|*MkdirProgrammably*|can create directories|WithTargetDir/WithFileExtensions/WithDryRun|
-|*VerifyProgrammably*|can output the difference between tree you composed and directories|WithTargetDir/WithStrictVerify|
-|*WalkProgrammably*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode|
+|*[OutputProgrammably](https://github.com/ddddddO/gtree#outputprogrammably-func)*|can output tree|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithEncodeJSON/WithEncodeTOML/WithEncodeYAML|
+|*[MkdirProgrammably](https://github.com/ddddddO/gtree#mkdirprogrammably-func)*|can create directories|WithTargetDir/WithFileExtensions/WithDryRun|
+|*[VerifyProgrammably](https://github.com/ddddddO/gtree#verifyprogrammably-func)*|can output the difference between tree you composed and directories|WithTargetDir/WithStrictVerify|
+|*[WalkProgrammably](https://github.com/ddddddO/gtree#walkprogrammably-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode|
+
+You can set up sample project with the `gonew` command. See [`it`](https://github.com/ddddddO/gtree/blob/master/example/README.md).
 
 ### *OutputProgrammably* func
 
