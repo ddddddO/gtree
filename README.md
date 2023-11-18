@@ -132,7 +132,7 @@ USAGE:
    gtree [global options] command [command options] [arguments...]
 
 VERSION:
-   1.9.12 / revision f222886
+   1.10.2 / revision 85520a1
 
 COMMANDS:
    output, o, out     Outputs tree from markdown.
@@ -570,6 +570,14 @@ $ go get github.com/ddddddO/gtree
 
 The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
+|Function|Description|Available optional functions|
+|--|--|--|
+|*Output*|can output trees|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithEncodeJSON/WithEncodeTOML/WithEncodeYAML/WithMassive|
+|*Mkdir*|can create directories|WithTargetDir/WithFileExtensions/WithDryRun/WithMassive|
+|*Verify*|can output the difference between markdown and directories|WithTargetDir/WithStrictVerify/WithMassive|
+|*Walk*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithMassive|
+
+
 ### *Output* func
 
 ```go
@@ -820,6 +828,13 @@ $ go get github.com/ddddddO/gtree
 ```
 
 ## Usage
+
+|Function|Description|Available optional functions|
+|--|--|--|
+|*OutputProgrammably*|can output tree|WithBranchFormatIntermedialNode/WithBranchFormatLastNode/WithEncodeJSON/WithEncodeTOML/WithEncodeYAML|
+|*MkdirProgrammably*|can create directories|WithTargetDir/WithFileExtensions/WithDryRun|
+|*VerifyProgrammably*|can output the difference between tree you composed and directories|WithTargetDir/WithStrictVerify|
+|*WalkProgrammably*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode/WithBranchFormatLastNode|
 
 ### *OutputProgrammably* func
 
