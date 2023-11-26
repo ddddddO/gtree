@@ -19,7 +19,7 @@ func newWalkerPipeline() walkerPipeline {
 
 const workerWalkerNum = 10
 
-func (dw *defaultWalkerPipeline) walk(ctx context.Context, roots <-chan *Node, cb func(*WalkerNode) error) <-chan error {
+func (dw *defaultWalkerPipeline) walk(ctx context.Context, roots <-chan *Node, callback func(*WalkerNode) error) <-chan error {
 	errc := make(chan error, 1)
 
 	go func() {
@@ -30,7 +30,7 @@ func (dw *defaultWalkerPipeline) walk(ctx context.Context, roots <-chan *Node, c
 		wg := &sync.WaitGroup{}
 		for i := 0; i < workerWalkerNum; i++ {
 			wg.Add(1)
-			go dw.worker(ctx, wg, roots, cb, errc)
+			go dw.worker(ctx, wg, roots, callback, errc)
 		}
 		wg.Wait()
 	}()
@@ -38,7 +38,7 @@ func (dw *defaultWalkerPipeline) walk(ctx context.Context, roots <-chan *Node, c
 	return errc
 }
 
-func (dw *defaultWalkerPipeline) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, cb func(*WalkerNode) error, errc chan<- error) {
+func (dw *defaultWalkerPipeline) worker(ctx context.Context, wg *sync.WaitGroup, roots <-chan *Node, callback func(*WalkerNode) error, errc chan<- error) {
 	defer wg.Done()
 	for {
 		select {
@@ -48,7 +48,7 @@ func (dw *defaultWalkerPipeline) worker(ctx context.Context, wg *sync.WaitGroup,
 			if !ok {
 				return
 			}
-			if err := dw.walkNode(root, cb); err != nil {
+			if err := dw.walkNode(root, callback); err != nil {
 				errc <- err
 			}
 		}

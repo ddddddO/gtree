@@ -158,18 +158,18 @@ func (t *treePipeline) verifyProgrammably(root *Node, cfg *config) error {
 	return t.handlePipelineErr(ctx, errcg, errcv)
 }
 
-func (t *treePipeline) walk(r io.Reader, cb func(*WalkerNode) error, cfg *config) error {
+func (t *treePipeline) walk(r io.Reader, callback func(*WalkerNode) error, cfg *config) error {
 	ctx, cancel := context.WithCancel(cfg.ctx)
 	defer cancel()
 
 	splitStream, errcsl := split(ctx, r)
 	rootStream, errcr := newRootGeneratorPipeline().generate(ctx, splitStream)
 	growStream, errcg := t.grower.grow(ctx, rootStream)
-	errcw := t.walker.walk(ctx, growStream, cb)
+	errcw := t.walker.walk(ctx, growStream, callback)
 	return t.handlePipelineErr(ctx, errcsl, errcr, errcg, errcw)
 }
 
-func (t *treePipeline) walkProgrammably(root *Node, cb func(*WalkerNode) error, cfg *config) error {
+func (t *treePipeline) walkProgrammably(root *Node, callback func(*WalkerNode) error, cfg *config) error {
 	ctx, cancel := context.WithCancel(cfg.ctx)
 	defer cancel()
 
@@ -179,7 +179,7 @@ func (t *treePipeline) walkProgrammably(root *Node, cb func(*WalkerNode) error, 
 		rootStream <- root
 	}()
 	growStream, errcg := t.grower.grow(ctx, rootStream)
-	errcw := t.walker.walk(ctx, growStream, cb)
+	errcw := t.walker.walk(ctx, growStream, callback)
 	return t.handlePipelineErr(ctx, errcg, errcw)
 }
 

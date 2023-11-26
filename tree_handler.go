@@ -25,7 +25,7 @@ func Verify(r io.Reader, options ...Option) error {
 }
 
 // Walk executes user-defined function while traversing tree structure recursively.
-func Walk(r io.Reader, cb func(*WalkerNode) error, options ...Option) error {
+func Walk(r io.Reader, callback func(*WalkerNode) error, options ...Option) error {
 	cfg := newConfig(options)
-	return initializeTree(cfg).walk(r, cb, cfg)
+	return initializeTree(cfg).walk(r, callback, cfg)
 }
