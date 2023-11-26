@@ -10,7 +10,6 @@ type WalkerNode struct {
 // Name returns name of node in completed tree structure.
 func (wn *WalkerNode) Name() string {
 	return wn.origin.name
-
 }
 
 // Branch returns branch of node in completed tree structure.
