@@ -16,9 +16,8 @@ type tree interface {
 }
 
 func initializeTree(cfg *config) tree {
-	tree := newTreeSimple(cfg)
 	if cfg.massive {
-		tree = newTreePipeline(cfg)
+		return newTreePipeline(cfg)
 	}
-	return tree
+	return newTreeSimple(cfg)
 }

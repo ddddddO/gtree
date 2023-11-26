@@ -48,9 +48,7 @@ func (*nodeGenerator) handleErr(err error, row string) error {
 	case md.ErrEmptyText:
 		return errEmptyText
 	case md.ErrIncorrectFormat:
-		return &inputFormatError{
-			row: row,
-		}
+		return &inputFormatError{row: row}
 	case md.ErrBlankLine:
 		return nil
 	}
