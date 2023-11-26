@@ -150,7 +150,7 @@ func (t *treeSimple) verifyProgrammably(root *Node, cfg *config) error {
 	return t.verifier.verify([]*Node{root})
 }
 
-func (t *treeSimple) walk(r io.Reader, cb func(*WalkerNode) error, cfg *config) error {
+func (t *treeSimple) walk(r io.Reader, callback func(*WalkerNode) error, cfg *config) error {
 	roots, err := newRootGeneratorSimple(r).generate()
 	if err != nil {
 		return err
@@ -159,14 +159,14 @@ func (t *treeSimple) walk(r io.Reader, cb func(*WalkerNode) error, cfg *config) 
 	if err := t.grower.grow(roots); err != nil {
 		return err
 	}
-	return t.walker.walk(roots, cb)
+	return t.walker.walk(roots, callback)
 }
 
-func (t *treeSimple) walkProgrammably(root *Node, cb func(*WalkerNode) error, cfg *config) error {
+func (t *treeSimple) walkProgrammably(root *Node, callback func(*WalkerNode) error, cfg *config) error {
 	if err := t.grower.grow([]*Node{root}); err != nil {
 		return err
 	}
-	return t.walker.walk([]*Node{root}, cb)
+	return t.walker.walk([]*Node{root}, callback)
 }
 
 // 関心事は各ノードの枝の形成

@@ -4,43 +4,42 @@ package gtree
 
 // WalkerNode is used in user-defined function that can be executed with Walk/WalkProgrammably function.
 type WalkerNode struct {
-	name     string
-	branch   string
-	row      string
-	level    uint
-	path     string
-	hasChild bool
+	origin *Node
 }
 
 // Name returns name of node in completed tree structure.
 func (wn *WalkerNode) Name() string {
-	return wn.name
+	return wn.origin.name
+
 }
 
 // Branch returns branch of node in completed tree structure.
 func (wn *WalkerNode) Branch() string {
-	return wn.branch
+	return wn.origin.branch()
 }
 
 // Row returns row of node in completed tree structure.
 func (wn *WalkerNode) Row() string {
-	return wn.row
+	if !wn.origin.isRoot() {
+		return wn.origin.branch() + " " + wn.origin.name
+	}
+	return wn.origin.name
 }
 
 // Level returns level of node in completed tree structure.
 func (wn *WalkerNode) Level() uint {
-	return wn.level
+	return wn.origin.hierarchy
 }
 
 // Path returns path of node in completed tree structure.
 // Path is the path from the root node to this node.
 func (wn *WalkerNode) Path() string {
-	return wn.path
+	return wn.origin.path()
 }
 
 // HasChild returns whether the node in completed tree structure has child nodes.
 func (wn *WalkerNode) HasChild() bool {
-	return wn.hasChild
+	return wn.origin.hasChild()
 }
 
 func newWalkerSimple() walkerSimple {
@@ -49,34 +48,22 @@ func newWalkerSimple() walkerSimple {
 
 type defaultWalkerSimple struct{}
 
-func (dw *defaultWalkerSimple) walk(roots []*Node, cb func(*WalkerNode) error) error {
+func (dw *defaultWalkerSimple) walk(roots []*Node, callback func(*WalkerNode) error) error {
 	for _, root := range roots {
-		if err := dw.walkNode(root, cb); err != nil {
+		if err := dw.walkNode(root, callback); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (dw *defaultWalkerSimple) walkNode(current *Node, cb func(*WalkerNode) error) error {
-	row := current.name
-	if !current.isRoot() {
-		row = current.branch() + " " + current.name
-	}
-	wn := &WalkerNode{
-		name:     current.name,
-		branch:   current.branch(),
-		row:      row,
-		level:    current.hierarchy,
-		path:     current.path(),
-		hasChild: current.hasChild(),
-	}
-	if err := cb(wn); err != nil {
+func (dw *defaultWalkerSimple) walkNode(current *Node, callback func(*WalkerNode) error) error {
+	if err := callback(&WalkerNode{origin: current}); err != nil {
 		return err
 	}
 
 	for _, child := range current.children {
-		if err := dw.walkNode(child, cb); err != nil {
+		if err := dw.walkNode(child, callback); err != nil {
 			return err
 		}
 	}
