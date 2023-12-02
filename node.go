@@ -3,7 +3,7 @@ package gtree
 import (
 	"fmt"
 	"io/fs"
-	"path/filepath"
+	"path"
 	"strings"
 )
 
@@ -88,7 +88,7 @@ func (n *Node) branch() string {
 }
 
 func (n *Node) setPath(paths ...string) {
-	n.brnch.path = filepath.Join(paths...)
+	n.brnch.path = path.Join(paths...)
 }
 
 func (n *Node) validatePath() error {

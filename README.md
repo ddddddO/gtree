@@ -52,11 +52,6 @@ $ gtree web
 
 # CLI
 
-> [!NOTE]
-> WASM binary with WASI support are also available.
-> Basically, the usage is the same as the CLI built with Go.
-> Please refer [here](https://github.com/ddddddO/gtree/blob/master/README_wasi_wasm.md) for usage.
-
 ## Installation
 
 <pre>
@@ -97,9 +92,6 @@ $ port install gtree
 
 <a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml"><b>aqua</b></a>
 $ aqua g -i ddddddO/gtree
-
-<a href="https://github.com/ddddddO/gtree/releases"><b>WASI</b></a>
-$ Go to GitHub releases and Download `gtree.wasm`
 
 <a href="https://github.com/ddddddO/gtree/pkgs/container/gtree"><b>Docker</b></a>
 $ docker pull ghcr.io/ddddddo/gtree:latest
@@ -1302,6 +1294,7 @@ ok      command-line-arguments  30.670s
 - [Goでtreeを表現する](https://zenn.dev/ddddddo/articles/8cd85c68763f2e)
 - [Markdown形式の入力からtreeを出力するCLI/Web](https://zenn.dev/ddddddo/articles/ad97623a004496)
 - [Markdown形式の入力からファイル/ディレクトリを生成するCLI/Goパッケージ](https://zenn.dev/ddddddo/articles/460d12e8c07763)
+- [盆栽 (節目の記事)](https://zenn.dev/openlogi/articles/f6cc91ac413c8f)
 - [感想](https://scrapbox.io/ddddddo/useful_tools)
 
 ## English

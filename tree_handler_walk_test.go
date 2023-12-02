@@ -3,7 +3,6 @@ package gtree_test
 import (
 	"bytes"
 	"fmt"
-	"path/filepath"
 	"strings"
 	"testing"
 
@@ -129,36 +128,36 @@ WalkerNode's methods called...
 	Branch   : ├──
 	Row      : ├── i
 	Level    : 2
-	Path     : `+filepath.Clean("a/i")+"\n"+
-					`	HasChild : true
+	Path     : a/i
+	HasChild : true
 WalkerNode's methods called...
 	Name     : u
 	Branch   : │   └──
 	Row      : │   └── u
 	Level    : 3
-	Path     : `+filepath.Clean("a/i/u")+"\n"+
-					`	HasChild : true
+	Path     : a/i/u
+	HasChild : true
 WalkerNode's methods called...
 	Name     : k
 	Branch   : │       └──
 	Row      : │       └── k
 	Level    : 4
-	Path     : `+filepath.Clean("a/i/u/k")+"\n"+
-					`	HasChild : false
+	Path     : a/i/u/k
+	HasChild : false
 WalkerNode's methods called...
 	Name     : kk
 	Branch   : └──
 	Row      : └── kk
 	Level    : 2
-	Path     : `+filepath.Clean("a/kk")+"\n"+
-					`	HasChild : true
+	Path     : a/kk
+	HasChild : true
 WalkerNode's methods called...
 	Name     : t
 	Branch   :     └──
 	Row      :     └── t
 	Level    : 3
-	Path     : `+filepath.Clean("a/kk/t")+"\n"+
-					`	HasChild : false
+	Path     : a/kk/t
+	HasChild : false
 WalkerNode's methods called...
 	Name     : e
 	Branch   : 
@@ -171,15 +170,15 @@ WalkerNode's methods called...
 	Branch   : └──
 	Row      : └── o
 	Level    : 2
-	Path     : `+filepath.Clean("e/o")+"\n"+
-					`	HasChild : true
+	Path     : e/o
+	HasChild : true
 WalkerNode's methods called...
 	Name     : g
 	Branch   :     └──
 	Row      :     └── g
 	Level    : 3
-	Path     : `+filepath.Clean("e/o/g")+"\n"+
-					`	HasChild : false
+	Path     : e/o/g
+	HasChild : false
 `, "\n"),
 				err: nil,
 			},

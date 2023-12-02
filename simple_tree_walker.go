@@ -32,6 +32,7 @@ func (wn *WalkerNode) Level() uint {
 
 // Path returns path of node in completed tree structure.
 // Path is the path from the root node to this node.
+// The separator is / in any OS execution environment.
 func (wn *WalkerNode) Path() string {
 	return wn.origin.path()
 }
