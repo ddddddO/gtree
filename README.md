@@ -52,11 +52,6 @@ $ gtree web
 
 # CLI
 
-> [!NOTE]
-> WASM binary with WASI support are also available.
-> Basically, the usage is the same as the CLI built with Go.
-> Please refer [here](https://github.com/ddddddO/gtree/blob/master/README_wasi_wasm.md) for usage.
-
 ## Installation
 
 <pre>
@@ -97,9 +92,6 @@ $ port install gtree
 
 <a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml"><b>aqua</b></a>
 $ aqua g -i ddddddO/gtree
-
-<a href="https://github.com/ddddddO/gtree/releases"><b>WASI</b></a>
-$ Go to GitHub releases and Download `gtree.wasm`
 
 <a href="https://github.com/ddddddO/gtree/pkgs/container/gtree"><b>Docker</b></a>
 $ docker pull ghcr.io/ddddddo/gtree:latest
