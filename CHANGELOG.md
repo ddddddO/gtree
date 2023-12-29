@@ -1,5 +1,7 @@
 # Changelog
 
+## [v1.10.6](https://github.com/ddddddO/gtree/compare/v1.10.5...v1.10.6) - 2023-12-29
+
 ## [v1.10.5](https://github.com/ddddddO/gtree/compare/v1.10.4...v1.10.5) - 2023-12-29
 - Bump github.com/urfave/cli/v2 from 2.25.7 to 2.26.0 by @dependabot in https://github.com/ddddddO/gtree/pull/264
 - Bump github.com/pelletier/go-toml/v2 from 2.1.0 to 2.1.1 by @dependabot in https://github.com/ddddddO/gtree/pull/265
