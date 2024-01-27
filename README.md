@@ -17,7 +17,7 @@ Provide CLI, Golang library and Web.
 	- **[CLI](https://github.com/ddddddO/gtree#cli)**
 	- Library
 		- **[Used in Web and CLI](https://github.com/ddddddO/gtree#library---used-in-web-and-cli)**
-		- **[Programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)** 👈Please try using it!
+		- **[Programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)** 👈Recommended for developers!
 - [Documents](https://github.com/ddddddO/gtree#documents)
 - [Process](https://github.com/ddddddO/gtree#process)
 - [Performance](https://github.com/ddddddO/gtree#performance)
