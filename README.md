@@ -10,12 +10,17 @@
 Using either Markdown or Programmatically to generate directory trees🌳 and directories🗂, and to verify directories🔍.
 Provide CLI, Golang library and Web.
 
-- **[Web](https://github.com/ddddddO/gtree#web)**
-- **[CLI](https://github.com/ddddddO/gtree#cli)**
-- Library
-	- **[Used in Web and CLI](https://github.com/ddddddO/gtree#library---used-in-web-and-cli)**
-	- **[Programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)** 👈Please try using it!
-
+# Table of Contents
+- **[Acknowledgments](https://github.com/ddddddO/gtree#acknowledgments)**
+- Features
+	- **[Web](https://github.com/ddddddO/gtree#web)**
+	- **[CLI](https://github.com/ddddddO/gtree#cli)**
+	- Library
+		- **[Used in Web and CLI](https://github.com/ddddddO/gtree#library---used-in-web-and-cli)**
+		- **[Programmable tree structure](https://github.com/ddddddO/gtree#library---programmable-tree-structure)** 👈Please try using it!
+- [Documents](https://github.com/ddddddO/gtree#documents)
+- [Process](https://github.com/ddddddO/gtree#process)
+- [Performance](https://github.com/ddddddO/gtree#performance)
 
 # Acknowledgments
 Thanks for providing very useful CLI for cloud storage tree output🤩🎉</br>
@@ -1290,16 +1295,18 @@ ok      command-line-arguments  30.670s
 
 
 # Documents
+- [GoDoc](https://pkg.go.dev/github.com/ddddddO/gtree)
+
+## English
+- [Want to output a tree in Go?](https://medium.com/@allowing_whip_guineapig_430/want-to-output-a-tree-in-go-1851f9fc9900)
+- [Generate directory trees🌳 and the directories itself📁 using Markdown or Programmatically.](https://www.reddit.com/r/commandline/comments/146nk54/generate_directory_trees_and_the_directories/)
+
 ## Japanese
 - [Goでtreeを表現する](https://zenn.dev/ddddddo/articles/8cd85c68763f2e)
 - [Markdown形式の入力からtreeを出力するCLI/Web](https://zenn.dev/ddddddo/articles/ad97623a004496)
 - [Markdown形式の入力からファイル/ディレクトリを生成するCLI/Goパッケージ](https://zenn.dev/ddddddo/articles/460d12e8c07763)
 - [盆栽 (節目の記事)](https://zenn.dev/openlogi/articles/f6cc91ac413c8f)
 - [感想](https://scrapbox.io/ddddddo/useful_tools)
-
-## English
-- [Want to output a tree in Go?](https://medium.com/@allowing_whip_guineapig_430/want-to-output-a-tree-in-go-1851f9fc9900)
-- [Generate directory trees🌳 and the directories itself📁 using Markdown or Programmatically.](https://www.reddit.com/r/commandline/comments/146nk54/generate_directory_trees_and_the_directories/)
 
 # Star History
 
