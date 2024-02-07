@@ -1,6 +1,8 @@
 module example.com/find_pipe_programmable-gtree
 
-go 1.21.0
+go 1.22
+
+toolchain go1.22.0
 
 require github.com/ddddddO/gtree v1.9.9
 
