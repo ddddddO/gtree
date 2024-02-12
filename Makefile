@@ -39,4 +39,7 @@ credit:
 tape:
 	LS_COLORS='di=32:fi=01;34' vhs assets/demo.tape
 
+goreleaser-check:
+	goreleaser check .goreleaser.yml
+
 all: fmt test bench cyclo
