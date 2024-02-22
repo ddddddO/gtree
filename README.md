@@ -15,9 +15,9 @@ Provide CLI, Golang library and Web.
 - Features
 	- **[Web](https://github.com/ddddddO/gtree?tab=readme-ov-file#web)**
 	- **[CLI](https://github.com/ddddddO/gtree?tab=readme-ov-file#cli)**
-	- Library
-		- **[Used in Web and CLI](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---used-in-web-and-cli)**
-		- **[Programmable tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---programmable-tree-structure)** 👈Recommended for developers!
+	- Library - **[Used in Web and CLI](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---used-in-web-and-cli)**
+	- Library - **[Programmable tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---programmable-tree-structure)**
+		- Recommended for developers!👍
 - [Documents](https://github.com/ddddddO/gtree?tab=readme-ov-file#documents)
 - [Process](https://github.com/ddddddO/gtree?tab=readme-ov-file#process)
 - [Performance](https://github.com/ddddddO/gtree?tab=readme-ov-file#performance)
