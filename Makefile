@@ -24,6 +24,8 @@ test: sweep
 
 cover: sweep
 	go test . ./markdown/... -race -coverprofile=coverage.out -covermode=atomic -v
+
+view_cover: sweep cover
 	go tool cover -html=coverage.out -o coverage.html
 
 bench: sweep
@@ -38,5 +40,8 @@ credit:
 
 tape:
 	LS_COLORS='di=32:fi=01;34' vhs assets/demo.tape
+
+treemap: cover
+	go-cover-treemap -statements -coverprofile coverage.out > assets/test_treemap.svg
 
 all: fmt test bench cyclo
