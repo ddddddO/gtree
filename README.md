@@ -811,7 +811,7 @@ func main() {
 inspired by [xlab/treeprint](https://github.com/xlab/treeprint#iterating-over-the-tree-nodes) !
 
 
-# Library - programmable tree structure
+# Library - Programmable tree structure
 
 > [!NOTE]
 > The `gonew` command can be used to set up sample project using gtree library.<br>
