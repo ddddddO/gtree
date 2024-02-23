@@ -15,7 +15,7 @@ Provide CLI, Golang library and Web.
 - Features
 	- **[Web](https://github.com/ddddddO/gtree?tab=readme-ov-file#web)**
 	- **[CLI](https://github.com/ddddddO/gtree?tab=readme-ov-file#cli)**
-	- Library - **[Used in Web and CLI](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---used-in-web-and-cli)**
+	- Library - **[Convert markdown to tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---used-in-web-and-cli)**
 	- Library - **[Programmable tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---programmable-tree-structure)**
 		- Recommended for developers!👍
 - [Documents](https://github.com/ddddddO/gtree?tab=readme-ov-file#documents)
@@ -554,7 +554,7 @@ Required paths does not exist:
 
 inspired by [mactat/framed](https://github.com/mactat/framed) !
 
-# Library - used in Web and CLI
+# Library - Convert markdown to tree structure
 
 ## Installation
 
