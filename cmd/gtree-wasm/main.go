@@ -5,7 +5,7 @@ import (
 	"strings"
 	"syscall/js" // nolint
 
-	gt "github.com/ddddddO/gtree"
+	tree "github.com/ddddddO/gtree"
 )
 
 func main() {
@@ -27,21 +27,14 @@ func gtree(this js.Value, args []js.Value) interface{} {
 	parts2 := getElementByID("parts2").Get("value").String()
 	parts3 := getElementByID("parts3").Get("value").String()
 	parts4 := getElementByID("parts4").Get("value").String()
+	writer := &strings.Builder{}
 
-	lastNodeBranchDirectly := parts1 + parts3
-	lastNodeBranchIndirectly := "    "
-
-	intermedialNodeBranchDirectly := parts2 + parts3
-	intermedialNodeBranchIndirectly := parts4 + "   "
-
-	rawInput := getElementByID("in").Get("value").String()
-	r := strings.NewReader(rawInput)
-	w := &strings.Builder{}
-	options := []gt.Option{
-		gt.WithBranchFormatLastNode(lastNodeBranchDirectly, lastNodeBranchIndirectly),
-		gt.WithBranchFormatIntermedialNode(intermedialNodeBranchDirectly, intermedialNodeBranchIndirectly),
-	}
-	if err := gt.Output(w, r, options...); err != nil {
+	if err := tree.Output(
+		writer,
+		strings.NewReader(getElementByID("in").Get("value").String()),
+		tree.WithBranchFormatLastNode(parts1+parts3, "    "),
+		tree.WithBranchFormatIntermedialNode(parts2+parts3, parts4+"   "),
+	); err != nil {
 		alert(err.Error())
 		return nil
 	}
@@ -53,7 +46,7 @@ func gtree(this js.Value, args []js.Value) interface{} {
 
 	pre := createElementFunc(document)("pre")
 	pre.Set("id", "treeView")
-	pre.Set("innerHTML", template.HTMLEscapeString(w.String()))
+	pre.Set("innerHTML", template.HTMLEscapeString(writer.String()))
 	appendChildFunc(div)(pre)
 
 	mainContainer := getElementByID("main")
