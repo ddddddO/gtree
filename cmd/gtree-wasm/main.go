@@ -48,9 +48,7 @@ func gtree(this js.Value, args []js.Value) interface{} {
 	pre.Set("id", "treeView")
 	pre.Set("innerHTML", template.HTMLEscapeString(writer.String()))
 	appendChildFunc(div)(pre)
-
-	mainContainer := getElementByID("main")
-	appendChildFunc(mainContainer)(div)
+	appendChildFunc(getElementByID("main"))(div)
 
 	return nil
 }
