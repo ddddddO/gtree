@@ -7,7 +7,7 @@ toolchain go1.22.0
 require (
 	github.com/fatih/color v1.17.0
 	github.com/pelletier/go-toml/v2 v2.2.2
-	github.com/urfave/cli/v2 v2.27.3
+	github.com/urfave/cli/v2 v2.27.4
 	go.uber.org/goleak v1.3.0
 	golang.org/x/sync v0.8.0
 	gopkg.in/yaml.v3 v3.0.1
