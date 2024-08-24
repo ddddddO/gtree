@@ -1,3 +1,4 @@
+version: 2
 project_name: gtree
 env:
   - GO111MODULE=on
@@ -48,9 +49,9 @@ brews:
       owner: ddddddO
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
-    folder: Formula
-    homepage: 'https://github.com/ddddddO/gtree'
-    description: 'This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories.'
+    directory: Formula
+    homepage: "https://github.com/ddddddO/gtree"
+    description: "This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories."
     license: "BSD-2-Clause"
 scoops:
   - repository:
