@@ -24,16 +24,23 @@ Provide CLI, Golang library and Web.
 - [Test coverage](https://github.com/ddddddO/gtree?tab=readme-ov-file#test-coverage)
 
 # Acknowledgments
-Thanks for providing very useful CLI for cloud storage tree output🤩🎉</br>
+
+## Thanks for providing very useful CLI for cloud storage tree output🤩🎉
+
 Everyone is encouraged to use them!
 
-## ⭐[_orangekame3/stree_](https://github.com/orangekame3/stree)
+### ⭐[_orangekame3/stree_](https://github.com/orangekame3/stree)
 CLI for **Amazon S3** tree output.</br>
 [_aws s3_](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html) command does not do what `tree` command does, but [**_stree_**](https://github.com/orangekame3/stree) command can display tree!
 
-## ⭐[_owlinux1000/gcstree_](https://github.com/owlinux1000/gcstree)
+### ⭐[_owlinux1000/gcstree_](https://github.com/owlinux1000/gcstree)
 CLI for **Google Cloud Storage** tree output.</br>
 [_gcloud storage_](https://cloud.google.com/sdk/gcloud/reference/storage) command does not do what `tree` command does, but [**_gcstree_**](https://github.com/owlinux1000/gcstree) command can display tree!
+
+## gtree packeage has been utilized for other tools as well🚀
+I hope you will use these tools as well!
+
+- [Tools](https://github.com/ddddddO/gtree/network/dependents)
 
 # Web
 
