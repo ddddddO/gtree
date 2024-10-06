@@ -3,7 +3,7 @@ let mod, instance;
 WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
     mod = result.module;
     instance = result.instance;
-    document.getElementById("gtree").disabled = false;
+    // document.getElementById("gtree").disabled = false;
 
     console.clear();
     go.run(instance);
@@ -16,6 +16,9 @@ const clearMarkdown = () => {
 
 const generateTree = () => {
   gtree();
+};
+window.onload = function () {
+  generateTree();
 };
 
 const copyToClipboard = () => {
@@ -32,4 +35,14 @@ const resetParts = () => {
   document.getElementById("parts2").value = "├";
   document.getElementById("parts3").value = "──";
   document.getElementById("parts4").value = "│";
+};
+
+const reset = () => {
+  resetParts();
+  generateTree();
+};
+
+const clearTxt = () => {
+  clearMarkdown();
+  document.getElementById("treeView").remove();
 };

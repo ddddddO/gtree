@@ -35,7 +35,8 @@ func gtree(this js.Value, args []js.Value) interface{} {
 		tree.WithBranchFormatLastNode(parts1+parts3, "    "),
 		tree.WithBranchFormatIntermedialNode(parts2+parts3, parts4+"   "),
 	); err != nil {
-		alert(err.Error())
+		// リアルタイムで tree 生成するようにし、ダイアログでエラー出したくないので、コメントアウトしておく
+		// alert(err.Error())
 		return nil
 	}
 

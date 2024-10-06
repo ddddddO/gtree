@@ -4,6 +4,10 @@ editcss:
 serve:
 	cd ../../docs && python3 -m http.server 8080
 
+# tinygo の version up したら
+cpwasmexec:
+	cp $(shell tinygo env TINYGOROOT)/targets/wasm_exec.js .
+
 confirm:
 	./confirm.sh
 

@@ -37,7 +37,7 @@
 
   <div id="main" class="md:flex flex-row">
     <div class="basis-6/12">
-      <textarea class="bg-teal-800 rounded-md mt-1 w-full h-64" id="in" spellcheck="false">- Output tree from Markdown.
+      <textarea class="bg-teal-800 rounded-md mt-1 w-full h-64" id="in" spellcheck="false" onchange="generateTree();" oninput="generateTree();">- Output tree from Markdown.
   * Assembling branches by typing is tedious.
     + This website is helpful when you want to build tree with ease.
       * It can also change the format of tree branches.
@@ -79,20 +79,20 @@
         - Hylobatidae
         - Hominidae</textarea>
 
-      <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-1" onClick="clearMarkdown();" id="clearMarkdown">clear</button>
+      <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-1" onClick="clearTxt();" id="clearMarkdown">clear</button>
 
       <div class="mt-4">
         Parts<br>
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts1" value="└">
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts2" value="├">
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts3" value="──">
-        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts1" value="└" onchange="generateTree();" oninput="generateTree();">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts2" value="├" onchange="generateTree();" oninput="generateTree();">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts3" value="──" onchange="generateTree();" oninput="generateTree();">
+        <input class="bg-teal-800 rounded-lg w-1/5" type="text" id="parts4" value="│" onchange="generateTree();" oninput="generateTree();">
       </div>
 
       <div>
-        <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-2 mb-2" onClick="generateTree();" id="gtree" disabled>tree!</button>
+        <!-- <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-2 mb-2" onClick="generateTree();" id="gtree" disabled>tree!</button> -->
         <button class="hover:outline rounded bg-teal-600 shadow-xl px-1 mt-2 mb-2" onClick="copyToClipboard();" id="copy">copy</button>
-        <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-2 mb-2" onClick="resetParts();" id="reset">reset</button>
+        <button class="hover:outline rounded bg-cyan-600 shadow-xl px-1 mt-2 mb-2" onClick="reset();" id="reset">reset</button>
         <div id="toast"></div>
       </div>
     </div>
