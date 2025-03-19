@@ -72,7 +72,7 @@ $ gtree web
 $ go install github.com/ddddddO/gtree/cmd/gtree@latest
 
 <b>Homebrew</b>
-$ brew install ddddddO/tap/gtree
+$ brew install gtree
 
 <b>Scoop</b>
 $ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
