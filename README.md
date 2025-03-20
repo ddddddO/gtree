@@ -68,11 +68,25 @@ $ gtree web
 ## Installation
 
 <pre>
-<b>Go (requires 1.18 or later)</b>
+<b>Go</b>
 $ go install github.com/ddddddO/gtree/cmd/gtree@latest
 
-<b>Homebrew</b>
+<a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml"><b>aqua</b></a>
+$ aqua g -i ddddddO/gtree
+
+<a href="https://github.com/Homebrew/homebrew-core/blob/master/Formula/g/gtree.rb"><b>Homebrew</b></a>
 $ brew install gtree
+
+<a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/by-name/gt/gtree/package.nix"><b>Nix</b></a>
+$ nix-env -i gtree
+or
+$ nix-shell -p gtree
+
+<a href="https://github.com/macports/macports-ports/blob/master/sysutils/gtree/Portfile"><b>MacPorts</b></a>
+$ port install gtree
+
+<s><a href="https://aur.archlinux.org/packages/gtree"><b>AUR</b></a></s>
+$ wip...
 
 <b>Scoop</b>
 $ scoop bucket add ddddddO https://github.com/ddddddO/scoop-bucket.git
@@ -91,20 +105,6 @@ $ yum install https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION
 $ export GTREE_VERSION=X.X.X
 $ curl -o gtree.apk -L https://github.com/ddddddO/gtree/releases/download/v$GTREE_VERSION/gtree_$GTREE_VERSION-1_amd64.apk
 $ apk add --allow-untrusted gtree.apk
-
-<s><a href="https://aur.archlinux.org/packages/gtree"><b>AUR</b></a></s>
-$ wip...
-
-<a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/text/gtree/default.nix"><b>Nix</b></a>
-$ nix-env -i gtree
-or
-$ nix-shell -p gtree
-
-<a href="https://github.com/macports/macports-ports/blob/master/sysutils/gtree/Portfile"><b>MacPorts</b></a>
-$ port install gtree
-
-<a href="https://github.com/aquaproj/aqua-registry/blob/main/pkgs/ddddddO/gtree/pkg.yaml"><b>aqua</b></a>
-$ aqua g -i ddddddO/gtree
 
 <a href="https://github.com/ddddddO/gtree/pkgs/container/gtree"><b>Docker</b></a>
 $ docker pull ghcr.io/ddddddo/gtree:latest
