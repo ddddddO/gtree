@@ -38,8 +38,13 @@ cyclo: sweep
 credit:
 	gocredits . > CREDITS
 
+tapeogp:
+	LS_COLORS='di=32:fi=01;34' vhs assets/demo_ogp.tape
+
 tape:
 	LS_COLORS='di=32:fi=01;34' vhs assets/demo.tape
+
+tapeall: tapeogp tape
 
 treemap: cover
 	go-cover-treemap -statements -coverprofile coverage.out > assets/test_treemap.svg
