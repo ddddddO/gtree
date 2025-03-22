@@ -80,7 +80,7 @@ func (rg *rootGeneratorPipeline) generate(ctx context.Context, blocks <-chan str
 		}()
 
 		wg := &sync.WaitGroup{}
-		for i := 0; i < workerGenerateNum; i++ {
+		for range workerGenerateNum {
 			wg.Add(1)
 			go rg.worker(ctx, wg, blocks, rootc, errc)
 		}

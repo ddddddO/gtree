@@ -28,7 +28,7 @@ func (dw *defaultWalkerPipeline) walk(ctx context.Context, roots <-chan *Node, c
 		}()
 
 		wg := &sync.WaitGroup{}
-		for i := 0; i < workerWalkerNum; i++ {
+		for range workerWalkerNum {
 			wg.Add(1)
 			go dw.worker(ctx, wg, roots, callback, errc)
 		}

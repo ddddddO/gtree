@@ -33,7 +33,7 @@ func (dg *defaultGrowerPipeline) grow(ctx context.Context, roots <-chan *Node) (
 		}()
 
 		wg := &sync.WaitGroup{}
-		for i := 0; i < workerGrowNum; i++ {
+		for range workerGrowNum {
 			wg.Add(1)
 			go dg.worker(ctx, wg, roots, nodes, errc)
 		}

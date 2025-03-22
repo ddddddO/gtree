@@ -46,7 +46,7 @@ func (ds *defaultSpreaderPipeline) spread(ctx context.Context, w io.Writer, root
 
 		ds.w = w
 		wg := &sync.WaitGroup{}
-		for i := 0; i < workerSpreadNum; i++ {
+		for range workerSpreadNum {
 			wg.Add(1)
 			go ds.worker(ctx, wg, roots, errc)
 		}

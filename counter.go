@@ -6,7 +6,7 @@ import (
 
 type counter struct {
 	n  uint
-	mu sync.Mutex
+	mu sync.RWMutex
 }
 
 func newCounter() *counter {
@@ -29,8 +29,8 @@ func (c *counter) reset() {
 }
 
 func (c *counter) current() uint {
-	c.mu.Lock()
-	defer c.mu.Unlock()
+	c.mu.RLock()
+	defer c.mu.RUnlock()
 
 	return c.n
 }

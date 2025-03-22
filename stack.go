@@ -36,7 +36,7 @@ func (s *stack) size() int {
 // depth-first search
 func (s *stack) dfs(current *Node) {
 	size := s.size()
-	for i := 0; i < size; i++ {
+	for range size {
 		parent := s.pop()
 		if !current.isDirectlyUnder(parent) {
 			continue

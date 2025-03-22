@@ -26,7 +26,7 @@ func (dm *defaultMkdirerPipeline) mkdir(ctx context.Context, roots <-chan *Node)
 		defer close(errc)
 
 		wg := &sync.WaitGroup{}
-		for i := 0; i < workerMkdirNum; i++ {
+		for range workerMkdirNum {
 			wg.Add(1)
 			go dm.worker(ctx, wg, roots, errc)
 		}
