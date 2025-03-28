@@ -565,7 +565,7 @@ inspired by [mactat/framed](https://github.com/mactat/framed) !
 
 ## Installation
 
-Go version requires 1.18 or later.
+Go version requires 1.24 or later.
 
 ```console
 $ go get github.com/ddddddO/gtree
@@ -826,7 +826,7 @@ inspired by [xlab/treeprint](https://github.com/xlab/treeprint#iterating-over-th
 
 ## Installation
 
-Go version requires 1.18 or later.
+Go version requires 1.24 or later.
 
 ```console
 $ go get github.com/ddddddO/gtree
