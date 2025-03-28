@@ -2,6 +2,8 @@
 
 package gtree
 
+import "iter"
+
 func newGrowerSimple(
 	lastNodeFormat, intermedialNodeFormat branchFormat,
 	enabledValidation bool,
@@ -30,6 +32,32 @@ func (dg *defaultGrowerSimple) grow(roots []*Node) error {
 		}
 	}
 	return nil
+}
+
+func (dg *defaultGrowerSimple) growIter(rootIter iter.Seq2[*Node, error]) iter.Seq2[*Node, error] {
+	return func(yield func(*Node, error) bool) {
+		next, stop := iter.Pull2(rootIter)
+		defer stop()
+
+		for {
+			root, err, ok := next()
+			if !ok {
+				return
+			}
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+
+			if err := dg.assemble(root); err != nil {
+				yield(nil, err)
+				return
+			}
+			if !yield(root, nil) {
+				return
+			}
+		}
+	}
 }
 
 func (dg *defaultGrowerSimple) assemble(current *Node) error {
@@ -115,6 +143,10 @@ func newNopGrowerSimple() growerSimple {
 type nopGrowerSimple struct{}
 
 func (*nopGrowerSimple) grow(_ []*Node) error { return nil }
+
+func (*nopGrowerSimple) growIter(rootIter iter.Seq2[*Node, error]) iter.Seq2[*Node, error] {
+	return rootIter
+}
 
 func (*nopGrowerSimple) enableValidation() {}
 

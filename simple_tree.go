@@ -4,6 +4,7 @@ package gtree
 
 import (
 	"io"
+	"iter"
 
 	"github.com/fatih/color"
 )
@@ -79,15 +80,21 @@ func newTreeSimple(cfg *config) tree {
 }
 
 func (t *treeSimple) output(w io.Writer, r io.Reader, cfg *config) error {
-	roots, err := newRootGeneratorSimple(r).generate()
-	if err != nil {
-		return err
-	}
+	// roots, err := newRootGeneratorSimple(r).generate()
+	// if err != nil {
+	// 	return err
+	// }
+	// if err := t.grower.grow(roots); err != nil {
+	// 	return err
+	// }
+	// return t.spreader.spread(w, roots)
 
-	if err := t.grower.grow(roots); err != nil {
-		return err
+	for err := range t.spreader.spreadIter(w, t.grower.growIter(newRootGeneratorSimple(r).generateIter())) {
+		if err != nil {
+			return err
+		}
 	}
-	return t.spreader.spread(w, roots)
+	return nil
 }
 
 func (t *treeSimple) outputProgrammably(w io.Writer, root *Node, cfg *config) error {
@@ -169,15 +176,44 @@ func (t *treeSimple) walkProgrammably(root *Node, callback func(*WalkerNode) err
 	return t.walker.walk([]*Node{root}, callback)
 }
 
+func (t *treeSimple) walkIterProgrammably(root *Node, cfg *config) iter.Seq2[*WalkerNode, error] {
+	return func(yield func(*WalkerNode, error) bool) {
+		if err := t.grower.grow([]*Node{root}); err != nil {
+			yield(nil, err)
+			return
+		}
+
+		walkIter := t.walker.walkIter(root)
+		next, stop := iter.Pull2(walkIter)
+		defer stop()
+
+		for {
+			wn, err, ok := next()
+			if !ok {
+				return
+			}
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+			if !yield(wn, nil) {
+				return
+			}
+		}
+	}
+}
+
 // 関心事は各ノードの枝の形成
 type growerSimple interface {
 	grow([]*Node) error
+	growIter(iter.Seq2[*Node, error]) iter.Seq2[*Node, error]
 	enableValidation()
 }
 
 // 関心事はtreeの出力
 type spreaderSimple interface {
 	spread(io.Writer, []*Node) error
+	spreadIter(io.Writer, iter.Seq2[*Node, error]) iter.Seq[error]
 }
 
 // 関心事はファイルの生成
@@ -201,4 +237,5 @@ type growSpreaderSimple interface {
 
 type walkerSimple interface {
 	walk([]*Node, func(*WalkerNode) error) error
+	walkIter(*Node) iter.Seq2[*WalkerNode, error]
 }

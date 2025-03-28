@@ -840,6 +840,7 @@ $ go get github.com/ddddddO/gtree
 |*[MkdirProgrammably](https://github.com/ddddddO/gtree#mkdirprogrammably-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
 |*[VerifyProgrammably](https://github.com/ddddddO/gtree#verifyprogrammably-func)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
 |*[WalkProgrammably](https://github.com/ddddddO/gtree#walkprogrammably-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+|*[WalkIterProgrammably](https://github.com/ddddddO/gtree#walkiterprogrammably-func)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
 
 ### *OutputProgrammably* func
 
@@ -1188,6 +1189,101 @@ func main() {
 	if err := gtree.WalkProgrammably(root, callback2); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
+	}
+	// Output:
+	// WalkerNode's methods called...
+	//         Name     : root
+	//         Branch   : 
+	//         Row      : root
+	//         Level    : 1
+	//         Path     : root
+	//         HasChild : true
+	// WalkerNode's methods called...
+	//         Name     : child 1
+	//         Branch   : ├──
+	//         Row      : ├── child 1
+	//         Level    : 2
+	//         Path     : root/child 1
+	//         HasChild : true
+	// WalkerNode's methods called...
+	//         Name     : child 2
+	//         Branch   : │   └──
+	//         Row      : │   └── child 2
+	//         Level    : 3
+	//         Path     : root/child 1/child 2
+	//         HasChild : true
+	// WalkerNode's methods called...
+	//         Name     : child 3
+	//         Branch   : │       ├──
+	//         Row      : │       ├── child 3
+	//         Level    : 4
+	//         Path     : root/child 1/child 2/child 3
+	//         HasChild : false
+	// WalkerNode's methods called...
+	//         Name     : child 4
+	//         Branch   : │       └──
+	//         Row      : │       └── child 4
+	//         Level    : 4
+	//         Path     : root/child 1/child 2/child 4
+	//         HasChild : false
+	// WalkerNode's methods called...
+	//         Name     : child 5
+	//         Branch   : └──
+	//         Row      : └── child 5
+	//         Level    : 2
+	//         Path     : root/child 5
+	//         HasChild : false
+}
+```
+
+### *WalkIterProgrammably* func
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/ddddddO/gtree"
+)
+
+func main() {
+	root := gtree.NewRoot("root")
+	root.Add("child 1").Add("child 2").Add("child 3")
+	root.Add("child 5")
+	root.Add("child 1").Add("child 2").Add("child 4")
+
+	for wn, err := range gtree.WalkIterProgrammably(root) {
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		fmt.Println(wn.Row())
+	}
+	// Output:
+	// root
+	// ├── child 1
+	// │   └── child 2
+	// │       ├── child 3
+	// │       └── child 4
+	// └── child 5
+
+
+	for wn, err := range gtree.WalkIterProgrammably(root) {
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+
+		fmt.Println("WalkerNode's methods called...")
+		fmt.Printf("\tName     : %s\n", wn.Name())
+		fmt.Printf("\tBranch   : %s\n", wn.Branch())
+		fmt.Printf("\tRow      : %s\n", wn.Row())
+		fmt.Printf("\tLevel    : %d\n", wn.Level())
+		fmt.Printf("\tPath     : %s\n", wn.Path())
+		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
 	}
 	// Output:
 	// WalkerNode's methods called...

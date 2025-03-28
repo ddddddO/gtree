@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"iter"
 
 	"github.com/fatih/color"
 	toml "github.com/pelletier/go-toml/v2"
@@ -45,6 +46,27 @@ func (ds *defaultSpreaderSimple) spread(w io.Writer, roots []*Node) error {
 		ds.spreadBranch(root)
 	}
 	return nil
+}
+
+func (ds *defaultSpreaderSimple) spreadIter(w io.Writer, rootIter iter.Seq2[*Node, error]) iter.Seq[error] {
+	return func(yield func(error) bool) {
+		next, stop := iter.Pull2(rootIter)
+		defer stop()
+
+		ds.w = w
+		for {
+			root, err, ok := next()
+			if !ok {
+				return
+			}
+			if err != nil {
+				yield(err)
+				return
+			}
+
+			ds.spreadBranch(root)
+		}
+	}
 }
 
 func (ds *defaultSpreaderSimple) spreadBranch(current *Node) {
@@ -106,6 +128,32 @@ func (f *formattedSpreaderSimple[T]) spread(w io.Writer, roots []*Node) error {
 		}
 	}
 	return nil
+}
+
+func (f *formattedSpreaderSimple[T]) spreadIter(w io.Writer, rootIter iter.Seq2[*Node, error]) iter.Seq[error] {
+	return func(yield func(error) bool) {
+		encode := f.encode(w)
+		next, stop := iter.Pull2(rootIter)
+		defer stop()
+
+		for {
+			root, err, ok := next()
+			if !ok {
+				return
+			}
+			if err != nil {
+				yield(err)
+				return
+			}
+
+			fRoot := toFormattedNode(root, f.formattedRoot(root.name))
+			if err := encode(fRoot); err != nil {
+				yield(err)
+				return
+			}
+		}
+
+	}
 }
 
 type jsonNode struct {
@@ -197,6 +245,28 @@ func (cs *colorizeSpreaderSimple) spread(w io.Writer, roots []*Node) error {
 		ret += fmt.Sprintf("%s\n%s\n", cs.spreadBranch(root), cs.summary())
 	}
 	return cs.write(w, ret)
+}
+
+func (cs *colorizeSpreaderSimple) spreadIter(w io.Writer, rootIter iter.Seq2[*Node, error]) iter.Seq[error] {
+	return func(yield func(error) bool) {
+		next, stop := iter.Pull2(rootIter)
+		defer stop()
+
+		for {
+			root, err, ok := next()
+			if !ok {
+				return
+			}
+			if err != nil {
+				yield(err)
+				return
+			}
+
+			cs.fileCounter.reset()
+			cs.dirCounter.reset()
+			cs.write(w, fmt.Sprintf("%s\n%s\n", cs.spreadBranch(root), cs.summary()))
+		}
+	}
 }
 
 func (cs *colorizeSpreaderSimple) spreadBranch(current *Node) string {
