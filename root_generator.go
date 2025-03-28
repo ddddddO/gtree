@@ -57,6 +57,50 @@ func (rg *rootGeneratorSimple) generate() ([]*Node, error) {
 	return roots, rg.scanner.Err()
 }
 
+func (rg *rootGeneratorSimple) generateIter() func(yield func(*Node, error) bool) {
+	var (
+		stack *stack
+		root  *Node
+	)
+
+	return func(yield func(*Node, error) bool) {
+		for rg.scanner.Scan() {
+			currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+			if currentNode == nil {
+				continue
+			}
+
+			if currentNode.isRoot() {
+				rg.counter.reset()
+				if root != nil {
+					// 直前のブロックのroot分を返す
+					if !yield(root, nil) {
+						return
+					}
+				}
+
+				root = currentNode // 今回のブロックのrootを格納
+				stack = newStack()
+				stack.push(currentNode)
+				continue
+			}
+
+			if stack == nil {
+				yield(nil, errNilStack)
+				return
+			}
+
+			stack.dfs(currentNode)
+		}
+
+		yield(root, rg.scanner.Err()) // 最後のブロックのrootを返却
+	}
+}
+
 type rootGeneratorPipeline struct {
 	nodeGenerator *nodeGenerator
 }
