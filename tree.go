@@ -2,7 +2,10 @@
 
 package gtree
 
-import "io"
+import (
+	"io"
+	"iter"
+)
 
 type tree interface {
 	output(io.Writer, io.Reader, *config) error
@@ -13,6 +16,7 @@ type tree interface {
 	verifyProgrammably(*Node, *config) error
 	walk(io.Reader, func(*WalkerNode) error, *config) error
 	walkProgrammably(*Node, func(*WalkerNode) error, *config) error
+	walkIterProgrammably(*Node, *config) iter.Seq2[*WalkerNode, error]
 }
 
 func initializeTree(cfg *config) tree {

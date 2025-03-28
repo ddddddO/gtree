@@ -176,6 +176,33 @@ func (t *treeSimple) walkProgrammably(root *Node, callback func(*WalkerNode) err
 	return t.walker.walk([]*Node{root}, callback)
 }
 
+func (t *treeSimple) walkIterProgrammably(root *Node, cfg *config) iter.Seq2[*WalkerNode, error] {
+	return func(yield func(*WalkerNode, error) bool) {
+		if err := t.grower.grow([]*Node{root}); err != nil {
+			yield(nil, err)
+			return
+		}
+
+		walkIter := t.walker.walkIter(root)
+		next, stop := iter.Pull2(walkIter)
+		defer stop()
+
+		for {
+			wn, err, ok := next()
+			if !ok {
+				return
+			}
+			if err != nil {
+				yield(nil, err)
+				return
+			}
+			if !yield(wn, nil) {
+				return
+			}
+		}
+	}
+}
+
 // 関心事は各ノードの枝の形成
 type growerSimple interface {
 	grow([]*Node) error
@@ -210,4 +237,5 @@ type growSpreaderSimple interface {
 
 type walkerSimple interface {
 	walk([]*Node, func(*WalkerNode) error) error
+	walkIter(*Node) iter.Seq2[*WalkerNode, error]
 }

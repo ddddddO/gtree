@@ -5,6 +5,7 @@ package gtree
 import (
 	"context"
 	"io"
+	"iter"
 
 	"github.com/fatih/color"
 	"golang.org/x/sync/errgroup"
@@ -181,6 +182,11 @@ func (t *treePipeline) walkProgrammably(root *Node, callback func(*WalkerNode) e
 	growStream, errcg := t.grower.grow(ctx, rootStream)
 	errcw := t.walker.walk(ctx, growStream, callback)
 	return t.handlePipelineErr(ctx, errcg, errcw)
+}
+
+// no implemented
+func (t *treePipeline) walkIterProgrammably(root *Node, cfg *config) iter.Seq2[*WalkerNode, error] {
+	return nil
 }
 
 // 関心事は各ノードの枝の形成

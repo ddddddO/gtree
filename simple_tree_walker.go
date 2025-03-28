@@ -2,6 +2,8 @@
 
 package gtree
 
+import "iter"
+
 // WalkerNode is used in user-defined function that can be executed with Walk/WalkProgrammably function.
 type WalkerNode struct {
 	origin *Node
@@ -68,4 +70,20 @@ func (dw *defaultWalkerSimple) walkNode(current *Node, callback func(*WalkerNode
 		}
 	}
 	return nil
+}
+
+// TODO: refactor. これは、複数root用ではなく、命名と他の実装と統一感がない。ただ、他もiter実装したいかというとそこまでのモチベーションはないので、このままでもいいかも
+func (dw *defaultWalkerSimple) walkIter(root *Node) iter.Seq2[*WalkerNode, error] {
+	return func(yiled func(*WalkerNode, error) bool) {
+		dw.walkNodeForIter(root, yiled)
+	}
+}
+
+func (dw *defaultWalkerSimple) walkNodeForIter(current *Node, yiled func(*WalkerNode, error) bool) {
+	wn := &WalkerNode{origin: current}
+	yiled(wn, nil)
+
+	for _, child := range current.children {
+		dw.walkNodeForIter(child, yiled)
+	}
 }
