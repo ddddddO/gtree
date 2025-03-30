@@ -1344,7 +1344,10 @@ func main() {
 # Performance
 
 > [!WARNING]
+> The following benchmarks are for simple implementation before iterator implementation. The simple implementation is now an iterator implementation, and the performance of the simple implementation is better.
 > Depends on the environment.
+
+<details><summary>old data</summary>
 
 - Comparison simple implementation and pipeline implementation.
 - In the case of few Roots, simple implementation is faster in execution!
@@ -1397,6 +1400,7 @@ ok      command-line-arguments  30.670s
 
 </details>
 
+</details>
 
 # Documents
 - [GoDoc](https://pkg.go.dev/github.com/ddddddO/gtree)
