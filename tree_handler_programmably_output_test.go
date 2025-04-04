@@ -22,7 +22,7 @@ func Example() {
 	child7.Add("child 8")
 
 	buf := &bytes.Buffer{}
-	if err := gtree.OutputProgrammably(buf, root); err != nil {
+	if err := gtree.OutputFromRoot(buf, root); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -39,7 +39,7 @@ func Example() {
 	//                 └── child 8
 }
 
-func TestOutputProgrammably(t *testing.T) {
+func TestOutputFromRoot(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *gtree.Node
@@ -187,7 +187,7 @@ children = []
 			t.Parallel()
 
 			buf := &bytes.Buffer{}
-			gotErr := gtree.OutputProgrammably(buf, tt.root, tt.options...)
+			gotErr := gtree.OutputFromRoot(buf, tt.root, tt.options...)
 			got := buf.String()
 
 			if got != tt.want {

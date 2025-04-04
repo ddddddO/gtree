@@ -11,7 +11,7 @@ import (
 )
 
 // TODO: 何パターンかのcallbackを用意してWalkerNode用メソッドのテストもしたい
-func TestWalkProgrammably(t *testing.T) {
+func TestWalkFromRoot(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *gtree.Node
@@ -65,7 +65,7 @@ root
 				fmt.Fprintln(buf, wn.Row())
 				return nil
 			}
-			gotErr := gtree.WalkProgrammably(tt.root, callback, tt.options...)
+			gotErr := gtree.WalkFromRoot(tt.root, callback, tt.options...)
 			if gotErr != nil || tt.out.err != nil {
 				if gotErr.Error() != tt.out.err.Error() {
 					t.Errorf("\ngotErr: \n%s\nwantErr: \n%s", gotErr, tt.out.err.Error())
@@ -79,7 +79,7 @@ root
 	}
 }
 
-func TestWalkIterProgrammably(t *testing.T) {
+func TestWalkIterFromRoot(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *gtree.Node
@@ -129,7 +129,7 @@ root
 			t.Parallel()
 
 			got := ""
-			for walkerNode, gotErr := range gtree.WalkIterProgrammably(tt.root, tt.options...) {
+			for walkerNode, gotErr := range gtree.WalkIterFromRoot(tt.root, tt.options...) {
 				if gotErr != nil && gotErr.Error() != tt.out.err.Error() {
 					t.Errorf("\ngotErr: \n%s\nwantErr: \n%s", gotErr, tt.out.err.Error())
 				}

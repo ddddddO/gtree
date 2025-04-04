@@ -96,7 +96,7 @@ func sampleWalker() error {
 		return nil
 	}
 
-	if err := gtree.Walk(strings.NewReader(src), callback); err != nil {
+	if err := gtree.WalkFromMarkdown(strings.NewReader(src), callback); err != nil {
 		return err
 	}
 	// Output:
@@ -123,7 +123,7 @@ func sampleWalker() error {
 		return nil
 	}
 
-	if err := gtree.Walk(strings.NewReader(src), callback2); err != nil {
+	if err := gtree.WalkFromMarkdown(strings.NewReader(src), callback2); err != nil {
 		return err
 	}
 	// Output:

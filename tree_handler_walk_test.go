@@ -9,7 +9,7 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-func TestWalk(t *testing.T) {
+func TestWalkFromMarkdown(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -80,7 +80,7 @@ a
 				fmt.Fprintln(buf, wn.Row())
 				return nil
 			}
-			gotErr := gtree.Walk(tt.in.input, callback, tt.in.options...)
+			gotErr := gtree.WalkFromMarkdown(tt.in.input, callback, tt.in.options...)
 			if gotErr != nil || tt.out.err != nil {
 				if gotErr.Error() != tt.out.err.Error() {
 					t.Errorf("\ngotErr: \n%s\nwantErr: \n%s", gotErr, tt.out.err)
@@ -201,7 +201,7 @@ WalkerNode's methods called...
 				fmt.Fprintf(buf, "\tHasChild : %t\n", wn.HasChild())
 				return nil
 			}
-			gotErr := gtree.Walk(tt.in.input, callback, tt.in.options...)
+			gotErr := gtree.WalkFromMarkdown(tt.in.input, callback, tt.in.options...)
 			if gotErr != nil || tt.out.err != nil {
 				if gotErr.Error() != tt.out.err.Error() {
 					t.Errorf("\ngotErr: \n%s\nwantErr: \n%s", gotErr, tt.out.err)

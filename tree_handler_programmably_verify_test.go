@@ -8,7 +8,7 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-func TestVerifyProgrammably(t *testing.T) {
+func TestVerifyFromRoot(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *gtree.Node
@@ -59,7 +59,7 @@ func TestVerifyProgrammably(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := gtree.VerifyProgrammably(tt.root, tt.options...)
+			gotErr := gtree.VerifyFromRoot(tt.root, tt.options...)
 			if gotErr != nil || tt.wantErr != nil {
 				if gotErr.Error() != tt.wantErr.Error() {
 					t.Errorf("\ngotErr: \n%s\nwantErr: \n%s", gotErr, tt.wantErr)

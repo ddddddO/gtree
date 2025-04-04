@@ -9,7 +9,7 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-func TestVerify(t *testing.T) {
+func TestVerifyFromMarkdown(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -121,7 +121,7 @@ func TestVerify(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := gtree.Verify(tt.in.input, tt.in.options...)
+			gotErr := gtree.VerifyFromMarkdown(tt.in.input, tt.in.options...)
 			if gotErr != nil || tt.out.err != nil {
 				if gotErr.Error() != tt.out.err.Error() {
 					t.Errorf("\ngotErr: \n%s\nwantErr: \n%s", gotErr, tt.out.err)

@@ -12,7 +12,7 @@ func main() {
 	root.Add("child 1").Add("child 2").Add("child 3")
 	root.Add("child 5")
 	root.Add("child 1").Add("child 2").Add("child 4")
-	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, root); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -26,7 +26,7 @@ func main() {
 
 	primate := preparePrimate()
 	// default branch format.
-	if err := gtree.OutputProgrammably(os.Stdout, primate); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, primate); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -62,7 +62,7 @@ func main() {
 	//                 └── Hominidae
 
 	// output json
-	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeJSON()); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, primate, gtree.WithEncodeJSON()); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -200,7 +200,7 @@ func main() {
 	// }
 
 	// output yaml
-	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeYAML()); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, primate, gtree.WithEncodeYAML()); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -265,7 +265,7 @@ func main() {
 	//           children: []
 
 	// output toml
-	if err := gtree.OutputProgrammably(os.Stdout, primate, gtree.WithEncodeTOML()); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, primate, gtree.WithEncodeTOML()); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -360,7 +360,7 @@ func main() {
 	sampleWalker()
 
 	// make directories.
-	if err := gtree.MkdirProgrammably(primate); err != nil {
+	if err := gtree.MkdirFromRoot(primate); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -407,7 +407,7 @@ func main() {
 	gtreeDir.Add("tree.go")
 
 	// make directories and files with specific extensions.
-	if err := gtree.MkdirProgrammably(
+	if err := gtree.MkdirFromRoot(
 		gtreeDir,
 		gtree.WithFileExtensions([]string{".go", ".md", "Makefile"}),
 	); err != nil {
@@ -479,7 +479,7 @@ func sampleWalker() {
 		return nil
 	}
 
-	if err := gtree.WalkProgrammably(root, callback); err != nil {
+	if err := gtree.WalkFromRoot(root, callback); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -504,7 +504,7 @@ func sampleWalker() {
 		return nil
 	}
 
-	if err := gtree.WalkProgrammably(root, callback2); err != nil {
+	if err := gtree.WalkFromRoot(root, callback2); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
