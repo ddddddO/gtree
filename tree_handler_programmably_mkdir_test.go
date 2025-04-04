@@ -9,7 +9,7 @@ import (
 	tu "github.com/ddddddO/gtree/testutil"
 )
 
-func TestMkdirProgrammably(t *testing.T) {
+func TestMkdirFromRoot(t *testing.T) {
 	tests := []struct {
 		name    string
 		root    *gtree.Node
@@ -81,7 +81,7 @@ func TestMkdirProgrammably(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := gtree.MkdirProgrammably(tt.root, tt.options...)
+			gotErr := gtree.MkdirFromRoot(tt.root, tt.options...)
 			if gotErr != nil {
 				if gotErr.Error() != tt.wantErr.Error() {
 					t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, tt.wantErr)

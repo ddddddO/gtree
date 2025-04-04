@@ -26,7 +26,7 @@ func TestOutput_detecting_goroutineleak(t *testing.T) {
 	defer cancel()
 	w := io.Discard
 	r := strings.NewReader(tu.TwentyThousandRoots)
-	if gotErr := gtree.Output(w, r, gtree.WithMassive(ctx)); gotErr != nil {
+	if gotErr := gtree.OutputFromMarkdown(w, r, gtree.WithMassive(ctx)); gotErr != nil {
 		if gotErr != context.DeadlineExceeded {
 			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
 		}
@@ -38,7 +38,7 @@ func TestOutput_json_detecting_goroutineleak(t *testing.T) {
 	defer cancel()
 	w := io.Discard
 	r := strings.NewReader(tu.TwentyThousandRoots)
-	if gotErr := gtree.Output(w, r, gtree.WithEncodeJSON(), gtree.WithMassive(ctx)); gotErr != nil {
+	if gotErr := gtree.OutputFromMarkdown(w, r, gtree.WithEncodeJSON(), gtree.WithMassive(ctx)); gotErr != nil {
 		if gotErr != context.DeadlineExceeded {
 			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
 		}
@@ -50,7 +50,7 @@ func TestOutput_yaml_detecting_goroutineleak(t *testing.T) {
 	defer cancel()
 	w := io.Discard
 	r := strings.NewReader(tu.TwentyThousandRoots)
-	if gotErr := gtree.Output(w, r, gtree.WithEncodeYAML(), gtree.WithMassive(ctx)); gotErr != nil {
+	if gotErr := gtree.OutputFromMarkdown(w, r, gtree.WithEncodeYAML(), gtree.WithMassive(ctx)); gotErr != nil {
 		if gotErr != context.DeadlineExceeded {
 			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
 		}
@@ -62,7 +62,7 @@ func TestOutput_toml_detecting_goroutineleak(t *testing.T) {
 	defer cancel()
 	w := io.Discard
 	r := strings.NewReader(tu.TwentyThousandRoots)
-	if gotErr := gtree.Output(w, r, gtree.WithEncodeTOML(), gtree.WithMassive(ctx)); gotErr != nil {
+	if gotErr := gtree.OutputFromMarkdown(w, r, gtree.WithEncodeTOML(), gtree.WithMassive(ctx)); gotErr != nil {
 		if gotErr != context.DeadlineExceeded {
 			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
 		}
@@ -74,7 +74,7 @@ func TestOutput_dryrun_detecting_goroutineleak(t *testing.T) {
 	defer cancel()
 	w := io.Discard
 	r := strings.NewReader(tu.TwentyThousandRoots)
-	if gotErr := gtree.Output(w, r, gtree.WithDryRun(), gtree.WithMassive(ctx)); gotErr != nil {
+	if gotErr := gtree.OutputFromMarkdown(w, r, gtree.WithDryRun(), gtree.WithMassive(ctx)); gotErr != nil {
 		if gotErr != context.DeadlineExceeded {
 			t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, context.DeadlineExceeded)
 		}
@@ -91,7 +91,7 @@ type out struct {
 	err    error
 }
 
-func TestOutput(t *testing.T) {
+func TestOutputFromMarkdown(t *testing.T) {
 	tests := []struct {
 		name string
 		in   in
@@ -777,7 +777,7 @@ children = []
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.OutputFromMarkdown(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -886,7 +886,7 @@ func TestOutput_encodeJSON(t *testing.T) {
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.OutputFromMarkdown(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -1105,7 +1105,7 @@ children = []
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.OutputFromMarkdown(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -1277,7 +1277,7 @@ children:
 			t.Parallel()
 
 			out := &bytes.Buffer{}
-			gotErr := gtree.Output(out, tt.in.input, tt.in.options...)
+			gotErr := gtree.OutputFromMarkdown(out, tt.in.input, tt.in.options...)
 			gotOutput := out.String()
 
 			if gotOutput != tt.out.output {
@@ -1294,7 +1294,7 @@ children:
 func TestOutput_nilctx(t *testing.T) {
 	w := io.Discard
 	r := strings.NewReader(tu.SingleRoot)
-	if gotErr := gtree.Output(w, r, gtree.WithMassive(nil)); gotErr != nil {
+	if gotErr := gtree.OutputFromMarkdown(w, r, gtree.WithMassive(nil)); gotErr != nil {
 		t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, nil)
 	}
 }
@@ -1304,7 +1304,7 @@ func TestOutput_nilopt(t *testing.T) {
 	w := io.Discard
 	r := strings.NewReader(tu.SingleRoot)
 	var emptyOpt gtree.Option
-	if gotErr := gtree.Output(w, r, emptyOpt); gotErr != nil {
+	if gotErr := gtree.OutputFromMarkdown(w, r, emptyOpt); gotErr != nil {
 		t.Errorf("\ngotErr: \n%v\nwantErr: \n%v", gotErr, nil)
 	}
 }

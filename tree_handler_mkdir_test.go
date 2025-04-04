@@ -9,7 +9,7 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
-func TestMkdir(t *testing.T) {
+func TestMkdirFromMarkdown(t *testing.T) {
 	tests := []struct {
 		name    string
 		in      in
@@ -144,7 +144,7 @@ func TestMkdir(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			gotErr := gtree.Mkdir(tt.in.input, tt.in.options...)
+			gotErr := gtree.MkdirFromMarkdown(tt.in.input, tt.in.options...)
 			if gotErr != nil {
 				t.Log(gotErr.Error())
 				if gotErr.Error() != tt.wantErr.Error() {

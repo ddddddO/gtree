@@ -18,7 +18,7 @@ func BaseBenchmark(b *testing.B, roots string, options ...gtree.Option) {
 	for i := 0; i < b.N; i++ {
 		w := &strings.Builder{}
 		b.StartTimer()
-		if err := gtree.Output(w, r, options...); err != nil {
+		if err := gtree.OutputFromMarkdown(w, r, options...); err != nil {
 			b.Fatal(err)
 		}
 		b.StopTimer()

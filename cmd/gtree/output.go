@@ -13,12 +13,12 @@ import (
 )
 
 func output(in io.Reader, options []gtree.Option) error {
-	return gtree.Output(os.Stdout, in, options...)
+	return gtree.OutputFromMarkdown(os.Stdout, in, options...)
 }
 
 func outputWithValidation(in io.Reader, options []gtree.Option) error {
 	options = append(options, gtree.WithDryRun())
-	return gtree.Output(color.Output, in, options...)
+	return gtree.OutputFromMarkdown(color.Output, in, options...)
 }
 
 const intervalms = 500 * time.Millisecond

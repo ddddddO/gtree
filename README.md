@@ -577,13 +577,13 @@ The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*[Output](https://github.com/ddddddO/gtree#output-func)*|can output trees|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
-|*[Mkdir](https://github.com/ddddddO/gtree#mkdir-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun<br>WithMassive|
-|*[Verify](https://github.com/ddddddO/gtree#verify-func)*|can output the difference between markdown and directories|WithTargetDir<br>WithStrictVerify<br>WithMassive|
-|*[Walk](https://github.com/ddddddO/gtree#walk-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithMassive|
+|*[OutputFromMarkdown](https://github.com/ddddddO/gtree#output-func)*|can output trees|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
+|*[MkdirFromMarkdown](https://github.com/ddddddO/gtree#mkdir-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun<br>WithMassive|
+|*[VerifyFromMarkdown](https://github.com/ddddddO/gtree#verify-func)*|can output the difference between markdown and directories|WithTargetDir<br>WithStrictVerify<br>WithMassive|
+|*[WalkFromMarkdown](https://github.com/ddddddO/gtree#walk-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithMassive|
 
 
-### *Output* func
+### *OutputFromMarkdown* func
 
 ```go
 package main
@@ -612,7 +612,7 @@ func main() {
 						- 1111111
 							- AAAAAAA
 	- eee`))
-	if err := gtree.Output(os.Stdout, r1); err != nil {
+	if err := gtree.OutputFromMarkdown(os.Stdout, r1); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -643,7 +643,7 @@ func main() {
   - g`))
 
 	// You can customize branch format.
-	if err := gtree.Output(os.Stdout, r2,
+	if err := gtree.OutputFromMarkdown(os.Stdout, r2,
 		gtree.WithBranchFormatIntermedialNode("+->", ":   "),
 		gtree.WithBranchFormatLastNode("+->", "    "),
 	); err != nil {
@@ -670,20 +670,20 @@ func main() {
 - `gtree.WithEncodeYAML()`
 
 
-### *Mkdir* func
+### *MkdirFromMarkdown* func
 
-#### `gtree.Mkdir` func makes directories.
+#### `gtree.MkdirFromMarkdown` func makes directories.
 
 You can use `gtree.WithFileExtensions` func to make specified extensions as file.
 
 
-### *Verify* func
+### *VerifyFromMarkdown* func
 
-#### `gtree.Verify` func verifies directories.
+#### `gtree.VerifyFromMarkdown` func verifies directories.
 
 You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
-### *Walk* func
+### *WalkFromMarkdown* func
 
 <details>
 <summary>See sample program</summary>
@@ -716,7 +716,7 @@ func main() {
 		return nil
 	}
 
-	if err := gtree.Walk(strings.NewReader(src), callback); err != nil {
+	if err := gtree.WalkFromMarkdown(strings.NewReader(src), callback); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -742,7 +742,7 @@ func main() {
 		return nil
 	}
 
-	if err := gtree.Walk(strings.NewReader(src), callback2); err != nil {
+	if err := gtree.WalkFromMarkdown(strings.NewReader(src), callback2); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -836,13 +836,13 @@ $ go get github.com/ddddddO/gtree
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*[OutputProgrammably](https://github.com/ddddddO/gtree#outputprogrammably-func)*|can output tree|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
-|*[MkdirProgrammably](https://github.com/ddddddO/gtree#mkdirprogrammably-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
-|*[VerifyProgrammably](https://github.com/ddddddO/gtree#verifyprogrammably-func)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
-|*[WalkProgrammably](https://github.com/ddddddO/gtree#walkprogrammably-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
-|*[WalkIterProgrammably](https://github.com/ddddddO/gtree#walkiterprogrammably-func)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+|*[OutputFromRoot](https://github.com/ddddddO/gtree#outputprogrammably-func)*|can output tree|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
+|*[MkdirFromRoot](https://github.com/ddddddO/gtree#mkdirprogrammably-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
+|*[VerifyFromRoot](https://github.com/ddddddO/gtree#verifyprogrammably-func)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
+|*[WalkFromRoot](https://github.com/ddddddO/gtree#walkprogrammably-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+|*[WalkIterFromRoot](https://github.com/ddddddO/gtree#walkiterprogrammably-func)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
 
-### *OutputProgrammably* func
+### *OutputFromRoot* func
 
 ```go
 package main
@@ -862,7 +862,7 @@ func main() {
 	child4.Add("child 6").Add("child 7")
 	root.Add("child 8")
 	// you can customize branch format.
-	if err := gtree.OutputProgrammably(os.Stdout, root,
+	if err := gtree.OutputFromRoot(os.Stdout, root,
 		gtree.WithBranchFormatIntermedialNode("+--", ":   "),
 		gtree.WithBranchFormatLastNode("+--", "    "),
 	); err != nil {
@@ -882,7 +882,7 @@ func main() {
 
 	primate := preparePrimate()
 	// default branch format.
-	if err := gtree.OutputProgrammably(os.Stdout, primate); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, primate); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -1008,7 +1008,7 @@ func main() {
 		node = root
 	}
 
-	if err := gtree.OutputProgrammably(os.Stdout, root); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, root); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -1036,7 +1036,7 @@ func main() {
 }
 ```
 
-### *MkdirProgrammably* func
+### *MkdirFromRoot* func
 
 ```go
 package main
@@ -1049,7 +1049,7 @@ import (
 
 func main() {
 	primate := preparePrimate()
-	if err := gtree.MkdirProgrammably(primate); err != nil {
+	if err := gtree.MkdirFromRoot(primate); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -1113,7 +1113,7 @@ func main() {
 	gtreeDir.Add("tree.go")
 
 	// make directories and files with specific extensions.
-	if err := gtree.MkdirProgrammably(
+	if err := gtree.MkdirFromRoot(
 		gtreeDir,
 		gtree.WithFileExtensions([]string{".go", ".md", "Makefile"}),
 	); err != nil {
@@ -1136,11 +1136,11 @@ func main() {
 }
 ```
 
-### *VerifyProgrammably* func
+### *VerifyFromRoot* func
 
 You can use `gtree.WithTargetDir` func / `gtree.WithStrictVerify` func.
 
-### *WalkProgrammably* func
+### *WalkFromRoot* func
 
 ```go
 package main
@@ -1163,7 +1163,7 @@ func main() {
 		return nil
 	}
 
-	if err := gtree.WalkProgrammably(root, callback); err != nil {
+	if err := gtree.WalkFromRoot(root, callback); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -1186,7 +1186,7 @@ func main() {
 		return nil
 	}
 
-	if err := gtree.WalkProgrammably(root, callback2); err != nil {
+	if err := gtree.WalkFromRoot(root, callback2); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -1236,7 +1236,7 @@ func main() {
 }
 ```
 
-### *WalkIterProgrammably* func
+### *WalkIterFromRoot* func
 
 ```go
 package main
@@ -1254,7 +1254,7 @@ func main() {
 	root.Add("child 5")
 	root.Add("child 1").Add("child 2").Add("child 4")
 
-	for wn, err := range gtree.WalkIterProgrammably(root) {
+	for wn, err := range gtree.WalkIterFromRoot(root) {
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
@@ -1271,7 +1271,7 @@ func main() {
 	// └── child 5
 
 
-	for wn, err := range gtree.WalkIterProgrammably(root) {
+	for wn, err := range gtree.WalkIterFromRoot(root) {
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)

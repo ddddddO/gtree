@@ -18,7 +18,7 @@ type Tab struct {
 // Output is ...
 func (tab *Tab) Output() error {
 	buf := &strings.Builder{}
-	if err := gtree.Output(buf, tab.Data); err != nil {
+	if err := gtree.OutputFromMarkdown(buf, tab.Data); err != nil {
 		return err
 	}
 	fmt.Printf("%s\n\n", buf.String())
@@ -33,7 +33,7 @@ type TwoSpaces struct {
 // Output is ...
 func (ts *TwoSpaces) Output() error {
 	buf := &bytes.Buffer{}
-	if err := gtree.Output(buf, ts.Data); err != nil {
+	if err := gtree.OutputFromMarkdown(buf, ts.Data); err != nil {
 		return err
 	}
 	fmt.Printf("%s\n\n", buf.String())
@@ -47,5 +47,5 @@ type FourSpaces struct {
 
 // Output is ...
 func (fs *FourSpaces) Output() error {
-	return gtree.Output(os.Stdout, fs.Data)
+	return gtree.OutputFromMarkdown(os.Stdout, fs.Data)
 }

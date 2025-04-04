@@ -7,5 +7,5 @@ import (
 )
 
 func mkdir(in io.Reader, options []gtree.Option) error {
-	return gtree.Mkdir(in, options...)
+	return gtree.MkdirFromMarkdown(in, options...)
 }
