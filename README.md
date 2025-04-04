@@ -268,6 +268,8 @@ Carnivora
 
 #### Output JSON
 
+<details><summary>see</summary>
+
 ```console
 $ cat testdata/sample5.md | gtree output --format json | jq
 {
@@ -312,7 +314,11 @@ $ cat testdata/sample5.md | gtree output --format json | jq
 }
 ```
 
+</details>
+
 #### Output YAML
+
+<details><summary>see</summary>
 
 ```console
 $ cat testdata/sample5.md | gtree output --format yaml
@@ -336,7 +342,11 @@ children:
   children: []
 ```
 
+</details>
+
 #### Output TOML
+
+<details><summary>see</summary>
 
 ```console
 $ cat testdata/sample5.md | gtree output --format toml
@@ -367,6 +377,8 @@ value = 'g'
 children = []
 
 ```
+
+</details>
 
 
 ### *Mkdir* subcommand
