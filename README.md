@@ -577,10 +577,10 @@ The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*[OutputFromMarkdown](https://github.com/ddddddO/gtree#output-func)*|can output trees|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
-|*[MkdirFromMarkdown](https://github.com/ddddddO/gtree#mkdir-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun<br>WithMassive|
-|*[VerifyFromMarkdown](https://github.com/ddddddO/gtree#verify-func)*|can output the difference between markdown and directories|WithTargetDir<br>WithStrictVerify<br>WithMassive|
-|*[WalkFromMarkdown](https://github.com/ddddddO/gtree#walk-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithMassive|
+|*[OutputFromMarkdown](https://github.com/ddddddO/gtree#outputfrommarkdown-func)*|can output trees|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
+|*[MkdirFromMarkdown](https://github.com/ddddddO/gtree#mkdirfrommarkdown-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun<br>WithMassive|
+|*[VerifyFromMarkdown](https://github.com/ddddddO/gtree#verifyfrommarkdown-func)*|can output the difference between markdown and directories|WithTargetDir<br>WithStrictVerify<br>WithMassive|
+|*[WalkFromMarkdown](https://github.com/ddddddO/gtree#walkfrommarkdown-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithMassive|
 
 
 ### *OutputFromMarkdown* func
@@ -836,11 +836,11 @@ $ go get github.com/ddddddO/gtree
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*[OutputFromRoot](https://github.com/ddddddO/gtree#outputprogrammably-func)*|can output tree|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
-|*[MkdirFromRoot](https://github.com/ddddddO/gtree#mkdirprogrammably-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
-|*[VerifyFromRoot](https://github.com/ddddddO/gtree#verifyprogrammably-func)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
-|*[WalkFromRoot](https://github.com/ddddddO/gtree#walkprogrammably-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
-|*[WalkIterFromRoot](https://github.com/ddddddO/gtree#walkiterprogrammably-func)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+|*[OutputFromRoot](https://github.com/ddddddO/gtree#outputfromroot-func)*|can output tree|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
+|*[MkdirFromRoot](https://github.com/ddddddO/gtree#mkdirfromroot-func)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
+|*[VerifyFromRoot](https://github.com/ddddddO/gtree#verifyfromroot-func)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
+|*[WalkFromRoot](https://github.com/ddddddO/gtree#walkfromroot-func)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+|*[WalkIterFromRoot](https://github.com/ddddddO/gtree#walkiterfromroot-func)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
 
 ### *OutputFromRoot* func
 
