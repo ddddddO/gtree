@@ -597,7 +597,7 @@ The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 # Library - Programmable tree structure
 
 > [!NOTE]
-> The `gonew` command can be used to set up sample project using gtree library.<br>
+> There are sample repositories that use gtree library.<br>
 > See [here](https://github.com/ddddddO/gtree/blob/master/example/README.md) for details.
 
 ## Installation
