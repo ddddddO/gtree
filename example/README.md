@@ -34,14 +34,14 @@ $ gonew github.com/ddddddO/gtree/example/go-list_pipe_programmable-gtree example
 ### 3. Run the program
 #### For *find_pipe_programmable-gtree*
 ```console
-$ find . -type d -name .git -prune -o -type f -print | go run main.go
+$ cd find_pipe_programmable-gtree/ && find . -type d -name .git -prune -o -type f -print | go run main.go
 ```
 
 ... You may have felt that the result of executing the find command in the project root was not enough. If so, try executing it in a place with many directories!
 
 #### For *go-list_pipe_programmable-gtree*
 ```console
-$ go list -deps . | go run main.go
+$ cd go-list_pipe_programmable-gtree/ && go list -deps . | go run main.go
 ```
 
 ### 4. Arrange the program to your liking!

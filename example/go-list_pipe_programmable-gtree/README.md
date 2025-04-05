@@ -19,7 +19,7 @@ $ gonew github.com/ddddddO/gtree/example/go-list_pipe_programmable-gtree example
 ### 3. Run the program
 
 ```console
-$ go list -deps . | go run main.go
+$ cd go-list_pipe_programmable-gtree/ && go list -deps . | go run main.go
 ```
 
 ### 4. Arrange the program to your liking!
