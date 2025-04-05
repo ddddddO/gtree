@@ -112,7 +112,7 @@ func ExampleWalkFromMarkdown() {
 }
 
 func ExampleWalkFromMarkdown_second() {
-	_ = strings.TrimSpace(`
+	md := strings.TrimSpace(`
 - a
 	- i
 		- u
@@ -122,9 +122,6 @@ func ExampleWalkFromMarkdown_second() {
 - e
 	- o
 		- g`)
-
-	md := strings.TrimSpace(`
-- a`)
 
 	callback := func(wn *gtree.WalkerNode) error {
 		fmt.Println("WalkerNode's methods called...")
@@ -143,79 +140,62 @@ func ExampleWalkFromMarkdown_second() {
 	}
 	// want:
 	// WalkerNode's methods called...
-	//
 	//	Name     : a
 	//	Branch   :
 	//	Row      : a
 	//	Level    : 1
 	//	Path     : a
 	//	HasChild : true
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : i
 	//	Branch   : ├──
 	//	Row      : ├── i
 	//	Level    : 2
 	//	Path     : a/i
 	//	HasChild : true
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : u
 	//	Branch   : │   └──
 	//	Row      : │   └── u
 	//	Level    : 3
 	//	Path     : a/i/u
 	//	HasChild : true
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : k
 	//	Branch   : │       └──
 	//	Row      : │       └── k
 	//	Level    : 4
 	//	Path     : a/i/u/k
 	//	HasChild : false
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : kk
 	//	Branch   : └──
 	//	Row      : └── kk
 	//	Level    : 2
 	//	Path     : a/kk
 	//	HasChild : true
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : t
 	//	Branch   :     └──
 	//	Row      :     └── t
 	//	Level    : 3
 	//	Path     : a/kk/t
 	//	HasChild : false
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : e
 	//	Branch   :
 	//	Row      : e
 	//	Level    : 1
 	//	Path     : e
 	//	HasChild : true
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : o
 	//	Branch   : └──
 	//	Row      : └── o
 	//	Level    : 2
 	//	Path     : e/o
 	//	HasChild : true
-	//
 	// WalkerNode's methods called...
-	//
 	//	Name     : g
 	//	Branch   :     └──
 	//	Row      :     └── g
