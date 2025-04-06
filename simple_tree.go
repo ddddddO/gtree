@@ -80,14 +80,17 @@ func newTreeSimple(cfg *config) tree {
 }
 
 func (t *treeSimple) output(w io.Writer, r io.Reader, cfg *config) error {
-	// roots, err := newRootGeneratorSimple(r).generate()
-	// if err != nil {
-	// 	return err
-	// }
-	// if err := t.grower.grow(roots); err != nil {
-	// 	return err
-	// }
-	// return t.spreader.spread(w, roots)
+	// ベンチマークを取るための
+	if cfg.noUseIterOfSimpleOutput {
+		roots, err := newRootGeneratorSimple(r).generate()
+		if err != nil {
+			return err
+		}
+		if err := t.grower.grow(roots); err != nil {
+			return err
+		}
+		return t.spreader.spread(w, roots)
+	}
 
 	for err := range t.spreader.spreadIter(w, t.grower.growIter(newRootGeneratorSimple(r).generateIter())) {
 		if err != nil {

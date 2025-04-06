@@ -630,11 +630,70 @@ $ go get github.com/ddddddO/gtree
 
 # Performance
 
+<details><summary>see</summary>
+
+```console
+ddddddo@debian:~/github.com/ddddddO/gtree$ make bench
+rm -rf ./root/ ./root1/ ./root2/ ./root3/ ./root4/ ./root5/ ./root6/ ./root7/ ./root8/ Primate/ gtree/
+rm -rf ./root_a/ ./root_b/ ./root_c/ ./root_d/ ./root_e/ ./root_f/ ./root_g/ ./root_h/ ./root_i/ ./root_j/
+go test -benchmem -bench Benchmark -benchtime 100x benchmark_simple_test.go
+goos: linux
+goarch: amd64
+cpu: 13th Gen Intel(R) Core(TM) i7-1370P
+BenchmarkOutput_simple_singleRoot-20                 100             10149 ns/op            9987 B/op        231 allocs/op
+BenchmarkOutput_simple_tenRoots-20                   100             70643 ns/op           59373 B/op       2121 allocs/op
+BenchmarkOutput_simple_fiftyRoots-20                 100            315096 ns/op          281426 B/op      10488 allocs/op
+BenchmarkOutput_simple_hundredRoots-20               100            586092 ns/op          578288 B/op      20942 allocs/op
+BenchmarkOutput_simple_fiveHundredsRoots-20          100           2934791 ns/op         2817802 B/op     104552 allocs/op
+BenchmarkOutput_simple_thousandRoots-20              100           6264854 ns/op         5785893 B/op     209058 allocs/op
+BenchmarkOutput_simple_3000Roots-20                  100          18641680 ns/op        17045688 B/op     627068 allocs/op
+BenchmarkOutput_simple_6000Roots-20                  100          38605597 ns/op        34247794 B/op    1254075 allocs/op
+BenchmarkOutput_simple_10000Roots-20                 100          79987941 ns/op        59397951 B/op    2090080 allocs/op
+BenchmarkOutput_simple_20000Roots-20                 100         153445564 ns/op        118746704 B/op   4180088 allocs/op
+PASS
+ok      command-line-arguments  30.503s
+go test -benchmem -bench Benchmark -benchtime 100x benchmark_pipeline_test.go
+goos: linux
+goarch: amd64
+cpu: 13th Gen Intel(R) Core(TM) i7-1370P
+BenchmarkOutput_pipeline_singleRoot-20                       100             67536 ns/op           20754 B/op        356 allocs/op
+BenchmarkOutput_pipeline_tenRoots-20                         100            235060 ns/op          115166 B/op       2715 allocs/op
+BenchmarkOutput_pipeline_fiftyRoots-20                       100            800429 ns/op          544849 B/op      13215 allocs/op
+BenchmarkOutput_pipeline_hundredRoots-20                     100           1566669 ns/op         1098099 B/op      26321 allocs/op
+BenchmarkOutput_pipeline_fiveHundredsRoots-20                100           9370155 ns/op         5395556 B/op     131178 allocs/op
+BenchmarkOutput_pipeline_thousandRoots-20                    100          19935090 ns/op        10937746 B/op     262249 allocs/op
+BenchmarkOutput_pipeline_3000Roots-20                        100          61218588 ns/op        32470598 B/op     786461 allocs/op
+BenchmarkOutput_pipeline_6000Roots-20                        100         140668786 ns/op        65080805 B/op    1572765 allocs/op
+BenchmarkOutput_pipeline_10000Roots-20                       100         251359838 ns/op        110717084 B/op   2621057 allocs/op
+BenchmarkOutput_pipeline_20000Roots-20                       100         517510413 ns/op        221188080 B/op   5241583 allocs/op
+PASS
+ok      command-line-arguments  101.444s
+go test -benchmem -bench Benchmark -benchtime 100x benchmark_iterator_test.go
+goos: linux
+goarch: amd64
+cpu: 13th Gen Intel(R) Core(TM) i7-1370P
+BenchmarkOutput_iterator_singleRoot-20                       100             23219 ns/op           10966 B/op        265 allocs/op
+BenchmarkOutput_iterator_tenRoots-20                         100             95018 ns/op           60049 B/op       2151 allocs/op
+BenchmarkOutput_iterator_fiftyRoots-20                       100            415429 ns/op          281107 B/op      10516 allocs/op
+BenchmarkOutput_iterator_hundredRoots-20                     100            801343 ns/op          576557 B/op      20969 allocs/op
+BenchmarkOutput_iterator_fiveHundredsRoots-20                100           4025727 ns/op         2807096 B/op     104577 allocs/op
+BenchmarkOutput_iterator_thousandRoots-20                    100           8343427 ns/op         5765146 B/op     209084 allocs/op
+BenchmarkOutput_iterator_3000Roots-20                        100          20800851 ns/op        16965023 B/op     627100 allocs/op
+BenchmarkOutput_iterator_6000Roots-20                        100          46313662 ns/op        34079177 B/op    1254118 allocs/op
+BenchmarkOutput_iterator_10000Roots-20                       100          74729899 ns/op        59063939 B/op    2090141 allocs/op
+BenchmarkOutput_iterator_20000Roots-20                       100         151050139 ns/op        117922359 B/op   4180162 allocs/op
+PASS
+ok      command-line-arguments  31.057s
+ddddddo@debian:~/github.com/ddddddO/gtree$
+```
+
+</details>
+
+<details><summary>old data</summary>
+
 > [!WARNING]
 > The following benchmarks are for simple implementation before iterator implementation. The simple implementation is now an iterator implementation, and the performance of the simple implementation is better.
 > Depends on the environment.
-
-<details><summary>old data</summary>
 
 - Comparison simple implementation and pipeline implementation.
 - In the case of few Roots, simple implementation is faster in execution!

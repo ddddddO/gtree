@@ -31,6 +31,7 @@ view_cover: sweep cover
 bench: sweep
 	go test -benchmem -bench Benchmark -benchtime 100x benchmark_simple_test.go
 	go test -benchmem -bench Benchmark -benchtime 100x benchmark_pipeline_test.go
+	go test -benchmem -bench Benchmark -benchtime 100x benchmark_iterator_test.go
 
 cyclo: sweep
 	gocyclo .

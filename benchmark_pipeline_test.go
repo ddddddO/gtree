@@ -42,6 +42,6 @@ func BenchmarkOutput_pipeline_10000Roots(b *testing.B) {
 	tu.BenchmarkWithMassive(b, tu.TenThousandRoots)
 }
 
-// func BenchmarkOutput_pipeline_20000Roots(b *testing.B) {
-// 	tu.BenchmarkWithMassive(b, tu.TwentyThousandRoots)
-// }
+func BenchmarkOutput_pipeline_20000Roots(b *testing.B) {
+	tu.BenchmarkWithMassive(b, tu.TwentyThousandRoots)
+}

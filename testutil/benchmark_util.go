@@ -8,6 +8,10 @@ import (
 	"github.com/ddddddO/gtree"
 )
 
+func BenchmarkOfSimpleOutput(b *testing.B, roots string) {
+	BaseBenchmark(b, roots, gtree.WithNoUseIterOfSimpleOutput())
+}
+
 func BenchmarkWithMassive(b *testing.B, roots string) {
 	BaseBenchmark(b, roots, gtree.WithMassive(context.Background()))
 }

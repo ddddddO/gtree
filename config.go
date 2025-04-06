@@ -13,6 +13,8 @@ type config struct {
 	fileExtensions []string
 	targetDir      string
 	strictVerify   bool
+
+	noUseIterOfSimpleOutput bool
 }
 
 func newConfig(options []Option) *config {
@@ -115,5 +117,12 @@ func WithTargetDir(dir string) Option {
 func WithStrictVerify() Option {
 	return func(c *config) {
 		c.strictVerify = true
+	}
+}
+
+// Deprecated: This is for benchmark testing.
+func WithNoUseIterOfSimpleOutput() Option {
+	return func(c *config) {
+		c.noUseIterOfSimpleOutput = true
 	}
 }
