@@ -7,7 +7,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.3
 	github.com/urfave/cli/v2 v2.27.6
 	go.uber.org/goleak v1.3.0
-	golang.org/x/sync v0.12.0
+	golang.org/x/sync v0.13.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
