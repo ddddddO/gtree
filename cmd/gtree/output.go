@@ -9,7 +9,7 @@ import (
 
 	"github.com/ddddddO/gtree"
 	"github.com/fatih/color"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func output(in io.Reader, options []gtree.Option) error {
@@ -53,7 +53,7 @@ func outputContinuously(markdownPath string, options []gtree.Option) error {
 	return nil
 }
 
-func optionOutput(c *cli.Context) (gtree.Option, error) {
+func optionOutput(c *cli.Command) (gtree.Option, error) {
 	switch c.String("format") {
 	case "json":
 		return gtree.WithEncodeJSON(), nil
