@@ -1,6 +1,6 @@
 package main
 
-import "github.com/urfave/cli/v2"
+import "github.com/urfave/cli/v3"
 
 const (
 	exitCodeErrOpts = iota + 1

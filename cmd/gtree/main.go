@@ -9,7 +9,7 @@ import (
 
 	"github.com/ddddddO/gtree"
 	"github.com/fatih/color"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 // These variables are set in build step
@@ -20,7 +20,7 @@ var (
 
 func main() {
 	commonFlags := []cli.Flag{
-		&cli.PathFlag{
+		&cli.StringFlag{
 			Name:        "file",
 			Aliases:     []string{"f"},
 			Usage:       "specify the path to markdown file.",
@@ -38,9 +38,9 @@ func main() {
 			Name:    "massive-timeout",
 			Aliases: []string{"mt"},
 			Usage:   "set this option if you want to set a timeout.",
-			Action: func(ctx *cli.Context, v time.Duration) error {
+			Action: func(_ context.Context, _ *cli.Command, v time.Duration) error {
 				if v <= 0 {
-					return errors.New("the timeout value should be greater than 0.")
+					return errors.New("the timeout value should be greater than 0")
 				}
 				return nil
 			},
@@ -104,7 +104,7 @@ func main() {
 
 	green := color.New(color.FgHiGreen).SprintFunc()
 
-	app := &cli.App{
+	app := &cli.Command{
 		Name: "gtree",
 		Usage: "This CLI uses Markdown to generate directory trees and directories itself, and also verifies directories." + "\n" +
 			fmt.Sprintf("The symbols that can be used in Markdown are '%s', '%s', '%s', and '%s'.", green("-"), green("+"), green("*"), green("#")) + "\n" +
@@ -159,7 +159,7 @@ func main() {
 				Aliases: []string{"v"},
 				Usage:   "Prints the version.",
 				Before:  notExistArgs,
-				Action: func(c *cli.Context) error {
+				Action: func(ctx context.Context, c *cli.Command) error {
 					fmt.Printf("gtree version %s / revision %s\n", Version, Revision)
 					return nil
 				},
@@ -167,19 +167,19 @@ func main() {
 		},
 	}
 
-	if err := app.Run(os.Args); err != nil {
+	if err := app.Run(context.Background(), os.Args); err != nil {
 		fmt.Fprint(os.Stderr, err)
 	}
 }
 
-func notExistArgs(c *cli.Context) error {
+func notExistArgs(ctx context.Context, c *cli.Command) (context.Context, error) {
 	if c.NArg() != 0 {
-		return errors.New("command line contains unnecessary arguments")
+		return nil, errors.New("command line contains unnecessary arguments")
 	}
-	return nil
+	return ctx, nil
 }
 
-func actionOutput(c *cli.Context) error {
+func actionOutput(ctx context.Context, c *cli.Command) error {
 	oo, err := optionOutput(c)
 	if err != nil {
 		return exitErrOpts(err)
@@ -195,7 +195,7 @@ func actionOutput(c *cli.Context) error {
 	}
 	options := []gtree.Option{oo, om}
 
-	markdownPath := c.Path("file")
+	markdownPath := c.String("file")
 	if isInputStdin(markdownPath) {
 		if err := output(os.Stdin, options); err != nil {
 			return exitErrOutput(err)
@@ -222,13 +222,13 @@ func actionOutput(c *cli.Context) error {
 	return nil
 }
 
-func actionMkdir(c *cli.Context) error {
+func actionMkdir(ctx context.Context, c *cli.Command) error {
 	var (
 		in  = os.Stdin
 		err error
 	)
-	if !isInputStdin(c.Path("file")) {
-		in, err = os.Open(c.Path("file"))
+	if !isInputStdin(c.String("file")) {
+		in, err = os.Open(c.String("file"))
 		if err != nil {
 			return exitErrOpen(err)
 		}
@@ -258,13 +258,13 @@ func isInputStdin(path string) bool {
 	return path == "" || path == "-"
 }
 
-func actionVerify(c *cli.Context) error {
+func actionVerify(ctx context.Context, c *cli.Command) error {
 	var (
 		in  = os.Stdin
 		err error
 	)
-	if !isInputStdin(c.Path("file")) {
-		in, err = os.Open(c.Path("file"))
+	if !isInputStdin(c.String("file")) {
+		in, err = os.Open(c.String("file"))
 		if err != nil {
 			return exitErrOpen(err)
 		}
@@ -282,7 +282,7 @@ func actionVerify(c *cli.Context) error {
 	return nil
 }
 
-func actionTemplate(c *cli.Context) error {
+func actionTemplate(ctx context.Context, c *cli.Command) error {
 	if c.Bool("description") {
 		return description.println()
 	}
@@ -291,7 +291,7 @@ func actionTemplate(c *cli.Context) error {
 
 const treeMakerURL = "https://ddddddo.github.io/gtree/"
 
-func actionWeb(c *cli.Context) error {
+func actionWeb(ctx context.Context, c *cli.Command) error {
 	_ = openWeb(treeMakerURL, c.Bool("wsl"))
 	fmt.Printf("See: %s\n", treeMakerURL)
 	return nil
