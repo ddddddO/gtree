@@ -10,8 +10,8 @@ import (
 	"io"
 	"sync"
 
+	"github.com/goccy/go-yaml"
 	toml "github.com/pelletier/go-toml/v2"
-	"gopkg.in/yaml.v3"
 )
 
 func newSpreaderPipeline(encode encode) spreaderPipeline {
