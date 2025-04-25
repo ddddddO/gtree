@@ -10,8 +10,8 @@ import (
 	"iter"
 
 	"github.com/fatih/color"
+	"github.com/goccy/go-yaml"
 	toml "github.com/pelletier/go-toml/v2"
-	"gopkg.in/yaml.v3"
 )
 
 func newSpreaderSimple(encode encode) spreaderSimple {
