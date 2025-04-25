@@ -1152,41 +1152,41 @@ func TestOutput_encodeYAML(t *testing.T) {
 				output: strings.TrimPrefix(`
 value: a
 children:
-    - value: i
-      children:
-        - value: u
-          children:
-            - value: k
-              children: []
-            - value: kk
-              children: []
-        - value: t
-          children: []
-    - value: e
-      children:
-        - value: o
-          children: []
-    - value: g
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
       children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
 ---
 value: a
 children:
-    - value: i
-      children:
-        - value: u
-          children:
-            - value: k
-              children: []
-            - value: kk
-              children: []
-        - value: t
-          children: []
-    - value: e
-      children:
-        - value: o
-          children: []
-    - value: g
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
       children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
 `, "\n"),
 				err: nil,
 			},
@@ -1210,22 +1210,22 @@ children:
 				output: strings.TrimPrefix(`
 value: a
 children:
-    - value: i
-      children:
-        - value: u
-          children:
-            - value: k
-              children: []
-            - value: kk
-              children: []
-        - value: t
-          children: []
-    - value: e
-      children:
-        - value: o
-          children: []
-    - value: g
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
       children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
 `, "\n"),
 				err: nil,
 			},
@@ -1249,22 +1249,22 @@ children:
 				output: strings.TrimPrefix(`
 value: a
 children:
-    - value: i
-      children:
-        - value: u
-          children:
-            - value: k
-              children: []
-            - value: kk
-              children: []
-        - value: t
-          children: []
-    - value: e
-      children:
-        - value: o
-          children: []
-    - value: g
+- value: i
+  children:
+  - value: u
+    children:
+    - value: k
       children: []
+    - value: kk
+      children: []
+  - value: t
+    children: []
+- value: e
+  children:
+  - value: o
+    children: []
+- value: g
+  children: []
 `, "\n"),
 				err: nil,
 			},

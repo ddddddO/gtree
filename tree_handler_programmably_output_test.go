@@ -125,22 +125,22 @@ root1
 			want: strings.TrimPrefix(`
 value: root1
 children:
-    - value: child 1
-      children:
-        - value: child 2
-          children:
-            - value: child 3
-              children: []
-            - value: child 4
-              children:
-                - value: child 5
-                  children: []
-                - value: child 6
-                  children:
-                    - value: child 7
-                      children: []
-    - value: child 8
+- value: child 1
+  children:
+  - value: child 2
+    children:
+    - value: child 3
       children: []
+    - value: child 4
+      children:
+      - value: child 5
+        children: []
+      - value: child 6
+        children:
+        - value: child 7
+          children: []
+- value: child 8
+  children: []
 `, "\n"),
 		},
 		{
