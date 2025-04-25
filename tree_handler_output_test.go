@@ -734,10 +734,10 @@ a
 				output: strings.TrimSpace(`
 value: a
 children:
-    - value: b
-      children:
-        - value: c
-          children: []
+- value: b
+  children:
+  - value: c
+    children: []
 `) + "\n",
 				err: nil,
 			},
