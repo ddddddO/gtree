@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 
@@ -231,7 +232,45 @@ func ExampleOutputFromRoot() {
 	// +-- child 8
 }
 
+type CustomWriter struct {
+	logger *slog.Logger
+}
+
+func (c *CustomWriter) Write(bytes []byte) (int, error) {
+	row := strings.TrimSuffix(string(bytes), "\n")
+	c.logger.Info("[TREE]", "row", row)
+	return len(bytes), nil
+}
+
 func ExampleOutputFromRoot_second() {
+	w := &CustomWriter{
+		logger: slog.New(slog.NewTextHandler(os.Stdout, nil)),
+	}
+
+	var root *gtree.Node = gtree.NewRoot("root")
+	root.Add("child 1").Add("child 2").Add("child 3")
+	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("child 4")
+	child4.Add("child 5")
+	child4.Add("child 6").Add("child 7")
+	root.Add("child 8")
+
+	if err := gtree.OutputFromRoot(w, root); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// want:
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row=root
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="├── child 1"
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="│   └── child 2"
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="│       ├── child 3"
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="│       └── child 4"
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="│           ├── child 5"
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="│           └── child 6"
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="│               └── child 7"
+	// time=2025-05-17T10:51:35.902+09:00 level=INFO msg=[TREE] row="└── child 8"
+}
+
+func ExampleOutputFromRoot_third() {
 	preparePrimate := func() *gtree.Node {
 		primate := gtree.NewRoot("Primate")
 		strepsirrhini := primate.Add("Strepsirrhini")
@@ -306,7 +345,7 @@ func ExampleOutputFromRoot_second() {
 	//             └── Pitheciidae
 }
 
-func ExampleOutputFromRoot_third() {
+func ExampleOutputFromRoot_fourth() {
 	// Example: The program below converts the result of `find` into a tree.
 	//
 	// $ cd github.com/ddddddO/gtree
