@@ -243,14 +243,6 @@ func (c *CustomWriter) Write(bytes []byte) (int, error) {
 }
 
 func ExampleOutputFromRoot_second() {
-	// type CustomWriter struct {
-	// 	logger *slog.Logger
-	// }
-	// func (c *CustomWriter) Write(bytes []byte) (int, error) {
-	// 	row := strings.TrimSuffix(string(bytes), "\n")
-	// 	c.logger.Info("[TREE]", "row", row)
-	// 	return len(bytes), nil
-	// }
 	w := &CustomWriter{
 		logger: slog.New(slog.NewTextHandler(os.Stdout, nil)),
 	}
