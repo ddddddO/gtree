@@ -4,7 +4,7 @@ go 1.24
 
 require (
 	github.com/fatih/color v1.18.0
-	github.com/goccy/go-yaml v1.17.1
+	github.com/goccy/go-yaml v1.18.0
 	github.com/pelletier/go-toml/v2 v2.2.4
 	github.com/urfave/cli/v3 v3.3.3
 	go.uber.org/goleak v1.3.0
