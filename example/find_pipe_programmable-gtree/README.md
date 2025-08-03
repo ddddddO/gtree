@@ -19,7 +19,7 @@ $ gonew github.com/ddddddO/gtree/example/find_pipe_programmable-gtree example.co
 ### 3. Run the program
 
 ```console
-$ cd find_pipe_programmable-gtree/ && find . -type d -name .git -prune -o -type f -print | go run main.go
+$ cd find_pipe_programmable-gtree/ && find . -name .git -prune -o -print | sort | go run main.go
 ```
 
 ... You may have felt that the result of executing the find command in the project root was not enough. If so, try executing it in a place with many directories!

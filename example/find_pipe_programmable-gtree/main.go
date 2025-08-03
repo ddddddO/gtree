@@ -11,7 +11,7 @@ import (
 
 // Example:
 // $ cd github.com/ddddddO/gtree
-// $ find . -type d -name .git -prune -o -type f -print
+// $ find . -name .git -prune -o -print
 // ./config.go
 // ./node_generator_test.go
 // ./example/like_cli/adapter/indentation.go
@@ -19,7 +19,7 @@ import (
 // ./example/like_cli/main.go
 // ./example/find_pipe_programmable-gtree/main.go
 // ...
-// $ find . -type d -name .git -prune -o -type f -print | go run example/find_pipe_programmable-gtree/main.go
+// $ find . -name .git -prune -o -print | sort | go run example/find_pipe_programmable-gtree/main.go
 // << See "Output:" below. >>
 func main() {
 	var (
