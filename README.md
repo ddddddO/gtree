@@ -6,42 +6,126 @@
 [![codecov](https://codecov.io/gh/ddddddO/gtree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gtree) [![Go Report Card](https://goreportcard.com/badge/github.com/ddddddO/gtree)](https://goreportcard.com/report/github.com/ddddddO/gtree) [![ci](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml)
 
 
-<img src="assets/demo.gif"><br>
-
-Using either Markdown or Programmatically to generate directory trees🌳 and directories🗂, and to verify directories🔍.
-Provide CLI, Golang library and Web.
+Easily output ASCII tree from unordered Markdown list or Go program (and it does more than just output tree!🌳🗂🔍)
 
 # Table of Contents
-- **[Acknowledgments](https://github.com/ddddddO/gtree?tab=readme-ov-file#acknowledgments)**
 - Features
+	- Package - **[Programmable tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#package---programmable-tree-structure)**
+		- Recommended for developers!👍
+		- **[Acknowledgments](https://github.com/ddddddO/gtree?tab=readme-ov-file#acknowledgments)**
+	- Package - **[Markdown to tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#package---markdown-to-tree-structure)**
 	- **[Web](https://github.com/ddddddO/gtree?tab=readme-ov-file#web)**
 	- **[CLI](https://github.com/ddddddO/gtree?tab=readme-ov-file#cli)**
-	- Library - **[Markdown to tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---markdown-to-tree-structure)**
-	- Library - **[Programmable tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#library---programmable-tree-structure)**
-		- Recommended for developers!👍
 - [Documents](https://github.com/ddddddO/gtree?tab=readme-ov-file#documents)
 - [Process](https://github.com/ddddddO/gtree?tab=readme-ov-file#process)
 - [Performance](https://github.com/ddddddO/gtree?tab=readme-ov-file#performance)
 - [Test coverage](https://github.com/ddddddO/gtree?tab=readme-ov-file#test-coverage)
 
-# Acknowledgments
+# Package - Programmable tree structure
 
-## Thanks for providing very useful CLI for cloud storage tree output🤩🎉
+> [!NOTE]
+> There are sample repositories that use gtree package.<br>
+> See [here](https://github.com/ddddddO/gtree/blob/master/example/README.md) for details.
+
+## Simple example
+
+I urge you to run this program. This package is probably the easiest Go package to output tree.
+
+```go
+package main
+
+import (
+	"fmt"
+	"os"
+
+	"github.com/ddddddO/gtree"
+)
+
+func main() {
+	var root *gtree.Node = gtree.NewRoot("root")
+	root.Add("child 1").Add("child 2").Add("child 3")
+	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("child 4")
+	child4.Add("child 5")
+	child4.Add("child 6").Add("child 7")
+	root.Add("child 8")
+	// you can customize branch format.
+	if err := gtree.OutputFromRoot(os.Stdout, root,
+		gtree.WithBranchFormatIntermedialNode("+--", ":   "),
+		gtree.WithBranchFormatLastNode("+--", "    "),
+	); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	// Output:
+	// root
+	// +-- child 1
+	// :   +-- child 2
+	// :       +-- child 3
+	// :       +-- child 4
+	// :           +-- child 5
+	// :           +-- child 6
+	// :               +-- child 7
+	// +-- child 8
+}
+```
+
+## Installation
+
+Go version requires 1.24 or later.
+
+```console
+$ go get github.com/ddddddO/gtree
+```
+
+## Usage
+
+|Function|Description|Available optional functions|
+|--|--|--|
+|*[OutputFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromRoot)*|can output tree|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
+|*[MkdirFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#MkdirFromRoot)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
+|*[VerifyFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#VerifyFromRoot)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
+|*[WalkFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromRoot)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+|*[WalkIterFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkIterFromRoot)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+
+## Acknowledgments
+
+### Thanks for providing very useful CLI for cloud storage tree output🤩🎉
 
 Everyone is encouraged to use them!
 
-### ⭐[_orangekame3/stree_](https://github.com/orangekame3/stree)
+#### ⭐[_orangekame3/stree_](https://github.com/orangekame3/stree)
 CLI for **Amazon S3** tree output.</br>
 [_aws s3_](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/s3/index.html) command does not do what `tree` command does, but [**_stree_**](https://github.com/orangekame3/stree) command can display tree!
 
-### ⭐[_owlinux1000/gcstree_](https://github.com/owlinux1000/gcstree)
+#### ⭐[_owlinux1000/gcstree_](https://github.com/owlinux1000/gcstree)
 CLI for **Google Cloud Storage** tree output.</br>
 [_gcloud storage_](https://cloud.google.com/sdk/gcloud/reference/storage) command does not do what `tree` command does, but [**_gcstree_**](https://github.com/owlinux1000/gcstree) command can display tree!
 
-## gtree packeage has been utilized for other tools as well🚀
+### gtree packeage has been utilized for other tools as well🚀
 I hope you will use these tools as well!
 
 - [Tools](https://github.com/ddddddO/gtree/network/dependents)
+
+# Package - Markdown to tree structure
+
+## Installation
+
+Go version requires 1.24 or later.
+
+```console
+$ go get github.com/ddddddO/gtree
+```
+
+## Usage
+
+The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
+
+|Function|Description|Available optional functions|
+|--|--|--|
+|*[OutputFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromMarkdown)*|can output trees|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
+|*[MkdirFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#MkdirFromMarkdown)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun<br>WithMassive|
+|*[VerifyFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#VerifyFromMarkdown)*|can output the difference between markdown and directories|WithTargetDir<br>WithStrictVerify<br>WithMassive|
+|*[WalkFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromMarkdown)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithMassive|
 
 # Web
 
@@ -65,6 +149,8 @@ $ gtree web
 
 
 # CLI
+
+<img src="assets/demo.gif"><br>
 
 ## Installation
 
@@ -573,51 +659,6 @@ Required paths does not exist:
 ```
 
 inspired by [mactat/framed](https://github.com/mactat/framed) !
-
-# Library - Markdown to tree structure
-
-## Installation
-
-Go version requires 1.24 or later.
-
-```console
-$ go get github.com/ddddddO/gtree
-```
-
-## Usage
-
-The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
-
-|Function|Description|Available optional functions|
-|--|--|--|
-|*[OutputFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromMarkdown)*|can output trees|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
-|*[MkdirFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#MkdirFromMarkdown)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun<br>WithMassive|
-|*[VerifyFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#VerifyFromMarkdown)*|can output the difference between markdown and directories|WithTargetDir<br>WithStrictVerify<br>WithMassive|
-|*[WalkFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromMarkdown)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithMassive|
-
-# Library - Programmable tree structure
-
-> [!NOTE]
-> There are sample repositories that use gtree library.<br>
-> See [here](https://github.com/ddddddO/gtree/blob/master/example/README.md) for details.
-
-## Installation
-
-Go version requires 1.24 or later.
-
-```console
-$ go get github.com/ddddddO/gtree
-```
-
-## Usage
-
-|Function|Description|Available optional functions|
-|--|--|--|
-|*[OutputFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromRoot)*|can output tree|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
-|*[MkdirFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#MkdirFromRoot)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
-|*[VerifyFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#VerifyFromRoot)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
-|*[WalkFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromRoot)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
-|*[WalkIterFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkIterFromRoot)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
 
 # Process
 
