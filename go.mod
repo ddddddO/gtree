@@ -1,6 +1,6 @@
 module github.com/ddddddO/gtree
 
-go 1.24
+go 1.24.0
 
 require (
 	github.com/fatih/color v1.18.0
@@ -8,7 +8,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.4
 	github.com/urfave/cli/v3 v3.4.1
 	go.uber.org/goleak v1.3.0
-	golang.org/x/sync v0.16.0
+	golang.org/x/sync v0.17.0
 )
 
 require (
