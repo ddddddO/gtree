@@ -1,9 +1,11 @@
+//go:build js && wasm
+
 package main
 
 import (
 	"html/template"
 	"strings"
-	"syscall/js" // nolint
+	"syscall/js"
 
 	tree "github.com/ddddddO/gtree"
 )

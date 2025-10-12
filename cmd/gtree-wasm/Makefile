@@ -19,7 +19,7 @@ confirm:
 # その時のサイズが692KBだったので、goでのビルド時の3MBよりかなり削減できる。
 # goでビルドした.wasmがhttpレスポンス時にgzip圧縮されて約1MBだったので、tinygoビルド版では230KBくらいになると推測。かなりサイズ小さく配信できそう。
 # -> gzip圧縮で268KBだった。
-# ただ、goのwasm_exec.jsではなく、tinygo/targets/wasm_exec.js を使用する。ref: https://tinygo.org/docs/guides/webassembly/#how-it-works
+# ただ、goのwasm_exec.jsではなく、$(tinygo env TINYGOROOT)/targets/wasm_exec.js を使用する。ref: https://tinygo.org/docs/guides/webassembly/#how-it-works
 tinybuild:
 	tinygo build -o main.wasm -target wasm -tags tinywasm main.go
 
