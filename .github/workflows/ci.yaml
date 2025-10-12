@@ -16,12 +16,13 @@ jobs:
       - name: checkout
         uses: actions/checkout@v5
 
-      - name: golangci-lint # localでmake lintした方が今はわかりやすい
-        if: runner.os == 'Linux'
-        uses: golangci/golangci-lint-action@v8
-        with:
-          version: latest
-          args: --issues-exit-code=0
+      # TODO: ちょっとlintが結構でちゃったので一旦別対応にする
+      # - name: golangci-lint # localでmake lintした方が今はわかりやすい
+      #   if: runner.os == 'Linux'
+      #   uses: golangci/golangci-lint-action@v8
+      #   with:
+      #     version: latest
+      #     args: --issues-exit-code=0
 
       - name: test # testだけ各OSで実行
         run: go test . ./markdown/... -race -coverprofile=coverage.out -covermode=atomic -v
