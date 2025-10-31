@@ -89,7 +89,7 @@ $ go get github.com/ddddddO/gtree
 > [!TIP]
 > Specifying ***WithDuplicationAllowed*** function in ***NewRoot*** function,
 > which generates the Node arguments for the above functions,
-> allows multiple nodes with the same name to exist within the same hierarchy.
+> allows multiple nodes with the same text to exist within the same hierarchy.
 
 ## Acknowledgments
 
