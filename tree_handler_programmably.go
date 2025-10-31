@@ -97,19 +97,37 @@ func WalkIterFromRoot(root *Node, options ...Option) iter.Seq2[*WalkerNode, erro
 	}
 }
 
+// Definition of optional functions for Node.
+type NodeOption func(*Node)
+
+// WithDuplicationAllowed is an optional function that ensures Add method call creates and returns a new node even if a node with the same name already exists at the same hierarchy. It can be specified in the NewRoot function.
+func WithDuplicationAllowed() NodeOption {
+	return func(n *Node) {
+		n.allowDuplicates = true
+	}
+}
+
 // NewRoot creates a starting node for building tree.
-func NewRoot(text string) *Node {
-	return newNode(text, rootHierarchyNum, idxCounter.next())
+func NewRoot(text string, options ...NodeOption) *Node {
+	return newNode(text, rootHierarchyNum, idxCounter.next(), options...)
 }
 
 // Add adds a node and returns an instance of it.
 // If a node with the same text already exists in the same hierarchy of the tree, that node will be returned.
+// However, if the WithDuplicationAllowed function is specified for the NewRoot function, it will create and return a new node instance even if a node with the same name exists at the same hierarchy.
 func (parent *Node) Add(text string) *Node {
-	if child := parent.findChildByText(text); child != nil {
-		return child
+	if !parent.allowDuplicates {
+		if child := parent.findChildByText(text); child != nil {
+			return child
+		}
 	}
 
-	current := newNode(text, parent.hierarchy+1, idxCounter.next())
+	nodeOptions := []NodeOption{}
+	if parent.allowDuplicates {
+		nodeOptions = append(nodeOptions, WithDuplicationAllowed())
+	}
+
+	current := newNode(text, parent.hierarchy+1, idxCounter.next(), nodeOptions...)
 	current.setParent(parent)
 	parent.addChild(current)
 	return current

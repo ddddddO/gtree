@@ -50,6 +50,18 @@ func PrepareMultiNode() *gtree.Node {
 	return root
 }
 
+func PrepareMultiNodeWithDuplicationAllowed() *gtree.Node {
+	var root *gtree.Node = gtree.NewRoot("root1", gtree.WithDuplicationAllowed())
+	root.Add("child 1").Add("child 2").Add("child 3")
+	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("child 4")
+	child4.Add("child 5")
+	child4.Add("child 5")
+	child4.Add("child 6").Add("child 7")
+	child4.Add("child 6").Add("child 9")
+	root.Add("child 8")
+	return root
+}
+
 func PrepareInvalidNodeName() *gtree.Node {
 	var root *gtree.Node = gtree.NewRoot("root1")
 	root.Add("child 1").Add("child 2").Add("child 3")

@@ -41,6 +41,29 @@ root1
 			},
 		},
 		{
+			name: "case(succeeded / allowed duplicate nodes)",
+			root: tu.PrepareMultiNodeWithDuplicationAllowed(),
+			out: out{
+				output: strings.TrimLeft(`
+root1
+├── child 1
+│   └── child 2
+│       └── child 3
+├── child 1
+│   └── child 2
+│       └── child 4
+│           ├── child 5
+│           ├── child 5
+│           ├── child 6
+│           │   └── child 7
+│           └── child 6
+│               └── child 9
+└── child 8
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
 			name:    "case(succeeded/massive)",
 			root:    tu.Prepare(),
 			options: []gtree.Option{gtree.WithMassive(nil)},
@@ -104,6 +127,29 @@ root1
 :           +-- child 6
 :               +-- child 7
 +-- child 8
+`, "\n"),
+				err: nil,
+			},
+		},
+		{
+			name: "case(succeeded / allowed duplicate nodes)",
+			root: tu.PrepareMultiNodeWithDuplicationAllowed(),
+			out: out{
+				output: strings.TrimLeft(`
+root1
+├── child 1
+│   └── child 2
+│       └── child 3
+├── child 1
+│   └── child 2
+│       └── child 4
+│           ├── child 5
+│           ├── child 5
+│           ├── child 6
+│           │   └── child 7
+│           └── child 6
+│               └── child 9
+└── child 8
 `, "\n"),
 				err: nil,
 			},

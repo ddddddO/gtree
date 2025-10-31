@@ -9,12 +9,13 @@ import (
 
 // Node is main struct for gtree.
 type Node struct {
-	name      string
-	hierarchy uint
-	index     uint
-	brnch     branch
-	parent    *Node
-	children  []*Node
+	name            string
+	hierarchy       uint
+	index           uint
+	brnch           branch
+	parent          *Node
+	children        []*Node
+	allowDuplicates bool
 }
 
 type branch struct {
@@ -22,12 +23,19 @@ type branch struct {
 	path  string
 }
 
-func newNode(name string, hierarchy, index uint) *Node {
-	return &Node{
+func newNode(name string, hierarchy, index uint, options ...NodeOption) *Node {
+	n := &Node{
 		name:      name,
 		hierarchy: hierarchy,
 		index:     index,
 	}
+	for _, opt := range options {
+		if opt == nil {
+			continue
+		}
+		opt(n)
+	}
+	return n
 }
 
 func (n *Node) setParent(parent *Node) {

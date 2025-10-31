@@ -86,6 +86,11 @@ $ go get github.com/ddddddO/gtree
 |*[WalkFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromRoot)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
 |*[WalkIterFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkIterFromRoot)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
 
+> [!TIP]
+> Specifying ***WithDuplicationAllowed*** function in ***NewRoot*** function,
+> which generates the Node arguments for the above functions,
+> allows multiple nodes with the same name to exist within the same hierarchy.
+
 ## Acknowledgments
 
 ### Thanks for providing very useful CLI for cloud storage tree output🤩🎉
