@@ -111,6 +111,26 @@ root1
 `, "\n"),
 		},
 		{
+			name: "case(succeeded / allowed duplicate nodes)",
+			root: tu.PrepareMultiNodeWithDuplicationAllowed(),
+			want: strings.TrimPrefix(`
+root1
+├── child 1
+│   └── child 2
+│       └── child 3
+├── child 1
+│   └── child 2
+│       └── child 4
+│           ├── child 5
+│           ├── child 5
+│           ├── child 6
+│           │   └── child 7
+│           └── child 6
+│               └── child 9
+└── child 8
+`, "\n"),
+		},
+		{
 			name:    "case(succeeded / output json)",
 			root:    tu.PrepareMultiNode(),
 			options: []gtree.Option{gtree.WithEncodeJSON()},
