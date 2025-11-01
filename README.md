@@ -47,24 +47,20 @@ func main() {
 	child4.Add("child 5")
 	child4.Add("child 6").Add("child 7")
 	root.Add("child 8")
-	// you can customize branch format.
-	if err := gtree.OutputFromRoot(os.Stdout, root,
-		gtree.WithBranchFormatIntermedialNode("+--", ":   "),
-		gtree.WithBranchFormatLastNode("+--", "    "),
-	); err != nil {
+	if err := gtree.OutputFromRoot(os.Stdout, root); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 	// Output:
 	// root
-	// +-- child 1
-	// :   +-- child 2
-	// :       +-- child 3
-	// :       +-- child 4
-	// :           +-- child 5
-	// :           +-- child 6
-	// :               +-- child 7
-	// +-- child 8
+	// ├── child 1
+	// │   └── child 2
+	// │       ├── child 3
+	// │       └── child 4
+	// │           ├── child 5
+	// │           └── child 6
+	// │               └── child 7
+	// └── child 8
 }
 ```
 
@@ -90,6 +86,62 @@ $ go get github.com/ddddddO/gtree
 > Specifying ***WithDuplicationAllowed*** function in ***NewRoot*** function,
 > which generates the Node arguments for the above functions,
 > allows multiple nodes with the same text to exist within the same hierarchy.
+
+### Standard Pattern and Pattern Allowing Node Duplication
+
+```go
+package main
+
+import (
+	"os"
+
+	"github.com/ddddddO/gtree"
+)
+
+func main() {
+	rootOfStandard := gtree.NewRoot("Standard Pattern")
+	addChildren(rootOfStandard)
+	_ = gtree.OutputFromRoot(os.Stdout, rootOfStandard)
+	// Standard Pattern
+	// ├── child 1
+	// │   └── child 2
+	// │       ├── child 3
+	// │       └── child 4
+	// │           ├── child 5
+	// │           └── child 6
+	// │               ├── child 7
+	// │               └── child 9
+	// └── child 8
+
+	rootOfAllowedDuplication := gtree.NewRoot("Pattern Allowing Node Duplication", gtree.WithDuplicationAllowed())
+	addChildren(rootOfAllowedDuplication)
+	_ = gtree.OutputFromRoot(os.Stdout, rootOfAllowedDuplication)
+	// Pattern Allowing Node Duplication
+	// ├── child 1
+	// │   └── child 2
+	// │       └── child 3
+	// ├── child 1
+	// │   └── child 2
+	// │       └── child 4
+	// │           ├── child 5
+	// │           ├── child 6
+	// │           │   └── child 7
+	// │           ├── child 6
+	// │           │   └── child 9
+	// │           └── child 5
+	// └── child 8
+}
+
+func addChildren(root *gtree.Node) {
+	root.Add("child 1").Add("child 2").Add("child 3")
+	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("child 4")
+	child4.Add("child 5")
+	child4.Add("child 6").Add("child 7")
+	child4.Add("child 6").Add("child 9")
+	child4.Add("child 5")
+	root.Add("child 8")
+}
+```
 
 ## Acknowledgments
 
