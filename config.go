@@ -3,8 +3,8 @@ package gtree
 import "context"
 
 type config struct {
-	lastNodeFormat        branchFormat
-	intermedialNodeFormat branchFormat
+	lastNodeFormat        *branchFormat
+	intermedialNodeFormat *branchFormat
 
 	massive        bool
 	ctx            context.Context
@@ -19,11 +19,11 @@ type config struct {
 
 func newConfig(options []Option) *config {
 	c := &config{
-		lastNodeFormat: branchFormat{
+		lastNodeFormat: &branchFormat{
 			directly:   "└──",
 			indirectly: "    ",
 		},
-		intermedialNodeFormat: branchFormat{
+		intermedialNodeFormat: &branchFormat{
 			directly:   "├──",
 			indirectly: "│   ",
 		},

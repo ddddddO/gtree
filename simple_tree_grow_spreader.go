@@ -8,7 +8,7 @@ import (
 )
 
 func newGrowSpreaderSimple(
-	lastNodeFormat, intermedialNodeFormat branchFormat,
+	lastNodeFormat, intermedialNodeFormat *branchFormat,
 ) growSpreaderSimple {
 	return &defaultGrowSpreaderSimple{
 		defaultGrowerSimple: &defaultGrowerSimple{
