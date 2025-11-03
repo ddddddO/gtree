@@ -860,6 +860,10 @@ ok      command-line-arguments  30.670s
 - [盆栽 (節目の記事)](https://zenn.dev/openlogi/articles/f6cc91ac413c8f)
 - [感想](https://scrapbox.io/ddddddo/useful_tools)
 
+# Contributing
+If you have any bugs or requests, please create an [issue](https://github.com/ddddddO/gtree/issues)! Pull Requests are also accepted.
+I will make a best effort to check them😅
+
 # Test coverage
 ![treemap](/assets/test_treemap.svg)
 
