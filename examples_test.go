@@ -632,7 +632,7 @@ func ExampleWalkIterFromRoot() {
 	// └── child 5
 }
 
-func ExampleExampleWalkIterFromRoot_second() {
+func ExampleWalkIterFromRoot_second() {
 	root := gtree.NewRoot("root")
 	root.Add("child 1").Add("child 2").Add("child 3")
 	root.Add("child 5")
