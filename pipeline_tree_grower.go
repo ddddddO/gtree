@@ -8,7 +8,7 @@ import (
 )
 
 func newGrowerPipeline(
-	lastNodeFormat, intermedialNodeFormat branchFormat,
+	lastNodeFormat, intermedialNodeFormat *branchFormat,
 	enabledValidation bool,
 ) growerPipeline {
 	return &defaultGrowerPipeline{

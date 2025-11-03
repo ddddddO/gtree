@@ -21,7 +21,7 @@ type treeSimple struct {
 var _ tree = (*treeSimple)(nil)
 
 func newTreeSimple(cfg *config) tree {
-	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) growerSimple {
+	growerFactory := func(lastNodeFormat, intermedialNodeFormat *branchFormat, dryrun bool, encode encode) growerSimple {
 		if encode != encodeDefault {
 			return newNopGrowerSimple()
 		}
@@ -43,7 +43,7 @@ func newTreeSimple(cfg *config) tree {
 		return newVerifierSimple(targetDir, strict)
 	}
 
-	growSpreaderFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat) growSpreaderSimple {
+	growSpreaderFactory := func(lastNodeFormat, intermedialNodeFormat *branchFormat) growSpreaderSimple {
 		return newGrowSpreaderSimple(lastNodeFormat, intermedialNodeFormat)
 	}
 

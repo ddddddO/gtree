@@ -3,7 +3,7 @@
 package gtree
 
 func newGrower(
-	lastNodeFormat, intermedialNodeFormat branchFormat,
+	lastNodeFormat, intermedialNodeFormat *branchFormat,
 	enabledValidation bool,
 ) grower {
 	return &defaultGrower{
@@ -22,8 +22,8 @@ type branchFormat struct {
 }
 
 type defaultGrower struct {
-	lastNodeFormat        branchFormat
-	intermedialNodeFormat branchFormat
+	lastNodeFormat        *branchFormat
+	intermedialNodeFormat *branchFormat
 	enabledValidation     bool
 }
 

@@ -97,16 +97,6 @@ func WalkIterFromRoot(root *Node, options ...Option) iter.Seq2[*WalkerNode, erro
 	}
 }
 
-// Definition of optional functions for Node.
-type NodeOption func(*Node)
-
-// WithDuplicationAllowed is an optional function that ensures Add method call creates and returns a new node even if a node with the same text already exists at the same hierarchy. It can be specified in the NewRoot function.
-func WithDuplicationAllowed() NodeOption {
-	return func(n *Node) {
-		n.allowDuplicates = true
-	}
-}
-
 // NewRoot creates a starting node for building tree.
 func NewRoot(text string, options ...NodeOption) *Node {
 	return newNode(text, rootHierarchyNum, idxCounter.next(), options...)

@@ -5,7 +5,7 @@ package gtree
 import "iter"
 
 func newGrowerSimple(
-	lastNodeFormat, intermedialNodeFormat branchFormat,
+	lastNodeFormat, intermedialNodeFormat *branchFormat,
 	enabledValidation bool,
 ) growerSimple {
 	return &defaultGrowerSimple{
@@ -16,8 +16,8 @@ func newGrowerSimple(
 }
 
 type defaultGrowerSimple struct {
-	lastNodeFormat        branchFormat
-	intermedialNodeFormat branchFormat
+	lastNodeFormat        *branchFormat
+	intermedialNodeFormat *branchFormat
 	enabledValidation     bool
 }
 

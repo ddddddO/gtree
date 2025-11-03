@@ -77,11 +77,11 @@ $ go get github.com/ddddddO/gtree
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*[OutputFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromRoot)*|can output tree|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
+|*[OutputFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromRoot)*|can output tree|WithMidBranch<br>WithLastBranch<br>WithVLine<br>WithHLine<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML|
 |*[MkdirFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#MkdirFromRoot)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun|
 |*[VerifyFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#VerifyFromRoot)*|can output the difference between tree you composed and directories|WithTargetDir<br>WithStrictVerify|
-|*[WalkFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromRoot)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
-|*[WalkIterFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkIterFromRoot)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode|
+|*[WalkFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromRoot)*|can execute user-defined function while traversing tree structure recursively|WithMidBranch<br>WithLastBranch<br>WithVLine<br>WithHLine|
+|*[WalkIterFromRoot](https://pkg.go.dev/github.com/ddddddO/gtree#WalkIterFromRoot)*|it returns each node resulting from a recursive traversal of the tree structure, so you can process on each node|WithMidBranch<br>WithLastBranch<br>WithVLine<br>WithHLine|
 
 > [!TIP]
 > Specifying ***WithDuplicationAllowed*** function in ***NewRoot*** function,
@@ -179,10 +179,10 @@ The symbols that can be used in Markdown are `*`, `-`, `+`, and `#`.
 
 |Function|Description|Available optional functions|
 |--|--|--|
-|*[OutputFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromMarkdown)*|can output trees|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
+|*[OutputFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#OutputFromMarkdown)*|can output trees|WithMidBranch<br>WithLastBranch<br>WithVLine<br>WithHLine<br>WithEncodeJSON<br>WithEncodeTOML<br>WithEncodeYAML<br>WithMassive|
 |*[MkdirFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#MkdirFromMarkdown)*|can create directories|WithTargetDir<br>WithFileExtensions<br>WithDryRun<br>WithMassive|
 |*[VerifyFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#VerifyFromMarkdown)*|can output the difference between markdown and directories|WithTargetDir<br>WithStrictVerify<br>WithMassive|
-|*[WalkFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromMarkdown)*|can execute user-defined function while traversing tree structure recursively|WithBranchFormatIntermedialNode<br>WithBranchFormatLastNode<br>WithMassive|
+|*[WalkFromMarkdown](https://pkg.go.dev/github.com/ddddddO/gtree#WalkFromMarkdown)*|can execute user-defined function while traversing tree structure recursively|WithMidBranch<br>WithLastBranch<br>WithVLine<br>WithHLine<br>WithMassive|
 
 # Web
 

@@ -60,8 +60,10 @@ func ExampleOutputFromMarkdown_second() {
 
 	// You can customize branch format.
 	if err := gtree.OutputFromMarkdown(os.Stdout, md,
-		gtree.WithBranchFormatIntermedialNode("+->", ":   "),
-		gtree.WithBranchFormatLastNode("+->", "    "),
+		gtree.WithMidBranch("+->"),
+		gtree.WithLastBranch("+->"),
+		gtree.WithHLine(""),
+		gtree.WithVLine(":"),
 	); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -214,22 +216,24 @@ func ExampleOutputFromRoot() {
 	root.Add("child 8")
 	// you can customize branch format.
 	if err := gtree.OutputFromRoot(os.Stdout, root,
-		gtree.WithBranchFormatIntermedialNode("+--", ":   "),
-		gtree.WithBranchFormatLastNode("+--", "    "),
+		gtree.WithMidBranch("+"),
+		gtree.WithLastBranch("-"),
+		gtree.WithVLine(":"),
+		gtree.WithHLine(">>>"),
 	); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 	// Output:
 	// root
-	// +-- child 1
-	// :   +-- child 2
-	// :       +-- child 3
-	// :       +-- child 4
-	// :           +-- child 5
-	// :           +-- child 6
-	// :               +-- child 7
-	// +-- child 8
+	// +>>> child 1
+	// :   ->>> child 2
+	// :       +>>> child 3
+	// :       ->>> child 4
+	// :           +>>> child 5
+	// :           ->>> child 6
+	// :               ->>> child 7
+	// ->>> child 8
 }
 
 type CustomWriter struct {

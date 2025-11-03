@@ -54,7 +54,12 @@ e
 			- k
 	- kk
 		- t`)),
-				options: []gtree.Option{gtree.WithBranchFormatIntermedialNode("+--", ":   "), gtree.WithBranchFormatLastNode("+--", "    ")},
+				options: []gtree.Option{
+					gtree.WithMidBranch("+--"),
+					gtree.WithLastBranch("+--"),
+					gtree.WithHLine(""),
+					gtree.WithVLine(":"),
+				},
 			},
 			out: out{
 				output: strings.TrimLeft(`
