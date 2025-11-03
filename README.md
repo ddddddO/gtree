@@ -18,6 +18,7 @@ Easily output ASCII tree from Go program or Markdown unordered list (and it does
 - [Documents](https://github.com/ddddddO/gtree?tab=readme-ov-file#documents)
 - [Process](https://github.com/ddddddO/gtree?tab=readme-ov-file#process)
 - [Performance](https://github.com/ddddddO/gtree?tab=readme-ov-file#performance)
+- [Contributing](https://github.com/ddddddO/gtree?tab=readme-ov-file#contributing)
 - [Test coverage](https://github.com/ddddddO/gtree?tab=readme-ov-file#test-coverage)
 
 # Package - Programmable tree structure
