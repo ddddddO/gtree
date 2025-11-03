@@ -25,7 +25,7 @@ type spreader interface {
 }
 
 func newTree(cfg *config, roots []*Node) *tree {
-	growerFactory := func(lastNodeFormat, intermedialNodeFormat branchFormat, dryrun bool, encode encode) grower {
+	growerFactory := func(lastNodeFormat, intermedialNodeFormat *branchFormat, dryrun bool, encode encode) grower {
 		if encode != encodeDefault {
 			return newNopGrower()
 		}

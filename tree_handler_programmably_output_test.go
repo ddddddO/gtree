@@ -95,8 +95,10 @@ root
 			name: "case(succeeded / branch format)",
 			root: tu.PrepareMultiNode(),
 			options: []gtree.Option{
-				gtree.WithBranchFormatIntermedialNode("+--", ":   "),
-				gtree.WithBranchFormatLastNode("+--", "    "),
+				gtree.WithMidBranch("+--"),
+				gtree.WithLastBranch("+--"),
+				gtree.WithHLine(""),
+				gtree.WithVLine(":"),
 			},
 			want: strings.TrimPrefix(`
 root1

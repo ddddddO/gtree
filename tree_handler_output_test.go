@@ -565,8 +565,10 @@ Carnivora
     - o
   - g`)),
 				options: []gtree.Option{
-					gtree.WithBranchFormatIntermedialNode("+->", ":   "),
-					gtree.WithBranchFormatLastNode("+->", "    "),
+					gtree.WithMidBranch("+->"),
+					gtree.WithLastBranch("+->"),
+					gtree.WithHLine(""),
+					gtree.WithVLine(":"),
 				},
 			},
 			out: out{

@@ -22,8 +22,10 @@ func TestWalkFromRoot(t *testing.T) {
 			name: "case(succeeded)",
 			root: tu.PrepareMultiNode(),
 			options: []gtree.Option{
-				gtree.WithBranchFormatIntermedialNode("+--", ":   "),
-				gtree.WithBranchFormatLastNode("+--", "    "),
+				gtree.WithMidBranch("+--"),
+				gtree.WithLastBranch("+--"),
+				gtree.WithHLine(""),
+				gtree.WithVLine(":"),
 			},
 			out: out{
 				output: strings.TrimLeft(`
@@ -113,8 +115,10 @@ func TestWalkIterFromRoot(t *testing.T) {
 			name: "case(succeeded)",
 			root: tu.PrepareMultiNode(),
 			options: []gtree.Option{
-				gtree.WithBranchFormatIntermedialNode("+--", ":   "),
-				gtree.WithBranchFormatLastNode("+--", "    "),
+				gtree.WithMidBranch("+--"),
+				gtree.WithLastBranch("+--"),
+				gtree.WithHLine(""),
+				gtree.WithVLine(":"),
 			},
 			out: out{
 				output: strings.TrimLeft(`
