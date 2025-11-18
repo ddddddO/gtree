@@ -15,5 +15,7 @@ const onTabKey = (e) => {
 
   cursor.value = left + spaces + right;
   cursor.selectionEnd = position + spaces.length;
+
+  gtree();
 };
 document.getElementById('in').onkeydown = (e) => onTabKey(e);
