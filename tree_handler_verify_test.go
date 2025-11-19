@@ -67,6 +67,10 @@ func TestVerifyFromMarkdown(t *testing.T) {
 			- indentation.go
 		- main.go
 		- xxxx
+	- n-children
+		- go.mod
+		- go.sum
+		- main.go
 	- programmable
 		- main.go
 	- README.md`)),
