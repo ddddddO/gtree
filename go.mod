@@ -4,7 +4,7 @@ go 1.25.2
 
 require (
 	github.com/fatih/color v1.18.0
-	github.com/goccy/go-yaml v1.19.0
+	github.com/goccy/go-yaml v1.19.1
 	github.com/pelletier/go-toml/v2 v2.2.4
 	github.com/urfave/cli/v3 v3.6.1
 	go.uber.org/goleak v1.3.0
