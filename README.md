@@ -865,6 +865,14 @@ ok      command-line-arguments  30.670s
 If you have any bugs or requests, please create an [issue](https://github.com/ddddddO/gtree/issues)! Pull Requests are also accepted.
 I will make a best effort to check them😅
 
+## Contributors
+
+<a href="https://github.com/ddddddO/gtree/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ddddddO/gtree" />
+</a>
+
+thanks!  
+
 # Test coverage
 ![treemap](/assets/test_treemap.svg)
 
