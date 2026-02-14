@@ -32,7 +32,6 @@ func TestGenerateTab(t *testing.T) {
 	_, _ = nodeGenerator.generate("	- xxx", fixedIndex) // Parserのインデントスペース数を決めるために必要
 
 	for name, tt := range tests {
-		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
@@ -77,7 +76,6 @@ func TestGenerateTwoSpaces(t *testing.T) {
 	_, _ = nodeGenerator.generate("  - xxx", fixedIndex) // Parserのインデントスペース数を決めるために必要
 
 	for name, tt := range tests {
-		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
@@ -123,7 +121,6 @@ func TestGenerateFourSpaces(t *testing.T) {
 	_, _ = nodeGenerator.generate("    - xxx", fixedIndex) // Parserのインデントスペース数を決めるために必要
 
 	for name, tt := range tests {
-		tt := tt
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 

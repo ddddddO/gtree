@@ -24,7 +24,6 @@ func Test_Markdown(t *testing.T) {
 	}
 
 	for name, tt := range tests {
-		tt := tt
 		md := &Markdown{hierarchy: tt.hierarchy, text: tt.text}
 
 		t.Run(name, func(t *testing.T) {
@@ -76,7 +75,6 @@ func Test_IsSymbol(t *testing.T) {
 	}
 
 	for name, tt := range tests {
-		tt := tt
 
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()

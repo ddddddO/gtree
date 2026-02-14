@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"iter"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/goccy/go-yaml"
@@ -238,13 +239,13 @@ type colorizeSpreaderSimple struct {
 }
 
 func (cs *colorizeSpreaderSimple) spread(w io.Writer, roots []*Node) error {
-	ret := ""
+	var ret strings.Builder
 	for _, root := range roots {
 		cs.fileCounter.reset()
 		cs.dirCounter.reset()
-		ret += fmt.Sprintf("%s\n%s\n", cs.spreadBranch(root), cs.summary())
+		ret.WriteString(fmt.Sprintf("%s\n%s\n", cs.spreadBranch(root), cs.summary()))
 	}
-	return cs.write(w, ret)
+	return cs.write(w, ret.String())
 }
 
 func (cs *colorizeSpreaderSimple) spreadIter(w io.Writer, rootIter iter.Seq2[*Node, error]) iter.Seq[error] {

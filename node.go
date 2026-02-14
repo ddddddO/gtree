@@ -84,11 +84,11 @@ func (n *Node) isRoot() bool {
 }
 
 func (n *Node) setBranch(branchs ...string) {
-	ret := ""
+	var ret strings.Builder
 	for _, v := range branchs {
-		ret += v
+		ret.WriteString(v)
 	}
-	n.brnch.value = ret
+	n.brnch.value = ret.String()
 }
 
 func (n *Node) branch() string {
