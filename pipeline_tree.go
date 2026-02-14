@@ -221,7 +221,6 @@ type walkerPipeline interface {
 func (*treePipeline) handlePipelineErr(ctx context.Context, echs ...<-chan error) error {
 	eg, ectx := errgroup.WithContext(ctx)
 	for i := range echs {
-		i := i
 		eg.Go(func() error {
 			select {
 			case err, ok := <-echs[i]:

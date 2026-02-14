@@ -84,7 +84,6 @@ func TestParser_ParseTab(t *testing.T) {
 	}
 
 	for name, tt := range tests {
-		tt := tt
 		parser := NewParser()
 
 		t.Run(name, func(t *testing.T) {
@@ -177,7 +176,6 @@ func TestParser_ParseTwoSpaces(t *testing.T) {
 	}
 
 	for name, tt := range tests {
-		tt := tt
 		parser := NewParser()
 
 		t.Run(name, func(t *testing.T) {
@@ -270,7 +268,6 @@ func TestParser_ParseFourSpaces(t *testing.T) {
 	}
 
 	for name, tt := range tests {
-		tt := tt
 		parser := NewParser()
 
 		t.Run(name, func(t *testing.T) {

@@ -117,11 +117,11 @@ type verifyError struct {
 
 func (v verifyError) Error() string {
 	tabPrefix := func(arr []string) string {
-		tmp := ""
+		var tmp strings.Builder
 		for i := range arr {
-			tmp += fmt.Sprintf("\t%s\n", arr[i])
+			tmp.WriteString(fmt.Sprintf("\t%s\n", arr[i]))
 		}
-		return tmp
+		return tmp.String()
 	}
 
 	msg := ""
