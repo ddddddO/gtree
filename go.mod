@@ -6,7 +6,7 @@ require (
 	github.com/fatih/color v1.19.0
 	github.com/goccy/go-yaml v1.19.2
 	github.com/pelletier/go-toml/v2 v2.3.1
-	github.com/urfave/cli/v3 v3.9.0
+	github.com/urfave/cli/v3 v3.9.1
 	go.uber.org/goleak v1.3.0
 	golang.org/x/sync v0.20.0
 )
