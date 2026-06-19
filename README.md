@@ -5,7 +5,9 @@
 [![GitHub Pages](https://img.shields.io/badge/-GitHub_Pages-00A98F.svg?logo=github&style=flat)](https://ddddddo.github.io/gtree/) [![DeepWiki](https://img.shields.io/badge/DeepWiki-ddddddO%2Fgtree-blue.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAAAXNSR0IArs4c6QAAA05JREFUaEPtmUtyEzEQhtWTQyQLHNak2AB7ZnyXZMEjXMGeK/AIi+QuHrMnbChYY7MIh8g01fJoopFb0uhhEqqcbWTp06/uv1saEDv4O3n3dV60RfP947Mm9/SQc0ICFQgzfc4CYZoTPAswgSJCCUJUnAAoRHOAUOcATwbmVLWdGoH//PB8mnKqScAhsD0kYP3j/Yt5LPQe2KvcXmGvRHcDnpxfL2zOYJ1mFwrryWTz0advv1Ut4CJgf5uhDuDj5eUcAUoahrdY/56ebRWeraTjMt/00Sh3UDtjgHtQNHwcRGOC98BJEAEymycmYcWwOprTgcB6VZ5JK5TAJ+fXGLBm3FDAmn6oPPjR4rKCAoJCal2eAiQp2x0vxTPB3ALO2CRkwmDy5WohzBDwSEFKRwPbknEggCPB/imwrycgxX2NzoMCHhPkDwqYMr9tRcP5qNrMZHkVnOjRMWwLCcr8ohBVb1OMjxLwGCvjTikrsBOiA6fNyCrm8V1rP93iVPpwaE+gO0SsWmPiXB+jikdf6SizrT5qKasx5j8ABbHpFTx+vFXp9EnYQmLx02h1QTTrl6eDqxLnGjporxl3NL3agEvXdT0WmEost648sQOYAeJS9Q7bfUVoMGnjo4AZdUMQku50McDcMWcBPvr0SzbTAFDfvJqwLzgxwATnCgnp4wDl6Aa+Ax283gghmj+vj7feE2KBBRMW3FzOpLOADl0Isb5587h/U4gGvkt5v60Z1VLG8BhYjbzRwyQZemwAd6cCR5/XFWLYZRIMpX39AR0tjaGGiGzLVyhse5C9RKC6ai42ppWPKiBagOvaYk8lO7DajerabOZP46Lby5wKjw1HCRx7p9sVMOWGzb/vA1hwiWc6jm3MvQDTogQkiqIhJV0nBQBTU+3okKCFDy9WwferkHjtxib7t3xIUQtHxnIwtx4mpg26/HfwVNVDb4oI9RHmx5WGelRVlrtiw43zboCLaxv46AZeB3IlTkwouebTr1y2NjSpHz68WNFjHvupy3q8TFn3Hos2IAk4Ju5dCo8B3wP7VPr/FGaKiG+T+v+TQqIrOqMTL1VdWV1DdmcbO8KXBz6esmYWYKPwDL5b5FA1a0hwapHiom0r/cKaoqr+27/XcrS5UwSMbQAAAABJRU5ErkJggg==)](https://deepwiki.com/ddddddO/gtree)<br>
 [![codecov](https://codecov.io/gh/ddddddO/gtree/branch/master/graph/badge.svg?token=JLGSLF33RH)](https://codecov.io/gh/ddddddO/gtree) [![Go Report Card](https://goreportcard.com/badge/github.com/ddddddO/gtree)](https://goreportcard.com/report/github.com/ddddddO/gtree) [![ci](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml/badge.svg)](https://github.com/ddddddO/gtree/actions/workflows/ci.yaml)
 
-Easily output ASCII tree from Go program or Markdown unordered list (and it does more than just output tree!🌳🗂🔍)
+Easily output ASCII tree from Go program or Markdown unordered list (and it does more than just output tree!🌳🗂🔍) 
+
+There's also a CLI tool that can output a tree from JSON, TML, or YAML! It's called *xtree*.
 
 # Table of Contents
 - Features
@@ -206,10 +208,10 @@ $ gtree web
 
 
 # CLI
-
+## *gtree*
 <img src="assets/demo.gif"><br>
 
-## Installation
+### Installation
 
 <pre>
 <b>Go</b>
@@ -264,11 +266,11 @@ gtree
 └── tree.go
 </pre>
 
-### etc
+#### etc
 
 **download binary from [here](https://github.com/ddddddO/gtree/releases).**
 
-## Usage
+### Usage
 
 ```console
 $ gtree --help
@@ -300,7 +302,7 @@ GLOBAL OPTIONS:
    --version, -v  print the version
 ```
 
-### *Output* subcommand
+#### *Output* subcommand
 ```console
 $ gtree output --help
 NAME:
@@ -319,7 +321,7 @@ OPTIONS:
    --help, -h                           show help
 ```
 
-#### Try it!
+##### Try it!
 
 ```console
 $ gtree template
@@ -353,7 +355,7 @@ Other pattern.
 ```
 
 
-#### Usage other than representing a directory.
+##### Usage other than representing a directory.
 
 ```console
 $ cat testdata/sample2.md | gtree output
@@ -380,7 +382,7 @@ k8s_resources
 ```
 
 
-#### Multiple roots
+##### Multiple roots
 
 ```console
 $ cat testdata/sample6.md | gtree output
@@ -410,7 +412,7 @@ Carnivora
                         └── Mustelidae
 ```
 
-#### Output JSON
+##### Output JSON
 
 <details><summary>see</summary>
 
@@ -460,7 +462,7 @@ $ cat testdata/sample5.md | gtree output --format json | jq
 
 </details>
 
-#### Output YAML
+##### Output YAML
 
 <details><summary>see</summary>
 
@@ -488,7 +490,7 @@ children:
 
 </details>
 
-#### Output TOML
+##### Output TOML
 
 <details><summary>see</summary>
 
@@ -525,7 +527,7 @@ children = []
 </details>
 
 
-### *Mkdir* subcommand
+#### *Mkdir* subcommand
 
 ```console
 $ gtree mkdir --help
@@ -544,7 +546,7 @@ OPTIONS:
    --help, -h                                                   show help
 ```
 
-#### Try it!
+##### Try it!
 
 ```console
 $ gtree template
@@ -572,7 +574,7 @@ gtree/
 8 directories, 0 files
 ```
 
-#### *make directories and files*
+##### *make directories and files*
 ```console
 $ gtree template
 - gtree
@@ -599,7 +601,7 @@ gtree/
 3 directories, 5 files
 ```
 
-#### *dry run*
+##### *dry run*
 Does not create a file and directory.
 
 ```console
@@ -642,7 +644,7 @@ EOS
 invalid node name: /root
 ```
 
-### *Verify* subcommand
+#### *Verify* subcommand
 ```console
 $ gtree verify --help
 NAME:
@@ -659,7 +661,7 @@ OPTIONS:
    --help, -h              show help
 ```
 
-#### Try it!
+##### Try it!
 
 ```console
 $ tree example
@@ -716,6 +718,195 @@ Required paths does not exist:
 ```
 
 inspired by [mactat/framed](https://github.com/mactat/framed) !
+
+## *xtree*
+### Installation
+```console
+$ go install github.com/ddddddO/gtree/cmd/xtree@latest
+```
+
+### Usage
+
+```console
+$ xtree --help
+NAME:
+   xtree - This CLI uses {JSON|YAML|TOML} to generate directory tree
+
+USAGE:
+   xtree [global options] [command [command options]]
+
+VERSION:
+   unset / revision unset
+
+COMMANDS:
+   output, o, out  Outputs tree from {JSON|YAML|TOML}.
+                   Let's try 'cat {.json|.yaml|.toml} | xtree output'.
+   version, v      Prints the version.
+   help, h         Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --help, -h     show help
+   --version, -v  print the version
+
+$ xtree output --help
+NAME:
+   xtree output - Outputs tree from {JSON|YAML|TOML}.
+                  Let's try 'cat {.json|.yaml|.toml} | xtree output'.
+
+USAGE:
+   xtree output [options]
+
+OPTIONS:
+   --show-index, --index, -i  set this option when you want to display array element numbers (indices).
+   --allow-duplicate, -a      set this option when you want to allow duplicate node names at the same level
+   --help, -h                 show help
+```
+
+#### JSON to tree
+```console
+$ cat a.json
+{
+    "name": "Alice",
+    "age": 30,
+    "height": 175.5,
+    "is_active": true,
+    "metadata": null,
+    "roles": ["admin", "editor"],
+    "settings": {
+        "theme": "dark",
+        "notifications": true
+    },
+    "devices": [
+        { "type": "mobile", "os": "ios" },
+        { "type": "desktop", "os": "windows" }
+    ]
+}
+
+$ cat a.json | xtree output
+.
+├── age
+│   └── 30
+├── devices
+│   ├── os
+│   │   ├── ios
+│   │   └── windows
+│   └── type
+│       ├── mobile
+│       └── desktop
+├── height
+│   └── 175.5
+├── is_active
+│   └── true
+├── metadata
+│   └── <nil>
+├── name
+│   └── Alice
+├── roles
+│   ├── admin
+│   └── editor
+└── settings
+    ├── notifications
+    │   └── true
+    └── theme
+        └── dark
+```
+
+#### TOML to tree
+```console
+$ cat a.toml
+name = "Alice"
+age = 30
+height = 175.5
+is_active = true
+roles = ["admin", "editor"]
+
+[settings]
+theme = "dark"
+notifications = true
+
+[[devices]]
+type = "mobile"
+os = "ios"
+
+[[devices]]
+type = "desktop"
+os = "windows"
+
+$ cat a.toml | xtree output
+.
+├── age
+│   └── 30
+├── devices
+│   ├── os
+│   │   ├── ios
+│   │   └── windows
+│   └── type
+│       ├── mobile
+│       └── desktop
+├── height
+│   └── 175.5
+├── is_active
+│   └── true
+├── name
+│   └── Alice
+├── roles
+│   ├── admin
+│   └── editor
+└── settings
+    ├── notifications
+    │   └── true
+    └── theme
+        └── dark
+```
+
+### YAML to tree
+```console
+$ cat a.yaml
+name: "Alice"
+age: 30
+height: 175.5
+is_active: true
+metadata: null
+roles:
+  - "admin"
+  - "editor"
+settings:
+  theme: "dark"
+  notifications: true
+devices:
+  - type: "mobile"
+    os: "ios"
+  - type: "desktop"
+    os: "windows"
+
+$ cat a.yaml | xtree output
+.
+├── age
+│   └── 30
+├── devices
+│   ├── os
+│   │   ├── ios
+│   │   └── windows
+│   └── type
+│       ├── mobile
+│       └── desktop
+├── height
+│   └── 175.5
+├── is_active
+│   └── true
+├── metadata
+│   └── <nil>
+├── name
+│   └── Alice
+├── roles
+│   ├── admin
+│   └── editor
+└── settings
+    ├── notifications
+    │   └── true
+    └── theme
+        └── dark
+```
 
 # Process
 

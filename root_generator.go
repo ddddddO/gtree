@@ -31,7 +31,7 @@ func (rg *rootGeneratorSimple) generate() ([]*Node, error) {
 	)
 
 	for rg.scanner.Scan() {
-		currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
+		currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter)
 		if err != nil {
 			return nil, err
 		}
@@ -65,7 +65,7 @@ func (rg *rootGeneratorSimple) generateIter() func(yield func(*Node, error) bool
 
 	return func(yield func(*Node, error) bool) {
 		for rg.scanner.Scan() {
-			currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
+			currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter)
 			if err != nil {
 				yield(nil, err)
 				return
@@ -152,7 +152,7 @@ func (rg *rootGeneratorPipeline) worker(ctx context.Context, wg *sync.WaitGroup,
 				counter = newCounter()
 			)
 			for sc.Scan() {
-				currentNode, err := rg.nodeGenerator.generate(sc.Text(), counter.next())
+				currentNode, err := rg.nodeGenerator.generate(sc.Text(), counter)
 				if err != nil {
 					errc <- err
 					return
