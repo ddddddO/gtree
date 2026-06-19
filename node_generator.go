@@ -30,7 +30,7 @@ func (ie *inputFormatError) Error() string {
 	return fmt.Sprintf("incorrect input format: %s", ie.row)
 }
 
-func (ng *nodeGenerator) generate(row string, idx uint) (*Node, error) {
+func (ng *nodeGenerator) generate(row string, idxCounter *counter) (*Node, error) {
 	markdown, err := ng.parser.Parse(row)
 	if err != nil {
 		return nil, ng.handleErr(err, row)
@@ -39,7 +39,7 @@ func (ng *nodeGenerator) generate(row string, idx uint) (*Node, error) {
 	return newNode(
 		markdown.Text(),
 		markdown.Hierarchy(),
-		idx,
+		idxCounter,
 	), nil
 }
 

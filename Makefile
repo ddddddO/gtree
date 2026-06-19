@@ -21,6 +21,7 @@ test: sweep
 	go clean -testcache
 	go test . -race -v -count=1
 	go test ./markdown/... -race -v -count=1
+	go test ./cmd/... -race -v -count=1
 
 cover: sweep
 	go test . ./markdown/... -race -coverprofile=coverage.out -covermode=atomic -v

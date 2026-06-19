@@ -5,14 +5,15 @@ import (
 )
 
 func TestNode_IsDirectlyUnder(t *testing.T) {
+	idxCounter := newCounter()
 	tests := map[string]struct {
 		parent *Node
 		child  *Node
 		want   bool
 	}{
-		"true":                        {newNode("p", uint(1), uint(1)), newNode("c", uint(2), uint(2)), true},
-		"false":                       {newNode("c", uint(2), uint(1)), newNode("p", uint(1), uint(2)), false},
-		"false(argument node is nil)": {nil, newNode("c", uint(2), uint(2)), false},
+		"true":                        {newNode("p", uint(1), idxCounter), newNode("c", uint(2), idxCounter), true},
+		"false":                       {newNode("c", uint(2), idxCounter), newNode("p", uint(1), idxCounter), false},
+		"false(argument node is nil)": {nil, newNode("c", uint(2), idxCounter), false},
 	}
 
 	for name, tt := range tests {
@@ -29,17 +30,19 @@ func TestNode_IsDirectlyUnder(t *testing.T) {
 
 func TestNode_IsLastOfHierarchy(t *testing.T) {
 	trueNode := func() *Node {
-		parent := newNode("p", uint(1), uint(1))
-		child := newNode("c", uint(2), uint(2))
+		idxCounter := newCounter()
+		parent := newNode("p", uint(1), idxCounter)
+		child := newNode("c", uint(2), idxCounter)
 		parent.addChild(child)
 		child.setParent(parent)
 		return child
 	}
 
 	falseNode := func() *Node {
-		parent := newNode("p", uint(1), uint(1))
-		child1 := newNode("c1", uint(2), uint(2))
-		child2 := newNode("c2", uint(2), uint(3))
+		idxCounter := newCounter()
+		parent := newNode("p", uint(1), idxCounter)
+		child1 := newNode("c1", uint(2), idxCounter)
+		child2 := newNode("c2", uint(2), idxCounter)
 		parent.addChild(child1)
 		child1.setParent(parent)
 		parent.addChild(child2)
@@ -48,7 +51,8 @@ func TestNode_IsLastOfHierarchy(t *testing.T) {
 	}
 
 	falseNodeNotSetParent := func() *Node {
-		child := newNode("c", uint(2), uint(2))
+		idxCounter := newCounter()
+		child := newNode("c", uint(2), idxCounter)
 		return child
 	}
 

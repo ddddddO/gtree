@@ -450,10 +450,7 @@ func TestOutput(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// NOTE: 並行処理で呼び出すと稀に枝が意図しない表示になる。
-			//       gtree.XxxxFromYyy関数が平行に走るとグローバルのindex counterのresetが走って別で生成するNodeのindexがずれることによるもの
-			//       並行でこの関数群を呼び出すことはそうないと思うので一旦置いとく
-			// t.Parallel()
+			t.Parallel()
 
 			ret := &bytes.Buffer{}
 			gotErr := output(ret, tt.inputData, tt.inputRoot, tt.inputShowIndex)

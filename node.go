@@ -16,6 +16,8 @@ type Node struct {
 	parent          *Node
 	children        []*Node
 	allowDuplicates bool
+
+	idxCounter *counter // Rootから辿る子はすべて同じcounterを指す
 }
 
 type branch struct {
@@ -23,11 +25,13 @@ type branch struct {
 	path  string
 }
 
-func newNode(name string, hierarchy, index uint, options ...NodeOption) *Node {
+func newNode(name string, hierarchy uint, idxCounter *counter, options ...NodeOption) *Node {
 	n := &Node{
 		name:      name,
 		hierarchy: hierarchy,
-		index:     index,
+		index:     idxCounter.next(),
+
+		idxCounter: idxCounter,
 	}
 	for _, opt := range options {
 		if opt == nil {
