@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"sort"
+	"strings"
 
 	"github.com/ddddddO/gtree"
 	"github.com/goccy/go-yaml"
@@ -148,11 +149,12 @@ func walk(parent *gtree.Node, key string, value any, showIndex bool) {
 		}
 
 	default:
+		val := strings.ReplaceAll(fmt.Sprintf("%v", v), "\n", "\\n")
 		if key != "" {
 			keyNode := parent.Add(key)
-			keyNode.Add(fmt.Sprintf("%v", v))
+			keyNode.Add(val)
 		} else {
-			parent.Add(fmt.Sprintf("%v", v))
+			parent.Add(val)
 		}
 	}
 }

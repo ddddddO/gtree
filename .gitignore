@@ -25,7 +25,7 @@ root_j/
 Primate/
 cmd/gtree/gtree
 gtree.wasm
-cmd/xtree/a.json
-cmd/xtree/a.toml
-cmd/xtree/a.yaml
+cmd/xtree/*.json
+cmd/xtree/*.toml
+cmd/xtree/*.yaml
 cmd/xtree/xtree
