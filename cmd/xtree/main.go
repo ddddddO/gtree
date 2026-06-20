@@ -35,14 +35,14 @@ func main() {
 					"Let's try 'cat {.json|.yaml|.toml} | xtree output'.",
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
-						Name:    "show-index",
-						Aliases: []string{"index", "i"},
-						Usage:   "set this option when you want to display array element numbers (indices).",
+						Name:    "omit-index",
+						Aliases: []string{"omit", "o"},
+						Usage:   "set this option when you do not want to display array indices.",
 					},
 					&cli.BoolFlag{
 						Name:    "allow-duplicate",
 						Aliases: []string{"a"},
-						Usage:   "set this option when you want to allow duplicate node names at the same level",
+						Usage:   "set this option when you want to allow duplicate node names at the same level.",
 					},
 				},
 				Before: notExistArgs,
@@ -71,12 +71,12 @@ func actionOutput(ctx context.Context, c *cli.Command) error {
 	if c.Bool("allow-duplicate") {
 		root = gtree.NewRoot(".", gtree.WithDuplicationAllowed())
 	}
-	showIndex := c.Bool("show-index")
+	omitIndex := c.Bool("omit-index")
 
-	return output(os.Stdout, os.Stdin, root, showIndex)
+	return output(os.Stdout, os.Stdin, root, omitIndex)
 }
 
-func output(w io.Writer, r io.Reader, root *gtree.Node, showIndex bool) error {
+func output(w io.Writer, r io.Reader, root *gtree.Node, omitIndex bool) error {
 	input, err := io.ReadAll(r)
 	if err != nil {
 		return err
@@ -85,7 +85,7 @@ func output(w io.Writer, r io.Reader, root *gtree.Node, showIndex bool) error {
 	if err != nil {
 		return err
 	}
-	walk(root, "", data, showIndex)
+	walk(root, "", data, omitIndex)
 
 	return gtree.OutputFromRoot(w, root)
 }
@@ -106,7 +106,7 @@ func parseData(data []byte) (any, error) {
 	return nil, errors.New("data is in an unsupported format or is invalid")
 }
 
-func walk(parent *gtree.Node, key string, value any, showIndex bool) {
+func walk(parent *gtree.Node, key string, value any, omitIndex bool) {
 	switch v := value.(type) {
 	case map[string]any:
 		node := parent
@@ -121,7 +121,7 @@ func walk(parent *gtree.Node, key string, value any, showIndex bool) {
 		sort.Strings(keys)
 
 		for _, k := range keys {
-			walk(node, k, v[k], showIndex)
+			walk(node, k, v[k], omitIndex)
 		}
 
 	case map[any]any:
@@ -130,7 +130,7 @@ func walk(parent *gtree.Node, key string, value any, showIndex bool) {
 			node = parent.Add(key)
 		}
 		for k, val := range v {
-			walk(node, fmt.Sprintf("%v", k), val, showIndex)
+			walk(node, fmt.Sprintf("%v", k), val, omitIndex)
 		}
 
 	case []any:
@@ -140,11 +140,11 @@ func walk(parent *gtree.Node, key string, value any, showIndex bool) {
 		}
 
 		for i, item := range v {
-			if showIndex {
-				indexNode := node.Add(fmt.Sprintf("[%d]", i))
-				walk(indexNode, "", item, showIndex)
+			if omitIndex {
+				walk(node, "", item, omitIndex)
 			} else {
-				walk(node, "", item, showIndex)
+				indexNode := node.Add(fmt.Sprintf("[%d]", i))
+				walk(indexNode, "", item, omitIndex)
 			}
 		}
 
