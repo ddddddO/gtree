@@ -757,8 +757,8 @@ USAGE:
    xtree output [options]
 
 OPTIONS:
-   --show-index, --index, -i  set this option when you want to display array element numbers (indices).
-   --allow-duplicate, -a      set this option when you want to allow duplicate node names at the same level
+   --omit-index, --omit, -o   set this option when you do not want to display array indices.
+   --allow-duplicate, -a      set this option when you want to allow duplicate node names at the same level.
    --help, -h                 show help
 ```
 
@@ -787,12 +787,16 @@ $ cat a.json | xtree output
 ├── age
 │   └── 30
 ├── devices
-│   ├── os
-│   │   ├── ios
-│   │   └── windows
-│   └── type
-│       ├── mobile
-│       └── desktop
+│   ├── [0]
+│   │   ├── os
+│   │   │   └── ios
+│   │   └── type
+│   │       └── mobile
+│   └── [1]
+│       ├── os
+│       │   └── windows
+│       └── type
+│           └── desktop
 ├── height
 │   └── 175.5
 ├── is_active
@@ -802,8 +806,10 @@ $ cat a.json | xtree output
 ├── name
 │   └── Alice
 ├── roles
-│   ├── admin
-│   └── editor
+│   ├── [0]
+│   │   └── admin
+│   └── [1]
+│       └── editor
 └── settings
     ├── notifications
     │   └── true
@@ -837,12 +843,16 @@ $ cat a.toml | xtree output
 ├── age
 │   └── 30
 ├── devices
-│   ├── os
-│   │   ├── ios
-│   │   └── windows
-│   └── type
-│       ├── mobile
-│       └── desktop
+│   ├── [0]
+│   │   ├── os
+│   │   │   └── ios
+│   │   └── type
+│   │       └── mobile
+│   └── [1]
+│       ├── os
+│       │   └── windows
+│       └── type
+│           └── desktop
 ├── height
 │   └── 175.5
 ├── is_active
@@ -850,8 +860,10 @@ $ cat a.toml | xtree output
 ├── name
 │   └── Alice
 ├── roles
-│   ├── admin
-│   └── editor
+│   ├── [0]
+│   │   └── admin
+│   └── [1]
+│       └── editor
 └── settings
     ├── notifications
     │   └── true
@@ -884,12 +896,16 @@ $ cat a.yaml | xtree output
 ├── age
 │   └── 30
 ├── devices
-│   ├── os
-│   │   ├── ios
-│   │   └── windows
-│   └── type
-│       ├── mobile
-│       └── desktop
+│   ├── [0]
+│   │   ├── os
+│   │   │   └── ios
+│   │   └── type
+│   │       └── mobile
+│   └── [1]
+│       ├── os
+│       │   └── windows
+│       └── type
+│           └── desktop
 ├── height
 │   └── 175.5
 ├── is_active
@@ -899,8 +915,10 @@ $ cat a.yaml | xtree output
 ├── name
 │   └── Alice
 ├── roles
-│   ├── admin
-│   └── editor
+│   ├── [0]
+│   │   └── admin
+│   └── [1]
+│       └── editor
 └── settings
     ├── notifications
     │   └── true

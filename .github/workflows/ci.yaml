@@ -25,7 +25,7 @@ jobs:
       #     args: --issues-exit-code=0
 
       - name: test # testだけ各OSで実行
-        run: go test . ./markdown/... -race -coverprofile=coverage.out -covermode=atomic -v
+        run: go test . ./markdown/... ./cmd/xtree/... -race -coverprofile=coverage.out -covermode=atomic -v
 
       - name: upload coverage to Codecov
         if: runner.os == 'Linux'
