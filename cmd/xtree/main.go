@@ -87,7 +87,15 @@ func output(w io.Writer, r io.Reader, root *gtree.Node, omitIndex bool) error {
 	}
 	walk(root, "", data, omitIndex)
 
-	return gtree.OutputFromRoot(w, root)
+	for wn, err := range gtree.WalkIterFromRoot(root) {
+		if err != nil {
+			return err
+		}
+
+		fmt.Fprintln(w, wn.Row())
+	}
+
+	return nil
 }
 
 func parseData(data []byte) (any, error) {
@@ -122,15 +130,6 @@ func walk(parent *gtree.Node, key string, value any, omitIndex bool) {
 
 		for _, k := range keys {
 			walk(node, k, v[k], omitIndex)
-		}
-
-	case map[any]any:
-		node := parent
-		if key != "" {
-			node = parent.Add(key)
-		}
-		for k, val := range v {
-			walk(node, fmt.Sprintf("%v", k), val, omitIndex)
 		}
 
 	case []any:
