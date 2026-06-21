@@ -11,17 +11,18 @@ There's also a CLI tool that can output a tree from JSON, TML, or YAML! It's cal
 
 # Table of Contents
 - Features
-	- Package - **[Programmable tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#package---programmable-tree-structure)**
+	- Package - **[Programmable tree structure](https://github.com/ddddddO/gtree?#package---programmable-tree-structure)**
 		- Recommended for developers!👍
-		- **[Acknowledgments](https://github.com/ddddddO/gtree?tab=readme-ov-file#acknowledgments)**
-	- Package - **[Markdown to tree structure](https://github.com/ddddddO/gtree?tab=readme-ov-file#package---markdown-to-tree-structure)**
-	- **[Web](https://github.com/ddddddO/gtree?tab=readme-ov-file#web)**
-	- **[CLI](https://github.com/ddddddO/gtree?tab=readme-ov-file#cli)**
-- [Documents](https://github.com/ddddddO/gtree?tab=readme-ov-file#documents)
-- [Process](https://github.com/ddddddO/gtree?tab=readme-ov-file#process)
-- [Performance](https://github.com/ddddddO/gtree?tab=readme-ov-file#performance)
-- [Contributing](https://github.com/ddddddO/gtree?tab=readme-ov-file#contributing)
-- [Test coverage](https://github.com/ddddddO/gtree?tab=readme-ov-file#test-coverage)
+		- **[Acknowledgments](https://github.com/ddddddO/gtree?#acknowledgments)**
+	- Package - **[Markdown to tree structure](https://github.com/ddddddO/gtree?#package---markdown-to-tree-structure)**
+	- **[Web](https://github.com/ddddddO/gtree?#web)**
+	- CLI - **[gtree](https://github.com/ddddddO/gtree?#gtree)**
+	- CLI - **[xtree](https://github.com/ddddddO/gtree?#xtree)**
+- [Documents](https://github.com/ddddddO/gtree?#documents)
+- [Process](https://github.com/ddddddO/gtree?#process)
+- [Performance](https://github.com/ddddddO/gtree?#performance)
+- [Contributing](https://github.com/ddddddO/gtree?#contributing)
+- [Test coverage](https://github.com/ddddddO/gtree?#test-coverage)
 
 # Package - Programmable tree structure
 
