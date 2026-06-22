@@ -25,7 +25,7 @@ var (
 func main() {
 	app := &cli.Command{
 		Name:    "xtree",
-		Usage:   "This CLI uses {JSON|YAML|TOML} to generate directory tree",
+		Usage:   "This CLI uses {JSON|YAML|TOML} to generate ASCII tree",
 		Version: fmt.Sprintf("%s / revision %s", Version, Revision),
 		Commands: []*cli.Command{
 			{
@@ -43,6 +43,12 @@ func main() {
 						Name:    "allow-duplicate",
 						Aliases: []string{"a"},
 						Usage:   "set this option when you want to allow duplicate node names at the same level.",
+					},
+					&cli.IntFlag{
+						Name:        "level",
+						Aliases:     []string{"l"},
+						Usage:       "set this option when you want to specify the depth of the tree.",
+						HideDefault: true,
 					},
 				},
 				Before: notExistArgs,
@@ -72,11 +78,15 @@ func actionOutput(ctx context.Context, c *cli.Command) error {
 		root = gtree.NewRoot(".", gtree.WithDuplicationAllowed())
 	}
 	omitIndex := c.Bool("omit-index")
+	level := c.Int("level")
+	if c.IsSet("level") && level <= 0 {
+		return errors.New("invalid level, must be greater than 0.")
+	}
 
-	return output(os.Stdout, os.Stdin, root, omitIndex)
+	return output(os.Stdout, os.Stdin, root, omitIndex, level)
 }
 
-func output(w io.Writer, r io.Reader, root *gtree.Node, omitIndex bool) error {
+func output(w io.Writer, r io.Reader, root *gtree.Node, omitIndex bool, level int) error {
 	input, err := io.ReadAll(r)
 	if err != nil {
 		return err
@@ -87,12 +97,20 @@ func output(w io.Writer, r io.Reader, root *gtree.Node, omitIndex bool) error {
 	}
 	walk(root, "", data, omitIndex)
 
+	limit := level + 1
 	for wn, err := range gtree.WalkIterFromRoot(root) {
 		if err != nil {
 			return err
 		}
 
-		fmt.Fprintln(w, wn.Row())
+		if level == 0 {
+			fmt.Fprintln(w, wn.Row())
+			continue
+		}
+		if wn.Level() <= uint(limit) {
+			fmt.Fprintln(w, wn.Row())
+			continue
+		}
 	}
 
 	return nil
