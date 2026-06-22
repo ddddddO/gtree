@@ -73,6 +73,7 @@ func TestOutput(t *testing.T) {
 		inputData      io.Reader
 		inputRoot      *gtree.Node
 		inputOmitIndex bool
+		inputLevel     int
 		want           string
 		wantErr        error
 	}{
@@ -537,7 +538,7 @@ func TestOutput(t *testing.T) {
 			t.Parallel()
 
 			ret := &bytes.Buffer{}
-			gotErr := output(ret, tt.inputData, tt.inputRoot, tt.inputOmitIndex)
+			gotErr := output(ret, tt.inputData, tt.inputRoot, tt.inputOmitIndex, tt.inputLevel)
 			gotOutput := ret.String()
 
 			if gotErr != nil {
@@ -559,6 +560,7 @@ func TestOutput_multiRow(t *testing.T) {
 		inputData      io.Reader
 		inputRoot      *gtree.Node
 		inputOmitIndex bool
+		inputLevel     int
 		want           string
 		wantErr        error
 	}{
@@ -633,7 +635,7 @@ config:
 			t.Parallel()
 
 			ret := &bytes.Buffer{}
-			gotErr := output(ret, tt.inputData, tt.inputRoot, tt.inputOmitIndex)
+			gotErr := output(ret, tt.inputData, tt.inputRoot, tt.inputOmitIndex, tt.inputLevel)
 			gotOutput := ret.String()
 
 			if gotErr != nil {
