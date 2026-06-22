@@ -731,7 +731,7 @@ $ go install github.com/ddddddO/gtree/cmd/xtree@latest
 ```console
 $ xtree --help
 NAME:
-   xtree - This CLI uses {JSON|YAML|TOML} to generate directory tree
+   xtree - This CLI uses {JSON|YAML|TOML} to generate ASCII tree
 
 USAGE:
    xtree [global options] [command [command options]]
@@ -758,9 +758,10 @@ USAGE:
    xtree output [options]
 
 OPTIONS:
-   --omit-index, --omit, -o   set this option when you do not want to display array indices.
-   --allow-duplicate, -a      set this option when you want to allow duplicate node names at the same level.
-   --help, -h                 show help
+   --omit-index, --omit, -o  set this option when you do not want to display array indices.
+   --allow-duplicate, -a     set this option when you want to allow duplicate node names at the same level.
+   --level int, -l int       set this option when you want to specify the depth of the tree.
+   --help, -h                show help
 ```
 
 #### JSON to tree
@@ -925,6 +926,73 @@ $ cat a.yaml | xtree output
     │   └── true
     └── theme
         └── dark
+```
+
+### Omit index flg
+```console
+$ cat a.json | xtree output --omit-index
+.
+├── age
+│   └── 30
+├── devices
+│   ├── os
+│   │   ├── ios
+│   │   └── windows
+│   └── type
+│       ├── mobile
+│       └── desktop
+├── height
+│   └── 175.5
+├── is_active
+│   └── true
+├── metadata
+│   └── <nil>
+├── name
+│   └── Alice
+├── roles
+│   ├── admin
+│   └── editor
+└── settings
+    ├── notifications
+    │   └── true
+    └── theme
+        └── dark
+```
+
+### Level flg
+```console
+$ cat a.json | xtree output --level 1
+.
+├── age
+├── devices
+├── height
+├── is_active
+├── metadata
+├── name
+├── roles
+└── settings
+
+$ cat a.json | xtree output --level 2 --omit-index
+.
+├── age
+│   └── 30
+├── devices
+│   ├── os
+│   └── type
+├── height
+│   └── 175.5
+├── is_active
+│   └── true
+├── metadata
+│   └── <nil>
+├── name
+│   └── Alice
+├── roles
+│   ├── admin
+│   └── editor
+└── settings
+    ├── notifications
+    └── theme
 ```
 
 # Process
