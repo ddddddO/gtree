@@ -134,6 +134,8 @@ func ExampleWalkFromMarkdown_second() {
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
+		fmt.Printf("\tChildren : %v\n", wn.Children())
+		fmt.Printf("\tAncestors: %v\n", wn.Ancestors())
 		return nil
 	}
 
@@ -149,6 +151,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 1
 	//	Path     : a
 	//	HasChild : true
+	//	Children : [i kk]
+	//	Ancestors: []
 	// WalkerNode's methods called...
 	//	Name     : i
 	//	Branch   : ├──
@@ -156,6 +160,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 2
 	//	Path     : a/i
 	//	HasChild : true
+	//	Children : [u]
+	//	Ancestors: [a]
 	// WalkerNode's methods called...
 	//	Name     : u
 	//	Branch   : │   └──
@@ -163,6 +169,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 3
 	//	Path     : a/i/u
 	//	HasChild : true
+	//	Children : [k]
+	//	Ancestors: [a i]
 	// WalkerNode's methods called...
 	//	Name     : k
 	//	Branch   : │       └──
@@ -170,6 +178,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 4
 	//	Path     : a/i/u/k
 	//	HasChild : false
+	//	Children : []
+	//	Ancestors: [a i u]
 	// WalkerNode's methods called...
 	//	Name     : kk
 	//	Branch   : └──
@@ -177,6 +187,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 2
 	//	Path     : a/kk
 	//	HasChild : true
+	//	Children : [t]
+	//	Ancestors: [a]
 	// WalkerNode's methods called...
 	//	Name     : t
 	//	Branch   :     └──
@@ -184,6 +196,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 3
 	//	Path     : a/kk/t
 	//	HasChild : false
+	//	Children : []
+	//	Ancestors: [a kk]
 	// WalkerNode's methods called...
 	//	Name     : e
 	//	Branch   :
@@ -191,6 +205,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 1
 	//	Path     : e
 	//	HasChild : true
+	//	Children : [o]
+	//	Ancestors: []
 	// WalkerNode's methods called...
 	//	Name     : o
 	//	Branch   : └──
@@ -198,6 +214,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 2
 	//	Path     : e/o
 	//	HasChild : true
+	//	Children : [g]
+	//	Ancestors: [e]
 	// WalkerNode's methods called...
 	//	Name     : g
 	//	Branch   :     └──
@@ -205,6 +223,8 @@ func ExampleWalkFromMarkdown_second() {
 	//	Level    : 3
 	//	Path     : e/o/g
 	//	HasChild : false
+	//	Children : []
+	//	Ancestors: [e o]
 }
 
 func ExampleOutputFromRoot() {
@@ -561,6 +581,8 @@ func ExampleWalkFromRoot_second() {
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
+		fmt.Printf("\tChildren : %v\n", wn.Children())
+		fmt.Printf("\tAncestors: %v\n", wn.Ancestors())
 		return nil
 	}
 
@@ -576,6 +598,8 @@ func ExampleWalkFromRoot_second() {
 	//         Level    : 1
 	//         Path     : root
 	//         HasChild : true
+	//         Children : [child 1 child 5]
+	//         Ancestors: []
 	// WalkerNode's methods called...
 	//         Name     : child 1
 	//         Branch   : ├──
@@ -583,6 +607,8 @@ func ExampleWalkFromRoot_second() {
 	//         Level    : 2
 	//         Path     : root/child 1
 	//         HasChild : true
+	//         Children : [child 2]
+	//         Ancestors: [root]
 	// WalkerNode's methods called...
 	//         Name     : child 2
 	//         Branch   : │   └──
@@ -590,6 +616,8 @@ func ExampleWalkFromRoot_second() {
 	//         Level    : 3
 	//         Path     : root/child 1/child 2
 	//         HasChild : true
+	//         Children : [child 3 child 4]
+	//         Ancestors: [root child 1]
 	// WalkerNode's methods called...
 	//         Name     : child 3
 	//         Branch   : │       ├──
@@ -597,6 +625,8 @@ func ExampleWalkFromRoot_second() {
 	//         Level    : 4
 	//         Path     : root/child 1/child 2/child 3
 	//         HasChild : false
+	//         Children : []
+	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
 	//         Name     : child 4
 	//         Branch   : │       └──
@@ -604,6 +634,8 @@ func ExampleWalkFromRoot_second() {
 	//         Level    : 4
 	//         Path     : root/child 1/child 2/child 4
 	//         HasChild : false
+	//         Children : []
+	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
 	//         Name     : child 5
 	//         Branch   : └──
@@ -611,6 +643,8 @@ func ExampleWalkFromRoot_second() {
 	//         Level    : 2
 	//         Path     : root/child 5
 	//         HasChild : false
+	//         Children : []
+	//         Ancestors: [root]
 }
 
 func ExampleWalkIterFromRoot() {
@@ -655,6 +689,8 @@ func ExampleWalkIterFromRoot_second() {
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
+		fmt.Printf("\tChildren : %v\n", wn.Children())
+		fmt.Printf("\tAncestors: %v\n", wn.Ancestors())
 	}
 	// want:
 	// WalkerNode's methods called...
@@ -664,6 +700,8 @@ func ExampleWalkIterFromRoot_second() {
 	//         Level    : 1
 	//         Path     : root
 	//         HasChild : true
+	//         Children : [child 1 child 5]
+	//         Ancestors: []
 	// WalkerNode's methods called...
 	//         Name     : child 1
 	//         Branch   : ├──
@@ -671,6 +709,8 @@ func ExampleWalkIterFromRoot_second() {
 	//         Level    : 2
 	//         Path     : root/child 1
 	//         HasChild : true
+	//         Children : [child 2]
+	//         Ancestors: [root]
 	// WalkerNode's methods called...
 	//         Name     : child 2
 	//         Branch   : │   └──
@@ -678,6 +718,8 @@ func ExampleWalkIterFromRoot_second() {
 	//         Level    : 3
 	//         Path     : root/child 1/child 2
 	//         HasChild : true
+	//         Children : [child 3 child 4]
+	//         Ancestors: [root child 1]
 	// WalkerNode's methods called...
 	//         Name     : child 3
 	//         Branch   : │       ├──
@@ -685,6 +727,8 @@ func ExampleWalkIterFromRoot_second() {
 	//         Level    : 4
 	//         Path     : root/child 1/child 2/child 3
 	//         HasChild : false
+	//         Children : []
+	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
 	//         Name     : child 4
 	//         Branch   : │       └──
@@ -692,6 +736,8 @@ func ExampleWalkIterFromRoot_second() {
 	//         Level    : 4
 	//         Path     : root/child 1/child 2/child 4
 	//         HasChild : false
+	//         Children : []
+	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
 	//         Name     : child 5
 	//         Branch   : └──
@@ -699,4 +745,6 @@ func ExampleWalkIterFromRoot_second() {
 	//         Level    : 2
 	//         Path     : root/child 5
 	//         HasChild : false
+	//         Children : []
+	//         Ancestors: [root]
 }

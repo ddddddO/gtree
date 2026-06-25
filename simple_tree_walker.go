@@ -2,7 +2,10 @@
 
 package gtree
 
-import "iter"
+import (
+	"iter"
+	"slices"
+)
 
 // WalkerNode is used in user-defined function that can be executed with Walk/WalkProgrammably function.
 type WalkerNode struct {
@@ -42,6 +45,26 @@ func (wn *WalkerNode) Path() string {
 // HasChild returns whether the node in completed tree structure has child nodes.
 func (wn *WalkerNode) HasChild() bool {
 	return wn.origin.hasChild()
+}
+
+// Children returns names of immediate child nodes in completed tree structure.
+func (wn *WalkerNode) Children() []string {
+	children := make([]string, 0, len(wn.origin.children))
+	for _, child := range wn.origin.children {
+		children = append(children, child.name)
+	}
+	return children
+}
+
+// Ancestors returns names of all ancestor nodes in completed tree structure.
+func (wn *WalkerNode) Ancestors() []string {
+	var ancestors []string
+	parent := wn.origin.parent
+	for ; parent != nil; parent = parent.parent {
+		ancestors = append(ancestors, parent.name)
+	}
+	slices.Reverse(ancestors)
+	return ancestors
 }
 
 func newWalkerSimple() walkerSimple {

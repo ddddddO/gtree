@@ -127,6 +127,8 @@ WalkerNode's methods called...
 	Level    : 1
 	Path     : a
 	HasChild : true
+	Children : [i kk]
+	Ancestors: []
 WalkerNode's methods called...
 	Name     : i
 	Branch   : ├──
@@ -134,6 +136,8 @@ WalkerNode's methods called...
 	Level    : 2
 	Path     : a/i
 	HasChild : true
+	Children : [u]
+	Ancestors: [a]
 WalkerNode's methods called...
 	Name     : u
 	Branch   : │   └──
@@ -141,6 +145,8 @@ WalkerNode's methods called...
 	Level    : 3
 	Path     : a/i/u
 	HasChild : true
+	Children : [k]
+	Ancestors: [a i]
 WalkerNode's methods called...
 	Name     : k
 	Branch   : │       └──
@@ -148,6 +154,8 @@ WalkerNode's methods called...
 	Level    : 4
 	Path     : a/i/u/k
 	HasChild : false
+	Children : []
+	Ancestors: [a i u]
 WalkerNode's methods called...
 	Name     : kk
 	Branch   : └──
@@ -155,6 +163,8 @@ WalkerNode's methods called...
 	Level    : 2
 	Path     : a/kk
 	HasChild : true
+	Children : [t]
+	Ancestors: [a]
 WalkerNode's methods called...
 	Name     : t
 	Branch   :     └──
@@ -162,6 +172,8 @@ WalkerNode's methods called...
 	Level    : 3
 	Path     : a/kk/t
 	HasChild : false
+	Children : []
+	Ancestors: [a kk]
 WalkerNode's methods called...
 	Name     : e
 	Branch   : 
@@ -169,6 +181,8 @@ WalkerNode's methods called...
 	Level    : 1
 	Path     : e
 	HasChild : true
+	Children : [o]
+	Ancestors: []
 WalkerNode's methods called...
 	Name     : o
 	Branch   : └──
@@ -176,6 +190,8 @@ WalkerNode's methods called...
 	Level    : 2
 	Path     : e/o
 	HasChild : true
+	Children : [g]
+	Ancestors: [e]
 WalkerNode's methods called...
 	Name     : g
 	Branch   :     └──
@@ -183,6 +199,8 @@ WalkerNode's methods called...
 	Level    : 3
 	Path     : e/o/g
 	HasChild : false
+	Children : []
+	Ancestors: [e o]
 `, "\n"),
 				err: nil,
 			},
@@ -202,6 +220,8 @@ WalkerNode's methods called...
 				fmt.Fprintf(buf, "\tLevel    : %d\n", wn.Level())
 				fmt.Fprintf(buf, "\tPath     : %s\n", wn.Path())
 				fmt.Fprintf(buf, "\tHasChild : %t\n", wn.HasChild())
+				fmt.Fprintf(buf, "\tChildren : %v\n", wn.Children())
+				fmt.Fprintf(buf, "\tAncestors: %v\n", wn.Ancestors())
 				return nil
 			}
 			gotErr := gtree.WalkFromMarkdown(tt.in.input, callback, tt.in.options...)
