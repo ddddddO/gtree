@@ -220,8 +220,25 @@ WalkerNode's methods called...
 				fmt.Fprintf(buf, "\tLevel    : %d\n", wn.Level())
 				fmt.Fprintf(buf, "\tPath     : %s\n", wn.Path())
 				fmt.Fprintf(buf, "\tHasChild : %t\n", wn.HasChild())
-				fmt.Fprintf(buf, "\tChildren : %v\n", wn.Children())
-				fmt.Fprintf(buf, "\tAncestors: %v\n", wn.Ancestors())
+
+				childNames := func(wn *gtree.WalkerNode) []string {
+					names := make([]string, 0, len(wn.Children()))
+					for _, child := range wn.Children() {
+						names = append(names, child.Name())
+					}
+					return names
+				}(wn)
+				fmt.Fprintf(buf, "\tChildren : %v\n", childNames)
+
+				ancestorNames := func(wn *gtree.WalkerNode) []string {
+					names := []string{}
+					for _, parent := range wn.Ancestors() {
+						names = append(names, parent.Name())
+					}
+					return names
+				}(wn)
+				fmt.Fprintf(buf, "\tAncestors: %v\n", ancestorNames)
+
 				return nil
 			}
 			gotErr := gtree.WalkFromMarkdown(tt.in.input, callback, tt.in.options...)
