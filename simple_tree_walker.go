@@ -47,21 +47,21 @@ func (wn *WalkerNode) HasChild() bool {
 	return wn.origin.hasChild()
 }
 
-// Children returns names of immediate child nodes in completed tree structure.
-func (wn *WalkerNode) Children() []string {
-	children := make([]string, 0, len(wn.origin.children))
+// Children returns WalkerNodes of immediate child nodes in completed tree structure.
+func (wn *WalkerNode) Children() []*WalkerNode {
+	children := make([]*WalkerNode, 0, len(wn.origin.children))
 	for _, child := range wn.origin.children {
-		children = append(children, child.name)
+		children = append(children, &WalkerNode{child})
 	}
 	return children
 }
 
-// Ancestors returns names of all ancestor nodes in completed tree structure.
-func (wn *WalkerNode) Ancestors() []string {
-	var ancestors []string
+// Ancestors returns WalkerNodes of all ancestor nodes in completed tree structure.
+func (wn *WalkerNode) Ancestors() []*WalkerNode {
+	var ancestors []*WalkerNode
 	parent := wn.origin.parent
 	for ; parent != nil; parent = parent.parent {
-		ancestors = append(ancestors, parent.name)
+		ancestors = append(ancestors, &WalkerNode{parent})
 	}
 	slices.Reverse(ancestors)
 	return ancestors

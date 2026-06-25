@@ -134,8 +134,24 @@ func ExampleWalkFromMarkdown_second() {
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
-		fmt.Printf("\tChildren : %v\n", wn.Children())
-		fmt.Printf("\tAncestors: %v\n", wn.Ancestors())
+
+		childNames := func(wn *gtree.WalkerNode) []string {
+			names := make([]string, 0, len(wn.Children()))
+			for _, child := range wn.Children() {
+				names = append(names, child.Name())
+			}
+			return names
+		}(wn)
+		fmt.Printf("\tChildren : %v\n", childNames)
+
+		ancestorNames := func(wn *gtree.WalkerNode) []string {
+			names := []string{}
+			for _, parent := range wn.Ancestors() {
+				names = append(names, parent.Name())
+			}
+			return names
+		}(wn)
+		fmt.Printf("\tAncestors: %v\n", ancestorNames)
 		return nil
 	}
 
@@ -581,8 +597,25 @@ func ExampleWalkFromRoot_second() {
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
-		fmt.Printf("\tChildren : %v\n", wn.Children())
-		fmt.Printf("\tAncestors: %v\n", wn.Ancestors())
+
+		childNames := func(wn *gtree.WalkerNode) []string {
+			names := make([]string, 0, len(wn.Children()))
+			for _, child := range wn.Children() {
+				names = append(names, child.Name())
+			}
+			return names
+		}(wn)
+		fmt.Printf("\tChildren : %v\n", childNames)
+
+		ancestorNames := func(wn *gtree.WalkerNode) []string {
+			names := []string{}
+			for _, parent := range wn.Ancestors() {
+				names = append(names, parent.Name())
+			}
+			return names
+		}(wn)
+		fmt.Printf("\tAncestors: %v\n", ancestorNames)
+
 		return nil
 	}
 
@@ -689,8 +722,24 @@ func ExampleWalkIterFromRoot_second() {
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
-		fmt.Printf("\tChildren : %v\n", wn.Children())
-		fmt.Printf("\tAncestors: %v\n", wn.Ancestors())
+
+		childNames := func(wn *gtree.WalkerNode) []string {
+			names := make([]string, 0, len(wn.Children()))
+			for _, child := range wn.Children() {
+				names = append(names, child.Name())
+			}
+			return names
+		}(wn)
+		fmt.Printf("\tChildren : %v\n", childNames)
+
+		ancestorNames := func(wn *gtree.WalkerNode) []string {
+			names := []string{}
+			for _, parent := range wn.Ancestors() {
+				names = append(names, parent.Name())
+			}
+			return names
+		}(wn)
+		fmt.Printf("\tAncestors: %v\n", ancestorNames)
 	}
 	// want:
 	// WalkerNode's methods called...
