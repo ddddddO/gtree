@@ -7,7 +7,7 @@
 
 Easily output ASCII tree from Go program or Markdown unordered list (and it does more than just output tree!🌳🗂🔍) 
 
-There's also a CLI tool that can output a tree from JSON, TML, or YAML! It's called *xtree*.
+There's also a CLI tool that can output a tree from JSON, YAML, or TOML! It's called *xtree*.
 
 # Table of Contents
 - Features
@@ -16,8 +16,11 @@ There's also a CLI tool that can output a tree from JSON, TML, or YAML! It's cal
 		- **[Acknowledgments](https://github.com/ddddddO/gtree?#acknowledgments)**
 	- Package - **[Markdown to tree structure](https://github.com/ddddddO/gtree?#package---markdown-to-tree-structure)**
 	- **[Web](https://github.com/ddddddO/gtree?#web)**
+		- Generate ASCII tree from unordered Markdown list in Web UI (with editable branches).
 	- CLI - **[gtree](https://github.com/ddddddO/gtree?#gtree)**
+		- Generate ASCII tree or directory from Markdown unordered list.
 	- CLI - **[xtree](https://github.com/ddddddO/gtree?#xtree)**
+		- Generate ASCII tree from JSON/YAML/TOML.
 - [Documents](https://github.com/ddddddO/gtree?#documents)
 - [Process](https://github.com/ddddddO/gtree?#process)
 - [Performance](https://github.com/ddddddO/gtree?#performance)
