@@ -3,7 +3,7 @@
 package gtree
 
 import (
-	"fmt"
+	"bytes"
 	"io"
 )
 
@@ -39,11 +39,19 @@ func (dgs *defaultGrowSpreaderSimple) assembleAndPrint(current *Node) error {
 		return err
 	}
 
-	ret := current.name + "\n"
-	if !current.isRoot() {
-		ret = current.branch() + " " + current.name + "\n"
+	ret := &bytes.Buffer{}
+	if current.isRoot() {
+		ret.Grow(len(current.name) + len("\n"))
+		_, _ = ret.WriteString(current.name)
+		_, _ = ret.WriteString("\n")
+	} else {
+		ret.Grow(current.brnch.value.Len() + len(" ") + len(current.name) + len("\n"))
+		_, _ = ret.WriteString(current.branch())
+		_, _ = ret.WriteString(" ")
+		_, _ = ret.WriteString(current.name)
+		_, _ = ret.WriteString("\n")
 	}
-	fmt.Fprint(dgs.w, ret)
+	_, _ = dgs.w.Write(ret.Bytes())
 
 	for _, child := range current.children {
 		if err := dgs.assembleAndPrint(child); err != nil {
@@ -51,6 +59,50 @@ func (dgs *defaultGrowSpreaderSimple) assembleAndPrint(current *Node) error {
 		}
 	}
 	return nil
+}
+
+// 以降、simple_tree_grower.go の assembleBranch系メソッドとの違いは、setPathの有無
+// こっちのメソッドはOutputFromRootからプログラム的に呼び出されるもので、パフォーマンスを気にする必要がある
+// そして、Node.setPathの有無でベンチマークを取ると、ない方が圧倒的に改善がみられた
+// setPathが必要なのはMkdir系関数なので、こちらのメソッドにはsetPath(と関連の処理)は不要なため落としている
+func (dgs *defaultGrowSpreaderSimple) assembleBranch(current *Node) error {
+	current.clean()
+
+	dgs.assembleBranchDirectly(current)
+
+	// go back to the root to form a branch.
+	tmpParent := current.parent
+	if tmpParent != nil {
+		for ; !tmpParent.isRoot(); tmpParent = tmpParent.parent {
+			dgs.assembleBranchIndirectly(current, tmpParent)
+		}
+	}
+
+	return nil
+}
+
+func (dgs *defaultGrowSpreaderSimple) assembleBranchDirectly(current *Node) {
+	if current == nil || current.isRoot() {
+		return
+	}
+
+	if current.isLastOfHierarchy() {
+		current.appendBranch(dgs.lastNodeFormat.directly)
+	} else {
+		current.appendBranch(dgs.intermedialNodeFormat.directly)
+	}
+}
+
+func (dgs *defaultGrowSpreaderSimple) assembleBranchIndirectly(current, parent *Node) {
+	if current == nil || parent == nil || current.isRoot() {
+		return
+	}
+
+	if parent.isLastOfHierarchy() {
+		current.prependBranch(dgs.lastNodeFormat.indirectly)
+	} else {
+		current.prependBranch(dgs.intermedialNodeFormat.indirectly)
+	}
 }
 
 var (
