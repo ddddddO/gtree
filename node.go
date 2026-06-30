@@ -21,7 +21,7 @@ type Node struct {
 }
 
 type branch struct {
-	value string
+	value strings.Builder
 	path  string
 }
 
@@ -47,7 +47,10 @@ func (n *Node) setParent(parent *Node) {
 }
 
 func (n *Node) addChild(child *Node) {
-	n.children = append(n.children, child)
+	tmp := make([]*Node, len(n.children)+1)
+	copy(tmp, n.children)
+	tmp[len(n.children)] = child
+	n.children = tmp
 }
 
 func (n *Node) hasChild() bool {
@@ -88,15 +91,27 @@ func (n *Node) isRoot() bool {
 }
 
 func (n *Node) setBranch(branchs ...string) {
-	var ret strings.Builder
+	n.brnch.value.Reset()
 	for _, v := range branchs {
-		ret.WriteString(v)
+		_, _ = n.brnch.value.WriteString(v)
 	}
-	n.brnch.value = ret.String()
+}
+
+func (n *Node) appendBranch(branch string) {
+	n.brnch.value.Grow(len(branch))
+	n.brnch.value.WriteString(branch)
+}
+
+func (n *Node) prependBranch(branch string) {
+	tmp := strings.Builder{}
+	tmp.Grow(len(branch) + n.brnch.value.Len())
+	tmp.WriteString(branch)
+	tmp.WriteString(n.brnch.value.String())
+	n.brnch.value = tmp
 }
 
 func (n *Node) branch() string {
-	return n.brnch.value
+	return n.brnch.value.String()
 }
 
 func (n *Node) setPath(paths ...string) {

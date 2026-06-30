@@ -29,3 +29,4 @@ cmd/xtree/*.json
 cmd/xtree/*.toml
 cmd/xtree/*.yaml
 cmd/xtree/xtree
+benchmark_gtree_treeprint_test.go
