@@ -116,24 +116,27 @@ func (t *treeSimple) outputProgrammably(w io.Writer, root *Node, cfg *config) er
 	// goos: linux
 	// goarch: amd64
 	// cpu: 13th Gen Intel(R) Core(TM) i7-1370P
-	// BenchmarkGtree-20                    100           2387601 ns/op         1543046 B/op      70524 allocs/op
-	// BenchmarkTreeprint-20                100           2049058 ns/op         1240728 B/op      38102 allocs/op
+	// BenchmarkGtree-20                    100           3967348 ns/op         1542957 B/op      70524 allocs/op
+	// BenchmarkTreeprint-20                100           3239239 ns/op         1240660 B/op      38102 allocs/op
 	// PASS
-	// ok      command-line-arguments  0.450s
+	// ok      command-line-arguments  0.731s
 
-	// 以下は一度バッファに書き込んでまとめて出力する方式のコード
+	// 以下は一度すべての枝を形成してから順次書き込んで出力する方式のコード
+	// if err := t.grower.grow([]*Node{root}); err != nil {
+	// 	return err
+	// }
 	// return t.spreader.spread(w, []*Node{root})
-	// このメソッドのベンチマークは以下で、上記のgrowAndSpreadメソッド版よりパフォーマンスはかなり良い
-	// ただ、そこまで大きくないツリーではそうパフォーマンスに問題はないだろうし、仮に大きなツリーが来た場合、spreadメソッドだとユーザーに出力を待たせることになるので、上記の枝の形成と出力を分けない実装でいく
+	// このメソッドのベンチマークは以下で、上記のgrowAndSpreadメソッド版とそう変わらなかった
+	// そこまで大きくないツリーではそうパフォーマンスに問題はないだろうし、仮に大きなツリーが来た場合、spreadメソッドだとユーザーに出力を待たせることになるので、上記の枝の形成と出力を分けない実装でいく
 	// ↓上がgtree/下がtreeprintのベンチマーク
 	// $ go test -benchmem -bench Benchmark -benchtime 100x benchmark_gtree_treeprint_test.go
 	// goos: linux
 	// goarch: amd64
 	// cpu: 13th Gen Intel(R) Core(TM) i7-1370P
-	// BenchmarkGtree-20                    100            331550 ns/op          125627 B/op      11732 allocs/op
-	// BenchmarkTreeprint-20                100           1962106 ns/op         1240668 B/op      38102 allocs/op
+	// BenchmarkGtree-20                    100           3827116 ns/op         1522339 B/op      70526 allocs/op
+	// BenchmarkTreeprint-20                100           3181960 ns/op         1240704 B/op      38102 allocs/op
 	// PASS
-	// ok      command-line-arguments  0.234s
+	// ok      command-line-arguments  0.709s
 
 	// 以下は、上記のベンチマーク用のコード。外部のライブラリがgo.modに入るのは嫌なのでコメントアウトでメモしてる
 
