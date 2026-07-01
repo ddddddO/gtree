@@ -1011,7 +1011,7 @@ $ cat a.json | xtree output --level 2 --omit-index
 # Performance
 ## *OutputFromRoot* func
 
-Compared to [*xlab/treeprint*](https://github.com/xlab/treeprint), the `OutputFromRoot` function (and the `Add` method) consumed 1.02 times more memory, but required 1.75 times fewer memory allocations and ran 2.04 times faster.
+Compared to the [*xlab/treeprint*](https://github.com/xlab/treeprint) package, the `OutputFromRoot` function (and the `Add` method) consumed 2% more memory, but reduced memory allocations by **43%** and ran **2.03** times faster.
 
 <details><summary>benchmark</summary>
 
