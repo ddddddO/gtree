@@ -3,7 +3,6 @@
 package gtree
 
 import (
-	"bytes"
 	"io"
 )
 
@@ -39,19 +38,15 @@ func (dgs *defaultGrowSpreaderSimple) assembleAndPrint(current *Node) error {
 		return err
 	}
 
-	ret := &bytes.Buffer{}
 	if current.isRoot() {
-		ret.Grow(len(current.value) + len("\n"))
-		_, _ = ret.WriteString(current.value)
-		_, _ = ret.WriteString("\n")
+		_, _ = io.WriteString(dgs.w, current.value)
+		_, _ = io.WriteString(dgs.w, "\n")
 	} else {
-		ret.Grow(current.brnch.value.Len() + len(" ") + len(current.value) + len("\n"))
-		_, _ = ret.WriteString(current.branch())
-		_, _ = ret.WriteString(" ")
-		_, _ = ret.WriteString(current.value)
-		_, _ = ret.WriteString("\n")
+		_, _ = io.WriteString(dgs.w, current.branch())
+		_, _ = io.WriteString(dgs.w, " ")
+		_, _ = io.WriteString(dgs.w, current.value)
+		_, _ = io.WriteString(dgs.w, "\n")
 	}
-	_, _ = dgs.w.Write(ret.Bytes())
 
 	for _, child := range current.children {
 		if err := dgs.assembleAndPrint(child); err != nil {
