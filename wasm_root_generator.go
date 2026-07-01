@@ -8,14 +8,12 @@ import (
 )
 
 type rootGenerator struct {
-	counter       *counter
 	scanner       *bufio.Scanner
 	nodeGenerator *nodeGenerator
 }
 
 func newRootGenerator(r io.Reader) *rootGenerator {
 	return &rootGenerator{
-		counter:       newCounter(),
 		scanner:       bufio.NewScanner(r),
 		nodeGenerator: newNodeGenerator(),
 	}
@@ -28,7 +26,7 @@ func (rg *rootGenerator) generate() ([]*Node, error) {
 	)
 
 	for rg.scanner.Scan() {
-		currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text(), rg.counter.next())
+		currentNode, err := rg.nodeGenerator.generate(rg.scanner.Text())
 		if err != nil {
 			return nil, err
 		}
@@ -37,7 +35,6 @@ func (rg *rootGenerator) generate() ([]*Node, error) {
 		}
 
 		if currentNode.isRoot() {
-			rg.counter.reset()
 			roots = append(roots, currentNode)
 			stack = newStack()
 			stack.push(currentNode)

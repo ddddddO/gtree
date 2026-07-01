@@ -11,13 +11,10 @@ import (
 type Node struct {
 	value           string
 	hierarchy       uint
-	index           uint
 	brnch           branch
 	parent          *Node
 	children        []*Node
 	allowDuplicates bool
-
-	idxCounter *counter // Rootから辿る子はすべて同じcounterを指す
 }
 
 type branch struct {
@@ -25,13 +22,10 @@ type branch struct {
 	path  string
 }
 
-func newNode(value string, hierarchy uint, idxCounter *counter, options ...NodeOption) *Node {
+func newNode(value string, hierarchy uint, options ...NodeOption) *Node {
 	n := &Node{
 		value:     value,
 		hierarchy: hierarchy,
-		index:     idxCounter.next(),
-
-		idxCounter: idxCounter,
 	}
 	for _, opt := range options {
 		if opt == nil {
@@ -79,7 +73,7 @@ func (n *Node) isLastOfHierarchy() bool {
 	}
 
 	lastIdx := len(n.parent.children) - 1
-	return n.index == n.parent.children[lastIdx].index
+	return n == n.parent.children[lastIdx]
 }
 
 const (

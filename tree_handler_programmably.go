@@ -85,8 +85,7 @@ func WalkIterFromRoot(root *Node, options ...Option) iter.Seq2[*WalkerNode, erro
 
 // NewRoot creates a starting node for building tree.
 func NewRoot(text string, options ...NodeOption) *Node {
-	idxCounter := newCounter()
-	return newNode(text, rootHierarchyNum, idxCounter, options...)
+	return newNode(text, rootHierarchyNum, options...)
 }
 
 // Add adds a node and returns an instance of it.
@@ -104,7 +103,7 @@ func (parent *Node) Add(text string) *Node {
 		nodeOptions = append(nodeOptions, WithDuplicationAllowed())
 	}
 
-	current := newNode(text, parent.hierarchy+1, parent.idxCounter, nodeOptions...)
+	current := newNode(text, parent.hierarchy+1, nodeOptions...)
 	current.setParent(parent)
 	parent.addChild(current)
 	return current
