@@ -9,8 +9,7 @@ import (
 type want struct {
 	value     string
 	hierarchy uint
-	// index     uint // 外部から与えられないためコメントアウト
-	err error
+	err       error
 }
 
 func TestGenerateTab(t *testing.T) {
@@ -27,14 +26,13 @@ func TestGenerateTab(t *testing.T) {
 	}
 
 	nodeGenerator := newNodeGenerator()
-	idxCounter := newCounter()
-	_, _ = nodeGenerator.generate("	- xxx", idxCounter) // Parserのインデントスペース数を決めるために必要
+	_, _ = nodeGenerator.generate("	- xxx") // Parserのインデントスペース数を決めるために必要
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			node, err := nodeGenerator.generate(tt.row, idxCounter)
+			node, err := nodeGenerator.generate(tt.row)
 			if node == nil && err == nil {
 				return
 			}
@@ -69,14 +67,13 @@ func TestGenerateTwoSpaces(t *testing.T) {
 	}
 
 	nodeGenerator := newNodeGenerator()
-	idxCounter := newCounter()
-	_, _ = nodeGenerator.generate("  - xxx", idxCounter) // Parserのインデントスペース数を決めるために必要
+	_, _ = nodeGenerator.generate("  - xxx") // Parserのインデントスペース数を決めるために必要
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			node, err := nodeGenerator.generate(tt.row, idxCounter)
+			node, err := nodeGenerator.generate(tt.row)
 			if node == nil && err == nil {
 				return
 			}
@@ -112,14 +109,13 @@ func TestGenerateFourSpaces(t *testing.T) {
 	}
 
 	nodeGenerator := newNodeGenerator()
-	idxCounter := newCounter()
-	_, _ = nodeGenerator.generate("    - xxx", idxCounter) // Parserのインデントスペース数を決めるために必要
+	_, _ = nodeGenerator.generate("    - xxx") // Parserのインデントスペース数を決めるために必要
 
 	for name, tt := range tests {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 
-			node, err := nodeGenerator.generate(tt.row, idxCounter)
+			node, err := nodeGenerator.generate(tt.row)
 			if node == nil && err == nil {
 				return
 			}

@@ -6,9 +6,8 @@ import (
 
 func TestStack_Pop(t *testing.T) {
 	s := newStack()
-	idxCounter := newCounter()
-	n1 := newNode("p", uint(1), idxCounter)
-	n2 := newNode("c", uint(2), idxCounter)
+	n1 := newNode("p", uint(1))
+	n2 := newNode("c", uint(2))
 	s.push(n1).push(n2)
 
 	tests := map[string]struct {

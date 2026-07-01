@@ -1011,7 +1011,7 @@ $ cat a.json | xtree output --level 2 --omit-index
 # Performance
 ## *OutputFromRoot* func
 
-Compared to [*xlab/treeprint*](https://github.com/xlab/treeprint), the `OutputFromRoot` function (and the `Add` method) consumed 1.2 times more memory, but required 1.5 times fewer memory allocations and ran 1.7 times faster.
+Compared to [*xlab/treeprint*](https://github.com/xlab/treeprint), the `OutputFromRoot` function (and the `Add` method) consumed 1.17 times more memory, but required 1.55 times fewer memory allocations and ran 2.04 times faster.
 
 <details><summary>benchmark</summary>
 
@@ -1020,10 +1020,10 @@ $ go test -benchmem -bench Benchmark -benchtime 100x benchmark_gtree_treeprint_t
 goos: linux
 goarch: amd64
 cpu: 13th Gen Intel(R) Core(TM) i7-1370P
-BenchmarkGtree-20                    100           1420257 ns/op         2014550 B/op      34221 allocs/op
-BenchmarkTreeprint-20                100           2457864 ns/op         1668032 B/op      52943 allocs/op
+BenchmarkGtree-20                    100           2252606 ns/op         1951766 B/op      34220 allocs/op
+BenchmarkTreeprint-20                100           4596705 ns/op         1668049 B/op      52943 allocs/op
 PASS
-ok      command-line-arguments  0.392s
+ok      command-line-arguments  0.691s
 ```
 
 ↓`benchmark_gtree_treeprint_test.go`
