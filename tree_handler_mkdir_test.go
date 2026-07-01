@@ -54,7 +54,7 @@ func TestMkdirFromMarkdown(t *testing.T) {
 			wantErr: gtree.ErrExistPath,
 		},
 		{
-			name: "case(dry-run/invalid node name)",
+			name: "case(dry-run/invalid node value)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - root_c
@@ -64,7 +64,7 @@ func TestMkdirFromMarkdown(t *testing.T) {
 	- ff`)),
 				options: []gtree.Option{gtree.WithDryRun()},
 			},
-			wantErr: errors.New("invalid node name: b/b"),
+			wantErr: errors.New("invalid node value: b/b"),
 		},
 		// NOTE: 上のパターンでエラーとして返すようになった
 		// 		{

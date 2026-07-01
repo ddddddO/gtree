@@ -12,9 +12,18 @@ type WalkerNode struct {
 	origin *Node
 }
 
-// Name returns name of node in completed tree structure.
+// Name returns value of node in completed tree structure.
+//
+// Deprecated: Call Value.
+//
+//go:fix inline
 func (wn *WalkerNode) Name() string {
-	return wn.origin.name
+	return wn.Value()
+}
+
+// Value returns value of node in completed tree structure.
+func (wn *WalkerNode) Value() string {
+	return wn.origin.value
 }
 
 // Branch returns branch of node in completed tree structure.
@@ -25,9 +34,9 @@ func (wn *WalkerNode) Branch() string {
 // Row returns row of node in completed tree structure.
 func (wn *WalkerNode) Row() string {
 	if !wn.origin.isRoot() {
-		return wn.origin.branch() + " " + wn.origin.name
+		return wn.origin.branch() + " " + wn.origin.value
 	}
-	return wn.origin.name
+	return wn.origin.value
 }
 
 // Level returns level of node in completed tree structure.

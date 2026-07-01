@@ -128,30 +128,30 @@ func ExampleWalkFromMarkdown_second() {
 
 	callback := func(wn *gtree.WalkerNode) error {
 		fmt.Println("WalkerNode's methods called...")
-		fmt.Printf("\tName     : %s\n", wn.Name())
+		fmt.Printf("\tValue    : %s\n", wn.Value())
 		fmt.Printf("\tBranch   : %s\n", wn.Branch())
 		fmt.Printf("\tRow      : %s\n", wn.Row())
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
 
-		childNames := func(wn *gtree.WalkerNode) []string {
-			names := make([]string, 0, len(wn.Children()))
+		childValues := func(wn *gtree.WalkerNode) []string {
+			values := make([]string, 0, len(wn.Children()))
 			for _, child := range wn.Children() {
-				names = append(names, child.Name())
+				values = append(values, child.Value())
 			}
-			return names
+			return values
 		}(wn)
-		fmt.Printf("\tChildren : %v\n", childNames)
+		fmt.Printf("\tChildren : %v\n", childValues)
 
-		ancestorNames := func(wn *gtree.WalkerNode) []string {
-			names := []string{}
+		ancestorValues := func(wn *gtree.WalkerNode) []string {
+			values := []string{}
 			for _, parent := range wn.Ancestors() {
-				names = append(names, parent.Name())
+				values = append(values, parent.Value())
 			}
-			return names
+			return values
 		}(wn)
-		fmt.Printf("\tAncestors: %v\n", ancestorNames)
+		fmt.Printf("\tAncestors: %v\n", ancestorValues)
 		return nil
 	}
 
@@ -161,7 +161,7 @@ func ExampleWalkFromMarkdown_second() {
 	}
 	// want:
 	// WalkerNode's methods called...
-	//	Name     : a
+	//	Value    : a
 	//	Branch   :
 	//	Row      : a
 	//	Level    : 1
@@ -170,7 +170,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : [i kk]
 	//	Ancestors: []
 	// WalkerNode's methods called...
-	//	Name     : i
+	//	Value    : i
 	//	Branch   : ├──
 	//	Row      : ├── i
 	//	Level    : 2
@@ -179,7 +179,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : [u]
 	//	Ancestors: [a]
 	// WalkerNode's methods called...
-	//	Name     : u
+	//	Value    : u
 	//	Branch   : │   └──
 	//	Row      : │   └── u
 	//	Level    : 3
@@ -188,7 +188,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : [k]
 	//	Ancestors: [a i]
 	// WalkerNode's methods called...
-	//	Name     : k
+	//	Value    : k
 	//	Branch   : │       └──
 	//	Row      : │       └── k
 	//	Level    : 4
@@ -197,7 +197,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : []
 	//	Ancestors: [a i u]
 	// WalkerNode's methods called...
-	//	Name     : kk
+	//	Value    : kk
 	//	Branch   : └──
 	//	Row      : └── kk
 	//	Level    : 2
@@ -206,7 +206,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : [t]
 	//	Ancestors: [a]
 	// WalkerNode's methods called...
-	//	Name     : t
+	//	Value    : t
 	//	Branch   :     └──
 	//	Row      :     └── t
 	//	Level    : 3
@@ -215,7 +215,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : []
 	//	Ancestors: [a kk]
 	// WalkerNode's methods called...
-	//	Name     : e
+	//	Value    : e
 	//	Branch   :
 	//	Row      : e
 	//	Level    : 1
@@ -224,7 +224,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : [o]
 	//	Ancestors: []
 	// WalkerNode's methods called...
-	//	Name     : o
+	//	Value    : o
 	//	Branch   : └──
 	//	Row      : └── o
 	//	Level    : 2
@@ -233,7 +233,7 @@ func ExampleWalkFromMarkdown_second() {
 	//	Children : [g]
 	//	Ancestors: [e]
 	// WalkerNode's methods called...
-	//	Name     : g
+	//	Value    : g
 	//	Branch   :     └──
 	//	Row      :     └── g
 	//	Level    : 3
@@ -591,30 +591,30 @@ func ExampleWalkFromRoot_second() {
 
 	callback := func(wn *gtree.WalkerNode) error {
 		fmt.Println("WalkerNode's methods called...")
-		fmt.Printf("\tName     : %s\n", wn.Name())
+		fmt.Printf("\tValue    : %s\n", wn.Value())
 		fmt.Printf("\tBranch   : %s\n", wn.Branch())
 		fmt.Printf("\tRow      : %s\n", wn.Row())
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
 
-		childNames := func(wn *gtree.WalkerNode) []string {
-			names := make([]string, 0, len(wn.Children()))
+		childValues := func(wn *gtree.WalkerNode) []string {
+			values := make([]string, 0, len(wn.Children()))
 			for _, child := range wn.Children() {
-				names = append(names, child.Name())
+				values = append(values, child.Value())
 			}
-			return names
+			return values
 		}(wn)
-		fmt.Printf("\tChildren : %v\n", childNames)
+		fmt.Printf("\tChildren : %v\n", childValues)
 
-		ancestorNames := func(wn *gtree.WalkerNode) []string {
-			names := []string{}
+		ancestorValues := func(wn *gtree.WalkerNode) []string {
+			values := []string{}
 			for _, parent := range wn.Ancestors() {
-				names = append(names, parent.Name())
+				values = append(values, parent.Value())
 			}
-			return names
+			return values
 		}(wn)
-		fmt.Printf("\tAncestors: %v\n", ancestorNames)
+		fmt.Printf("\tAncestors: %v\n", ancestorValues)
 
 		return nil
 	}
@@ -625,7 +625,7 @@ func ExampleWalkFromRoot_second() {
 	}
 	// want:
 	// WalkerNode's methods called...
-	//         Name     : root
+	//         Value    : root
 	//         Branch   :
 	//         Row      : root
 	//         Level    : 1
@@ -634,7 +634,7 @@ func ExampleWalkFromRoot_second() {
 	//         Children : [child 1 child 5]
 	//         Ancestors: []
 	// WalkerNode's methods called...
-	//         Name     : child 1
+	//         Value    : child 1
 	//         Branch   : ├──
 	//         Row      : ├── child 1
 	//         Level    : 2
@@ -643,7 +643,7 @@ func ExampleWalkFromRoot_second() {
 	//         Children : [child 2]
 	//         Ancestors: [root]
 	// WalkerNode's methods called...
-	//         Name     : child 2
+	//         Value    : child 2
 	//         Branch   : │   └──
 	//         Row      : │   └── child 2
 	//         Level    : 3
@@ -652,7 +652,7 @@ func ExampleWalkFromRoot_second() {
 	//         Children : [child 3 child 4]
 	//         Ancestors: [root child 1]
 	// WalkerNode's methods called...
-	//         Name     : child 3
+	//         Value    : child 3
 	//         Branch   : │       ├──
 	//         Row      : │       ├── child 3
 	//         Level    : 4
@@ -661,7 +661,7 @@ func ExampleWalkFromRoot_second() {
 	//         Children : []
 	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
-	//         Name     : child 4
+	//         Value    : child 4
 	//         Branch   : │       └──
 	//         Row      : │       └── child 4
 	//         Level    : 4
@@ -670,7 +670,7 @@ func ExampleWalkFromRoot_second() {
 	//         Children : []
 	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
-	//         Name     : child 5
+	//         Value    : child 5
 	//         Branch   : └──
 	//         Row      : └── child 5
 	//         Level    : 2
@@ -716,34 +716,34 @@ func ExampleWalkIterFromRoot_second() {
 		}
 
 		fmt.Println("WalkerNode's methods called...")
-		fmt.Printf("\tName     : %s\n", wn.Name())
+		fmt.Printf("\tValue    : %s\n", wn.Value())
 		fmt.Printf("\tBranch   : %s\n", wn.Branch())
 		fmt.Printf("\tRow      : %s\n", wn.Row())
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
 		fmt.Printf("\tPath     : %s\n", wn.Path())
 		fmt.Printf("\tHasChild : %t\n", wn.HasChild())
 
-		childNames := func(wn *gtree.WalkerNode) []string {
-			names := make([]string, 0, len(wn.Children()))
+		childValues := func(wn *gtree.WalkerNode) []string {
+			values := make([]string, 0, len(wn.Children()))
 			for _, child := range wn.Children() {
-				names = append(names, child.Name())
+				values = append(values, child.Value())
 			}
-			return names
+			return values
 		}(wn)
-		fmt.Printf("\tChildren : %v\n", childNames)
+		fmt.Printf("\tChildren : %v\n", childValues)
 
-		ancestorNames := func(wn *gtree.WalkerNode) []string {
-			names := []string{}
+		ancestorValues := func(wn *gtree.WalkerNode) []string {
+			values := []string{}
 			for _, parent := range wn.Ancestors() {
-				names = append(names, parent.Name())
+				values = append(values, parent.Value())
 			}
-			return names
+			return values
 		}(wn)
-		fmt.Printf("\tAncestors: %v\n", ancestorNames)
+		fmt.Printf("\tAncestors: %v\n", ancestorValues)
 	}
 	// want:
 	// WalkerNode's methods called...
-	//         Name     : root
+	//         Value    : root
 	//         Branch   :
 	//         Row      : root
 	//         Level    : 1
@@ -752,7 +752,7 @@ func ExampleWalkIterFromRoot_second() {
 	//         Children : [child 1 child 5]
 	//         Ancestors: []
 	// WalkerNode's methods called...
-	//         Name     : child 1
+	//         Value    : child 1
 	//         Branch   : ├──
 	//         Row      : ├── child 1
 	//         Level    : 2
@@ -761,7 +761,7 @@ func ExampleWalkIterFromRoot_second() {
 	//         Children : [child 2]
 	//         Ancestors: [root]
 	// WalkerNode's methods called...
-	//         Name     : child 2
+	//         Value    : child 2
 	//         Branch   : │   └──
 	//         Row      : │   └── child 2
 	//         Level    : 3
@@ -770,7 +770,7 @@ func ExampleWalkIterFromRoot_second() {
 	//         Children : [child 3 child 4]
 	//         Ancestors: [root child 1]
 	// WalkerNode's methods called...
-	//         Name     : child 3
+	//         Value    : child 3
 	//         Branch   : │       ├──
 	//         Row      : │       ├── child 3
 	//         Level    : 4
@@ -779,7 +779,7 @@ func ExampleWalkIterFromRoot_second() {
 	//         Children : []
 	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
-	//         Name     : child 4
+	//         Value    : child 4
 	//         Branch   : │       └──
 	//         Row      : │       └── child 4
 	//         Level    : 4
@@ -788,7 +788,7 @@ func ExampleWalkIterFromRoot_second() {
 	//         Children : []
 	//         Ancestors: [root child 1 child 2]
 	// WalkerNode's methods called...
-	//         Name     : child 5
+	//         Value    : child 5
 	//         Branch   : └──
 	//         Row      : └── child 5
 	//         Level    : 2

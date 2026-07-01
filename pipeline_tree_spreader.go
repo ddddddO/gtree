@@ -81,8 +81,8 @@ type formattedSpreaderPipeline[T sitter] struct {
 
 func newJSONSpreaderPipeline() *formattedSpreaderPipeline[*jsonNode] {
 	return &formattedSpreaderPipeline[*jsonNode]{
-		formattedRoot: func(name string) *jsonNode {
-			return &jsonNode{Name: name}
+		formattedRoot: func(value string) *jsonNode {
+			return &jsonNode{Value: value}
 		},
 		encode: func(w io.Writer) func(any) error {
 			return json.NewEncoder(w).Encode
@@ -92,8 +92,8 @@ func newJSONSpreaderPipeline() *formattedSpreaderPipeline[*jsonNode] {
 
 func newYAMLSpreaderPipeline() *formattedSpreaderPipeline[*yamlNode] {
 	return &formattedSpreaderPipeline[*yamlNode]{
-		formattedRoot: func(name string) *yamlNode {
-			return &yamlNode{Name: name}
+		formattedRoot: func(value string) *yamlNode {
+			return &yamlNode{Value: value}
 		},
 		encode: func(w io.Writer) func(any) error {
 			return yaml.NewEncoder(w).Encode
@@ -103,8 +103,8 @@ func newYAMLSpreaderPipeline() *formattedSpreaderPipeline[*yamlNode] {
 
 func newTOMLSpreaderPipeline() *formattedSpreaderPipeline[*tomlNode] {
 	return &formattedSpreaderPipeline[*tomlNode]{
-		formattedRoot: func(name string) *tomlNode {
-			return &tomlNode{Name: name}
+		formattedRoot: func(value string) *tomlNode {
+			return &tomlNode{Value: value}
 		},
 		encode: func(w io.Writer) func(any) error {
 			return toml.NewEncoder(w).Encode
@@ -128,7 +128,7 @@ func (f *formattedSpreaderPipeline[T]) spread(ctx context.Context, w io.Writer, 
 				if !ok {
 					break BREAK
 				}
-				if err := encode(toFormattedNode(root, f.formattedRoot(root.name))); err != nil {
+				if err := encode(toFormattedNode(root, f.formattedRoot(root.value))); err != nil {
 					errc <- err
 				}
 			}

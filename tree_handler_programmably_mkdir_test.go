@@ -40,12 +40,12 @@ func TestMkdirFromRoot(t *testing.T) {
 			root: tu.PrepareMultiNode(),
 		},
 		{
-			name: "case(dry run/invalid node name)",
-			root: tu.PrepareInvalidNodeName(),
+			name: "case(dry run/invalid node value)",
+			root: tu.PrepareInvalidNodeValue(),
 			options: []gtree.Option{
 				gtree.WithDryRun(),
 			},
-			wantErr: fmt.Errorf("invalid node name: %s", "chi/ld 4"),
+			wantErr: fmt.Errorf("invalid node value: %s", "chi/ld 4"),
 		},
 		{
 			name: "case(dry run/succeeded)",
@@ -65,9 +65,9 @@ func TestMkdirFromRoot(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name:    "case(not dry run/invalid node name)",
-			root:    tu.PrepareInvalidNodeName(),
-			wantErr: fmt.Errorf("invalid node name: %s", "chi/ld 4"),
+			name:    "case(not dry run/invalid node value)",
+			root:    tu.PrepareInvalidNodeValue(),
+			wantErr: fmt.Errorf("invalid node value: %s", "chi/ld 4"),
 		},
 		{
 			name:    "case(root already exists)",

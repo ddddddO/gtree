@@ -9,7 +9,7 @@ import (
 
 // Node is main struct for gtree.
 type Node struct {
-	name            string
+	value           string
 	hierarchy       uint
 	index           uint
 	brnch           branch
@@ -25,9 +25,9 @@ type branch struct {
 	path  string
 }
 
-func newNode(name string, hierarchy uint, idxCounter *counter, options ...NodeOption) *Node {
+func newNode(value string, hierarchy uint, idxCounter *counter, options ...NodeOption) *Node {
 	n := &Node{
-		name:      name,
+		value:     value,
 		hierarchy: hierarchy,
 		index:     idxCounter.next(),
 
@@ -59,7 +59,7 @@ func (n *Node) hasChild() bool {
 
 func (n *Node) findChildByText(text string) *Node {
 	for _, child := range n.children {
-		if text == child.name {
+		if text == child.value {
 			return child
 		}
 	}
@@ -120,8 +120,8 @@ func (n *Node) setPath(paths ...string) {
 
 func (n *Node) validatePath() error {
 	invalidChars := "/" // NOTE: ディレクトリ名に含めてはまずそうなものをここに追加する
-	if strings.ContainsAny(n.name, invalidChars) {
-		return fmt.Errorf("invalid node name: %s", n.name)
+	if strings.ContainsAny(n.value, invalidChars) {
+		return fmt.Errorf("invalid node value: %s", n.value)
 	}
 	if !fs.ValidPath(n.path()) {
 		return fmt.Errorf("invalid path: %s", n.path())
@@ -131,7 +131,7 @@ func (n *Node) validatePath() error {
 
 func (n *Node) path() string {
 	if n.isRoot() {
-		return n.name
+		return n.value
 	}
 	return n.brnch.path
 }

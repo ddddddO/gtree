@@ -114,7 +114,7 @@ func sampleWalker() error {
 
 	callback2 := func(wn *gtree.WalkerNode) error {
 		fmt.Println("WalkerNode's methods called...")
-		fmt.Printf("\tName     : %s\n", wn.Name())
+		fmt.Printf("\tValue    : %s\n", wn.Value())
 		fmt.Printf("\tBranch   : %s\n", wn.Branch())
 		fmt.Printf("\tRow      : %s\n", wn.Row())
 		fmt.Printf("\tLevel    : %d\n", wn.Level())
@@ -128,63 +128,63 @@ func sampleWalker() error {
 	}
 	// Output:
 	// WalkerNode's methods called...
-	// 	Name     : a
+	// 	Value    : a
 	// 	Branch   :
 	// 	Row      : a
 	// 	Level    : 1
 	// 	Path     : a
 	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name     : i
+	// 	Value    : i
 	// 	Branch   : ├──
 	// 	Row      : ├── i
 	// 	Level    : 2
 	// 	Path     : a/i
 	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name     : u
+	// 	Value    : u
 	// 	Branch   : │   └──
 	// 	Row      : │   └── u
 	// 	Level    : 3
 	// 	Path     : a/i/u
 	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name     : k
+	// 	Value    : k
 	// 	Branch   : │       └──
 	// 	Row      : │       └── k
 	// 	Level    : 4
 	// 	Path     : a/i/u/k
 	// 	HasChild : false
 	// WalkerNode's methods called...
-	// 	Name     : kk
+	// 	Value    : kk
 	// 	Branch   : └──
 	// 	Row      : └── kk
 	// 	Level    : 2
 	// 	Path     : a/kk
 	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name     : t
+	// 	Value    : t
 	// 	Branch   :     └──
 	// 	Row      :     └── t
 	// 	Level    : 3
 	// 	Path     : a/kk/t
 	// 	HasChild : false
 	// WalkerNode's methods called...
-	// 	Name     : e
+	// 	Value    : e
 	// 	Branch   :
 	// 	Row      : e
 	// 	Level    : 1
 	// 	Path     : e
 	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name     : o
+	// 	Value    : o
 	// 	Branch   : └──
 	// 	Row      : └── o
 	// 	Level    : 2
 	// 	Path     : e/o
 	// 	HasChild : true
 	// WalkerNode's methods called...
-	// 	Name     : g
+	// 	Value    : g
 	// 	Branch   :     └──
 	// 	Row      :     └── g
 	// 	Level    : 3

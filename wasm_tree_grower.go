@@ -75,7 +75,7 @@ func (dg *defaultGrower) assembleBranchDirectly(current *Node) {
 		return
 	}
 
-	current.setPath(current.name)
+	current.setPath(current.value)
 
 	if current.isLastOfHierarchy() {
 		current.setBranch(current.branch(), dg.lastNodeFormat.directly)
@@ -89,7 +89,7 @@ func (dg *defaultGrower) assembleBranchIndirectly(current, parent *Node) {
 		return
 	}
 
-	current.setPath(parent.name, current.path())
+	current.setPath(parent.value, current.path())
 
 	if parent.isLastOfHierarchy() {
 		current.setBranch(dg.lastNodeFormat.indirectly, current.branch())
@@ -108,9 +108,9 @@ func (*defaultGrower) assembleBranchFinally(current, root *Node) {
 	}
 
 	if current.isRoot() {
-		current.setBranch(current.name, "\n")
+		current.setBranch(current.value, "\n")
 	} else {
-		current.setBranch(current.branch(), " ", current.name, "\n")
+		current.setBranch(current.branch(), " ", current.value, "\n")
 	}
 }
 

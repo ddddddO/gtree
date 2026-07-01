@@ -22,7 +22,7 @@ func Prepare() *gtree.Node {
 	return root
 }
 
-func PrepareSameNameChild() *gtree.Node {
+func PrepareSameValueChild() *gtree.Node {
 	root := gtree.NewRoot("root")
 	root.Add("child 1").Add("child 2")
 	root.Add("child 1").Add("child 3")
@@ -62,7 +62,7 @@ func PrepareMultiNodeWithDuplicationAllowed() *gtree.Node {
 	return root
 }
 
-func PrepareInvalidNodeName() *gtree.Node {
+func PrepareInvalidNodeValue() *gtree.Node {
 	var root *gtree.Node = gtree.NewRoot("root1")
 	root.Add("child 1").Add("child 2").Add("child 3")
 	var child4 *gtree.Node = root.Add("child 1").Add("child 2").Add("chi/ld 4")
@@ -73,13 +73,13 @@ func PrepareInvalidNodeName() *gtree.Node {
 }
 
 func PrepareExistRoot(t *testing.T) *gtree.Node {
-	name := "gtreetest"
+	value := "gtreetest"
 
-	if err := os.MkdirAll(name, 0o755); err != nil {
+	if err := os.MkdirAll(value, 0o755); err != nil {
 		t.Fatal(err)
 	}
 
-	root := gtree.NewRoot(name)
+	root := gtree.NewRoot(value)
 	root.Add("temp")
 	return root
 }

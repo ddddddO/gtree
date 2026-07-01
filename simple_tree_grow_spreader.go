@@ -41,14 +41,14 @@ func (dgs *defaultGrowSpreaderSimple) assembleAndPrint(current *Node) error {
 
 	ret := &bytes.Buffer{}
 	if current.isRoot() {
-		ret.Grow(len(current.name) + len("\n"))
-		_, _ = ret.WriteString(current.name)
+		ret.Grow(len(current.value) + len("\n"))
+		_, _ = ret.WriteString(current.value)
 		_, _ = ret.WriteString("\n")
 	} else {
-		ret.Grow(current.brnch.value.Len() + len(" ") + len(current.name) + len("\n"))
+		ret.Grow(current.brnch.value.Len() + len(" ") + len(current.value) + len("\n"))
 		_, _ = ret.WriteString(current.branch())
 		_, _ = ret.WriteString(" ")
-		_, _ = ret.WriteString(current.name)
+		_, _ = ret.WriteString(current.value)
 		_, _ = ret.WriteString("\n")
 	}
 	_, _ = dgs.w.Write(ret.Bytes())

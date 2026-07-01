@@ -42,7 +42,7 @@ func main() {
 					&cli.BoolFlag{
 						Name:    "allow-duplicate",
 						Aliases: []string{"a"},
-						Usage:   "set this option when you want to allow duplicate node names at the same level.",
+						Usage:   "set this option when you want to allow duplicate node values at the same level.",
 					},
 					&cli.IntFlag{
 						Name:        "level",

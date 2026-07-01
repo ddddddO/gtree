@@ -635,7 +635,7 @@ $ gtree mkdir --dry-run <<EOS
   - bb
     - b/b
 EOS
-invalid node name: b/b
+invalid node value: b/b
 ```
 
 ```console
@@ -645,7 +645,7 @@ $ gtree mkdir --dry-run <<EOS
   - bb
     - bb
 EOS
-invalid node name: /root
+invalid node value: /root
 ```
 
 #### *Verify* subcommand
@@ -762,7 +762,7 @@ USAGE:
 
 OPTIONS:
    --omit-index, --omit, -o  set this option when you do not want to display array indices.
-   --allow-duplicate, -a     set this option when you want to allow duplicate node names at the same level.
+   --allow-duplicate, -a     set this option when you want to allow duplicate node values at the same level.
    --level int, -l int       set this option when you want to specify the depth of the tree.
    --help, -h                show help
 ```

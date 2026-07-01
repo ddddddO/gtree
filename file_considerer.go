@@ -20,7 +20,7 @@ func (fc *fileConsiderer) isFile(current *Node) bool {
 	}
 
 	for _, e := range fc.extensions {
-		if strings.HasSuffix(current.name, e) {
+		if strings.HasSuffix(current.value, e) {
 			return true
 		}
 	}

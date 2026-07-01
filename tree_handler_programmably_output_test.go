@@ -69,8 +69,8 @@ root
 			wantErr: nil,
 		},
 		{
-			name: "case(succeeded / added same name)",
-			root: tu.PrepareSameNameChild(),
+			name: "case(succeeded / added same value)",
+			root: tu.PrepareSameValueChild(),
 			want: strings.TrimPrefix(`
 root
 └── child 1
