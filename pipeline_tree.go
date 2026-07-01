@@ -118,14 +118,14 @@ func (t *treePipeline) mkdirProgrammably(root *Node, cfg *config) error {
 		rootStream <- root
 	}()
 	t.grower.enableValidation()
-	// when detect invalid node name, return error. process end.
+	// when detect invalid node value, return error. process end.
 	growStream, errcg := t.grower.grow(ctx, rootStream)
 	if cfg.dryrun {
-		// when detected no invalid node name, output tree.
+		// when detected no invalid node value, output tree.
 		errcs := t.spreader.spread(ctx, color.Output, growStream)
 		return t.handlePipelineErr(ctx, errcg, errcs)
 	}
-	// when detected no invalid node name, no output tree.
+	// when detected no invalid node value, no output tree.
 	errcm := t.mkdirer.mkdir(ctx, growStream)
 	return t.handlePipelineErr(ctx, errcg, errcm)
 }
@@ -152,9 +152,9 @@ func (t *treePipeline) verifyProgrammably(root *Node, cfg *config) error {
 		rootStream <- root
 	}()
 	t.grower.enableValidation()
-	// when detect invalid node name, return error. process end.
+	// when detect invalid node value, return error. process end.
 	growStream, errcg := t.grower.grow(ctx, rootStream)
-	// when detected no invalid node name, no output tree.
+	// when detected no invalid node value, no output tree.
 	errcv := t.verifier.verify(ctx, growStream)
 	return t.handlePipelineErr(ctx, errcg, errcv)
 }

@@ -101,10 +101,10 @@ func (cs *colorizeSpreader) spreadBranch(current *Node) string {
 func (cs *colorizeSpreader) colorize(current *Node) {
 	if cs.fileConsiderer.isFile(current) {
 		_ = cs.fileCounter.next()
-		current.name = cs.fileColor.Sprint(current.name)
+		current.value = cs.fileColor.Sprint(current.value)
 	} else {
 		_ = cs.dirCounter.next()
-		current.name = cs.dirColor.Sprint(current.name)
+		current.value = cs.dirColor.Sprint(current.value)
 	}
 }
 
@@ -130,13 +130,13 @@ func (*jsonSpreader) spread(w io.Writer, roots []*Node) error {
 }
 
 type jsonNode struct {
-	Name     string      `json:"value"`
+	Value    string      `json:"value"`
 	Children []*jsonNode `json:"children"`
 }
 
 func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
 	if jParent == nil {
-		jParent = &jsonNode{Name: parent.name}
+		jParent = &jsonNode{Value: parent.value}
 	}
 	if !parent.hasChild() {
 		return jParent
@@ -144,7 +144,7 @@ func (parent *Node) toJSONNode(jParent *jsonNode) *jsonNode {
 
 	jParent.Children = make([]*jsonNode, len(parent.children))
 	for i := range parent.children {
-		jParent.Children[i] = &jsonNode{Name: parent.children[i].name}
+		jParent.Children[i] = &jsonNode{Value: parent.children[i].value}
 		_ = parent.children[i].toJSONNode(jParent.Children[i])
 	}
 

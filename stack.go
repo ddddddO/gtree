@@ -42,8 +42,8 @@ func (s *stack) dfs(current *Node) {
 			continue
 		}
 
-		// for same name on the same hierarchy
-		if child := parent.findChildByText(current.name); child != nil {
+		// for same value on the same hierarchy
+		if child := parent.findChildByText(current.value); child != nil {
 			s.push(parent).push(child)
 			return
 		}

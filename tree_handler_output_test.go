@@ -197,7 +197,7 @@ a
 		},
 
 		{
-			name: "case(succeeded/same name on the same hierarchy)",
+			name: "case(succeeded/same value on the same hierarchy)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -326,7 +326,7 @@ a
 			},
 		},
 		{
-			name: "case(succeeded/node name 1space & -)",
+			name: "case(succeeded/node value 1space & -)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - root dir aaa
@@ -340,7 +340,7 @@ root dir aaa
 			},
 		},
 		{
-			name: "case(succeeded/same node name)",
+			name: "case(succeeded/same node value)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - parent
@@ -468,7 +468,7 @@ a
 			},
 		},
 		{
-			name: "case(empty node name)",
+			name: "case(empty node value)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -607,7 +607,7 @@ a
 			},
 		},
 		{
-			name: "case(dry run/invalid node name)",
+			name: "case(dry run/invalid node value)",
 			in: in{
 				input: strings.NewReader(strings.TrimSpace(`
 - a
@@ -618,7 +618,7 @@ a
 			},
 			out: out{
 				output: "",
-				err:    errors.New("invalid node name: b/c"),
+				err:    errors.New("invalid node value: b/c"),
 			},
 		},
 		{

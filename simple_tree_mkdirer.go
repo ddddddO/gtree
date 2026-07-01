@@ -55,7 +55,7 @@ func (dm *defaultMkdirerSimple) isExistRoot(roots []*Node) bool {
 
 func (dm *defaultMkdirerSimple) makeDirectoriesAndFiles(current *Node) error {
 	if dm.fileConsiderer.isFile(current) {
-		dir := strings.TrimSuffix(current.path(), current.name)
+		dir := strings.TrimSuffix(current.path(), current.value)
 		if err := dm.mkdirAll(filepath.Join(dm.targetDir, dir)); err != nil {
 			return err
 		}

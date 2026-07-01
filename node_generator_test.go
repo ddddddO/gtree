@@ -7,7 +7,7 @@ import (
 )
 
 type want struct {
-	name      string
+	value     string
 	hierarchy uint
 	// index     uint // 外部から与えられないためコメントアウト
 	err error
@@ -18,9 +18,9 @@ func TestGenerateTab(t *testing.T) {
 		row  string
 		want *want
 	}{
-		"root/hierarchy=1":                 {"- aaa bb", &want{name: "aaa bb", hierarchy: 1, err: nil}},
-		"child/hierarchy=2":                {"	- aaa bb", &want{name: "aaa bb", hierarchy: 2, err: nil}},
-		"child/hierarchy=2/tab on the way": {"	- aaa	bb", &want{name: "aaa	bb", hierarchy: 2, err: nil}},
+		"root/hierarchy=1":                 {"- aaa bb", &want{value: "aaa bb", hierarchy: 1, err: nil}},
+		"child/hierarchy=2":                {"	- aaa bb", &want{value: "aaa bb", hierarchy: 2, err: nil}},
+		"child/hierarchy=2/tab on the way": {"	- aaa	bb", &want{value: "aaa	bb", hierarchy: 2, err: nil}},
 		"invalid/hierarchy=0/prefix chars": {"xx- aaa bb", &want{err: &inputFormatError{row: "xx- aaa bb"}}},
 		"invalid/hierarchy=0/no hyphen":    {"xx aaa bb", &want{err: &inputFormatError{row: "xx aaa bb"}}},
 		"invalid/hierarchy=0/tab only":     {"			", nil},
@@ -45,8 +45,8 @@ func TestGenerateTab(t *testing.T) {
 				return
 			}
 
-			if node.name != tt.want.name {
-				t.Errorf("\ngot: \n%s\nwant: \n%s", node.name, tt.want.name)
+			if node.value != tt.want.value {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", node.value, tt.want.value)
 			}
 			if node.hierarchy != tt.want.hierarchy {
 				t.Errorf("\ngot: \n%d\nwant: \n%d", node.hierarchy, tt.want.hierarchy)
@@ -60,8 +60,8 @@ func TestGenerateTwoSpaces(t *testing.T) {
 		row  string
 		want *want
 	}{
-		"root/hierarchy=1":                     {"- aaa bb", &want{name: "aaa bb", hierarchy: 1, err: nil}},
-		"child/hierarchy=2":                    {"  - aaa bb", &want{name: "aaa bb", hierarchy: 2, err: nil}},
+		"root/hierarchy=1":                     {"- aaa bb", &want{value: "aaa bb", hierarchy: 1, err: nil}},
+		"child/hierarchy=2":                    {"  - aaa bb", &want{value: "aaa bb", hierarchy: 2, err: nil}},
 		"invalid/hierarchy=0/prefix odd space": {" - aaa bb", &want{err: &inputFormatError{row: " - aaa bb"}}},
 		"invalid/hierarchy=0/prefix chars":     {"xx- aaa bb", &want{err: &inputFormatError{row: "xx- aaa bb"}}},
 		"invalid/hierarchy=0/no hyphen":        {"xx aaa bb", &want{err: &inputFormatError{row: "xx aaa bb"}}},
@@ -87,8 +87,8 @@ func TestGenerateTwoSpaces(t *testing.T) {
 				return
 			}
 
-			if node.name != tt.want.name {
-				t.Errorf("\ngot: \n%s\nwant: \n%s", node.name, tt.want.name)
+			if node.value != tt.want.value {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", node.value, tt.want.value)
 			}
 			if node.hierarchy != tt.want.hierarchy {
 				t.Errorf("\ngot: \n%d\nwant: \n%d", node.hierarchy, tt.want.hierarchy)
@@ -102,9 +102,9 @@ func TestGenerateFourSpaces(t *testing.T) {
 		row  string
 		want *want
 	}{
-		"root/hierarchy=1":                     {"- aaa bb", &want{name: "aaa bb", hierarchy: 1, err: nil}},
-		"child/hierarchy=2":                    {"    - aaa bb", &want{name: "aaa bb", hierarchy: 2, err: nil}},
-		"child/hierarchy=3":                    {"        - aaa    bb", &want{name: "aaa    bb", hierarchy: 3, err: nil}},
+		"root/hierarchy=1":                     {"- aaa bb", &want{value: "aaa bb", hierarchy: 1, err: nil}},
+		"child/hierarchy=2":                    {"    - aaa bb", &want{value: "aaa bb", hierarchy: 2, err: nil}},
+		"child/hierarchy=3":                    {"        - aaa    bb", &want{value: "aaa    bb", hierarchy: 3, err: nil}},
 		"invalid/hierarchy=0/prefix odd space": {" - aaa bb", &want{err: &inputFormatError{row: " - aaa bb"}}},
 		"invalid/hierarchy=0/prefix chars":     {"xx- aaa bb", &want{err: &inputFormatError{row: "xx- aaa bb"}}},
 		"invalid/hierarchy=0/no hyphen":        {"xx aaa bb", &want{err: &inputFormatError{row: "xx aaa bb"}}},
@@ -130,8 +130,8 @@ func TestGenerateFourSpaces(t *testing.T) {
 				return
 			}
 
-			if node.name != tt.want.name {
-				t.Errorf("\ngot: \n%s\nwant: \n%s", node.name, tt.want.name)
+			if node.value != tt.want.value {
+				t.Errorf("\ngot: \n%s\nwant: \n%s", node.value, tt.want.value)
 			}
 			if node.hierarchy != tt.want.hierarchy {
 				t.Errorf("\ngot: \n%d\nwant: \n%d", node.hierarchy, tt.want.hierarchy)

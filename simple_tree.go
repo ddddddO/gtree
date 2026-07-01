@@ -127,15 +127,15 @@ func (t *treeSimple) mkdir(r io.Reader, cfg *config) error {
 
 func (t *treeSimple) mkdirProgrammably(root *Node, cfg *config) error {
 	t.grower.enableValidation()
-	// when detect invalid node name, return error. process end.
+	// when detect invalid node value, return error. process end.
 	if err := t.grower.grow([]*Node{root}); err != nil {
 		return err
 	}
 	if cfg.dryrun {
-		// when detected no invalid node name, output tree.
+		// when detected no invalid node value, output tree.
 		return t.spreader.spread(color.Output, []*Node{root})
 	}
-	// when detected no invalid node name, no output tree.
+	// when detected no invalid node value, no output tree.
 	return t.mkdirer.mkdir([]*Node{root})
 }
 
@@ -154,7 +154,7 @@ func (t *treeSimple) verify(r io.Reader, cfg *config) error {
 
 func (t *treeSimple) verifyProgrammably(root *Node, cfg *config) error {
 	t.grower.enableValidation()
-	// when detect invalid node name, return error. process end.
+	// when detect invalid node value, return error. process end.
 	if err := t.grower.grow([]*Node{root}); err != nil {
 		return err
 	}

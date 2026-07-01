@@ -122,6 +122,7 @@ func TestWalk_WalkerNode(t *testing.T) {
 				output: strings.TrimLeft(`
 WalkerNode's methods called...
 	Name     : a
+	Value    : a
 	Branch   : 
 	Row      : a
 	Level    : 1
@@ -131,6 +132,7 @@ WalkerNode's methods called...
 	Ancestors: []
 WalkerNode's methods called...
 	Name     : i
+	Value    : i
 	Branch   : ├──
 	Row      : ├── i
 	Level    : 2
@@ -140,6 +142,7 @@ WalkerNode's methods called...
 	Ancestors: [a]
 WalkerNode's methods called...
 	Name     : u
+	Value    : u
 	Branch   : │   └──
 	Row      : │   └── u
 	Level    : 3
@@ -149,6 +152,7 @@ WalkerNode's methods called...
 	Ancestors: [a i]
 WalkerNode's methods called...
 	Name     : k
+	Value    : k
 	Branch   : │       └──
 	Row      : │       └── k
 	Level    : 4
@@ -158,6 +162,7 @@ WalkerNode's methods called...
 	Ancestors: [a i u]
 WalkerNode's methods called...
 	Name     : kk
+	Value    : kk
 	Branch   : └──
 	Row      : └── kk
 	Level    : 2
@@ -167,6 +172,7 @@ WalkerNode's methods called...
 	Ancestors: [a]
 WalkerNode's methods called...
 	Name     : t
+	Value    : t
 	Branch   :     └──
 	Row      :     └── t
 	Level    : 3
@@ -176,6 +182,7 @@ WalkerNode's methods called...
 	Ancestors: [a kk]
 WalkerNode's methods called...
 	Name     : e
+	Value    : e
 	Branch   : 
 	Row      : e
 	Level    : 1
@@ -185,6 +192,7 @@ WalkerNode's methods called...
 	Ancestors: []
 WalkerNode's methods called...
 	Name     : o
+	Value    : o
 	Branch   : └──
 	Row      : └── o
 	Level    : 2
@@ -194,6 +202,7 @@ WalkerNode's methods called...
 	Ancestors: [e]
 WalkerNode's methods called...
 	Name     : g
+	Value    : g
 	Branch   :     └──
 	Row      :     └── g
 	Level    : 3
@@ -215,29 +224,30 @@ WalkerNode's methods called...
 			callback := func(wn *gtree.WalkerNode) error {
 				fmt.Fprintln(buf, "WalkerNode's methods called...")
 				fmt.Fprintf(buf, "\tName     : %s\n", wn.Name())
+				fmt.Fprintf(buf, "\tValue    : %s\n", wn.Value())
 				fmt.Fprintf(buf, "\tBranch   : %s\n", wn.Branch())
 				fmt.Fprintf(buf, "\tRow      : %s\n", wn.Row())
 				fmt.Fprintf(buf, "\tLevel    : %d\n", wn.Level())
 				fmt.Fprintf(buf, "\tPath     : %s\n", wn.Path())
 				fmt.Fprintf(buf, "\tHasChild : %t\n", wn.HasChild())
 
-				childNames := func(wn *gtree.WalkerNode) []string {
-					names := make([]string, 0, len(wn.Children()))
+				childValues := func(wn *gtree.WalkerNode) []string {
+					values := make([]string, 0, len(wn.Children()))
 					for _, child := range wn.Children() {
-						names = append(names, child.Name())
+						values = append(values, child.Value())
 					}
-					return names
+					return values
 				}(wn)
-				fmt.Fprintf(buf, "\tChildren : %v\n", childNames)
+				fmt.Fprintf(buf, "\tChildren : %v\n", childValues)
 
-				ancestorNames := func(wn *gtree.WalkerNode) []string {
-					names := []string{}
+				ancestorValues := func(wn *gtree.WalkerNode) []string {
+					values := []string{}
 					for _, parent := range wn.Ancestors() {
-						names = append(names, parent.Name())
+						values = append(values, parent.Value())
 					}
-					return names
+					return values
 				}(wn)
-				fmt.Fprintf(buf, "\tAncestors: %v\n", ancestorNames)
+				fmt.Fprintf(buf, "\tAncestors: %v\n", ancestorValues)
 
 				return nil
 			}

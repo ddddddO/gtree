@@ -71,9 +71,9 @@ func (ds *defaultSpreaderSimple) spreadIter(w io.Writer, rootIter iter.Seq2[*Nod
 }
 
 func (ds *defaultSpreaderSimple) spreadBranch(current *Node) {
-	ret := current.name + "\n"
+	ret := current.value + "\n"
 	if !current.isRoot() {
-		ret = current.branch() + " " + current.name + "\n"
+		ret = current.branch() + " " + current.value + "\n"
 	}
 	fmt.Fprint(ds.w, ret)
 
@@ -89,8 +89,8 @@ type formattedSpreaderSimple[T sitter] struct {
 
 func newJSONSpreaderSimple() *formattedSpreaderSimple[*jsonNode] {
 	return &formattedSpreaderSimple[*jsonNode]{
-		formattedRoot: func(name string) *jsonNode {
-			return &jsonNode{Name: name}
+		formattedRoot: func(value string) *jsonNode {
+			return &jsonNode{Value: value}
 		},
 		encode: func(w io.Writer) func(any) error {
 			return json.NewEncoder(w).Encode
@@ -100,8 +100,8 @@ func newJSONSpreaderSimple() *formattedSpreaderSimple[*jsonNode] {
 
 func newYAMLSpreaderSimple() *formattedSpreaderSimple[*yamlNode] {
 	return &formattedSpreaderSimple[*yamlNode]{
-		formattedRoot: func(name string) *yamlNode {
-			return &yamlNode{Name: name}
+		formattedRoot: func(value string) *yamlNode {
+			return &yamlNode{Value: value}
 		},
 		encode: func(w io.Writer) func(any) error {
 			return yaml.NewEncoder(w).Encode
@@ -111,8 +111,8 @@ func newYAMLSpreaderSimple() *formattedSpreaderSimple[*yamlNode] {
 
 func newTOMLSpreaderSimple() *formattedSpreaderSimple[*tomlNode] {
 	return &formattedSpreaderSimple[*tomlNode]{
-		formattedRoot: func(name string) *tomlNode {
-			return &tomlNode{Name: name}
+		formattedRoot: func(value string) *tomlNode {
+			return &tomlNode{Value: value}
 		},
 		encode: func(w io.Writer) func(any) error {
 			return toml.NewEncoder(w).Encode
@@ -123,7 +123,7 @@ func newTOMLSpreaderSimple() *formattedSpreaderSimple[*tomlNode] {
 func (f *formattedSpreaderSimple[T]) spread(w io.Writer, roots []*Node) error {
 	encode := f.encode(w)
 	for _, root := range roots {
-		fRoot := toFormattedNode(root, f.formattedRoot(root.name))
+		fRoot := toFormattedNode(root, f.formattedRoot(root.value))
 		if err := encode(fRoot); err != nil {
 			return err
 		}
@@ -147,7 +147,7 @@ func (f *formattedSpreaderSimple[T]) spreadIter(w io.Writer, rootIter iter.Seq2[
 				return
 			}
 
-			fRoot := toFormattedNode(root, f.formattedRoot(root.name))
+			fRoot := toFormattedNode(root, f.formattedRoot(root.value))
 			if err := encode(fRoot); err != nil {
 				yield(err)
 				return
@@ -158,12 +158,12 @@ func (f *formattedSpreaderSimple[T]) spreadIter(w io.Writer, rootIter iter.Seq2[
 }
 
 type jsonNode struct {
-	Name     string      `json:"value"`
+	Value    string      `json:"value"`
 	Children []*jsonNode `json:"children"`
 }
 
-func (jn *jsonNode) setChild(name string) {
-	jn.Children = append(jn.Children, &jsonNode{Name: name})
+func (jn *jsonNode) setChild(value string) {
+	jn.Children = append(jn.Children, &jsonNode{Value: value})
 }
 
 func (jn *jsonNode) getChild(i int) sitter {
@@ -171,12 +171,12 @@ func (jn *jsonNode) getChild(i int) sitter {
 }
 
 type tomlNode struct {
-	Name     string      `toml:"value"`
+	Value    string      `toml:"value"`
 	Children []*tomlNode `toml:"children"`
 }
 
-func (tn *tomlNode) setChild(name string) {
-	tn.Children = append(tn.Children, &tomlNode{Name: name})
+func (tn *tomlNode) setChild(value string) {
+	tn.Children = append(tn.Children, &tomlNode{Value: value})
 }
 
 func (tn *tomlNode) getChild(i int) sitter {
@@ -184,12 +184,12 @@ func (tn *tomlNode) getChild(i int) sitter {
 }
 
 type yamlNode struct {
-	Name     string      `yaml:"value"`
+	Value    string      `yaml:"value"`
 	Children []*yamlNode `yaml:"children"`
 }
 
-func (yn *yamlNode) setChild(name string) {
-	yn.Children = append(yn.Children, &yamlNode{Name: name})
+func (yn *yamlNode) setChild(value string) {
+	yn.Children = append(yn.Children, &yamlNode{Value: value})
 }
 
 func (yn *yamlNode) getChild(i int) sitter {
@@ -207,7 +207,7 @@ func toFormattedNode[T sitter](parent *Node, fParent T) T {
 	}
 
 	for i := range parent.children {
-		fParent.setChild(parent.children[i].name)
+		fParent.setChild(parent.children[i].value)
 		toFormattedNode(parent.children[i], fParent.getChild(i).(T))
 	}
 
@@ -295,10 +295,10 @@ func (*colorizeSpreaderSimple) write(w io.Writer, in string) error {
 func (cs *colorizeSpreaderSimple) colorize(current *Node) string {
 	if cs.fileConsiderer.isFile(current) {
 		_ = cs.fileCounter.next()
-		return cs.fileColor.Sprint(current.name)
+		return cs.fileColor.Sprint(current.value)
 	} else {
 		_ = cs.dirCounter.next()
-		return cs.dirColor.Sprint(current.name)
+		return cs.dirColor.Sprint(current.value)
 	}
 }
 

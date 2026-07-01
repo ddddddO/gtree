@@ -99,7 +99,7 @@ func (dg *defaultGrowerSimple) assembleBranchDirectly(current *Node) {
 		return
 	}
 
-	current.setPath(current.name)
+	current.setPath(current.value)
 
 	if current.isLastOfHierarchy() {
 		current.setBranch(current.branch(), dg.lastNodeFormat.directly)
@@ -113,7 +113,7 @@ func (dg *defaultGrowerSimple) assembleBranchIndirectly(current, parent *Node) {
 		return
 	}
 
-	current.setPath(parent.name, current.path())
+	current.setPath(parent.value, current.path())
 
 	if parent.isLastOfHierarchy() {
 		current.setBranch(dg.lastNodeFormat.indirectly, current.branch())
